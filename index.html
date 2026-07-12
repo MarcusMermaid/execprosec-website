@@ -2074,7 +2074,15 @@ var state = {
 // -- BOOT --
 window.addEventListener('DOMContentLoaded', function(){
   updateProgress(0);
+  routeFromHash();
 });
+window.addEventListener('hashchange', routeFromHash);
+// -- DEEP LINKING --
+// Lets a shared link open a specific page directly, e.g. execprosec.org/#amendments
+function routeFromHash(){
+  var key = (window.location.hash || '').replace(/^#/, '').toLowerCase();
+  if(key && typeof PAGES !== 'undefined' && PAGES[key]){ openPage(key); }
+}
 
 // -- SCREENS --
 function showScreen(id){
@@ -2587,6 +2595,7 @@ function openPage(key){
     '<div><button class="btn-back" onclick="showScreen(\'screen-intro\');setNavActive(\'Home\')">&larr; Back to start</button></div>';
   showScreen('screen-page');
   setNavActive(p.nav);
+  try{ if(('#'+key) !== window.location.hash){ history.replaceState(null, '', '#'+key); } }catch(e){}
 }
 
 // -- SUPPORT / HELP HUB --
