@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ExecProsec</title>
+<title>ExecProsec - Compatibility Assessment</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -889,7 +889,7 @@ footer{
     </div>
     <nav class="nav-links">
       <a href="#" class="active" onclick="showScreen('screen-intro');setNavActive('Home');return false;">Home</a>
-      <a href="#" onclick="startTest();setNavActive('Assessments');return false;">Assessments</a>
+      <a href="#" onclick="openPage('amendments');setNavActive('Amendments');return false;">Amendments</a>
       <a href="#" onclick="openPage('comingsoon');return false;">Coming Soon</a>
       <a href="#" onclick="showScreen('screen-news');setNavActive('News');return false;">News</a>
     </nav>
@@ -2542,6 +2542,8 @@ var PAGES = {
       <li><b>Public Office (Accountability) Bill &mdash; Misleading the Public</b><span>Our proposals defining the Bill&rsquo;s key terms and expanding the offence to include all MPs, MSs, MSPs, MLAs and judges. <a href="/amendments-misleading-the-public.pdf" target="_blank" rel="noopener">Read the proposals (PDF)</a></span></li>
       <li><b>Representation of the People Bill</b><span>Amending s.106 of the Representation of the People Act 1983 so the law on false campaign statements also covers materially false factual claims &mdash; with safeguards: liability only for knowing or reckless falsehoods, protecting honest error, opinion, prediction, political promises and parliamentary privilege. <a href="/amendments-representation-of-the-people-bill.pdf" target="_blank" rel="noopener">Read the proposals (PDF)</a></span></li>
     </ul>` },
+  amendments:{ nav:'Amendments', eyebrow:'Amendments', title:'Amendments', html:`
+    <p class="passage">Content coming shortly.</p>` },
   whitepaper:{ nav:'White Paper', eyebrow:'White Paper', title:'The white paper', html:`
     <p class="passage">Our White Paper sets out how ExecProsec will bring private criminal prosecutions against senior officials who abuse public trust &mdash; real accountability, no matter how powerful they are. This is an early backer draft; read it and send us your feedback.</p>
     <a class="btn-submit" href="/whitepaper-backer-draft.pdf" target="_blank" rel="noopener" style="display:inline-block;text-decoration:none">Read the White Paper (PDF)</a>` },
@@ -2617,7 +2619,7 @@ function retakeTest(){
 // Anthropic / MailChimp / database keys server-side — no secrets live in this file.
 // Set RAILWAY_SIGNUP_ENDPOINT to the route you expose on the Flask app
 // (e.g. https://web-production-f8552.up.railway.app/api/signup) to go live.
-var RAILWAY_SIGNUP_ENDPOINT = ''; // <-- paste your endpoint here to activate live signup
+var RAILWAY_SIGNUP_ENDPOINT = 'https://central-2-mcp-production.up.railway.app/public/subscribe'; // saves to Central's ExecProsec list
 
 function submitSignup(){
   var box   = document.querySelector('.capture-box');
@@ -2662,7 +2664,7 @@ function submitSignup(){
     emailOptIn: true, // consent implied: the user is explicitly signing up for updates
     score:     document.getElementById('score-pct') ? document.getElementById('score-pct').textContent : '',
     tier:      document.getElementById('result-name') ? document.getElementById('result-name').textContent : '',
-    source:    'compatibility-assessment',
+    source:    'ExecProsec website email list',
     submittedAt: new Date().toISOString()
   };
 
