@@ -890,8 +890,8 @@ footer{
     <nav class="nav-links">
       <a href="#" class="active" onclick="showScreen('screen-intro');setNavActive('Home');return false;">Home</a>
       <a href="#" onclick="openPage('amendments');setNavActive('Amendments');return false;">Amendments</a>
-      <a href="#" onclick="openPage('comingsoon');return false;">Coming Soon</a>
       <a href="#" onclick="showScreen('screen-news');setNavActive('News');return false;">News</a>
+      <a href="#" onclick="openPage('comingsoon');return false;">Coming Soon</a>
     </nav>
     <!-- Support and Donate hidden for the MVP -->
     <span style="margin-left:auto"></span>
@@ -905,9 +905,8 @@ footer{
     <h1 class="intro-h1">ExecProsec is building the first institution in the world that criminally prosecutes <span style="color:var(--gold);font-style:normal">the most powerful people</span> when they abuse the public.</h1>
     <div class="intro-rule"></div>
     <p class="intro-body">We work to change the world by making the most powerful people in the world answer to the criminal law. We investigate, expose, and prosecute serious abuses of power where police and state prosecutors are too conflicted to act. Are you one of us?</p>
-    <button class="btn-start" onclick="startTest()">
-      Begin Assessment
-      <span class="arrow">→</span>
+    <button class="btn-start" disabled style="cursor:default;opacity:.9">
+      Assessment coming soon
     </button>
     <!-- CROWD -->
     <div class="crowd-wrap2" id="crowd-wrap2">
@@ -2891,6 +2890,10 @@ document.querySelectorAll('.press-item').forEach(function(item){
     if(el) el.textContent=n.toLocaleString('en-GB')+' people have funded ExecProsec so far since June 2016';
   }
   updateCount(19241);
+  fetch('https://central-2-mcp-production.up.railway.app/public/backers')
+    .then(function(r){return r.json();})
+    .then(function(d){ if(d && typeof d.backers==='number' && d.backers>0) updateCount(d.backers); })
+    .catch(function(){});
 })();
 </script>
 
