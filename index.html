@@ -901,6 +901,23 @@ footer{
 .faq-a-in{overflow:hidden}
 .faq-a-in p{margin:0;padding:0 4px 24px 38px;color:rgba(255,255,255,.8);font-weight:300;line-height:1.85;font-size:15.5px}
 @media(max-width:560px){.faq-a-in p{padding-left:4px}.faq-t{font-size:15px}}
+
+/* -- PLEDGE -- */
+.pledge{margin:44px 0 8px;padding:28px 26px;border:1px solid rgba(221,188,102,.35);border-radius:14px;background:linear-gradient(180deg,rgba(221,188,102,.08),rgba(221,188,102,.03))}
+.pledge-h{font-family:'DM Serif Display',serif;font-size:23px;color:var(--white);margin:0 0 8px}
+.pledge-sub{font-size:15px;line-height:1.65;color:rgba(255,255,255,.78);font-weight:300;margin:0 0 18px}
+.pledge-count{display:none;color:var(--gold);font-weight:600;font-size:14px;margin:0 0 14px}
+.pledge-check{display:flex;gap:11px;align-items:flex-start;color:var(--white);font-size:15px;line-height:1.5;cursor:pointer;margin:0 0 14px}
+.pledge-check input{margin-top:3px;width:18px;height:18px;accent-color:var(--gold);flex:0 0 auto;cursor:pointer}
+.pledge-warn{display:none;color:#f0a5a8;font-size:13px;margin:-6px 0 12px}
+.pledge-input{width:100%;box-sizing:border-box;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:12px 14px;color:var(--white);font-family:inherit;font-size:15px;margin:0 0 12px}
+.pledge-input:focus{outline:none;border-color:var(--gold)}
+.pledge-input::placeholder{color:rgba(255,255,255,.4)}
+.pledge-hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.pledge-btn{background:var(--gold);color:var(--navy);border:0;border-radius:8px;padding:13px 26px;font-family:inherit;font-weight:700;font-size:15px;cursor:pointer;transition:background .2s ease,transform .15s ease}
+.pledge-btn:hover{background:#ecca55;transform:translateY(-1px)}
+.pledge-btn:disabled{opacity:.6;cursor:default;transform:none}
+.pledge-thanks{display:none;color:var(--white);font-size:15.5px;line-height:1.6}
 </style>
 </head>
 <body>
@@ -2566,7 +2583,7 @@ var PAGES = {
     <p class="passage">Where to see us next &mdash; debates, talks and screenings.</p>
     <div class="page-media">Upcoming events will appear here</div>` },
   amendments:{ nav:'Amendments', eyebrow:'Amendments 13–18', title:'Every objection, answered', html:`
-    <div class="amendments-video" style="margin:0 0 30px;border-radius:14px;overflow:hidden;background:#000;box-shadow:0 12px 44px rgba(0,0,0,.20)"><video controls playsinline preload="metadata" poster="/amendments-page-poster.jpg" style="width:100%;height:auto;display:block" src="/amendments-page-video.mp4">Your browser does not support embedded video. <a href="/amendments-page-video.mp4">Download the video</a>.</video></div>
+    <div class="amendments-video" style="margin:0 0 30px;border-radius:14px;overflow:hidden;background:#000;box-shadow:0 12px 44px rgba(0,0,0,.20)"><video controls playsinline preload="metadata" onplay="trackVideoPlay()" poster="/amendments-page-poster.jpg" style="width:100%;height:auto;display:block" src="/amendments-page-video.mp4">Your browser does not support embedded video. <a href="/amendments-page-video.mp4">Download the video</a>.</video></div>
     <p class="faq-intro">The Public Office (Accountability) Bill will criminalise deliberately misleading the public. It will apply to the Prime Minister, the Cabinet, civil servants, the police, the armed forces and NHS bodies. It will not apply to MPs or Peers, the people passing it into law. <a href="https://bills.parliament.uk/bills/4019/stages/20349/amendments/10031640" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:underline;text-underline-offset:3px">Amendments 13–18</a>, tabled by Luke Myer MP and sponsored by more than 30 MPs from across the House, fix that while expressly protecting parliamentary privilege. Below are the objections we hear in Westminster, and the answers to them.</p>
     <div class="faq-warn">One warning before you read them: if MPs vote to criminalise lying by everyone except themselves, nothing will stop that becoming the story of this Parliament.</div>
     <div class="faq-list">
@@ -2634,7 +2651,22 @@ var PAGES = {
         <button class="faq-q" type="button" aria-expanded="false" onclick="toggleFaq(this)" data-q="16"><span class="faq-n">16</span><span class="faq-t">“What will ExecProsec do if MPs vote not to include themselves in this offence?”</span><span class="faq-plus" aria-hidden="true"></span></button>
         <div class="faq-a"><div class="faq-a-in"><p>We will make sure the country understands exactly what has happened. If Parliament votes to place nurses, police officers, soldiers and civil servants under a criminal honesty law while exempting itself, ExecProsec will set that decision out in full and deliver a detailed, forensic briefing to every political journalist who has followed this Bill. It will record what was voted for, who voted for it, and what it means in plain terms: that the House of Commons chose to keep deliberately lying to the public lawful for one group of people alone, itself. We will explain, calmly and precisely, why the public can draw only one conclusion from such a vote, and why their trust in this Parliament should fall accordingly. This is not a threat; it is a commitment to transparency. Members who vote to hold themselves to the same standard as everyone else will have nothing to fear from it. Those who vote to exempt themselves should be prepared to explain that choice, in their own words, for a very long time to come.</p></div></div>
       </div>
-    </div>` },
+    </div>
+    <div class="pledge">
+      <h3 class="pledge-h">Where do you stand?</h3>
+      <p class="pledge-sub">If you will support amendments 13–18, add your name below. We are keeping a running tally of who backs honesty in Parliament.</p>
+      <div class="pledge-count" id="pledge-count"></div>
+      <div id="pledge-form">
+        <label class="pledge-check"><input type="checkbox" id="pledge-agree"> I will support amendments 13–18, to hold MPs and Peers to the same honesty law as everyone else.</label>
+        <div class="pledge-warn" id="pledge-warn">Please tick the box to add your support.</div>
+        <input class="pledge-input" id="pledge-name" type="text" placeholder="Name (optional)" autocomplete="off">
+        <input class="pledge-input" id="pledge-role" type="text" placeholder="Role — e.g. MP for…, journalist at… (optional)" autocomplete="off">
+        <input class="pledge-hp" id="pledge-website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <button class="pledge-btn" id="pledge-btn" type="button" onclick="submitPledge()">Add my support</button>
+      </div>
+      <div class="pledge-thanks" id="pledge-thanks">Thank you. Your support has been recorded, and it counts.</div>
+    </div>
+    ` },
   whitepaper:{ nav:'White Paper', eyebrow:'White Paper', title:'The white paper', html:`
     <p class="passage">Our White Paper sets out how ExecProsec will bring private criminal prosecutions against senior officials who abuse public trust &mdash; real accountability, no matter how powerful they are. This is an early backer draft; read it and send us your feedback.</p>
     <a class="btn-submit" href="/whitepaper-backer-draft.pdf" target="_blank" rel="noopener" style="display:inline-block;text-decoration:none">Read the White Paper (PDF)</a>` },
@@ -2670,11 +2702,43 @@ var PAGES = {
     </ul>
     <button class="btn-submit" onclick="alert('Monthly backing (Stripe) will be wired in here.')">Become a monthly backer</button>` }
 };
+var AMEND_TRACK_BASE = 'https://central-2-mcp-production.up.railway.app';
+function trackEvent(event, detail){
+  try{
+    var url = AMEND_TRACK_BASE + '/public/track';
+    var body = JSON.stringify({event:event, detail:detail||'', page:'amendments'});
+    if(navigator.sendBeacon){ navigator.sendBeacon(url, new Blob([body],{type:'text/plain'})); }
+    else { fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:body,keepalive:true}); }
+  }catch(e){}
+}
+var _amendVideoTracked = false;
+function trackVideoPlay(){ if(_amendVideoTracked) return; _amendVideoTracked = true; trackEvent('video_play',''); }
+function showPledgeThanks(total){
+  var f = document.getElementById('pledge-form'); if(f){ f.style.display='none'; }
+  var t = document.getElementById('pledge-thanks'); if(t){ t.style.display='block'; }
+  if(total){ var c = document.getElementById('pledge-count'); if(c){ c.style.display='block'; c.textContent = total + (total==1?' person has':' people have') + ' pledged support so far.'; } }
+}
+function submitPledge(){
+  var agree = document.getElementById('pledge-agree');
+  if(!agree || !agree.checked){ if(agree){ agree.focus(); } var w=document.getElementById('pledge-warn'); if(w){ w.style.display='block'; } return; }
+  var payload = {
+    will_support: true,
+    name: (document.getElementById('pledge-name')||{}).value || '',
+    role: (document.getElementById('pledge-role')||{}).value || '',
+    website: (document.getElementById('pledge-website')||{}).value || ''
+  };
+  var btn = document.getElementById('pledge-btn'); if(btn){ btn.disabled = true; btn.textContent = 'Saving\u2026'; }
+  fetch(AMEND_TRACK_BASE + '/public/pledge', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)})
+    .then(function(r){ return r.json(); })
+    .then(function(d){ showPledgeThanks(d && d.total); })
+    .catch(function(){ showPledgeThanks(0); });
+}
 function toggleFaq(btn){
   var item = btn.closest ? btn.closest('.faq') : btn.parentNode;
   if(!item) return;
   var open = item.classList.toggle('open');
   btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  if(open){ trackEvent('faq_open', btn.getAttribute('data-q') || ''); }
 }
 
 function openPage(key){
