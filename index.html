@@ -2654,8 +2654,7 @@ var PAGES = {
     </div>
     <div class="pledge">
       <h3 class="pledge-h">Where do you stand?</h3>
-      <p class="pledge-sub">If you will support amendments 13–18, add your name below. We are keeping a running tally of who backs honesty in Parliament.</p>
-      <div class="pledge-count" id="pledge-count"></div>
+      <p class="pledge-sub">If you will support amendments 13–18, add your name below.</p>
       <div id="pledge-form">
         <label class="pledge-check"><input type="checkbox" id="pledge-agree"> I will support amendments 13–18, to hold MPs and Peers to the same honesty law as nearly all other public officials.</label>
         <div class="pledge-warn" id="pledge-warn">Please tick the box to add your support.</div>
@@ -2714,10 +2713,9 @@ function trackEvent(event, detail){
 }
 var _amendVideoTracked = false;
 function trackVideoPlay(){ if(_amendVideoTracked) return; _amendVideoTracked = true; trackEvent('video_play',''); }
-function showPledgeThanks(total){
+function showPledgeThanks(){
   var f = document.getElementById('pledge-form'); if(f){ f.style.display='none'; }
   var t = document.getElementById('pledge-thanks'); if(t){ t.style.display='block'; }
-  if(total){ var c = document.getElementById('pledge-count'); if(c){ c.style.display='block'; c.textContent = total + (total==1?' person has':' people have') + ' pledged support so far.'; } }
 }
 function submitPledge(){
   var agree = document.getElementById('pledge-agree');
