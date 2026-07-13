@@ -3064,5 +3064,26 @@ document.querySelectorAll('.press-item').forEach(function(item){
 })();
 </script>
 
+<!-- MJB unified analytics: page views, clicks, video plays -> Central wh_web_events -->
+<script>
+(function(){
+  var SITE='execprosec';
+  var EP='https://central-2-mcp-production.up.railway.app/public/analytics';
+  var sid;
+  try{ sid=localStorage.getItem('mjb_sid'); if(!sid){ sid='s_'+Math.random().toString(36).slice(2)+Date.now().toString(36); localStorage.setItem('mjb_sid',sid);} }catch(e){ sid=''; }
+  function send(ev,d){ try{ var b=JSON.stringify(Object.assign({site:SITE,event:ev,page:(location.pathname+location.hash).slice(0,300),session_id:sid,referrer:(document.referrer||'').slice(0,300)},d||{}));
+    if(navigator.sendBeacon){ navigator.sendBeacon(EP,new Blob([b],{type:'text/plain'})); } else { fetch(EP,{method:'POST',headers:{'Content-Type':'text/plain'},body:b,keepalive:true}); } }catch(e){} }
+  send('pageview',{});
+  window.addEventListener('hashchange',function(){ send('pageview',{}); });
+  document.addEventListener('click',function(e){ var el=e.target&&e.target.closest?e.target.closest('a,button,[role=button],[data-track]'):null; if(!el) return;
+    var label=(el.getAttribute('aria-label')||el.getAttribute('data-track')||(el.textContent||'').trim()||el.tagName||'').replace(/\s+/g,' ').slice(0,140);
+    var href=el.getAttribute('href')||''; send('click',{label:label,href:href}); },true);
+  function vids(){ var vs=document.querySelectorAll('video'); for(var i=0;i<vs.length;i++){ (function(v){ if(v.__mjb) return; v.__mjb=1;
+    v.addEventListener('play',function(){ send('video_play',{label:(v.getAttribute('src')||v.currentSrc||'video').slice(0,140)}); });
+    v.addEventListener('ended',function(){ send('video_complete',{label:(v.getAttribute('src')||v.currentSrc||'video').slice(0,140)}); }); })(vs[i]); } }
+  vids(); document.addEventListener('DOMContentLoaded',vids);
+  try{ new MutationObserver(vids).observe(document.documentElement,{childList:true,subtree:true}); }catch(e){}
+})();
+</script>
 </body>
 </html>
