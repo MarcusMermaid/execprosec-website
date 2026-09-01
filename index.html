@@ -2798,7 +2798,14 @@ function openPage(key){
     '<div><button class="btn-back" onclick="showScreen(\'screen-intro\');setNavActive(\'Home\')">&larr; Back to start</button></div>';
   showScreen('screen-page');
   setNavActive(p.nav);
-  try{ if(('#'+key) !== window.location.hash){ history.replaceState(null, '', '#'+key); } }catch(e){}
+  try{
+    var pathKey = (window.location.pathname || '').replace(/^\/+|\/+$/g, '').toLowerCase();
+    if(pathKey === key){
+      if(window.location.hash){ history.replaceState(null, '', window.location.pathname); }
+    } else if(('#'+key) !== window.location.hash){
+      history.replaceState(null, '', '#'+key);
+    }
+  }catch(e){}
 }
 
 // -- SUPPORT / HELP HUB --
