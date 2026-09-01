@@ -2175,6 +2175,7 @@ window.addEventListener('hashchange', routeFromHash);
 // Lets a shared link open a specific page directly, e.g. execprosec.org/#amendments
 function routeFromHash(){
   var key = (window.location.hash || '').replace(/^#/, '').toLowerCase();
+  if(!key){ key = (window.location.pathname || '').replace(/^\/+|\/+$/g, '').toLowerCase(); }
   if(key && typeof PAGES !== 'undefined' && PAGES[key]){ openPage(key); }
 }
 
