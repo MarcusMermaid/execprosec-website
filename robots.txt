@@ -1,0 +1,15 @@
+User-agent: *
+Allow: /
+
+# these no longer exist
+Disallow: /comingsoon
+Disallow: /documentary
+Disallow: /podcast
+Disallow: /prosecutions
+Disallow: /events
+Disallow: /whitepaper
+Disallow: /terms
+Disallow: /support
+Disallow: /donate
+
+Sitemap: https://execprosec.org/sitemap.xml
