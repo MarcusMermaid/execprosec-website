@@ -1447,6 +1447,49 @@ a.contact-v:hover{color:var(--gold)}
 .site-foot .sf-note{margin-top:10px}
 .site-foot .sf-line:last-child{margin-top:10px}
 </style>
+<style>
+/* ---- typography experiment -------------------------------------------
+   Headings are left alone: the home headline stays exactly as it is now.
+   1. Every paragraph of body copy is pure white.
+   2. The two section labels above the backers and the press are pure white.
+   3. The menu links are pure white and a step lighter, 600 to 500.
+   4. The press logos are pure white.
+   5. The button drops from 700 to 500.
+   -------------------------------------------------------------------- */
+
+/* 1. body copy, everywhere it appears */
+.intro-body,
+.passage, .page-intro,
+.pa-intro p, .pa-a-in p, .pa-legal p,
+.fin-copy, .fin-copy p, .fin-copy li,
+.st-fit .fin-copy p,
+.cf-thanks p, .contact-v,
+.sq-card p, .qrd-q,
+.mission-copy p, .mission-list li,
+.legal p, .about-body, .about-passage,
+.news-blurb, .am-problem p, .am-note{
+  color:#fff}
+a.contact-v{color:#fff}
+
+/* the italic aside stays a shade back so it does not compete with the amendments */
+.pa-lead{color:rgba(255,255,255,.8)}
+
+/* 2. the two section labels */
+.crowd-lbl, .press-label{color:#fff}
+.crowd-count-num{color:var(--gold)}
+
+/* 3. the menu */
+.nav-links a{color:#fff;font-weight:500}
+.nav-links a:hover{color:#fff}
+.nav-links a.active{color:var(--gold)}
+
+/* 4. the press logos */
+.press-item img{opacity:1;filter:none}
+.press-item{opacity:1}
+
+/* 5. the button */
+.btn-start, #home-cta, #home-cta-2{font-weight:500}
+</style>
 </head>
 <body>
 <div class="shell">
@@ -4046,6 +4089,61 @@ function paEnsureCopy(row){
   b.onclick = function(){ return paCopy(b); };
   inner.appendChild(b);
 }
+</script>
+<script>
+/* Press logos: random order - each logo pulses gold twice, short pause, then another random one. */
+(function(){
+  function goldify(b64){
+    try{
+      var svg=atob(b64.split(',')[1]);
+      svg=svg.replace(/fill="#fff"/g,'fill="#DDBC66"').replace(/fill="#ffffff"/g,'fill="#DDBC66"').replace(/fill="#f7f6f2"/g,'fill="#DDBC66"');
+      return 'data:image/svg+xml;base64,'+btoa(svg);
+    }catch(e){ return null; }
+  }
+  function setup(){
+    var items=Array.prototype.slice.call(document.querySelectorAll('.press-item'));
+    if(!items.length){ setTimeout(setup,300); return; }
+    items.forEach(function(it){
+      var img=it.querySelector('img'); if(!img) return;
+      it._white=img.src; it._gold=goldify(img.src);
+    });
+    var lastIdx=-1;
+    function liveItems(){
+      var els=Array.prototype.slice.call(document.querySelectorAll('.press-item'));
+      els.forEach(function(it){
+        if(!it._white){ var img=it.querySelector('img'); if(img){ it._white=img.src; it._gold=goldify(img.src); } }
+      });
+      return els.filter(function(it){ return it.offsetParent!==null; });
+    }
+    function pulse(it,on){
+      var img=it.querySelector('img'); if(!img) return;
+      if(on){ it.classList.add('gold-flick'); if(it._gold) img.src=it._gold; }
+      else  { it.classList.remove('gold-flick'); img.src=it._white; }
+    }
+    function run(){
+      var items=liveItems();
+      if(!items.length){ setTimeout(run,1200); return; }
+      var pick=Math.floor(Math.random()*items.length);
+      if(items.length>1&&pick===lastIdx){ pick=(pick+1+Math.floor(Math.random()*(items.length-1)))%items.length; }
+      lastIdx=pick;
+      var it=items[pick];
+      if(it){
+        pulse(it,true);
+        setTimeout(function(){ pulse(it,false); },300);
+        setTimeout(function(){ pulse(it,true);  },460);
+        setTimeout(function(){ pulse(it,false); },760);
+      }
+      setTimeout(run, 760+700);
+    }
+    setTimeout(run, 1500);
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',setup); else setup();
+})();
+/* Warm the first two story slides while he is still on the home page: they are 25 separate
+   image files and a slide stays hidden until its art has arrived. */
+setTimeout(function(){
+  try{ if(!document.getElementById('st-body') && window.stPreloadFirst) stPreloadFirst(); }catch(e){}
+},1800);
 </script>
 </body>
 </html>
