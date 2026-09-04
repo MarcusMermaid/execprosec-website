@@ -1537,6 +1537,16 @@ a.contact-v{color:#fff}
     mask-image:linear-gradient(to right,transparent 0%,#000 4%,#000 96%,transparent 100%)}
 }
 </style>
+<style>
+/* the second half of the opening, under the illustration, then a gap
+   before the backers */
+.hero-more{margin-top:30px;margin-bottom:0}
+#screen-intro .crowd-wrap2{margin-top:52px}
+@media(max-width:640px){
+  .hero-more{margin-top:22px}
+  #screen-intro .crowd-wrap2{margin-top:40px}
+}
+</style>
 </head>
 <body>
 <div class="shell">
@@ -1563,12 +1573,14 @@ a.contact-v{color:#fff}
   <div class="screen active" id="screen-intro">
     <h1 class="intro-h1">No one should be above <span style="color:var(--gold);font-style:normal">the criminal law</span>.</h1>
     <div class="intro-rule"></div>
-    <p class="intro-body">Our work began in 2016 with our ongoing campaign to criminalise lying in politics. We are building a crowdfunded institution that investigates, exposes, and privately prosecutes the most powerful and abusive public and private sector executives in the United Kingdom. We will intervene where traditional law enforcement agencies and state prosecutors are too conflicted to act.</p>
+    <p class="intro-body">We are building a crowdfunded institution that investigates, exposes, and privately prosecutes the most powerful and abusive public and private sector executives in the United Kingdom.</p>
     <button class="btn-start cta-home" id="home-cta" type="button" onclick="openPage('poabamendments');setNavActive('Amendments');return false;">
       Read our Amendment Proposals
       <span class="arrow" style="-webkit-text-stroke:0.7px currentColor">→</span>
     </button>
     <img class="menace-hero" src="/_web/menace4.webp" alt="A powerful figure casting a long shadow over a crowd of backers, one holding a sign reading Prosecute the powerful to protect the people" decoding="async">
+    <p class="intro-body hero-more">Our work began in 2016 with our ongoing campaign to criminalise lying in politics. We will intervene where traditional law enforcement agencies and state prosecutors are too conflicted to act.</p>
+
     <!-- CROWD -->
     <div class="crowd-wrap2" id="crowd-wrap2">
       <div class="crowd-lbl" id="crowd-count-label"><span id="crowd-count-num" class="crowd-count-num">19,085</span><span class="crowd-lbl-rest"> people have funded ExecProsec so far since June 2016</span></div>
