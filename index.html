@@ -1528,6 +1528,9 @@ a.contact-v{color:#fff}
 /* ---- phones: the middle of the home page sits on the centre line ---- */
 @media(max-width:640px){
   .menace-hero, .crowd-wrap2{left:0;transform:none}
+  /* the crowd already spans the screen inside its wrapper, so it must not be
+     stretched a second time and overflow by 20px on each side */
+  #screen-intro .crowd-viewport{width:100%;max-width:100%;margin-left:0;margin-right:0}
   /* the crowd fades in and out over a narrower band so more of it fits */
   #screen-intro .crowd-viewport{
     -webkit-mask-image:linear-gradient(to right,transparent 0%,#000 4%,#000 96%,transparent 100%);
