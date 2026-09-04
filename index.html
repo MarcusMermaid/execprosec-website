@@ -1394,7 +1394,7 @@ a.contact-v:hover{color:var(--gold)}
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="ExecProsec">
 <meta property="og:title" content="No one should be above the criminal law">
-<meta property="og:description" content="A crowdfunded institution that investigates, exposes and privately prosecutes the most powerful and abusive private and public sector executives in the United Kingdom.">
+<meta property="og:description" content="A crowdfunded institution that investigates, exposes and privately prosecutes the most powerful and abusive public and private sector executives in the United Kingdom.">
 <meta property="og:image" content="https://execprosec.org/_web/brand/share-og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -1402,7 +1402,7 @@ a.contact-v:hover{color:var(--gold)}
 <meta property="og:url" content="https://execprosec.org/">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="No one should be above the criminal law">
-<meta name="twitter:description" content="A crowdfunded institution that investigates, exposes and privately prosecutes the most powerful and abusive private and public sector executives in the United Kingdom.">
+<meta name="twitter:description" content="A crowdfunded institution that investigates, exposes and privately prosecutes the most powerful and abusive public and private sector executives in the United Kingdom.">
 <meta name="twitter:image" content="https://execprosec.org/_web/brand/share-og.png">
 <link rel="canonical" href="https://execprosec.org/">
 <script>
@@ -1524,6 +1524,16 @@ a.contact-v{color:#fff}
   .sq-card{touch-action:pan-y}
 }
 </style>
+<style>
+/* ---- phones: the middle of the home page sits on the centre line ---- */
+@media(max-width:640px){
+  .menace-hero, .crowd-wrap2{left:0;transform:none}
+  /* the crowd fades in and out over a narrower band so more of it fits */
+  #screen-intro .crowd-viewport{
+    -webkit-mask-image:linear-gradient(to right,transparent 0%,#000 4%,#000 96%,transparent 100%);
+    mask-image:linear-gradient(to right,transparent 0%,#000 4%,#000 96%,transparent 100%)}
+}
+</style>
 </head>
 <body>
 <div class="shell">
@@ -1550,7 +1560,7 @@ a.contact-v{color:#fff}
   <div class="screen active" id="screen-intro">
     <h1 class="intro-h1">No one should be above <span style="color:var(--gold);font-style:normal">the criminal law</span>.</h1>
     <div class="intro-rule"></div>
-    <p class="intro-body">Our work began in 2016 with our campaign to criminalise lying in politics. We are building a crowdfunded institution that investigates, exposes, and privately prosecutes the most powerful and abusive private and public sector executives in the United Kingdom. We will intervene where traditional law enforcement agencies and state prosecutors are too conflicted to act.</p>
+    <p class="intro-body">Our work began in 2016 with our ongoing campaign to criminalise lying in politics. We are building a crowdfunded institution that investigates, exposes, and privately prosecutes the most powerful and abusive public and private sector executives in the United Kingdom. We will intervene where traditional law enforcement agencies and state prosecutors are too conflicted to act.</p>
     <button class="btn-start cta-home" id="home-cta" type="button" onclick="openPage('poabamendments');setNavActive('Amendments');return false;">
       Read our Amendment Proposals
       <span class="arrow" style="-webkit-text-stroke:0.7px currentColor">→</span>
