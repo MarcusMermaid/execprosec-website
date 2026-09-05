@@ -1566,6 +1566,10 @@ a.contact-v{color:#fff}
   /* the button keeps the shape it has on a laptop */
   #screen-intro .btn-start.cta-home{padding:12px 26px}
 }
+/* on the narrowest phones the button would otherwise run past the edge */
+@media(max-width:360px){
+  #screen-intro .btn-start.cta-home{padding:12px 16px;font-size:14px}
+}
 </style>
 </head>
 <body>
