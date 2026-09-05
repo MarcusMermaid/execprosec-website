@@ -1564,10 +1564,19 @@ a.contact-v{color:#fff}
   #screen-intro .press-item img{
     display:inline-block;height:auto;width:auto;max-width:100%;max-height:27px;
     object-fit:contain;vertical-align:middle}
-  /* twenty five logos leave one on its own: it sits in the middle column */
-  #screen-intro .press-item:last-child{grid-column:2}
+  /* twenty seven logos: nine full rows of three, nothing left on its own */
   /* the button keeps the shape it has on a laptop */
   #screen-intro .btn-start.cta-home{padding:12px 26px}
+}
+/* On a laptop the wall is five across, and twenty seven logos leave two over.
+   Placing them in the second and fourth columns puts the pair either side of the
+   middle column, so the last row reads as centred rather than left over. */
+@media(min-width:641px){
+  /* equal columns, so the second and fourth sit either side of the middle one.
+     The widest wordmark is 167px and a column is 190px, so nothing is squeezed. */
+  #screen-intro .press-grid{grid-template-columns:repeat(5,minmax(0,1fr))}
+  #screen-intro .press-item:nth-last-child(2){grid-column:2}
+  #screen-intro .press-item:last-child{grid-column:4}
 }
 /* on the narrowest phones the button would otherwise run past the edge */
 @media(max-width:360px){
@@ -1684,6 +1693,7 @@ a.contact-v{color:#fff}
         <a class="press-item" target="_blank" rel="noopener noreferrer" href="https://www.channel4.com/news/campaigner-marcus-ball-we-still-accuse-boris-johnson-of-having-lied-to-the-public" aria-label="Channel 4"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0NCA0NCIgaGVpZ2h0PSIzMiI+PHRleHQgeD0iMjIiIHk9IjM2IiBmb250LWZhbWlseT0iQXJpYWwgQmxhY2siIGZvbnQtd2VpZ2h0PSI5MDAiIGZvbnQtc2l6ZT0iMzgiIGZpbGw9IiNmN2Y2ZjIiIHRleHQtYW5jaG9yPSJtaWRkbGUiPjQ8L3RleHQ+PC9zdmc+" alt="Channel 4"></a>
         <a class="press-item" target="_blank" rel="noopener noreferrer" href="https://www.itv.com/news/2019-05-29/who-is-private-prosecutor-marcus-ball" aria-label="ITV News"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNjAgNDQiIGhlaWdodD0iMzIiPjx0ZXh0IHg9IjgwIiB5PSIzMiIgZm9udC1mYW1pbHk9IkFyaWFsIEJsYWNrIiBmb250LXdlaWdodD0iOTAwIiBmb250LXNpemU9IjIyIiBmaWxsPSIjZjdmNmYyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBsZXR0ZXItc3BhY2luZz0iMiI+SVRWIE5FV1M8L3RleHQ+PC9zdmc+" alt="ITV News"></a>
         <a class="press-item" target="_blank" rel="noopener noreferrer" href="https://www.theguardian.com/politics/2019/may/23/boris-johnson-lied-during-eu-referendum-campaign-court-told" aria-label="The Guardian"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxOTAgNDQiIGhlaWdodD0iMzIiPjx0ZXh0IHg9Ijk1IiB5PSIzMiIgZm9udC1mYW1pbHk9Ikdlb3JnaWEsc2VyaWYiIGZvbnQtd2VpZ2h0PSI3MDAiIGZvbnQtc2l6ZT0iMjIiIGZpbGw9IiNmN2Y2ZjIiIHRleHQtYW5jaG9yPSJtaWRkbGUiPnRoZSBndWFyZGlhbjwvdGV4dD48L3N2Zz4=" alt="The Guardian"></a>
+        <a class="press-item" target="_blank" rel="noopener noreferrer" href="https://www.independent.co.uk/news/uk/crime/boris-johnson-trial-brexit-court-lying-prosecution-nhs-vote-leave-a8934451.html" aria-label="The Independent"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMjYgNDQiIGhlaWdodD0iMzIiPjx0ZXh0IHg9IjExMy4wIiB5PSIzMiIgZm9udC1mYW1pbHk9Ikdlb3JnaWEsc2VyaWYiIGZvbnQtd2VpZ2h0PSI3MDAiIGZvbnQtc2l6ZT0iMjAiIGZpbGw9IiNmN2Y2ZjIiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlRoZSBJbmRlcGVuZGVudDwvdGV4dD48L3N2Zz4=" alt="The Independent" decoding="async"></a>
         <a class="press-item" target="_blank" rel="noopener noreferrer" href="https://www.thetimes.com/uk/politics/article/judges-who-threw-out-johnson-case-were-biased-claims-accuser-vwwl0v75n" aria-label="The Times"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNzAgNDQiIGhlaWdodD0iMzIiPjx0ZXh0IHg9Ijg1IiB5PSIzMiIgZm9udC1mYW1pbHk9IlRpbWVzIE5ldyBSb21hbixzZXJpZiIgZm9udC13ZWlnaHQ9IjcwMCIgZm9udC1zaXplPSIyMiIgZmlsbD0iI2Y3ZjZmMiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgbGV0dGVyLXNwYWNpbmc9IjMiPlRIRSBUSU1FUzwvdGV4dD48L3N2Zz4=" alt="The Times"></a>
         <a class="press-item" target="_blank" rel="noopener noreferrer" href="https://www.wired.com/story/boris-johnson-court-brexit-referendum-vote/" aria-label="Wired"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjAgNDQiIGhlaWdodD0iMzIiPjx0ZXh0IHg9IjYwIiB5PSIzMyIgZm9udC1mYW1pbHk9IkFyaWFsIEJsYWNrIiBmb250LXdlaWdodD0iOTAwIiBmb250LXNpemU9IjI4IiBmaWxsPSIjZjdmNmYyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBsZXR0ZXItc3BhY2luZz0iNCI+V0lSRUQ8L3RleHQ+PC9zdmc+" alt="Wired"></a>
         <a class="press-item" target="_blank" rel="noopener noreferrer" href="https://www.ft.com/content/a9caa9de-766f-11e9-bbad-7c18c0ea0201" aria-label="Financial Times"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MCA0NCIgaGVpZ2h0PSIzMiI+PHRleHQgeD0iMzAiIHk9IjM0IiBmb250LWZhbWlseT0iQXJpYWwgQmxhY2siIGZvbnQtd2VpZ2h0PSI5MDAiIGZvbnQtc2l6ZT0iMzAiIGZpbGw9IiNmN2Y2ZjIiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGxldHRlci1zcGFjaW5nPSIyIj5GVDwvdGV4dD48L3N2Zz4=" alt="Financial Times"></a>
@@ -1693,6 +1703,7 @@ a.contact-v{color:#fff}
         <a class="press-item" target="_blank" rel="noopener noreferrer" href="https://elpais.com/internacional/2019/05/29/actualidad/1559125421_543681.html" aria-label="El Pais"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMTAgNDQiIGhlaWdodD0iMzIiPjx0ZXh0IHg9IjU1IiB5PSIzMiIgZm9udC1mYW1pbHk9Ikdlb3JnaWEsc2VyaWYiIGZvbnQtd2VpZ2h0PSI3MDAiIGZvbnQtc2l6ZT0iMjQiIGZpbGw9IiNmN2Y2ZjIiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkVsIFBhw61zPC90ZXh0Pjwvc3ZnPg==" alt="El Pais"></a>
         <a class="press-item" target="_blank" rel="noopener noreferrer" href="https://www.chinadaily.com.cn/a/201906/05/WS5cf69c3ca310519142701082.html" aria-label="China Daily"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNjAgNDQiIGhlaWdodD0iMzIiPjx0ZXh0IHg9IjgwIiB5PSIzMSIgZm9udC1mYW1pbHk9IkFyaWFsIEJsYWNrIiBmb250LXdlaWdodD0iNzAwIiBmb250LXNpemU9IjIwIiBmaWxsPSIjZjdmNmYyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5DaGluYSBEYWlseTwvdGV4dD48L3N2Zz4=" alt="China Daily"></a>
         <a class="press-item" target="_blank" rel="noopener noreferrer" href="https://www.nytimes.com/2019/05/29/world/europe/boris-johnson-brexit.html" aria-label="The New York Times"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMzAgNDQiIGhlaWdodD0iMzIiPjx0ZXh0IHg9IjExNSIgeT0iMzEiIGZvbnQtZmFtaWx5PSJUaW1lcyBOZXcgUm9tYW4sc2VyaWYiIGZvbnQtd2VpZ2h0PSI3MDAiIGZvbnQtc2l6ZT0iMjAiIGZpbGw9IiNmN2Y2ZjIiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlRoZSBOZXcgWW9yayBUaW1lczwvdGV4dD48L3N2Zz4=" alt="The New York Times"></a>
+        <a class="press-item" target="_blank" rel="noopener noreferrer" href="https://www.washingtonpost.com/world/europe/prime-minister-hopeful-boris-johnson-to-appear-in-court-over-allegations-he-lied-in-the-brexit-campaign/2019/05/29/21654760-8200-11e9-933d-7501070ee669_story.html" aria-label="The Washington Post"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMTAgNDQiIGhlaWdodD0iMzIiPjx0ZXh0IHg9IjEwNS4wIiB5PSIzMiIgZm9udC1mYW1pbHk9IlRpbWVzIE5ldyBSb21hbixzZXJpZiIgZm9udC13ZWlnaHQ9IjcwMCIgZm9udC1zaXplPSIxOCIgZmlsbD0iI2Y3ZjZmMiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+VGhlIFdhc2hpbmd0b24gUG9zdDwvdGV4dD48L3N2Zz4=" alt="The Washington Post" decoding="async"></a>
         <a class="press-item" target="_blank" rel="noopener noreferrer" href="https://www.france24.com/en/20190529-UK-boris-johnson-court-lied-brexit-campaign-misconduct" aria-label="France 24"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNTUgNDQiIGhlaWdodD0iMzIiPjx0ZXh0IHg9Ijc3IiB5PSIzMiIgZm9udC1mYW1pbHk9IkFyaWFsIEJsYWNrIiBmb250LXdlaWdodD0iOTAwIiBmb250LXNpemU9IjIyIiBmaWxsPSIjZjdmNmYyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBsZXR0ZXItc3BhY2luZz0iMSI+RlJBTkNFIDI0PC90ZXh0Pjwvc3ZnPg==" alt="France 24"></a>
         <a class="press-item" target="_blank" rel="noopener noreferrer" href="https://www.wsj.com/articles/u-k-s-boris-johnson-to-appear-in-court-over-brexit-claims-11559136361" aria-label="Wall Street Journal"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MCA0NCIgaGVpZ2h0PSIzMiI+PHRleHQgeD0iNDAiIHk9IjM0IiBmb250LWZhbWlseT0iQXJpYWwgQmxhY2siIGZvbnQtd2VpZ2h0PSI5MDAiIGZvbnQtc2l6ZT0iMjgiIGZpbGw9IiNmN2Y2ZjIiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGxldHRlci1zcGFjaW5nPSIyIj5XU0o8L3RleHQ+PC9zdmc+" alt="Wall Street Journal"></a>
         <a class="press-item" target="_blank" rel="noopener noreferrer" href="https://www.foxnews.com/world/boris-johnson-court-misleading-claims-brexit-referendum" aria-label="Fox News"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNjAgNDQiIGhlaWdodD0iMzIiPjx0ZXh0IHg9IjgwIiB5PSIzMiIgZm9udC1mYW1pbHk9IkFyaWFsIEJsYWNrIiBmb250LXdlaWdodD0iOTAwIiBmb250LXNpemU9IjI0IiBmaWxsPSIjZjdmNmYyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBsZXR0ZXItc3BhY2luZz0iMSI+Rk9YIE5FV1M8L3RleHQ+PC9zdmc+" alt="Fox News"></a>
@@ -2813,12 +2824,35 @@ function epPageTitle(p){
   var name = (p && p.title ? String(p.title).replace(/<[^>]+>/g, '').replace(/\.$/, '') : '');
   return name ? name + ' | ExecProsec' : 'ExecProsec';
 }
+/* True while we are following the address bar or a Back press. The browser has
+   already put us on that address, so writing another history entry would strand the
+   reader one press short of wherever they came from. */
+var EP_NAV_REPLACE = false;
+function epSetUrl(want, title){
+  try{
+    if((window.location.pathname + window.location.hash) !== want){
+      if(EP_NAV_REPLACE) history.replaceState({p:want}, '', want);
+      else history.pushState({p:want}, '', want);
+    }
+    if(title) document.title = title;
+  }catch(e){}
+}
+/* the Back and Forward buttons */
+window.addEventListener('popstate', function(){ routeFromHash(); });
+
+/* routeFromHash is only ever called for an address the browser is already showing:
+   first load, a change of hash, or Back and Forward. So it never pushes. */
 function routeFromHash(){
   var key = (window.location.hash || '').replace(/^#/, '').toLowerCase();
   if(!key){ key = (window.location.pathname || '').replace(/^\/+|\/+$/g, '').toLowerCase(); }
   key = pageAlias(key);
-  if(key === 'news' || key === 'inthenews'){ epNews(); return; }
-  if(key && typeof PAGES !== 'undefined' && PAGES[key]){ openPage(key); }
+  var outer = EP_NAV_REPLACE;
+  if(!outer) EP_NAV_REPLACE = true;
+  try{
+    if(key === 'news' || key === 'inthenews'){ epNews(); return; }
+    if(key && typeof PAGES !== 'undefined' && PAGES[key]){ openPage(key); return; }
+    epHome();          /* the front of the site, and anything we do not recognise */
+  } finally { if(!outer) EP_NAV_REPLACE = false; }
 }
 /* every link already sent out has to keep working: #amendments, #amendments1,
    /amendments and /amendments#amendments all arrive at the same page */
@@ -2950,12 +2984,7 @@ function evPlay(){
 }
 function epNews(){
   showScreen('screen-news'); setNavActive('News');
-  try{
-    if((window.location.pathname + window.location.hash) !== '/news'){
-      history.pushState({p:'/news'}, '', '/news');
-    }
-    document.title = 'In the news | ExecProsec';
-  }catch(e){}
+  epSetUrl('/news', 'In the news | ExecProsec');
 }
 function epHome(){
   try{ showScreen('screen-intro'); setNavActive('Home'); document.title='ExecProsec'; }catch(e){}
@@ -3485,13 +3514,7 @@ function openPage(key){
         if(document.fonts&&document.fonts.ready) document.fonts.ready.then(mjbWallSpeed); }catch(e){}
   showScreen('screen-page');
   setNavActive(p.nav);
-  try{
-    var want = '/' + key;
-    if((window.location.pathname + window.location.hash) !== want){
-      history.pushState({p:want}, '', want);
-    }
-    document.title = epPageTitle(p);
-  }catch(e){}
+  epSetUrl('/' + key, epPageTitle(p));
 }
 
 // -- SUPPORT / HELP HUB --
