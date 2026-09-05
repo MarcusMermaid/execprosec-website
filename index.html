@@ -1552,17 +1552,20 @@ a.contact-v{color:#fff}
 @media(max-width:640px){
   /* a wrapping, centred row instead of a five column grid, so a wide wordmark
      is allowed to be wide and a square mark is allowed to be narrow */
+  /* three columns, so the logos line up. Each cell has a definite width, which
+     is what makes the percentage below safe: a picture sized against a box that
+     is itself sized by the picture is the circle that emptied the strip before. */
   #screen-intro .press-grid{
-    display:flex;flex-wrap:wrap;justify-content:center;align-items:center;
-    gap:13px 10px;left:0;transform:none;max-width:100%}
-  /* No percentage widths anywhere in here. The item is sized by its picture,
-     so a percentage max-width on the picture depends on the item, which depends
-     on the picture: Safari resolves that circle to zero and the logos disappear. */
+    display:grid;grid-template-columns:repeat(3,1fr);
+    gap:15px 8px;justify-items:center;align-items:center;
+    left:0;transform:none;max-width:100%}
   #screen-intro .press-item{
-    display:block;width:auto;flex:0 0 auto;min-width:0;padding:2px 3px;line-height:0}
+    display:block;width:100%;min-width:0;padding:0 2px;line-height:0;text-align:center}
   #screen-intro .press-item img{
-    display:block;height:auto;width:auto;max-width:120px;max-height:28px;
-    object-fit:contain}
+    display:inline-block;height:auto;width:auto;max-width:100%;max-height:27px;
+    object-fit:contain;vertical-align:middle}
+  /* twenty five logos leave one on its own: it sits in the middle column */
+  #screen-intro .press-item:last-child{grid-column:2}
   /* the button keeps the shape it has on a laptop */
   #screen-intro .btn-start.cta-home{padding:12px 26px}
 }
