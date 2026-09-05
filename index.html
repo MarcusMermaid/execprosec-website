@@ -1555,10 +1555,14 @@ a.contact-v{color:#fff}
   #screen-intro .press-grid{
     display:flex;flex-wrap:wrap;justify-content:center;align-items:center;
     gap:13px 10px;left:0;transform:none;max-width:100%}
+  /* No percentage widths anywhere in here. The item is sized by its picture,
+     so a percentage max-width on the picture depends on the item, which depends
+     on the picture: Safari resolves that circle to zero and the logos disappear. */
   #screen-intro .press-item{
-    width:auto;flex:0 0 auto;padding:2px 3px;max-width:34%}
+    display:block;width:auto;flex:0 0 auto;min-width:0;padding:2px 3px;line-height:0}
   #screen-intro .press-item img{
-    height:auto;width:auto;max-width:100%;max-height:28px}
+    display:block;height:auto;width:auto;max-width:120px;max-height:28px;
+    object-fit:contain}
   /* the button keeps the shape it has on a laptop */
   #screen-intro .btn-start.cta-home{padding:12px 26px}
 }
