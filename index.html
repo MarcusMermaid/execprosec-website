@@ -1547,6 +1547,22 @@ a.contact-v{color:#fff}
   #screen-intro .crowd-wrap2{margin-top:40px}
 }
 </style>
+<style>
+/* ---- phones: the press logos and the red button --------------------- */
+@media(max-width:640px){
+  /* a wrapping, centred row instead of a five column grid, so a wide wordmark
+     is allowed to be wide and a square mark is allowed to be narrow */
+  #screen-intro .press-grid{
+    display:flex;flex-wrap:wrap;justify-content:center;align-items:center;
+    gap:13px 10px;left:0;transform:none;max-width:100%}
+  #screen-intro .press-item{
+    width:auto;flex:0 0 auto;padding:2px 3px;max-width:34%}
+  #screen-intro .press-item img{
+    height:auto;width:auto;max-width:100%;max-height:28px}
+  /* the button keeps the shape it has on a laptop */
+  #screen-intro .btn-start.cta-home{padding:12px 26px}
+}
+</style>
 </head>
 <body>
 <div class="shell">
