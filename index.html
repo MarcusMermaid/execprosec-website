@@ -2991,6 +2991,14 @@ window.addEventListener('popstate', function(){ routeFromHash(); });
 function routeFromHash(){
   var key = (window.location.hash || '').replace(/^#/, '').toLowerCase();
   if(!key){ key = (window.location.pathname || '').replace(/^\/+|\/+$/g, '').toLowerCase(); }
+  /* /poabamendments/<name>: the page, then that one amendment */
+  var paWant = '';
+  var paParts = key.split('/');
+  if(paParts.length > 1 && /^(poab)?[-_ ]?amendments?/.test(paParts[0])){
+    paWant = paParts[1];
+    key = paParts[0];
+  }
+  window.__paWant = paWant;
   key = pageAlias(key);
   var outer = EP_NAV_REPLACE;
   if(!outer) EP_NAV_REPLACE = true;
@@ -3071,12 +3079,34 @@ function paPeer(btn){
     p.textContent = note; box.appendChild(p); }
   box.hidden = false;
 }
+var PA_SLUGS={harm:1,'early-candour':2,'significant-concern':3,capacity:4,
+  'official-dishonesty':5,coroners:6,legislators:7};
+function paSlugFor(n){ for(var k in PA_SLUGS){ if(PA_SLUGS[k]===n) return k; } return ''; }
+function paOpenWanted(){
+  var want=window.__paWant; if(!want) return;
+  var n=PA_SLUGS[want]; window.__paWant='';
+  if(!n) return;
+  var tries=0;
+  (function go(){
+    var row=document.getElementById('pa-'+n);
+    if(!row){ if(++tries<40) setTimeout(go,100); return; }
+    if(!row.classList.contains('open')){
+      var b=row.querySelector('.pa-q'); if(b) togglePa(b);
+    }
+    try{ history.replaceState({p:'/poabamendments/'+want}, '', '/poabamendments/'+want); }catch(e){}
+    setTimeout(function(){ try{ row.scrollIntoView({behavior:'smooth',block:'start'}); }catch(e){ row.scrollIntoView(); } },250);
+  })();
+}
 function togglePa(btn, ev){
   if(ev && window.paClickWasDrag && window.paClickWasDrag(ev)) return;
   if(PA_HELD && !btn.parentNode.classList.contains('pa-first')){ paNotice(); return; }
   var row = btn.parentNode, open = row.classList.toggle('open');
   btn.setAttribute('aria-expanded', open ? 'true' : 'false');
   if(open){
+    try{
+      var slug=paSlugFor(parseInt(String(row.id).replace('pa-',''),10));
+      if(slug) history.replaceState({p:'/poabamendments/'+slug}, '', '/poabamendments/'+slug);
+    }catch(e){}
     if(!row.classList.contains('pa-first')){ try{ paEnsureCopy(row); }catch(e){} }
     try{ epTrack('amendment_open', row.id, 'poabamendments'); }catch(e){}
   }
@@ -3693,6 +3723,7 @@ function openPage(key){
   showScreen('screen-page');
   setNavActive(p.nav);
   epSetUrl('/' + key, epPageTitle(p));
+  if(key==='poabamendments'){ try{ paOpenWanted(); }catch(e){} }
 }
 
 // -- SUPPORT / HELP HUB --
