@@ -3094,7 +3094,17 @@ function paOpenWanted(){
       var b=row.querySelector('.pa-q'); if(b) togglePa(b);
     }
     try{ history.replaceState({p:'/poabamendments/'+want}, '', '/poabamendments/'+want); }catch(e){}
-    setTimeout(function(){ try{ row.scrollIntoView({behavior:'smooth',block:'start'}); }catch(e){ row.scrollIntoView(); } },250);
+    /* the page keeps settling for a moment after it opens, so put the row at the top again
+       as it does; stop as soon as the reader scrolls for themselves */
+    var moved=false, stop=function(){ moved=true; };
+    window.addEventListener('wheel',stop,{once:true,passive:true});
+    window.addEventListener('touchstart',stop,{once:true,passive:true});
+    window.addEventListener('keydown',stop,{once:true});
+    [300,900,1600,2600].forEach(function(t){ setTimeout(function(){
+      if(moved) return;
+      var y=row.getBoundingClientRect().top+window.pageYOffset-80;
+      window.scrollTo(0,Math.max(0,y));
+    },t); });
   })();
 }
 function togglePa(btn, ev){
