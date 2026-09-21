@@ -3119,6 +3119,8 @@ function togglePa(btn, ev){
     }catch(e){}
     if(!row.classList.contains('pa-first')){ try{ paEnsureCopy(row); }catch(e){} }
     try{ epTrack('amendment_open', row.id, 'poabamendments'); }catch(e){}
+  } else if(!document.querySelector('.pa.open')){
+    try{ history.replaceState({p:'/poabamendments'}, '', '/poabamendments'); }catch(e){}
   }
 }
 
