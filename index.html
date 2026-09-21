@@ -3103,7 +3103,7 @@ function paOpenWanted(){
     [300,900,1600,2600].forEach(function(t){ setTimeout(function(){
       if(moved) return;
       var y=row.getBoundingClientRect().top+window.pageYOffset-80;
-      window.scrollTo(0,Math.max(0,y));
+      window.scrollTo({top:Math.max(0,y),behavior:'instant'});
     },t); });
   })();
 }
