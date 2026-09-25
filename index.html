@@ -1740,7 +1740,7 @@ a.contact-v{color:#fff}
 #dva-note .dvb-b p{margin:0 0 10px}
 #dva-note .dvb-b p:last-child{margin:0}
 #dva-note .dvb-img{display:block;margin:0 0 12px;text-decoration:none}
-#dva-note .dvb-img img{display:block;width:100%;border:1px solid rgba(221,188,102,.45);border-radius:2px;
+#dva-note .dvb-img img{display:block;width:100%;max-height:52vh;object-fit:contain;object-position:top;border:1px solid rgba(221,188,102,.45);border-radius:2px;
   background:#fff}
 #dva-note .dvb-img span{display:inline-block;margin:6px 0 0;font:500 12px/1.5 'DM Sans',sans-serif;
   color:var(--gold)}
@@ -3236,6 +3236,8 @@ function dvaOpen(el){
     fig.href = note.i; fig.target = '_blank'; fig.rel = 'noopener';
     fig.innerHTML = '<img src="' + note.i + '" alt="Page 53 of the Bill with the amendment inserted">'
       + '<span>Open the full-size page</span>';
+    var pic = fig.querySelector('img');
+    if(pic){ pic.addEventListener('load', function(){ dvaPlace(el, box); }); }
     bodyBox.insertBefore(fig, bodyBox.firstChild);
   }
   box.querySelector('.dvb-s').textContent = note.s;
@@ -3251,6 +3253,10 @@ function dvaOpen(el){
   /* the picture note needs more room than a text note */
   var wide = note.i ? Math.min(620, Math.max(320, window.innerWidth - 60)) : 0;
   box.style.width = (window.innerWidth <= 640) ? '100%' : (wide ? wide + 'px' : '');
+  dvaPlace(el, box);
+}
+/* Put the box where it belongs. Run again when a picture finishes loading and the box grows. */
+function dvaPlace(el, box){
   /* placed against the amendment box, so scrolling cannot throw it off */
   var host = box.offsetParent || document.querySelector('.amd-one') || document.body;
   var hr = host.getBoundingClientRect();
