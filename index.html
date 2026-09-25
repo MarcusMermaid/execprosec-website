@@ -1709,9 +1709,11 @@ a.contact-v{color:#fff}
   background:none;border:0;text-align:left;cursor:pointer;
   font:400 24px/1.35 'DM Serif Display',serif;color:rgba(255,255,255,.9)}
 .amd-past-h:hover{color:#fff}
-.amd-past-arrow{width:20px;height:20px;flex:none;color:var(--gold);transition:transform .2s ease}
+.amd-past-arrow{width:20px;height:20px;flex:none;color:var(--gold);transition:transform .45s cubic-bezier(.4,0,.2,1)}
 .amd-past-h[aria-expanded="true"] .amd-past-arrow{transform:rotate(180deg)}
+.amd-past-body{overflow:hidden;transition:max-height .45s cubic-bezier(.4,0,.2,1),opacity .3s ease}
 .amd-past-body[hidden]{display:none}
+@media(prefers-reduced-motion:reduce){.amd-past-body{transition:none}.amd-past-arrow{transition:none}}
 .amd-past-p{font:400 15px/1.75 'DM Sans',sans-serif;color:rgba(255,255,255,.62);margin:0 0 14px;max-width:700px}
 .amd-past .pa-dlwrap{margin:26px 0 24px}
 
@@ -3181,14 +3183,37 @@ function paOpenWanted(){
   })();
 }
 
-/* The six earlier proposals stay folded away, so the one amendment has the page to itself. */
+/* The six earlier proposals stay folded away, so the one amendment has the page to itself.
+   They slide open and closed rather than jumping. */
 function epTogglePast(btn){
   var body = document.getElementById('amd-past-body');
   if(!body) return;
-  var open = body.hasAttribute('hidden');
-  if(open){ body.removeAttribute('hidden'); } else { body.setAttribute('hidden', ''); }
-  btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-  try{ epTrack('past_amendments', open ? 'open' : 'close', 'poabamendments'); }catch(e){}
+  var opening = body.hasAttribute('hidden');
+  var still = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  btn.setAttribute('aria-expanded', opening ? 'true' : 'false');
+  if(body.__t){ clearTimeout(body.__t); body.__t = 0; }
+
+  if(opening){
+    body.removeAttribute('hidden');
+    if(still){ body.style.maxHeight = 'none'; }
+    else {
+      body.style.maxHeight = '0px';
+      body.style.opacity = '0';
+      void body.offsetHeight;                       /* let the browser register the closed state */
+      body.style.maxHeight = body.scrollHeight + 'px';
+      body.style.opacity = '1';
+      body.__t = setTimeout(function(){ body.style.maxHeight = 'none'; body.__t = 0; }, 480);
+    }
+  } else if(still){
+    body.setAttribute('hidden', '');
+  } else {
+    body.style.maxHeight = body.scrollHeight + 'px';
+    void body.offsetHeight;
+    body.style.maxHeight = '0px';
+    body.style.opacity = '0';
+    body.__t = setTimeout(function(){ body.setAttribute('hidden', ''); body.__t = 0; }, 460);
+  }
+  try{ epTrack('past_amendments', opening ? 'open' : 'close', 'poabamendments'); }catch(e){}
 }
 
 var DVA_NOTES={'02':{t:'Where this amendment goes',b:'This is page 53 of the Lords print. The amendment is inserted at the end of line 17, after sub-paragraph (13), on the gold band, so you can see exactly where it lands.',s:'HL Bill 42, Schedule 2, paragraph 3; printed page 53, line 17',k:[{l:'See the Bill',u:'https://bills.parliament.uk/publications/67333/documents/8621'}],i:'/_web/amendment-in-the-bill.png'},
