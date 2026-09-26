@@ -1840,6 +1840,75 @@ a.contact-v{color:#fff}
   font-size:16px;line-height:1.7;font-weight:300;color:#ffffff;text-align:center}
 @media(max-width:640px){.cta-again .cta-conflict{font-size:15px}}
 </style>
+<style>
+.nav-donate{font-family:inherit;font-size:12px;font-weight:700;letter-spacing:.04em;
+  text-transform:uppercase;background:var(--salmon);color:var(--white);border:none;
+  border-radius:2px;padding:7px 16px;margin-left:10px;cursor:pointer;white-space:nowrap;
+  transition:filter .2s,transform .2s}
+.nav-donate:hover{filter:brightness(1.08);transform:translateY(-1px)}
+@media(max-width:700px){.nav-donate{font-size:11px;padding:6px 12px;margin-left:6px}}
+body.sb-open{overflow:hidden}
+@keyframes sbIn{from{transform:scale(.985)}to{transform:none}}
+</style>
+
+<style>
+/* The donate box. Same panel as the story box, our own contents inside it. */
+#donatebox{position:fixed;inset:0;z-index:9950;display:none}
+#donatebox.open{display:block}
+#donatebox .db-scrim{position:absolute;inset:0;background:rgba(4,12,36,.6)}
+#donatebox .db-panel{position:absolute;inset:0;margin:auto;
+  width:min(980px,88vw);height:min(770px,88vh);background:var(--navy2);
+  border:5px solid #f7f6f2;box-shadow:0 30px 90px rgba(0,0,0,.55);overflow:auto;
+  animation:sbIn .22s ease both}
+#donatebox .db-x{position:absolute;top:12px;right:12px;z-index:5;width:40px;height:40px;
+  border-radius:50%;border:none;padding:0;background:#f7f6f2;color:#041440;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;box-shadow:0 3px 12px rgba(0,0,0,.35)}
+#donatebox .db-x:hover{background:#fff;transform:scale(1.06)}
+#donatebox .db-x svg{width:16px;height:16px;display:block}
+.db-in{padding:54px 56px 40px;max-width:620px;margin:0 auto;font-family:'DM Sans',sans-serif}
+.db-kicker{font:700 11px/1.6 'DM Sans',sans-serif;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--gold);margin:0 0 12px}
+.db-h{font:400 34px/1.2 'DM Serif Display',serif;color:#fff;margin:0 0 14px}
+.db-p{font:400 16px/1.7 'DM Sans',sans-serif;color:rgba(255,255,255,.78);margin:0 0 26px}
+.db-lead{font:600 15px/1.6 'DM Sans',sans-serif;color:rgba(255,255,255,.9);margin:0 0 14px}
+.db-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:0 0 18px}
+.db-amt{padding:18px 6px;border:1px solid rgba(255,255,255,.22);border-radius:3px;
+  background:rgba(255,255,255,.04);color:#fff;cursor:pointer;text-align:center;
+  font:600 20px/1.2 'DM Sans',sans-serif;transition:border-color .15s ease,background .15s ease}
+.db-amt span{display:block;font:400 11px/1.5 'DM Sans',sans-serif;color:rgba(255,255,255,.5);
+  margin-top:5px;letter-spacing:.06em;text-transform:uppercase}
+.db-amt:hover{border-color:rgba(221,188,102,.7)}
+.db-amt.on{border-color:var(--gold);background:rgba(221,188,102,.16)}
+.db-go{width:100%;padding:17px 20px;border:0;border-radius:2px;background:var(--salmon);color:#fff;
+  font:700 16px/1 'DM Sans',sans-serif;letter-spacing:.02em;cursor:pointer;
+  transition:filter .18s ease,transform .18s ease}
+.db-go:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.db-go[disabled]{opacity:.6;cursor:default;transform:none}
+.db-note{font:400 13px/1.7 'DM Sans',sans-serif;color:rgba(255,255,255,.55);margin:18px 0 0}
+.db-note b{color:rgba(255,255,255,.8);font-weight:600}
+.db-once{margin:22px 0 0;padding:18px 0 0;border-top:1px solid rgba(255,255,255,.14)}
+.db-once button{background:none;border:0;padding:0;cursor:pointer;color:var(--gold);
+  font:600 14px/1.5 'DM Sans',sans-serif;text-decoration:underline;text-underline-offset:3px}
+.db-trust{margin:24px 0 0;font:400 11.5px/1.8 'DM Sans',sans-serif;color:rgba(255,255,255,.4)}
+.db-back{background:none;border:0;padding:0;margin:0 0 18px;cursor:pointer;color:rgba(255,255,255,.6);
+  font:500 13px/1.5 'DM Sans',sans-serif}
+.db-back:hover{color:#fff}
+#db-pay{min-height:320px}
+.db-err{margin:16px 0 0;font:400 13px/1.7 'DM Sans',sans-serif;color:#ffb4b7}
+.db-input{width:100%;padding:15px 16px;margin:0 0 14px;border:1px solid rgba(255,255,255,.25);
+  border-radius:2px;background:rgba(255,255,255,.06);color:#fff;font:400 16px/1.4 'DM Sans',sans-serif}
+.db-input:focus{outline:none;border-color:var(--gold)}
+.db-input::placeholder{color:rgba(255,255,255,.35)}
+.db-thanks .db-h{margin-bottom:18px}
+@media(max-width:640px){
+  #donatebox .db-panel{width:100%;height:100%;border:none;box-shadow:none;animation:none}
+  #donatebox .db-scrim{display:none}
+  .db-in{padding:64px 20px 90px}
+  .db-h{font-size:27px}
+  .db-grid{grid-template-columns:repeat(3,1fr)}
+  .db-go{position:sticky;bottom:12px}
+}
+</style>
 </head>
 <body>
 <div class="shell">
@@ -1854,6 +1923,7 @@ a.contact-v{color:#fff}
       <a href="/news" onclick="epNews();return false;">News</a>
       <a href="/testimonials" onclick="openPage('testimonials');setNavActive('Testimonials');return false;">Testimonials</a>
       <a href="/contact" onclick="openPage('contact');setNavActive('Contact');return false;">Contact</a>
+      <button class="nav-donate" type="button" onclick="epDonate();return false;">Donate</button>
     </nav>
     <!-- Support and Donate hidden for the MVP -->
     <span style="margin-left:auto"></span>
@@ -5015,6 +5085,269 @@ setTimeout(function(){
   });
   window.addEventListener('scroll', function(){ if(owner) place(owner); }, true);
   window.addEventListener('resize', shut);
+})();
+</script>
+<div id="donatebox" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Back ExecProsec">
+  <div class="db-scrim" onclick="epDonateClose();return false;"></div>
+  <div class="db-panel">
+    <button class="db-x" type="button" aria-label="Close" onclick="epDonateClose();return false;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg></button>
+    <div class="db-in" id="db-in"></div>
+  </div>
+</div>
+<script>
+/* Backing the organisation, inside our own box.
+   The amounts are fixed tiers in Stripe: the page asks Central for a checkout by name
+   ("monthly_20"), never by amount, so nothing here can change what somebody is charged. */
+var EP_DONATE_API = 'https://central-2-mcp-production.up.railway.app';
+var EP_TIERS = [
+  {k:'monthly_10',  amt:10,  label:'\u00a310'},
+  {k:'monthly_20',  amt:20,  label:'\u00a320'},
+  {k:'monthly_50',  amt:50,  label:'\u00a350'},
+  {k:'monthly_100', amt:100, label:'\u00a3100'},
+  {k:'monthly_150', amt:150, label:'\u00a3150'}
+];
+/* if Stripe cannot be mounted in the page yet, these open the same tier on Stripe's own page */
+var EP_LINKS = {
+  monthly_10:'https://buy.stripe.com/eVq4gAegK7AIcpG52I8Ra0f',
+  monthly_20:'https://buy.stripe.com/fZubJ2c8C9IQblCbr68Ra0g',
+  monthly_50:'https://buy.stripe.com/00w6oIc8C3kscpG1Qw8Ra0h',
+  monthly_100:'https://buy.stripe.com/dRmeVedcG1ck2P6gLq8Ra0i',
+  monthly_150:'https://buy.stripe.com/dRmdRa0pU5sA89qdze8Ra0j',
+  one_off:'https://buy.stripe.com/3cI28sdcG6wE0GYbr68Ra0e'
+};
+var EP_PICKED = 'monthly_20';
+var EP_CHECKOUT = null;
+
+function epDonate(){
+  var box=document.getElementById('donatebox');
+  if(!box) return false;
+  epDonateChooser();
+  box.classList.add('open');
+  box.setAttribute('aria-hidden','false');
+  document.body.classList.add('sb-open');
+  try{ epTrack('donate_open','', 'donate'); }catch(e){}
+  return false;
+}
+function epDonateClose(){
+  var box=document.getElementById('donatebox');
+  if(!box) return false;
+  box.classList.remove('open');
+  box.setAttribute('aria-hidden','true');
+  document.body.classList.remove('sb-open');
+  epDonateDrop();
+  return false;
+}
+function epDonateDrop(){
+  if(EP_CHECKOUT){ try{ EP_CHECKOUT.destroy(); }catch(e){} EP_CHECKOUT=null; }
+}
+function epTierLabel(){
+  for(var i=0;i<EP_TIERS.length;i++){ if(EP_TIERS[i].k===EP_PICKED) return EP_TIERS[i].label; }
+  return '';
+}
+function epDonateChooser(){
+  epDonateDrop();
+  var wrap=document.getElementById('db-in');
+  var amounts='';
+  for(var i=0;i<EP_TIERS.length;i++){
+    var t=EP_TIERS[i];
+    amounts += '<button type="button" class="db-amt'+(t.k===EP_PICKED?' on':'')+'" data-k="'+t.k+'" '+
+               'onclick="epPick(this)">'+t.label+'<span>a month</span></button>';
+  }
+  wrap.className='db-in';
+  wrap.innerHTML =
+    '<p class="db-kicker">Join us</p>'+
+    '<h2 class="db-h">Be a part of this work.</h2>'+
+    '<p class="db-p">We are the only organisation in the world set up to investigate, expose, and '+
+    'privately prosecute the most powerful people in public life when they abuse the public. If we '+
+    'don\u2019t do this work, it won\u2019t get done.</p>'+
+    '<p class="db-lead">Back our work monthly now:</p>'+
+    '<div class="db-grid">'+amounts+'</div>'+
+    '<button class="db-go" id="db-go" type="button" onclick="epDonateStart()">Back ExecProsec with '+
+      epTierLabel()+' a month</button>'+
+    '<div class="db-once">'+
+      '<p class="db-note">We no longer accept small '+
+      '<button type="button" onclick="epDonateOnce()">one off contributions</button> as they do not '+
+      'enable us to work sustainably.</p>'+
+      '<p class="db-note" style="margin:12px 0 0">Change or cancel your subscription '+
+      '<button type="button" onclick="epManage()">here</button>.</p>'+
+    '</div>'+
+    '<p class="db-trust">Payments handled by Stripe &middot; ExecProsec Ltd, company number 10520032 &middot; '+
+    'A voluntary contribution towards our work, not a purchase of goods or services.</p>';
+}
+function epPick(btn){
+  EP_PICKED = btn.getAttribute('data-k');
+  var all=document.querySelectorAll('.db-amt');
+  for(var i=0;i<all.length;i++){ all[i].classList.toggle('on', all[i]===btn); }
+  var go=document.getElementById('db-go');
+  if(go){ go.textContent='Back ExecProsec with '+epTierLabel()+' a month'; }
+  try{ epTrack('donate_amount', EP_PICKED, 'donate'); }catch(e){}
+}
+function epDonateStart(which){
+  var tier = which || EP_PICKED;
+  var go=document.getElementById('db-go');
+  if(go && !which){ go.disabled=true; go.textContent='One moment\u2026'; }
+  try{ epTrack('donate_start', tier, 'donate'); }catch(e){}
+  fetch(EP_DONATE_API+'/public/donate/session', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({tier:tier, return_url:location.origin+location.pathname})
+  }).then(function(r){ return r.json(); }).then(function(d){
+    if(d && d.ok && d.client_secret && d.publishable_key){ epDonatePay(tier, d); }
+    else { epDonateFallback(tier); }
+  }).catch(function(){ epDonateFallback(tier); });
+}
+/* Stripe's own card form, mounted inside our box */
+function epDonatePay(tier, data){
+  var wrap=document.getElementById('db-in');
+  wrap.className='db-in';
+  wrap.innerHTML =
+    '<button class="db-back" type="button" onclick="epDonateChooser()">&#8592; Change amount</button>'+
+    '<p class="db-kicker">'+(tier==='one_off'?'One-off backing':'Monthly backing')+'</p>'+
+    '<h2 class="db-h">'+(data.label||'')+'</h2>'+
+    '<div id="db-pay"></div>'+
+    '<p class="db-trust">Your card details go straight to Stripe. They never touch our website.</p>';
+  epStripeJs(function(){
+    try{
+      var stripe = Stripe(data.publishable_key);
+      stripe.initEmbeddedCheckout({clientSecret:data.client_secret}).then(function(checkout){
+        EP_CHECKOUT = checkout;
+        checkout.mount('#db-pay');
+      }, function(){ epDonateFallback(tier); });
+    }catch(e){ epDonateFallback(tier); }
+  }, function(){ epDonateFallback(tier); });
+}
+function epStripeJs(ready, failed){
+  if(window.Stripe){ ready(); return; }
+  var tag=document.createElement('script');
+  tag.src='https://js.stripe.com/v3/';
+  tag.onload=ready;
+  tag.onerror=failed;
+  document.head.appendChild(tag);
+}
+/* nothing is ever a dead end: send them to that exact tier on Stripe's own page */
+function epDonateFallback(tier){
+  var url = EP_LINKS[tier];
+  try{ epTrack('donate_fallback', tier, 'donate'); }catch(e){}
+  if(url){ window.open(url, '_blank', 'noopener'); }
+  epDonateChooser();
+}
+
+/* Somebody who already backs us can change the amount or stop, without emailing anyone. They
+   prove the address is theirs with a six digit code, then Stripe's own billing page does the
+   rest, including the monthly payments set up on our older products. */
+function epDonateOnce(){ epDonateStart('one_off'); }
+function epManage(){
+  epDonateDrop();
+  var wrap=document.getElementById('db-in');
+  wrap.className='db-in';
+  wrap.innerHTML =
+    '<button class="db-back" type="button" onclick="epDonateChooser()">&#8592; Back</button>'+
+    '<p class="db-kicker">Your backing</p>'+
+    '<h2 class="db-h">Change or stop your backing.</h2>'+
+    '<p class="db-p">Put in the email address you used when you started backing us. We will send a six '+
+    'digit code, then open your own billing page, where you can change the amount, update your card or '+
+    'stop giving. Older monthly payments to us are in there too.</p>'+
+    '<input class="db-input" id="db-email" type="email" autocomplete="email" placeholder="you@example.com">'+
+    '<button class="db-go" id="db-mgo" type="button" onclick="epManageCode()">Email me a code</button>'+
+    '<p class="db-err" id="db-err" style="display:none"></p>';
+}
+function epManageSay(message){
+  var box=document.getElementById('db-err');
+  if(!box) return;
+  box.textContent = message || '';
+  box.style.display = message ? 'block' : 'none';
+}
+function epManageCode(){
+  var email=((document.getElementById('db-email')||{}).value||'').trim();
+  var go=document.getElementById('db-mgo');
+  if(email.indexOf('@') < 1){ epManageSay('Please put in the email address you gave us.'); return; }
+  if(go){ go.disabled=true; go.textContent='Sending…'; }
+  epManageSay('');
+  try{ epTrack('donate_manage','code','donate'); }catch(e){}
+  fetch(EP_DONATE_API+'/public/backer/code', {method:'POST', headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({email:email})})
+    .then(function(r){ return r.json(); })
+    .then(function(){ epManageCodeForm(email); })
+    .catch(function(){
+      if(go){ go.disabled=false; go.textContent='Email me a code'; }
+      epManageSay('We could not send that code. Please try again in a moment.');
+    });
+}
+function epManageCodeForm(email){
+  var wrap=document.getElementById('db-in');
+  var safe=email.replace(/[<>"]/g,'');
+  wrap.innerHTML =
+    '<button class="db-back" type="button" onclick="epManage()">&#8592; Use a different address</button>'+
+    '<p class="db-kicker">Your backing</p>'+
+    '<h2 class="db-h">Check your email.</h2>'+
+    '<p class="db-p">We have sent a six digit code to '+safe+'. It lasts a few minutes.</p>'+
+    '<input class="db-input" id="db-code" inputmode="numeric" autocomplete="one-time-code" placeholder="123456">'+
+    '<button class="db-go" id="db-cgo" type="button" onclick="epManageOpen()">Open my backing</button>'+
+    '<p class="db-err" id="db-err" style="display:none"></p>';
+  window.EP_MANAGE_EMAIL = email;
+}
+function epManageOpen(){
+  var email = window.EP_MANAGE_EMAIL || '';
+  var code=((document.getElementById('db-code')||{}).value||'').trim();
+  var go=document.getElementById('db-cgo');
+  if(go){ go.disabled=true; go.textContent='Opening…'; }
+  epManageSay('');
+  fetch(EP_DONATE_API+'/public/donate/portal', {method:'POST', headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({email:email, code:code, return_url:location.origin+location.pathname})})
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      if(d && d.ok && d.url){
+        try{ epTrack('donate_manage','opened','donate'); }catch(e){}
+        window.location.href = d.url;
+        return;
+      }
+      if(go){ go.disabled=false; go.textContent='Open my backing'; }
+      epManageSay(d && d.missing === 'customer'
+        ? 'We hold no payments for that address. If you used a different one, try that.'
+        : 'That code did not work. Check it, or go back and ask for a new one.');
+    })
+    .catch(function(){
+      if(go){ go.disabled=false; go.textContent='Open my backing'; }
+      epManageSay('Something went wrong. Please try again in a moment.');
+    });
+}
+
+/* coming back from a completed payment */
+function epDonateThanks(sessionId){
+  var box=document.getElementById('donatebox');
+  if(!box) return;
+  box.classList.add('open');
+  box.setAttribute('aria-hidden','false');
+  document.body.classList.add('sb-open');
+  var wrap=document.getElementById('db-in');
+  wrap.className='db-in db-thanks';
+  wrap.innerHTML='<p class="db-kicker">Thank you</p><h2 class="db-h">Checking your payment\u2026</h2>';
+  fetch(EP_DONATE_API+'/public/donate/status?session_id='+encodeURIComponent(sessionId))
+    .then(function(r){ return r.json(); }).then(function(d){
+      var paid = d && d.ok && (d.payment_status==='paid' || d.status==='complete');
+      var amount = (d && d.amount_total) ? ('\u00a3'+Number(d.amount_total).toFixed(0)) : '';
+      wrap.innerHTML = paid
+        ? '<p class="db-kicker">Thank you</p>'+
+          '<h2 class="db-h">You are one of our backers.</h2>'+
+          '<p class="db-p">'+(amount?('Your '+amount+' is with us. '):'')+
+          'EXECPROSEC will appear on your statement, and your receipt from Stripe has a link to cancel '+
+          'or change your backing whenever you want.</p>'+
+          '<button class="db-go" type="button" onclick="epDonateClose()">Close</button>'
+        : '<p class="db-kicker">Thank you</p><h2 class="db-h">Thank you.</h2>'+
+          '<p class="db-p">If your payment went through, Stripe has emailed you a receipt.</p>'+
+          '<button class="db-go" type="button" onclick="epDonateClose()">Close</button>';
+    }).catch(function(){
+      wrap.innerHTML='<p class="db-kicker">Thank you</p><h2 class="db-h">Thank you.</h2>'+
+        '<button class="db-go" type="button" onclick="epDonateClose()">Close</button>';
+    });
+}
+document.addEventListener('keydown', function(e){
+  if(e.key!=='Escape') return;
+  var box=document.getElementById('donatebox');
+  if(box && box.classList.contains('open')) epDonateClose();
+});
+(function(){
+  var m = /[?&]session_id=(cs_[A-Za-z0-9_]+)/.exec(location.search);
+  if(m){ epDonateThanks(m[1]); }
 })();
 </script>
 </body>
