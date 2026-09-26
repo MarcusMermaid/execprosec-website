@@ -5366,12 +5366,15 @@ function epDonateThanks(sessionId){
   wrap.innerHTML='<p class="db-kicker">Thank you</p><h2 class="db-h">Checking your payment\u2026</h2>';
   fetch(EP_DONATE_API+'/public/donate/status?session_id='+encodeURIComponent(sessionId))
     .then(function(r){ return r.json(); }).then(function(d){
-      /* a checkout can be 'complete' with a failed first payment, so only 'paid' counts */
+      /* a checkout can be 'complete' with a failed first payment, so only 'paid' counts as
+         money received. A Direct Debit is the honest exception: the mandate is signed here and
+         the money arrives in a few working days, which Stripe reports as still processing. */
       var paid = !!(d && d.ok && (d.paid === true || d.payment_status === 'paid'));
+      var pending = !paid && !!(d && d.ok && d.pending === true);
       try{ history.replaceState({}, '', location.pathname); }catch(e){}
       var amount = (d && d.amount_total) ? ('£'+Number(d.amount_total).toFixed(0)) : '';
       var monthly = d && d.tier && d.tier.indexOf('monthly') === 0;
-      if(paid){
+      if(paid || pending){
         try{ epTrack('donate_done', (d && d.tier) || '', 'donate'); }catch(e){}
         wrap.className='db-in db-thanks';
         wrap.innerHTML =
@@ -5380,11 +5383,17 @@ function epDonateThanks(sessionId){
           '<h2 class="db-h">You are one of us now.</h2>'+
           '<img class="db-cheers" src="/_web/story/backer-welcome.webp" alt="Marcus and our backers '+
           'raising a glass outside Parliament" width="1200" height="921" decoding="async">'+
-          '<p class="db-p">'+(amount ? ('Your '+amount+(monthly?' a month':'')+' is with us. ') : '')+
+          '<p class="db-p">'+(amount ? ('Your '+amount+(monthly?' a month':'')+
+            (pending ? ' is set up. ' : ' is with us. ')) : '')+
           'You have just joined the people who pay for this work: the investigations, the exposure, '+
           'the prosecutions and the campaign to change the law. Welcome.</p>'+
-          '<p class="db-note">EXECPROSEC will appear on your statement. Stripe has emailed your receipt, '+
-          'and it carries a link to change or stop your backing whenever you want.</p>'+
+          (pending
+            ? '<p class="db-note">Your Direct Debit is set up. The first payment takes a few working '+
+              'days to reach us, and then it repeats every month. EXECPROSEC will appear on your '+
+              'statement, and your confirmation email carries a link to change or stop it whenever '+
+              'you want.</p>'
+            : '<p class="db-note">EXECPROSEC will appear on your statement. Stripe has emailed your '+
+              'receipt, and it carries a link to change or stop your backing whenever you want.</p>')+
           '<button class="db-small" type="button" onclick="epDonateClose()">Close</button>';
         return;
       }
