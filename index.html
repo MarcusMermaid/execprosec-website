@@ -1936,9 +1936,12 @@ body.sb-open{overflow:hidden}
 .db-input::placeholder{color:rgba(255,255,255,.35)}
 .db-thanks .db-h{margin-bottom:18px}
 @media(max-width:640px){
-  #donatebox .db-panel{width:100%;height:100%;border:none;box-shadow:none;animation:none}
-  #donatebox .db-scrim{display:none}
-  .db-in{padding:64px 20px 90px}
+  /* on a phone it stays a box sitting on top of the page, not a page of its own: the site shows
+     through around it, with the same cream border the story box has */
+  #donatebox .db-panel{width:calc(100vw - 26px);height:auto;max-height:86vh;border-width:4px;
+    box-shadow:0 20px 50px rgba(0,0,0,.5)}
+  #donatebox .db-scrim{display:block;background:rgba(4,12,36,.72)}
+  .db-in{padding:40px 20px 28px}
   .db-h{font-size:27px}
   .db-grid{grid-template-columns:repeat(3,1fr);gap:10px}
   .db-amt{min-height:68px;font-size:22px;padding:12px 4px}
