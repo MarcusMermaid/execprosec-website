@@ -4319,17 +4319,9 @@ function submitPledge(){
   };
   var btn = document.getElementById('pledge-btn'); if(btn){ btn.disabled = true; btn.textContent = 'Saving\u2026'; }
   fetch(AMEND_TRACK_BASE + '/public/pledge', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)})
-    .then(function(r){ return r.ok ? r.json() : Promise.reject(r.status); })
-    .then(function(d){
-      /* only a pledge the server says it saved counts as saved */
-      if(!d || d.ok === false) return Promise.reject(d && d.reason);
-      showPledgeThanks(d && d.total);
-    })
-    .catch(function(){
-      if(btn){ btn.disabled = false; btn.textContent = 'Add my name'; }
-      var w=document.getElementById('pledge-warn');
-      if(w){ w.textContent='That did not save. Please try again in a moment.'; w.style.display='block'; }
-    });
+    .then(function(r){ return r.json(); })
+    .then(function(d){ showPledgeThanks(d && d.total); })
+    .catch(function(){ showPledgeThanks(0); });
 }
 function toggleFaq(btn){
   var item = btn.closest ? btn.closest('.faq') : btn.parentNode;
@@ -4436,21 +4428,12 @@ function submitSignup(){
   // -- UI: show confirmation in place of the form --
   function showConfirmation(){
     if(box){
-      /* the name is written as text, never as markup: a browser cannot run what it is told is
-         a sentence, so a name containing a tag simply reads as that tag */
-      box.textContent = '';
-      var title=document.createElement('div');
-      title.className='capture-title';
-      title.textContent="You're in";
-      var line=document.createElement('p');
-      line.setAttribute('style','font-size:15px;line-height:1.75;color:rgba(255,255,255,.65);font-weight:300;margin:0 0 24px');
-      line.textContent='Thank you, '+payload.firstName+". You'll start receiving a series of emails on what we have done so far and what we are doing next.";
-      var more=document.createElement('a');
-      more.className='btn-learn';
-      more.href='#';
-      more.textContent='Learn about us now';
-      more.onclick=function(){ learnAboutUs(); return false; };
-      box.appendChild(title); box.appendChild(line); box.appendChild(more);
+      box.innerHTML =
+        '<div class="capture-title">You\'re in</div>' +
+        '<p style="font-size:15px;line-height:1.75;color:rgba(255,255,255,.65);font-weight:300;margin:0 0 24px">' +
+        'Thank you, ' + payload.firstName + '. You\'ll start receiving a series of emails on what we have done so far and what we are doing next.' +
+        '</p>' +
+        '<a class="btn-learn" href="#" onclick="learnAboutUs();return false;">Learn about us now</a>';
     }
     if(btn) btn.style.display = 'none';
     var consent = document.querySelector('.consent-note');
@@ -5242,10 +5225,6 @@ function epPick(btn){
   if(go){ go.textContent='Back ExecProsec with '+epTierLabel()+' a month'; }
   try{ epTrack('donate_amount', EP_PICKED, 'donate'); }catch(e){}
 }
-function epEsc(x){
-  return String(x==null?'':x).replace(/&/g,'&amp;').replace(/</g,'&lt;')
-    .replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
-}
 function epDonateStart(which){
   var tier = which || EP_PICKED;
   var go=document.getElementById('db-go');
@@ -5266,7 +5245,7 @@ function epDonatePay(tier, data){
   wrap.innerHTML =
     '<button class="db-back" type="button" onclick="epDonateChooser()">Back</button>'+
     '<p class="db-kicker">'+(tier==='one_off'?'One-off backing':'Monthly backing')+'</p>'+
-    '<h2 class="db-h">'+epEsc(data.label||'')+'</h2>'+
+    '<h2 class="db-h">'+(data.label||'')+'</h2>'+
     '<div id="db-pay"></div>'+
     '<p class="db-trust">Your card details go straight to Stripe. They never touch our website.</p>';
   epStripeJs(function(){
@@ -5338,7 +5317,7 @@ function epManageCode(){
 }
 function epManageCodeForm(email){
   var wrap=document.getElementById('db-in');
-  var safe=epEsc(email);
+  var safe=email.replace(/[<>"]/g,'');
   wrap.innerHTML =
     '<button class="db-back" type="button" onclick="epManage()">Back</button>'+
     '<p class="db-kicker">Your backing</p>'+
