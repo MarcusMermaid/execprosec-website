@@ -5148,7 +5148,7 @@ setTimeout(function(){
 })();
 </script>
 <div id="donatebox" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Back ExecProsec">
-  <div class="db-scrim" onclick="epDonateClose();return false;"></div>
+  <div class="db-scrim"></div>
   <div class="db-panel">
     <button class="db-x" type="button" aria-label="Close" onclick="epDonateClose();return false;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg></button>
     <div class="db-in" id="db-in"></div>
@@ -5178,11 +5178,27 @@ var EP_LINKS = {
 var EP_PICKED = 'monthly_20';
 var EP_CHECKOUT = null;
 
+/* Where the donate box was when it was closed. It lives in the page, not in storage, so it is
+   forgotten the moment the website is left, and remembered for as long as the visit lasts. */
+var EP_DB_STATE=null;
+function epDbAt(screen, tier){ EP_DB_STATE={screen:screen, tier:tier||''}; }
+function epDbResume(){
+  var s=EP_DB_STATE;
+  if(s && s.screen==='pay' && s.tier){ epDonateStart(s.tier); return; }
+  if(s && s.screen==='tier' && s.tier){
+    epDonateChooser();
+    var btn=document.querySelector('.db-amt[data-k="'+s.tier+'"]');
+    if(btn) epPick(btn);
+    return;
+  }
+  if(s && s.screen==='manage'){ epManage(); return; }
+  epDonateChooser();
+}
 function epDonate(){
   var box=document.getElementById('donatebox');
   if(!box) return false;
-  epDonateChooser();
   box.classList.add('open');
+  epDbResume();
   box.setAttribute('aria-hidden','false');
   document.body.classList.add('sb-open');
   try{ epTrack('donate_open','', 'donate'); }catch(e){}
@@ -5205,6 +5221,7 @@ function epTierLabel(){
   return '';
 }
 function epDonateChooser(){
+  epDbAt('chooser');
   epDonateDrop();
   var wrap=document.getElementById('db-in');
   var amounts='';
@@ -5236,6 +5253,7 @@ function epDonateChooser(){
 }
 function epPick(btn){
   EP_PICKED = btn.getAttribute('data-k');
+  epDbAt('tier', EP_PICKED);
   var all=document.querySelectorAll('.db-amt');
   for(var i=0;i<all.length;i++){ all[i].classList.toggle('on', all[i]===btn); }
   var go=document.getElementById('db-go');
@@ -5261,6 +5279,7 @@ function epDonateStart(which){
 }
 /* Stripe's own card form, mounted inside our box */
 function epDonatePay(tier, data){
+  epDbAt('pay', tier);
   var wrap=document.getElementById('db-in');
   wrap.className='db-in';
   wrap.innerHTML =
@@ -5300,6 +5319,7 @@ function epDonateFallback(tier){
    rest, including the monthly payments set up on our older products. */
 function epDonateOnce(){ epDonateStart('one_off'); }
 function epManage(){
+  epDbAt('manage');
   epDonateDrop();
   var wrap=document.getElementById('db-in');
   wrap.className='db-in';
