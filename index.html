@@ -1962,6 +1962,34 @@ body.sb-open{overflow:hidden}
   .db-amt{min-height:68px;font-size:22px;padding:12px 4px}
   .db-go{position:sticky;bottom:12px;min-height:58px;font-size:16px}
 }
+
+/* ---- the story, in a box on top of the page ---- */
+#storybox{position:fixed;inset:0;z-index:9900;display:none}
+#storybox.open{display:block}
+#storybox .sb-scrim{position:absolute;inset:0;background:rgba(4,12,36,.55)}
+#storybox .sb-panel{position:absolute;inset:0;margin:auto;
+  width:min(980px,88vw);height:min(770px,88vh);background:var(--navy2);
+  border:5px solid #f7f6f2;box-shadow:0 30px 90px rgba(0,0,0,.55);overflow:hidden;
+  animation:sbIn .22s ease both}
+/* scale only: fading the panel would let the page behind show through if a browser ever
+   replays the animation, and the box must always read as solid */
+@keyframes sbIn{from{transform:scale(.985)}to{transform:none}}
+#storybox iframe{width:100%;height:100%;border:0;display:block;background:transparent}
+#storybox .sb-x{position:absolute;top:12px;right:12px;z-index:5;width:40px;height:40px;
+  border-radius:50%;border:none;padding:0;background:#f7f6f2;color:#041440;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;box-shadow:0 3px 12px rgba(0,0,0,.35)}
+#storybox .sb-x:hover{background:#fff;transform:scale(1.06)}
+#storybox .sb-x svg{width:16px;height:16px;display:block}
+/* On a phone the story sits in the same kind of box as the donate one: the page stays visible
+   and dimmed around it, so it reads as something opened on top of the site. */
+@media(max-width:640px){#storybox .sb-panel{width:calc(100vw - 26px);height:auto;max-height:90vh;
+  border-width:4px;box-shadow:0 20px 50px rgba(0,0,0,.5);animation:none}
+  #storybox iframe{height:90vh;max-height:90vh}
+  #storybox .sb-scrim{display:block;background:rgba(4,12,36,.72)}
+  #storybox .sb-x{top:8px;right:8px;width:34px;height:34px}
+  #storybox .sb-x svg{width:14px;height:14px}}
+body.sb-open{overflow:hidden}
+#storybox.sb-ovl .sb-x{display:none}
 </style>
 </head>
 <body>
@@ -1998,8 +2026,8 @@ body.sb-open{overflow:hidden}
     <h1 class="intro-h1">No one should be above the <span style="color:var(--gold);font-style:normal">criminal law</span>.</h1>
     <div class="intro-rule"></div>
     <p class="intro-body">Our work began in 2016 with our ongoing campaign to criminalise lying in politics. We are currently campaigning to amend the Public Office (Accountability) Bill so that it achieves that legal change for the first time in modern democratic history.</p>
-    <button class="btn-start cta-home" id="home-cta" type="button" onclick="openPage('poabamendments');setNavActive('Amendments');return false;">
-      Read our Amendment Proposals
+    <button class="btn-start cta-home" id="home-cta" type="button" onclick="epStory();return false;">
+      Our Story
       <span class="arrow" style="-webkit-text-stroke:0.7px currentColor">→</span>
     </button>
     <img class="menace-hero" src="/_web/investigation.webp" alt="An ExecProsec team around a table examining evidence with two barristers in wig and gown, footage of a public figure speaking, and files marked Evidence, Criminal law, Abuse of power and Protect the public" decoding="async">
@@ -2106,8 +2134,8 @@ body.sb-open{overflow:hidden}
     </div>
     <div class="cta-again">
       <p class="cta-conflict">We will intervene where traditional law enforcement agencies and state prosecutors are too conflicted to act.</p>
-      <button class="btn-start cta-home" id="home-cta-2" type="button" onclick="openPage('poabamendments');setNavActive('Amendments');return false;">
-        Read our Amendment Proposals
+      <button class="btn-start cta-home" id="home-cta-2" type="button" onclick="epStory();return false;">
+        Our Story
         <span class="arrow" style="-webkit-text-stroke:0.7px currentColor">&#8594;</span>
       </button>
     </div>
@@ -5153,6 +5181,80 @@ setTimeout(function(){
   });
   window.addEventListener('scroll', function(){ if(owner) place(owner); }, true);
   window.addEventListener('resize', shut);
+})();
+</script>
+<div id="storybox" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Our story">
+  <div class="sb-scrim"></div>
+  <div class="sb-panel">
+    <button class="sb-x" type="button" aria-label="Close the story" onclick="epStoryClose();return false;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg></button>
+    <iframe id="sb-frame" title="Our story" src="about:blank" allow="autoplay; fullscreen; payment"></iframe>
+  </div>
+</div>
+<script>
+/* The slideshow is a separate build. It is fetched the first time somebody asks for it, so it
+   costs the home page nothing until a button is pressed. */
+/* Refresh must not throw a reader out of the report. The tab remembers that the box was open
+   and which slide was on screen, so the page comes back with the box open at that slide. */
+var EP_SB_KEY='ep_storybox';
+function epStoryKeep(patch){
+  try{
+    var now=JSON.parse(sessionStorage.getItem(EP_SB_KEY)||'{}');
+    for(var k in patch){ if(Object.prototype.hasOwnProperty.call(patch,k)) now[k]=patch[k]; }
+    sessionStorage.setItem(EP_SB_KEY, JSON.stringify(now));
+  }catch(e){}
+}
+function epStoryKept(){
+  try{ return JSON.parse(sessionStorage.getItem(EP_SB_KEY)||'null'); }catch(e){ return null; }
+}
+
+function epStory(slide){
+  var box=document.getElementById('storybox'), f=document.getElementById('sb-frame');
+  if(!box||!f) return false;
+  if(!f.getAttribute('data-loaded')){
+    f.src='/story-app/?embed=1' + (slide>1 ? ('&slide='+slide) : '');
+    f.setAttribute('data-loaded','1');
+  }
+  epStoryKeep({open:1});
+  box.classList.add('open');
+  box.setAttribute('aria-hidden','false');
+  document.body.classList.add('sb-open');
+  try{ f.contentWindow.focus(); }catch(e){}
+  return false;
+}
+function epStoryClose(){
+  var box=document.getElementById('storybox');
+  if(!box) return false;
+  epStoryKeep({open:0});
+  box.classList.remove('open');
+  box.setAttribute('aria-hidden','true');
+  document.body.classList.remove('sb-open');
+  return false;
+}
+/* the close button and the Escape key inside the slideshow reach us this way */
+window.addEventListener('message', function(e){
+  if(!e || !e.data) return;
+  if(e.data.ep==='story-slide') epStoryKeep({slide:e.data.n});
+  if(e.data.ep==='story-close') epStoryClose();
+  /* while a photograph, quote or film is open inside the story, our close button steps
+     aside so the reader only ever sees one cross */
+  if(e.data.ep==='story-overlay'){
+    var box=document.getElementById('storybox');
+    if(box) box.classList.toggle('sb-ovl', !!e.data.on);
+  }
+});
+document.addEventListener('keydown', function(e){
+  if(e.key!=='Escape') return;
+  var box=document.getElementById('storybox');
+  if(box && box.classList.contains('open')) epStoryClose();
+});
+
+/* on a refresh, put the box back exactly where it was */
+(function(){
+  var kept=epStoryKept();
+  if(!kept || !kept.open) return;
+  var open=function(){ epStory(parseInt(kept.slide||1,10)||1); };
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', open);
+  else open();
 })();
 </script>
 <div id="donatebox" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Back ExecProsec">
