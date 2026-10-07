@@ -479,7 +479,7 @@ body.story-mode .site-legal,body.story-modal .site-legal{display:none}
 
 /* Slide 26: the donate box from the website, living inside the report. */
 .pb-p{margin:0 0 18px}
-.pb-own{margin:0 0 14px}.pb-other{display:flex;align-items:center;gap:8px;margin:0 0 6px;font-size:15px}.pb-other label{font-weight:600}.pb-cur{font-weight:700}.pb-in{width:100px;min-height:44px;padding:0 10px;font:inherit;font-size:18px;border:1px solid #c9c9d1;border-radius:8px}.pb-pm{color:#4b4b55}.pb-avg{margin:0 0 14px}.goal{margin:18px 0 6px;padding:14px 16px;border:1px solid #d9d9e0;border-radius:10px;background:#fafafc}.goal-h{margin:0 0 8px;font-weight:700}.goal-p{margin:0 0 10px}.goal-bar{height:12px;border-radius:6px;background:#e4e4ea;overflow:hidden}.goal-fill{height:100%;width:3%;background:#0b57d0;transition:width .8s ease}.goal-n{margin:8px 0 0;font-size:14px;color:#4b4b55}
+.cost-hint{margin:0 0 10px;font-size:14px;color:#4b4b55}.boost{margin:22px 0 0;padding-top:16px;border-top:1px solid #d9d9e0}.pb-own{margin:0 0 14px}.pb-other{display:flex;align-items:center;gap:8px;margin:0 0 6px;font-size:15px}.pb-other label{font-weight:600}.pb-cur{font-weight:700}.pb-in{width:100px;min-height:44px;padding:0 10px;font:inherit;font-size:18px;border:1px solid #c9c9d1;border-radius:8px}.pb-pm{color:#4b4b55}.pb-avg{margin:0 0 14px}.goal{margin:18px 0 6px;padding:14px 16px;border:1px solid #d9d9e0;border-radius:10px;background:#fafafc}.goal-h{margin:0 0 8px;font-weight:700}.goal-p{margin:0 0 10px}.goal-bar{height:12px;border-radius:6px;background:#e4e4ea;overflow:hidden}.goal-fill{height:100%;width:3%;background:#0b57d0;transition:width .8s ease}.goal-n{margin:8px 0 0;font-size:14px;color:#4b4b55}
 .pb-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:0 0 18px}
 .pb-amt{position:relative;min-height:74px;padding:14px 4px;border-radius:6px;cursor:pointer;
   border:2px solid rgba(255,255,255,.26);
@@ -3554,6 +3554,7 @@ window.addEventListener('DOMContentLoaded', function(){
   updateProgress(0);
   routeFromPath(location.pathname);
   /* somebody coming back from Stripe is checked before they are thanked */
+  setTimeout(function(){ try{ bkFromLink(); }catch(e){} }, 250);
   setTimeout(function(){ try{ pbReturn(); }catch(e){} }, 600);
 });
 
@@ -5193,7 +5194,8 @@ var FIN_SLIDES=[
   ]},
  {sec:'r',lab:'Our Costs:',title:'Documentary Film Production',hero:'cost',cat:2,img:'/story-app/_web/finance/film.png',imgh:150,paras:[
   '<b class="fa-r">£184,741.52</b> was spent specifically on cameras, recording equipment, studio costs, crew, and other film-production-specific expenses.',
-  'It does not include the software, marketing, and other costs required to enable the production of the film.']},
+  'It does not include the software, marketing, and other costs required to enable the production of the film.',
+  'Yet court-cost and legal liabilities ordered against him exceeded <b class="fa-r">£246,000</b>, meaning Marcus had received more debt than pay. He has now managed to uncover the evidence establishing those debts to have been illegally given.']},
  {sec:'r',lab:'Our Costs:',title:'Day-to-day operating costs',hero:'cost6',paras:[
   'Beyond the major costs, ten years of running this organisation took <b class="fa-r">£324,944</b> across seven everyday categories: communications and marketing (<b class="fa-r" data-amt="comms">£56,006</b>), consultants (<b class="fa-r" data-amt="consultant">£35,980</b>), transport and travel (<b class="fa-r" data-amt="travel">£12,162</b>), accountancy and insurance (<b class="fa-r" data-amt="abacus">£9,914</b>), technology and equipment (<b class="fa-r" data-amt="tech">£7,109</b>), research (<b class="fa-r" data-amt="invest">£3,427</b>), and miscellaneous / other (<b class="fa-r" data-amt="toolbox">£200,346</b>).',
   'The miscellaneous category includes <b class="fa-r">£163,155</b> of older transactions still being matched to their categories while we wait for complete historic bank records. Every figure here is subject to final audit.']},
@@ -6365,7 +6367,27 @@ var PB_API='https://central-2-mcp-production.up.railway.app';
 var PB_KEY='pk_live_v0zlxftV13Pea2aRCmrAQxc7';
 var PB_TIERS={monthly_10:'\u00a310',monthly_20:'\u00a320',monthly_50:'\u00a350',
   monthly_100:'\u00a3100',monthly_150:'\u00a3150'};
-var PB_PICKED='monthly_20', PB_CHECKOUT=null, PB_OTHER=0;
+var PB_PICKED='monthly_20', PB_CHECKOUT=null, PB_OTHER=0, PB_SLOW=null;
+/* Stripe's own pages for each listed amount: the way out when the embedded form will not load */
+var PB_LINKS={monthly_10:'https://buy.stripe.com/eVq4gAegK7AIcpG52I8Ra0f',monthly_20:'https://buy.stripe.com/fZubJ2c8C9IQblCbr68Ra0g',
+  monthly_50:'https://buy.stripe.com/00w6oIc8C3kscpG1Qw8Ra0h',monthly_100:'https://buy.stripe.com/dRmeVedcG1ck2P6gLq8Ra0i',monthly_150:'https://buy.stripe.com/dRmdRa0pU5sA89qdze8Ra0j'};
+function pbLinkFor(){
+  if(PB_LINKS[PB_PICKED]) return PB_LINKS[PB_PICKED];
+  var best='monthly_10', tiers=[10,20,50,100,150], i;
+  for(i=0;i<tiers.length;i++){ if(tiers[i]<=PB_OTHER) best='monthly_'+tiers[i]; }
+  return PB_LINKS[best];
+}
+function pbSlowStart(){
+  if(PB_SLOW) clearTimeout(PB_SLOW);
+  PB_SLOW=setTimeout(function(){
+    var slot=document.getElementById('pb-pay');
+    if(PB_CHECKOUT || !slot || slot.children.length) return;
+    pbSay('');
+    var e=document.getElementById('pb-err');
+    if(e){ e.innerHTML='Slow connection? <a href="'+pbLinkFor()+'" target="_blank" rel="noopener">Open the payment page on Stripe instead</a>. It is much lighter.'; e.style.display='block'; }
+    try{ epTrack('payment_slow', PB_PICKED, 'story'); }catch(e2){}
+  }, 9000);
+}
 function pbMoney(v){ v=Number(v)||0; return (Math.round(v*100)%100===0)?String(Math.round(v)):v.toFixed(2); }
 function pbLabel(){ return PB_PICKED==='monthly_custom' ? '£'+pbMoney(PB_OTHER) : PB_TIERS[PB_PICKED]; }
 /* the reader typed their own amount: it becomes the pick, the tier buttons let go */
@@ -6430,6 +6452,32 @@ function pbReady(){
     } else { own.innerHTML=''; }
   }
 }
+/* a one-off boost after monthly backing: its own checkout, mounted under the thank-you */
+function pbBoost(btn){
+  var inp=document.getElementById('pb-boost'), err=document.getElementById('pb-boost-err');
+  var v=parseFloat(inp&&inp.value);
+  var say=function(m){ if(err){ err.textContent=m||''; err.style.display=m?'block':'none'; } };
+  if(!(v>=20)){ say('Please put in an amount of at least \u00a320.'); return; }
+  if(btn){ btn.disabled=true; btn.textContent='One moment\u2026'; }
+  say('');
+  try{ epTrack('boost_start', String(v), 'story'); }catch(e){}
+  var back=location.origin+location.pathname+'?embed=1&slide='+(ST_THANKS+1);
+  fetch(PB_API+'/public/donate/session',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({tier:'one_off_boost', amount:v, return_url:back, email:(bkEmail||window.__epEmail||''), pass:(window.__epPass||'')})})
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      if(!(d && d.ok && d.client_secret)){ say((d&&d.reason)||'We could not open the payment form. Please try again in a moment.'); if(btn){ btn.disabled=false; btn.textContent='Add a one-off boost'; } return; }
+      if(btn) btn.style.display='none';
+      pbStripeJs(function(){
+        try{
+          var stripe=Stripe(d.publishable_key||PB_KEY);
+          stripe.initEmbeddedCheckout({clientSecret:d.client_secret}).then(function(checkout){ checkout.mount('#pb-boost-pay'); },
+            function(){ say('Stripe would not open the form. Please try again.'); if(btn){ btn.style.display=''; btn.disabled=false; btn.textContent='Add a one-off boost'; } });
+        }catch(e){ say('Stripe would not open the form. Please try again.'); if(btn){ btn.style.display=''; btn.disabled=false; btn.textContent='Add a one-off boost'; } }
+      });
+    })
+    .catch(function(){ say('We could not open the payment form. Please try again in a moment.'); if(btn){ btn.disabled=false; btn.textContent='Add a one-off boost'; } });
+}
 /* the goal bar on the ask page: a live number against the next milestone */
 function goalTarget(n){ var m=[500,1000,2000,4200], i; for(i=0;i<m.length;i++){ if(n<m[i]) return m[i]; } return 4200; }
 function goalLoad(){
@@ -6449,10 +6497,18 @@ function pbStart(){
   var back=location.origin+location.pathname+'?embed=1&slide='+(ST_THANKS+1);
   fetch(PB_API+'/public/donate/session',{method:'POST',
     headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({tier:PB_PICKED, amount:(PB_PICKED==='monthly_custom'?PB_OTHER:undefined), return_url:back})})
+    body:JSON.stringify({tier:PB_PICKED, amount:(PB_PICKED==='monthly_custom'?PB_OTHER:undefined), return_url:back,
+      email:(bkEmail||window.__epEmail||''), pass:(window.__epPass||'')})})
     .then(function(r){ return r.json(); })
     .then(function(d){
-      if(d && d.ok && d.client_secret){ pbMount(d); return; }
+      if(d && d.ok && d.client_secret){ pbSlowStart(); pbMount(d); return; }
+      if(d && d.already_monthly){
+        /* they already give monthly: the right path is their own billing page, never a second subscription */
+        if(!bkRec) bkRec={gives_monthly:true, monthly_gbp:0};
+        pbReady();
+        pbSay('You already back us monthly. Change the amount on your billing page instead: same card, no second subscription.');
+        return;
+      }
       pbFailed(d && d.reason);
     })
     .catch(function(){ pbFailed(); });
@@ -6687,6 +6743,25 @@ var BK_BASE='https://central-2-mcp-production.up.railway.app';
 var bkEmail='', bkRec=null;
 /* the router rewrites the URL, so remember any ?bk= preview flag from the first load */
 var BK_Q=(/[?&]bk=([a-z]+)/.exec(location.search||'')||[])[1]||'';
+/* a personal link from one of our emails: it carries one address, signed, and opens the story for that person with no code */
+var BK_LINK=(/[?&]link=([A-Za-z0-9_.-]+)/.exec(location.search||'')||[])[1]||'';
+function bkFromLink(){
+  if(!BK_LINK || window.__bkChecked) return;
+  fetch(BK_BASE+'/public/backer/link',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({link:BK_LINK})})
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      if(!(d && d.ok)) return;
+      bkEmail=d.email||''; bkRec=d.found?d.rec:null;
+      try{ window.__bkStats=d.stats||null; window.__epEmail=bkEmail; if(d['pass']) window.__epPass=d['pass']; }catch(e){}
+      window.__bkChecked=true;
+      stKeepWrite({verified:true, email:bkEmail, rec:bkRec, stats:(window.__bkStats||null), pass:(window.__epPass||'')});
+      try{ epTrack('story_gate_link', bkRec?'backer':'no_record', 'story'); }catch(e){}
+      window.__bkLettingThrough=true;
+      if(ST_BACKER>=0) stStepTo(ST_BACKER); else stStep(1);
+      window.__bkLettingThrough=false;
+    })
+    .catch(function(){});
+}
 function bkShow(id,on){ var el=document.getElementById(id); if(el) el.style.display=on?'':'none'; }
 /* slide 10 sends the code once the email has been given */
 function bkSendCode(email){
@@ -7049,7 +7124,7 @@ function stPreloadNear(){
   setTimeout(function(){ stPreload(stIdx+1); stPreload(stIdx-1); },250);
 }
 var ST_DATA={
-  0:{title:'The story so far',custom:'pd',h:250,body:'<p>This is the biggest update we have released in more than ten years of this work.</p><p>It’s long and it’s detailed and you’ll need to sit down and go through it properly.</p><p>What work have we done? How much did it cost? What’s the big thing we’re working on right now?</p><p>It’s time to catch up on everything ExecProsec.</p><form class="gate" onsubmit="return gateSubmit(this)" novalidate><label class="gate-chk"><input type="checkbox" id="gate-tc" name="tc"><span class="gate-box"></span><span>I agree to the <a href="/terms" target="_blank" rel="noopener" class="tc-link"><strong>Terms and Conditions</strong></a>.</span></label><label class="gate-lab" for="gate-email">Your email address</label><p class="gate-note" style="margin:0 0 10px">If you have backed this work before, use the address you backed us with.</p><div class="gate-row"><input class="gate-in" id="gate-email" type="email" name="email" autocomplete="email" placeholder="you@example.com" required><button class="gate-btn" type="submit">Agree and continue</button></div><p class="gate-warn" id="gate-warn">Please enter a valid email address.</p></form><div id="bk-step2" style="display:none"><p>We have sent a six digit code to <b id="bk-shown"></b>. Enter it below.</p><label class="gate-lab" for="bk-code">Your code</label><div class="gate-row"><input id="bk-code" class="gate-in bk-code" inputmode="numeric" maxlength="6" placeholder="000000"><button type="button" class="gate-btn" onclick="bkVerify()" id="bk-check">Continue</button></div><p class="bk-warn" id="bk-warn2">That code did not match. Try again.</p><button type="button" class="paynot" onclick="bkReset()">Use a different address</button></div><p class="gate-done" id="gate-done">Thank you. Continuing\u2026</p>'},
+  0:{title:'The story so far',custom:'pd',h:250,body:'<p>This is the biggest update we have released in more than ten years of this work.</p><p>It’s long and it’s detailed and you’ll need to sit down and go through it properly.</p><p>What work have we done? How much did it cost? What’s the big thing we’re working on right now?</p><p>It’s time to catch up on everything ExecProsec.</p><form class="gate" onsubmit="return gateSubmit(this)" novalidate><label class="gate-chk"><input type="checkbox" id="gate-tc" name="tc"><span class="gate-box"></span><span>I agree to the <a href="/terms" target="_blank" rel="noopener" class="tc-link"><strong>Terms and Conditions</strong></a>.</span></label><label class="gate-lab" for="gate-email">Your email address</label><p class="gate-note" style="margin:0 0 10px">If you have backed this work before, use the address you backed us with.</p><div class="gate-row"><input class="gate-in" id="gate-email" type="email" name="email" autocomplete="email" placeholder="you@example.com" required><button class="gate-btn" type="submit">Agree and continue</button></div><p class="gate-warn" id="gate-warn">Please enter a valid email address.</p></form><div id="bk-step2" style="display:none"><p>We have sent a six digit code to <b id="bk-shown"></b>. Enter it below. It works for two hours, and so does any earlier code we sent you.</p><label class="gate-lab" for="bk-code">Your code</label><div class="gate-row"><input id="bk-code" class="gate-in bk-code" inputmode="numeric" maxlength="6" placeholder="000000"><button type="button" class="gate-btn" onclick="bkVerify()" id="bk-check">Continue</button></div><p class="bk-warn" id="bk-warn2">That code did not match. Try again.</p><button type="button" class="paynot" onclick="bkReset()">Use a different address</button></div><p class="gate-done" id="gate-done">Thank you. Continuing\u2026</p>'},
   1:{title:'You are one of our backers!',custom:'ty',h:470,body:'<div id="bk-result"></div>'},
   2:{title:'Iraq',custom:'ym',body:'<p>Our founder, Marcus J Ball, was 13 when he watched Baghdad being bombed on television.</p><p>The invasion of Iraq was justified using materials <button type="button" class="st-u" onclick="stNote(&#39;intel&#39;)">not worthy of the name intelligence</button>, <button type="button" class="st-u" onclick="stNote(&#39;dossier&#39;)">a faked dossier</button>, and claims that <button type="button" class="st-u" onclick="stNote(&#39;graves&#39;)">400,000 bodies</button> had been found in mass graves, which also turned out to be made up.</p><p><button type="button" class="st-u" onclick="stNote(&#39;dead&#39;)">Approximately a million people died</button>. Marcus couldn’t understand why nobody faced a jury.</p>'},
   3:{title:'Vietnam',custom:'lv',h:452,body:'<p>At 19, Marcus went to university to study history.</p><p>He learnt about how politicians had told the world that the warship USS Maddox had suffered an unprovoked attack in the Gulf of Tonkin, Vietnam. That claim secured the Gulf of Tonkin Resolution in 1964, enabling the full U.S. war in Vietnam in 1965.</p><p>It was a lie. The US was not the victim of an unprovoked attack; it had attacked first.</p><p>Millions died. Again, no politician faced a jury.</p>'},
@@ -7072,10 +7147,10 @@ var ST_DATA={
   20:{title:'How much money did we raise between 2016-2026?',custom:'fin',fi:1,h:340},
   21:{title:'What have others raised?',custom:'fin',fi:2,h:340},
   22:{title:'Where does our funding come from?',custom:'fin',fi:3,h:340},
-  23:{title:'Founder Financial Compensation',custom:'costs',h:340},
+  23:{title:'ExecProsec spending',custom:'costs',h:340,body:'<p class="cost-hint">Tap or click each slice of the chart to see what that money paid for.</p>'},
   24:{title:'We need you to fund us monthly <u class="tnow">now</u>',custom:'cal',h:300,noprog:1,nonext:1,body:"<p>The Hillsborough Law Now campaign and the Government got the Public Office (Accountability) Bill into Parliament. That achievement is entirely theirs.</p><p>ExecProsec brings something different: we are the only people to have tested these principles in court. That experience taught vital lessons that we can now use to amend the Bill so it becomes a criminal law that fully works in court. Without our amendments neither offence will fully cover MPs, Lords, legislators, or Government Ministers whenever they communicate with the public.</p><p>The amendments are ready. We need funding now to hire the press and communications consultants needed to focus the nation\u2019s media on this amendment in Parliament.</p><p>That funding must be reliable. Monthly backing lets us focus on the work rather than repeatedly fundraising. Which is why we no longer accept one off contributions.</p><div class=\"goal\"><p class=\"goal-h\">The goal: 4,200 monthly backers at an average of &pound;20 a month. That is &pound;1 million a year, enough to run this organisation properly.</p><p class=\"goal-p\">Our first goal, in 2016, was &pound;100,000 in four weeks. You reached it. Since then over 19,000 of you have given more than &pound;1.1 million. The next milestone is <b id=\"goal-target\">500</b> monthly backers.</p><div class=\"goal-bar\"><div class=\"goal-fill\" id=\"goal-fill\"></div></div><p class=\"goal-n\" id=\"goal-n\">Counting our monthly backers&hellip;</p></div><p>Will you back us monthly now and help bring over ten years of work across the line?</p>"},
-  25:{title:'Back this work every month',custom:'fu',h:250,noprog:1,nonext:1,body:"<p class=\"pb-p\">Monthly backing is what pays for the investigations, the evidence, the lawyers and the campaign to change the law. Choose what you can hold to.</p><div id=\"pb-own\" class=\"pb-own\"></div><div class=\"pb-grid\"><button class=\"pb-amt\" type=\"button\" data-k=\"monthly_10\" onclick=\"pbPick(this)\">\u00a310<span>a month</span></button><button class=\"pb-amt\" type=\"button\" data-k=\"monthly_20\" onclick=\"pbPick(this)\">\u00a320<span>a month</span></button><button class=\"pb-amt\" type=\"button\" data-k=\"monthly_50\" onclick=\"pbPick(this)\">\u00a350<span>a month</span></button><button class=\"pb-amt\" type=\"button\" data-k=\"monthly_100\" onclick=\"pbPick(this)\">\u00a3100<span>a month</span></button><button class=\"pb-amt\" type=\"button\" data-k=\"monthly_150\" onclick=\"pbPick(this)\">\u00a3150<span>a month</span></button></div><div class=\"pb-other\"><label for=\"pb-other\">Or your own amount</label><span class=\"pb-cur\">&pound;</span><input id=\"pb-other\" class=\"pb-in\" type=\"number\" min=\"3\" max=\"1000\" step=\"1\" inputmode=\"decimal\" placeholder=\"30\" oninput=\"pbOther(this)\"><span class=\"pb-pm\">a month</span></div><p class=\"pb-small pb-avg\">We need an average of &pound;20 a month per backer for ExecProsec to be financially viable.</p><button class=\"pb-go\" id=\"pb-go\" type=\"button\" onclick=\"pbStart()\">Back ExecProsec with \u00a320 a month</button><div id=\"pb-pay\" class=\"pb-pay\"></div><p class=\"pb-err\" id=\"pb-err\"></p><p class=\"pb-small\">You can change or stop your backing whenever you like. Your card details go straight to Stripe and never touch our website. EXECPROSEC appears on your statement.</p>"},
-  26:{title:'Thank you very much for your monthly contribution!',custom:'fw',h:250,noprog:1,body:'<p class="fwsub">You will receive an email confirmation.</p><p class="shr">Copy and paste this link and send it to three friends who you think might care about this work as well. Marcus has been on quite the journey. He needs more backers.</p><button type="button" class="shrbtn" onclick="stCopyLink(this)" data-done="Link copied">Copy the link</button><br><button type="button" class="fwbtn" onclick="navTo(&#39;/&#39;)">View website</button>'},
+  25:{title:'Back this work every month',custom:'fu',h:250,noprog:1,nonext:1,body:"<p class=\"pb-p\">Monthly backing is what pays for the investigations, the evidence, the lawyers and the campaign to change the law.</p><div id=\"pb-own\" class=\"pb-own\"></div><div class=\"pb-grid\"><button class=\"pb-amt\" type=\"button\" data-k=\"monthly_10\" onclick=\"pbPick(this)\">\u00a310<span>a month</span></button><button class=\"pb-amt\" type=\"button\" data-k=\"monthly_20\" onclick=\"pbPick(this)\">\u00a320<span>a month</span></button><button class=\"pb-amt\" type=\"button\" data-k=\"monthly_50\" onclick=\"pbPick(this)\">\u00a350<span>a month</span></button><button class=\"pb-amt\" type=\"button\" data-k=\"monthly_100\" onclick=\"pbPick(this)\">\u00a3100<span>a month</span></button><button class=\"pb-amt\" type=\"button\" data-k=\"monthly_150\" onclick=\"pbPick(this)\">\u00a3150<span>a month</span></button></div><div class=\"pb-other\"><label for=\"pb-other\">Or your own amount</label><span class=\"pb-cur\">&pound;</span><input id=\"pb-other\" class=\"pb-in\" type=\"number\" min=\"3\" max=\"1000\" step=\"1\" inputmode=\"decimal\" placeholder=\"30\" oninput=\"pbOther(this)\"><span class=\"pb-pm\">a month</span></div><p class=\"pb-small pb-avg\">We need an average of &pound;20 a month per backer for ExecProsec to be financially viable.</p><button class=\"pb-go\" id=\"pb-go\" type=\"button\" onclick=\"pbStart()\">Back ExecProsec with \u00a320 a month</button><div id=\"pb-pay\" class=\"pb-pay\"></div><p class=\"pb-err\" id=\"pb-err\"></p><p class=\"pb-small\">You can change or stop your backing whenever you like. Your card details go straight to Stripe and never touch our website. EXECPROSEC appears on your statement.</p>"},
+  26:{title:'Thank you very much for your monthly contribution!',custom:'fw',h:250,noprog:1,body:'<p class="fwsub">You will receive an email confirmation.</p><p class="shr">Copy and paste this link and send it to three friends who you think might care about this work as well. Marcus has been on quite the journey. He needs more backers.</p><button type="button" class="shrbtn" onclick="stCopyLink(this)" data-done="Link copied">Copy the link</button><br><button type="button" class="fwbtn" onclick="navTo(&#39;/&#39;)">View website</button><div class="boost"><p class="shr">Want to give the work a jump-start as well? A one-off boost sits on top of your monthly backing.</p><div class="pb-other"><label for="pb-boost">One-off boost</label><span class="pb-cur">&pound;</span><input id="pb-boost" class="pb-in" type="number" min="20" step="5" inputmode="decimal" placeholder="100"><span class="pb-pm">once</span></div><button class="pb-go" id="pb-boost-go" type="button" onclick="pbBoost(this)">Add a one-off boost</button><div id="pb-boost-pay" class="pb-pay"></div><p class="pb-err" id="pb-boost-err"></p></div>'},
   27:{title:'You have chosen not to support us.',custom:'rj',h:90,noprog:1,nonext:1,body:'<p>You&rsquo;ve decided not to support Marcus and ExecProsec.</p><p>Marcus has proven over ten years that he will not give up, no matter what. You don&rsquo;t feel the same way.</p><p>You can change your mind right now. Ten pounds a month is two pounds thirty a week. It is very little to you. It is everything to this.</p><span class="rjbtns"><button type="button" class="rjfin" onclick="rjFinish(this)">Confirm and finish</button><button type="button" class="gate-btn" onclick="stStep(-1)">Back</button></span>'}
 };
 /* The funnel used to point at hardcoded slide numbers, which silently broke every time a slide
