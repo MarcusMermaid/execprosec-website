@@ -5342,7 +5342,7 @@ function epMoney(v){ v=Number(v)||0; return (Math.round(v*100)%100===0) ? String
 /* the backer typed their own amount: it becomes the pick, the tier buttons let go */
 function epOther(inp){
   var v=parseFloat(inp.value);
-  if(!(v>=3 && v<=1000)){ return; }
+  if(!(v>=10)){ return; }
   EP_OTHER=Math.round(v*100)/100;
   EP_PICKED='monthly_custom';
   epDbAt('tier', EP_PICKED);
@@ -5379,7 +5379,7 @@ function epDonateChooser(){
     '<p class="db-lead">Back our work monthly now:</p>'+
     '<div class="db-grid">'+amounts+'</div>'+
     '<div class="db-other"><label for="db-other">Or your own amount</label><span class="db-cur">&pound;</span>'+
-    '<input id="db-other" class="db-input db-other-in" type="number" min="3" max="1000" step="1" inputmode="decimal" placeholder="30" '+
+    '<input id="db-other" class="db-input db-other-in" type="number" min="10" step="1" inputmode="decimal" placeholder="30" '+
     'value="'+(EP_PICKED==='monthly_custom'&&EP_OTHER?EP_OTHER:'')+'" oninput="epOther(this)"><span class="db-pm">a month</span></div>'+
     '<p class="db-note db-avg">We need an average of &pound;20 a month per backer for ExecProsec to be financially viable.</p>'+
     '<button class="db-go" id="db-go" type="button" onclick="epDonateStart()">Back ExecProsec with '+
