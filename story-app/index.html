@@ -7218,6 +7218,8 @@ function stCostSpin(i){
   var d=(target-cur)%360; if(d>180)d-=360; if(d<-180)d+=360;   // always the shorter way round
   window.__stAimAbs=cur+d;
   window.__stCost=i;
+  /* until now nothing recorded which slices readers opened, so the question could not be answered */
+  try{ epTrack('cost_slice', stCostTitle(i), 'story'); }catch(e){}
   g.style.transform='rotate('+window.__stAimAbs.toFixed(2)+'deg)';
   for(var k=0;k<sl.length;k++) sl[k].classList.remove('cost-out');
   var art=hero.querySelector('.costart');
