@@ -1043,7 +1043,7 @@ html:has(body.story-mode){overflow:hidden}
 /* the findings slide rather than jump */
 .iv-body{overflow:hidden;transition:max-height .34s cubic-bezier(.4,0,.2,1),opacity .24s ease}
 @media(prefers-reduced-motion:reduce){.iv-body{transition:none}}
-.bk-hero{color:#fff;font-weight:500}.bk-hello{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin:0 0 10px}.bk-hello-name{font-size:30px;font-weight:700;color:var(--gold);line-height:1.1}.bk-fixname{background:none;border:none;padding:0;color:#c9d0e4;font:inherit;font-size:13px;text-decoration:underline;cursor:pointer}.bk-nameform{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 14px}.bk-nameform label{font-size:14px;color:#c9d0e4}.bk-name-in{min-height:40px;padding:0 10px;font:inherit;font-size:16px;border:1px solid #c9c9d1;border-radius:8px;width:150px}.bk-name-go{min-height:40px;padding:0 14px;font:inherit;font-weight:700;border:none;border-radius:8px;background:var(--gold);color:#0a1f44;cursor:pointer}.bk-name-msg{font-size:13px;color:#f7f6f2}
+.bk-hero{color:#fff;font-weight:500}.bk-hello{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin:0 0 10px}.bk-hello-name{font-size:30px;font-weight:700;color:var(--gold);line-height:1.1}.bk-fixname{background:none;border:none;padding:0;color:#c9d0e4;font:inherit;font-size:13px;text-decoration:underline;cursor:pointer}.bk-nameform{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 14px}.bk-nameform label{font-size:14px;color:#c9d0e4}.bk-name-in{min-height:40px;padding:0 10px;font:inherit;font-size:16px;border:1px solid #c9c9d1;border-radius:8px;width:150px}.bk-name-go{min-height:40px;padding:0 14px;font:inherit;font-weight:700;border:none;border-radius:8px;background:var(--gold);color:#0a1f44;cursor:pointer}.bk-name-msg{font-size:13px;color:#f7f6f2}.st-loading{position:fixed;inset:0;z-index:99999;background:#0a1f44;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;color:#f7f6f2;font-size:18px}.st-loading p{margin:0}.st-spin{width:40px;height:40px;border:4px solid rgba(255,255,255,.22);border-top-color:#ddbc66;border-radius:50%;animation:stspin .9s linear infinite}@keyframes stspin{to{transform:rotate(360deg)}}
 .iv-plan{margin:18px 0 6px;padding:0 0 0 22px;list-style:decimal}
 .iv-plan li{margin:0 0 14px;padding-left:6px;line-height:1.62}
 .iv-plan li::marker{color:var(--gold);font-weight:700}
@@ -3569,6 +3569,8 @@ window.addEventListener('popstate', function(){
 });
 
 window.addEventListener('DOMContentLoaded', function(){
+  /* somebody arriving by their own link sees a moment of 'preparing', never the gate */
+  try{ if(BK_LINK) stLoadingShow(); }catch(e){}
   updateProgress(0);
   routeFromPath(location.pathname);
   /* a preview persona goes straight to its own slide, the same as a personal link does, and
@@ -6760,12 +6762,24 @@ var bkEmail='', bkRec=null;
 var BK_Q=(/[?&]bk=([a-z]+)/.exec(location.search||'')||[])[1]||'';
 /* a personal link from one of our emails: it carries one address, signed, and opens the story for that person with no code */
 var BK_LINK=(/[?&]link=([A-Za-z0-9_.-]+)/.exec(location.search||'')||[])[1]||'';
+/* A cover over the deck while a personal link is being checked, so the reader never sees the
+   gate flash past on the way to their own slide. It always lifts, whatever happens. */
+function stLoadingShow(){
+  if(document.getElementById('st-loading')) return;
+  var d=document.createElement('div'); d.id='st-loading'; d.className='st-loading';
+  d.innerHTML='<div class="st-spin"></div><p>Preparing your report\u2026</p>';
+  (document.body||document.documentElement).appendChild(d);
+  setTimeout(stLoadingHide, 9000);
+}
+function stLoadingHide(){
+  var d=document.getElementById('st-loading'); if(d && d.parentNode) d.parentNode.removeChild(d);
+}
 function bkFromLink(){
   if(!BK_LINK || window.__bkChecked) return;
   fetch(BK_BASE+'/public/backer/link',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({link:BK_LINK})})
     .then(function(r){ return r.json(); })
     .then(function(d){
-      if(!(d && d.ok)) return;
+      if(!(d && d.ok)){ stLoadingHide(); return; }
       bkEmail=d.email||''; bkRec=d.found?d.rec:null;
       try{ window.__bkStats=d.stats||null; window.__epEmail=bkEmail; if(d['pass']) window.__epPass=d['pass']; }catch(e){}
       window.__bkChecked=true;
@@ -6778,8 +6792,9 @@ function bkFromLink(){
       else if(/^\/story\/\d+$/i.test(location.pathname||'')){ if(ST_BACKER>=0) stStepTo(ST_BACKER); else stStep(1); }
       else { navTo('/story/'+((ST_BACKER>=0?ST_BACKER:0)+1)); }
       window.__bkLettingThrough=false;
+      setTimeout(stLoadingHide, 150);
     })
-    .catch(function(){});
+    .catch(function(){ stLoadingHide(); });
 }
 function bkShow(id,on){ var el=document.getElementById(id); if(el) el.style.display=on?'':'none'; }
 /* slide 10 sends the code once the email has been given */
@@ -7012,20 +7027,21 @@ function bkRender(){
     p.push('<p>That places you '+standing+' of everyone in our records who has funded this work.</p>');
   }
 
+  /* the number the whole plan rests on, and what it does and does not mean */
+  p.push('<p>To run this organisation properly we need an average of <b class="bk-strong">&pound;20 a month</b> from each backer. '
+    +'That does not mean everyone must give &pound;20. Some give more and some give less; across everyone it has to average &pound;20 a month.</p>');
+
   if(gives && monthly>0){
     p.push('<p>You currently contribute '+bkMoney(monthly)+' every month. Reliable monthly funding is '
       +'what allows us to plan investigations and prosecutions that may take years.</p>');
     /* the funding plan needs an average of twenty pounds a month from each backer, so the next
        sentence depends on where they sit against it */
     if(monthly>20){
-      p.push('<p>To fund the work ahead, we need monthly contributions to average &pound;20 per backer. '
-        +'By giving more than that, you help make the work possible for people who cannot afford as much.</p>');
+      p.push('<p>By giving more than that, you help make the work possible for people who cannot afford as much.</p>');
     } else if(monthly===20){
-      p.push('<p>To fund the work ahead, we need monthly contributions to average &pound;20 per backer. '
-        +'You are contributing exactly what our funding plan requires.</p>');
+      p.push('<p>You are contributing exactly what our funding plan requires.</p>');
     } else {
-      p.push('<p>To fund the work ahead, we need monthly contributions to average &pound;20 per backer. '
-        +'If you can afford to increase yours to &pound;20 or more, you will help close the funding gap.</p>');
+      p.push('<p>If you can afford to increase yours to &pound;20 or more, you will help close the funding gap.</p>');
     }
   } else if(gives){
     p.push('<p>You currently contribute every month. Reliable monthly funding is what allows us to plan '
