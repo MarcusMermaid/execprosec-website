@@ -5264,7 +5264,7 @@ document.addEventListener('keydown', function(e){
   var slide=parseInt(q.get('slide')||(m?m[1]:'0'),10)||0;
   var extra='';
   if(q.get('link')) extra+='&link='+encodeURIComponent(q.get('link'));
-  if(q.get('bk')) extra+='&bk='+encodeURIComponent(q.get('bk'));
+  if(q.get('bk')){ extra+='&bk='+encodeURIComponent(q.get('bk')); if(!slide) slide=2; }
   if(!extra && !slide && q.get('story')!=='1') return;
   var open=function(){ epStory(slide>1?slide:1, extra); };
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', open);
