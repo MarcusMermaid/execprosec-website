@@ -1443,7 +1443,7 @@ a.contact-v:hover{color:var(--gold)}
 @media(max-width:640px){ .site-legal{margin-left:18px;margin-right:18px} }
 </style>
 <style>
-.site-foot{padding:30px 18px 38px;line-height:1.65}
+.site-foot{padding:30px 18px 38px;line-height:1.65}.sf-manage{color:inherit;text-decoration:underline;cursor:pointer}
 .site-foot .sf-line{display:block;max-width:640px;margin:0 auto}
 .site-foot .sf-note{margin-top:10px}
 .site-foot .sf-line:last-child{margin-top:10px}
@@ -2013,7 +2013,7 @@ body.sb-open{overflow:hidden}
       <a href="/news" onclick="epNews();return false;">News</a>
       <a href="/testimonials" onclick="openPage('testimonials');setNavActive('Testimonials');return false;">Testimonials</a>
       <a href="/contact" onclick="openPage('contact');setNavActive('Contact');return false;">Contact</a>
-      <button class="nav-donate" type="button" onclick="epDonate();return false;">Donate</button>
+      <button class="nav-donate" type="button" onclick="epStory(1);return false;">Donate</button>
     </nav>
     <!-- Support and Donate hidden for the MVP -->
     <span style="margin-left:auto"></span>
@@ -3082,6 +3082,7 @@ body.sb-open{overflow:hidden}
 
   <footer class="site-foot">
     <span class="sf-line">ExecProsec Ltd &middot; Not-for-profit &middot; Funded entirely by the public</span>
+    <span class="sf-line"><a href="#" class="sf-manage" onclick="return epManageOpen();">Change or stop your monthly backing</a></span>
     <span class="sf-line">Registered in England and Wales</span>
     <span class="sf-line sf-num">10520032</span>
     <span class="sf-line">&copy; 2026 ExecProsec Ltd. All rights reserved.</span>
@@ -5485,6 +5486,9 @@ function epDonateFallback(tier){
    prove the address is theirs with a six digit code, then Stripe's own billing page does the
    rest, including the monthly payments set up on our older products. */
 function epDonateOnce(){ epDonateStart('one_off'); }
+/* Existing backers reach their own billing page from the foot of the page; everyone else is sent
+   into the story first, because nobody should back this without having read it. */
+function epManageOpen(){ epDonate(); epManage(); return false; }
 function epManage(){
   epDbAt('manage');
   epDonateDrop();
