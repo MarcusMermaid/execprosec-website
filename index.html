@@ -1872,6 +1872,7 @@ body.sb-open{overflow:hidden}
 .db-h{font:400 34px/1.2 'DM Serif Display',serif;color:#fff;margin:0 0 14px}
 .db-p{font:400 16px/1.7 'DM Sans',sans-serif;color:rgba(255,255,255,.78);margin:0 0 26px}
 .db-lead{font:700 15px/1.6 'DM Sans',sans-serif;color:#fff;margin:0 0 14px;letter-spacing:.01em}
+.db-manage{margin:0 0 14px;font-size:14.5px;color:#4b4b55}.db-link{background:none;border:0;padding:0;font:inherit;color:#0b57d0;text-decoration:underline;cursor:pointer}.db-other{display:flex;align-items:center;gap:8px;margin:12px 0 4px;font-size:14.5px}.db-other label{flex:0 0 auto;font-weight:600}.db-cur{font-weight:700}.db-other-in{width:96px;min-height:40px;padding:0 10px}.db-pm{color:#4b4b55}.db-avg{margin:4px 0 12px;font-size:13.5px;color:#4b4b55}
 .db-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:0 0 20px}
 /* Big, solid, obviously pressable. Tap targets are 76px tall on a laptop and 68px on a phone,
    comfortably above the 48px both Apple and Google ask for, with 12px between them so nobody
@@ -5207,11 +5208,11 @@ function epStoryKept(){
   try{ return JSON.parse(sessionStorage.getItem(EP_SB_KEY)||'null'); }catch(e){ return null; }
 }
 
-function epStory(slide){
+function epStory(slide, extra){
   var box=document.getElementById('storybox'), f=document.getElementById('sb-frame');
   if(!box||!f) return false;
   if(!f.getAttribute('data-loaded')){
-    f.src='/story-app/?embed=1' + (slide>1 ? ('&slide='+slide) : '');
+    f.src='/story-app/?embed=1' + (slide>1 ? ('&slide='+slide) : '') + (extra||'');
     f.setAttribute('data-loaded','1');
   }
   epStoryKeep({open:1});
@@ -5225,6 +5226,8 @@ function epStoryClose(){
   var box=document.getElementById('storybox');
   if(!box) return false;
   epStoryKeep({open:0});
+  /* the address bar goes back to the page itself */
+  try{ if(/^\/story\//i.test(location.pathname||'')) history.replaceState(null,'','/'); }catch(e){}
   box.classList.remove('open');
   box.setAttribute('aria-hidden','true');
   document.body.classList.remove('sb-open');
@@ -5233,7 +5236,11 @@ function epStoryClose(){
 /* the close button and the Escape key inside the slideshow reach us this way */
 window.addEventListener('message', function(e){
   if(!e || !e.data) return;
-  if(e.data.ep==='story-slide') epStoryKeep({slide:e.data.n});
+  if(e.data.ep==='story-slide'){
+    epStoryKeep({slide:e.data.n});
+    /* every slide has its own address, shown while it is on screen */
+    try{ var n=parseInt(e.data.n,10); if(n>=1) history.replaceState(null,'','/story/'+n); }catch(x){}
+  }
   if(e.data.ep==='story-close') epStoryClose();
   /* while a photograph, quote or film is open inside the story, our close button steps
      aside so the reader only ever sees one cross */
@@ -5248,10 +5255,29 @@ document.addEventListener('keydown', function(e){
   if(box && box.classList.contains('open')) epStoryClose();
 });
 
-/* on a refresh, put the box back exactly where it was */
+/* A personal link, a preview persona or a slide address opens the story here, in the box on
+   this page, so what sits behind the story is always the current home page. The story's own
+   build hands over to this page when it is opened on its own. */
+(function(){
+  var q; try{ q=new URLSearchParams(location.search||''); }catch(e){ return; }
+  var m=/^\/story\/(\d+)/i.exec(location.pathname||'');
+  var slide=parseInt(q.get('slide')||(m?m[1]:'0'),10)||0;
+  var extra='';
+  if(q.get('link')) extra+='&link='+encodeURIComponent(q.get('link'));
+  if(q.get('bk')){ extra+='&bk='+encodeURIComponent(q.get('bk')); if(!slide) slide=2; }
+  if(!extra && !slide && q.get('story')!=='1') return;
+  var open=function(){ epStory(slide>1?slide:1, extra); };
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', open);
+  else open();
+})();
+
+/* on a refresh, put the box back exactly where it was; arriving by a link shows the page itself */
 (function(){
   var kept=epStoryKept();
   if(!kept || !kept.open) return;
+  var how='navigate';
+  try{ var nav=performance.getEntriesByType('navigation')[0]; if(nav && nav.type) how=nav.type; }catch(e){}
+  if(how!=='reload' && how!=='back_forward' && !/^\/story\//i.test(location.pathname||'')) return;
   var open=function(){ epStory(parseInt(kept.slide||1,10)||1); };
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', open);
   else open();
@@ -5286,6 +5312,7 @@ var EP_LINKS = {
   one_off:'https://buy.stripe.com/3cI28sdcG6wE0GYbr68Ra0e'
 };
 var EP_PICKED = 'monthly_20';
+var EP_OTHER=0; /* a backer-chosen monthly amount, in pounds */
 var EP_CHECKOUT = null;
 
 /* Where the donate box was when it was closed. It lives in the page, not in storage, so it is
@@ -5295,6 +5322,11 @@ function epDbAt(screen, tier){ EP_DB_STATE={screen:screen, tier:tier||''}; }
 function epDbResume(){
   var s=EP_DB_STATE;
   if(s && s.screen==='pay' && s.tier){ epDonateStart(s.tier); return; }
+  if(s && s.screen==='tier' && s.tier==='monthly_custom'){
+    epDonateChooser();
+    var o=document.getElementById('db-other'); if(o && EP_OTHER){ o.value=EP_OTHER; epOther(o); }
+    return;
+  }
   if(s && s.screen==='tier' && s.tier){
     epDonateChooser();
     var btn=document.querySelector('.db-amt[data-k="'+s.tier+'"]');
@@ -5327,8 +5359,29 @@ function epDonateDrop(){
   if(EP_CHECKOUT){ try{ EP_CHECKOUT.destroy(); }catch(e){} EP_CHECKOUT=null; }
 }
 function epTierLabel(){
+  if(EP_PICKED==='monthly_custom') return '£'+epMoney(EP_OTHER);
   for(var i=0;i<EP_TIERS.length;i++){ if(EP_TIERS[i].k===EP_PICKED) return EP_TIERS[i].label; }
   return '';
+}
+function epMoney(v){ v=Number(v)||0; return (Math.round(v*100)%100===0) ? String(Math.round(v)) : v.toFixed(2); }
+/* the backer typed their own amount: it becomes the pick, the tier buttons let go */
+function epOther(inp){
+  var v=parseFloat(inp.value);
+  if(!(v>=10)){ return; }
+  EP_OTHER=Math.round(v*100)/100;
+  EP_PICKED='monthly_custom';
+  epDbAt('tier', EP_PICKED);
+  var all=document.querySelectorAll('.db-amt');
+  for(var i=0;i<all.length;i++){ all[i].classList.remove('on'); }
+  var go=document.getElementById('db-go');
+  if(go){ go.textContent='Back ExecProsec with '+epTierLabel()+' a month'; }
+  try{ epTrack('donate_amount', 'monthly_custom_'+epMoney(EP_OTHER), 'donate'); }catch(e){}
+}
+/* the listed tier nearest below a chosen amount, for the fallback links */
+function epNearestTier(amount){
+  var best=EP_TIERS[0].k;
+  for(var i=0;i<EP_TIERS.length;i++){ if(EP_TIERS[i].amt<=amount) best=EP_TIERS[i].k; }
+  return best;
 }
 function epDonateChooser(){
   epDbAt('chooser');
@@ -5344,25 +5397,29 @@ function epDonateChooser(){
   wrap.innerHTML =
     '<p class="db-kicker">Join us</p>'+
     '<h2 class="db-h">Be a part of this work.</h2>'+
+    '<p class="db-manage">Already back us monthly? <button type="button" class="db-link" onclick="epManage()">Change or cancel your backing</button></p>'+
     '<p class="db-p">We are the only organisation in the world set up to investigate, expose, and '+
     'privately prosecute the most powerful people in public life when they abuse the public. If we '+
     'don\u2019t do this work, it won\u2019t get done.</p>'+
     '<p class="db-lead">Back our work monthly now:</p>'+
     '<div class="db-grid">'+amounts+'</div>'+
+    '<div class="db-other"><label for="db-other">Or your own amount</label><span class="db-cur">&pound;</span>'+
+    '<input id="db-other" class="db-input db-other-in" type="number" min="10" step="1" inputmode="decimal" placeholder="30" '+
+    'value="'+(EP_PICKED==='monthly_custom'&&EP_OTHER?EP_OTHER:'')+'" oninput="epOther(this)"><span class="db-pm">a month</span></div>'+
+    '<p class="db-note db-avg">We need an average of &pound;20 a month per backer for ExecProsec to be financially viable.</p>'+
     '<button class="db-go" id="db-go" type="button" onclick="epDonateStart()">Back ExecProsec with '+
       epTierLabel()+' a month</button>'+
     '<div class="db-once">'+
       '<p class="db-note">We no longer accept small '+
       '<button type="button" onclick="epDonateOnce()">one off contributions</button> as they do not '+
       'enable us to work sustainably.</p>'+
-      '<p class="db-note" style="margin:12px 0 0">Change or cancel your subscription '+
-      '<button type="button" onclick="epManage()">here</button>.</p>'+
     '</div>'+
     '<p class="db-trust">Payments handled by Stripe &middot; ExecProsec Ltd, company number 10520032 &middot; '+
     'A voluntary contribution towards our work, not a purchase of goods or services.</p>';
 }
 function epPick(btn){
   EP_PICKED = btn.getAttribute('data-k');
+  var other=document.getElementById('db-other'); if(other){ other.value=''; }
   epDbAt('tier', EP_PICKED);
   var all=document.querySelectorAll('.db-amt');
   for(var i=0;i<all.length;i++){ all[i].classList.toggle('on', all[i]===btn); }
@@ -5381,7 +5438,7 @@ function epDonateStart(which){
   try{ epTrack('donate_start', tier, 'donate'); }catch(e){}
   fetch(EP_DONATE_API+'/public/donate/session', {
     method:'POST', headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({tier:tier, return_url:location.origin+location.pathname})
+    body:JSON.stringify({tier:tier, amount:(tier==='monthly_custom'?EP_OTHER:undefined), return_url:location.origin+location.pathname})
   }).then(function(r){ return r.json(); }).then(function(d){
     if(d && d.ok && d.client_secret && d.publishable_key){ epDonatePay(tier, d); }
     else { epDonateFallback(tier); }
@@ -5418,7 +5475,7 @@ function epStripeJs(ready, failed){
 }
 /* nothing is ever a dead end: send them to that exact tier on Stripe's own page */
 function epDonateFallback(tier){
-  var url = EP_LINKS[tier];
+  var url = EP_LINKS[tier] || (tier==='monthly_custom' ? EP_LINKS[epNearestTier(EP_OTHER)] : '');
   try{ epTrack('donate_fallback', tier, 'donate'); }catch(e){}
   if(url){ window.open(url, '_blank', 'noopener'); }
   epDonateChooser();
@@ -5473,7 +5530,7 @@ function epManageCodeForm(email){
     '<button class="db-back" type="button" onclick="epManage()">Back</button>'+
     '<p class="db-kicker">Your backing</p>'+
     '<h2 class="db-h">Check your email.</h2>'+
-    '<p class="db-p">We have sent a six digit code to '+safe+'. It lasts a few minutes.</p>'+
+    '<p class="db-p">We have sent a six digit code to '+safe+'. It works for two hours, and so does any earlier code we sent you.</p>'+
     '<input class="db-input" id="db-code" inputmode="numeric" autocomplete="one-time-code" placeholder="123456">'+
     '<button class="db-go" id="db-cgo" type="button" onclick="epManageOpen()">Open my backing</button>'+
     '<p class="db-err" id="db-err" style="display:none"></p>';
