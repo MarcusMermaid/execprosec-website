@@ -1025,7 +1025,7 @@ html:has(body.story-mode){overflow:hidden}
 /* the findings slide rather than jump */
 .iv-body{overflow:hidden;transition:max-height .34s cubic-bezier(.4,0,.2,1),opacity .24s ease}
 @media(prefers-reduced-motion:reduce){.iv-body{transition:none}}
-.bk-hero{color:#fff;font-weight:500}
+.bk-hero{color:#fff;font-weight:500}.bk-hello{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin:0 0 10px}.bk-hello-name{font-size:30px;font-weight:700;color:var(--gold);line-height:1.1}.bk-fixname{background:none;border:none;padding:0;color:#c9d0e4;font:inherit;font-size:13px;text-decoration:underline;cursor:pointer}.bk-nameform{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 14px}.bk-nameform label{font-size:14px;color:#c9d0e4}.bk-name-in{min-height:40px;padding:0 10px;font:inherit;font-size:16px;border:1px solid #c9c9d1;border-radius:8px;width:170px}.bk-name-go{min-height:40px;padding:0 14px;font:inherit;font-weight:700;border:none;border-radius:8px;background:var(--gold);color:#0a1f44;cursor:pointer}.bk-name-msg{font-size:13px;color:#f7f6f2}
 .iv-plan{margin:18px 0 6px;padding:0 0 0 22px;list-style:decimal}
 .iv-plan li{margin:0 0 14px;padding-left:6px;line-height:1.62}
 .iv-plan li::marker{color:var(--gold);font-weight:700}
@@ -6865,6 +6865,41 @@ function bkBand(pct){
 }
 function bkNum(n){ return Number(n||0).toLocaleString('en-GB'); }
 /* The way out for somebody reading on a machine that is not theirs. */
+/* The name box on slide 2: open it, and save what they type to Central under their own address.
+   Only a verified address can do this, so nobody can rename anybody else. */
+function bkNameForm(){
+  var f=document.getElementById('bk-nameform'); if(!f) return;
+  f.style.display=(f.style.display==='none')?'':'none';
+  if(f.style.display!=='none'){ var i=document.getElementById('bk-name'); if(i){ try{ i.focus(); i.select(); }catch(e){} } }
+}
+function bkNameSave(ev){
+  if(ev) ev.preventDefault();
+  var i=document.getElementById('bk-name'), msg=document.getElementById('bk-name-msg');
+  var go=document.querySelector('#bk-nameform .bk-name-go');
+  var v=(i&&i.value||'').trim();
+  if(!v){ if(msg) msg.textContent='Please type your first name.'; return false; }
+  if(go){ go.disabled=true; go.textContent='Saving\u2026'; }
+  fetch(BK_BASE+'/public/backer/name',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({email:(bkEmail||window.__epEmail||''), pass:(window.__epPass||''), name:v, session:epSession()})})
+    .then(function(r){ return r.json().catch(function(){ return {}; }); })
+    .then(function(d){
+      if(go){ go.disabled=false; go.textContent='Save'; }
+      if(d && d.ok && d.first_name){
+        if(bkRec) bkRec.first_name=d.first_name;
+        try{ stKeepWrite({verified:true, email:bkEmail, rec:bkRec, stats:(window.__bkStats||null), pass:(window.__epPass||'')}); }catch(e){}
+        var n=document.getElementById('bk-hello-name'); if(n) n.textContent=d.first_name+'!';
+        var b=document.getElementById('bk-fixname'); if(b) b.textContent='Not the right name?';
+        var f=document.getElementById('bk-nameform'); if(f) f.style.display='none';
+        if(msg) msg.textContent='';
+      } else if(d && d.reason==='not_verified'){
+        if(msg) msg.textContent='We could not confirm your address, so the name was not saved.';
+      } else {
+        if(msg) msg.textContent='Letters only please, up to 40 characters.';
+      }
+    })
+    .catch(function(){ if(go){ go.disabled=false; go.textContent='Save'; } if(msg) msg.textContent='We could not save that. Please try again.'; });
+  return false;
+}
 function bkSwitchBtn(){
   return '<button type="button" class="bk-switch" onclick="stStartOver()">'
     + 'Start again with another email address</button>';
@@ -6910,7 +6945,16 @@ function bkRender(){
   var gives=(r.gives_monthly!==undefined) ? !!r.gives_monthly : !!r.active_sub;
   if(t) t.textContent='You helped make this possible.';
 
-  var opening=(nm?bkEsc(nm)+', our':'Our')+' records show that you have contributed '+bkMoney(tot);
+  /* their name at the top, and a way to give it or put it right */
+  p.push('<div class="bk-hello"><span class="bk-hello-name" id="bk-hello-name">'+(nm?bkEsc(nm)+'!':'Hello!')+'</span>'
+    +'<button type="button" class="bk-fixname" id="bk-fixname" onclick="bkNameForm()">'+(nm?'Not the right name?':'Tell us your name')+'</button></div>');
+  p.push('<form class="bk-nameform" id="bk-nameform" onsubmit="return bkNameSave(event)"'+(nm?' style="display:none"':'')+'>'
+    +'<label for="bk-name">Your first name</label>'
+    +'<input id="bk-name" class="bk-name-in" type="text" maxlength="40" autocomplete="given-name" value="'+bkEsc(nm)+'">'
+    +'<button type="submit" class="bk-name-go">Save</button>'
+    +'<span class="bk-name-msg" id="bk-name-msg"></span></form>');
+
+  var opening='Our records show that you have contributed '+bkMoney(tot);
   opening+=pays>1?(' across '+pays+' separate contributions.'):(pays===1?' in a single contribution.':'.');
   p.push('<p class="bk-lead">'+opening+'</p>');
 
