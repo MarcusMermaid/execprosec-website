@@ -3553,6 +3553,12 @@ window.addEventListener('popstate', function(){
 window.addEventListener('DOMContentLoaded', function(){
   updateProgress(0);
   routeFromPath(location.pathname);
+  /* a preview persona goes straight to its own slide, the same as a personal link does */
+  try{
+    if(BK_Q && bkPreviewAllowed() && !/^\/story\/\d+$/i.test(location.pathname||'')){
+      setTimeout(function(){ try{ navTo('/story/'+((ST_BACKER>=0?ST_BACKER:0)+1)); }catch(e){} }, 0);
+    }
+  }catch(e){}
   /* somebody coming back from Stripe is checked before they are thanked */
   setTimeout(function(){ try{ bkFromLink(); }catch(e){} }, 250);
   setTimeout(function(){ try{ pbReturn(); }catch(e){} }, 600);
@@ -6745,7 +6751,9 @@ function bkFromLink(){
       stKeepWrite({verified:true, email:bkEmail, rec:bkRec, stats:(window.__bkStats||null), pass:(window.__epPass||'')});
       try{ epTrack('story_gate_link', bkRec?'backer':'no_record', 'story'); }catch(e){}
       window.__bkLettingThrough=true;
-      if(ST_BACKER>=0) stStepTo(ST_BACKER); else stStep(1);
+      /* the link opens the story itself, at their own slide, not the cover page */
+      if(/^\/story\/\d+$/i.test(location.pathname||'')){ if(ST_BACKER>=0) stStepTo(ST_BACKER); else stStep(1); }
+      else { navTo('/story/'+((ST_BACKER>=0?ST_BACKER:0)+1)); }
       window.__bkLettingThrough=false;
     })
     .catch(function(){});
@@ -7919,6 +7927,20 @@ body.ep-embed{overflow:hidden}
   var q;
   try{ q=new URLSearchParams(location.search); }catch(e){ return; }
   if(q.get('embed')!=='1') return;
+  /* The frame on the home page is the only place this layout makes sense. Opened on its own,
+     from a shared or copied address, the same page is shown in the ordinary layout, at the
+     slide asked for. */
+  var framed=true;
+  try{ framed=(window.self!==window.top); }catch(e){ framed=true; }
+  if(!framed){
+    var plain=parseInt(q.get('slide')||'0',10);
+    if(plain>=1){
+      window.addEventListener('DOMContentLoaded', function(){
+        setTimeout(function(){ try{ navTo('/story/'+plain); }catch(e){} }, 0);
+      });
+    }
+    return;
+  }
 
   document.documentElement.classList.add('ep-embed');
   var mark=function(){ if(document.body) document.body.classList.add('ep-embed'); };
