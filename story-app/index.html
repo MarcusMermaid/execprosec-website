@@ -1025,7 +1025,7 @@ html:has(body.story-mode){overflow:hidden}
 /* the findings slide rather than jump */
 .iv-body{overflow:hidden;transition:max-height .34s cubic-bezier(.4,0,.2,1),opacity .24s ease}
 @media(prefers-reduced-motion:reduce){.iv-body{transition:none}}
-.bk-hero{color:#fff;font-weight:500}.bk-hello{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin:0 0 10px}.bk-hello-name{font-size:30px;font-weight:700;color:var(--gold);line-height:1.1}.bk-fixname{background:none;border:none;padding:0;color:#c9d0e4;font:inherit;font-size:13px;text-decoration:underline;cursor:pointer}.bk-nameform{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 14px}.bk-nameform label{font-size:14px;color:#c9d0e4}.bk-name-in{min-height:40px;padding:0 10px;font:inherit;font-size:16px;border:1px solid #c9c9d1;border-radius:8px;width:170px}.bk-name-go{min-height:40px;padding:0 14px;font:inherit;font-weight:700;border:none;border-radius:8px;background:var(--gold);color:#0a1f44;cursor:pointer}.bk-name-msg{font-size:13px;color:#f7f6f2}
+.bk-hero{color:#fff;font-weight:500}.bk-hello{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin:0 0 10px}.bk-hello-name{font-size:30px;font-weight:700;color:var(--gold);line-height:1.1}.bk-fixname{background:none;border:none;padding:0;color:#c9d0e4;font:inherit;font-size:13px;text-decoration:underline;cursor:pointer}.bk-nameform{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 14px}.bk-nameform label{font-size:14px;color:#c9d0e4}.bk-name-in{min-height:40px;padding:0 10px;font:inherit;font-size:16px;border:1px solid #c9c9d1;border-radius:8px;width:150px}.bk-name-go{min-height:40px;padding:0 14px;font:inherit;font-weight:700;border:none;border-radius:8px;background:var(--gold);color:#0a1f44;cursor:pointer}.bk-name-msg{font-size:13px;color:#f7f6f2}
 .iv-plan{margin:18px 0 6px;padding:0 0 0 22px;list-style:decimal}
 .iv-plan li{margin:0 0 14px;padding-left:6px;line-height:1.62}
 .iv-plan li::marker{color:var(--gold);font-weight:700}
@@ -6874,18 +6874,19 @@ function bkNameForm(){
 }
 function bkNameSave(ev){
   if(ev) ev.preventDefault();
-  var i=document.getElementById('bk-name'), msg=document.getElementById('bk-name-msg');
+  var i=document.getElementById('bk-name'), j=document.getElementById('bk-lname'), msg=document.getElementById('bk-name-msg');
   var go=document.querySelector('#bk-nameform .bk-name-go');
-  var v=(i&&i.value||'').trim();
+  var v=(i&&i.value||'').trim(), w=(j&&j.value||'').trim();
   if(!v){ if(msg) msg.textContent='Please type your first name.'; return false; }
+  if(!w){ if(msg) msg.textContent='Please type your last name too.'; return false; }
   if(go){ go.disabled=true; go.textContent='Saving\u2026'; }
   fetch(BK_BASE+'/public/backer/name',{method:'POST',headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({email:(bkEmail||window.__epEmail||''), pass:(window.__epPass||''), name:v, session:epSession()})})
+    body:JSON.stringify({email:(bkEmail||window.__epEmail||''), pass:(window.__epPass||''), first_name:v, last_name:w, session:epSession()})})
     .then(function(r){ return r.json().catch(function(){ return {}; }); })
     .then(function(d){
       if(go){ go.disabled=false; go.textContent='Save'; }
       if(d && d.ok && d.first_name){
-        if(bkRec) bkRec.first_name=d.first_name;
+        if(bkRec){ bkRec.first_name=d.first_name; bkRec.last_name=d.last_name||''; }
         try{ stKeepWrite({verified:true, email:bkEmail, rec:bkRec, stats:(window.__bkStats||null), pass:(window.__epPass||'')}); }catch(e){}
         var n=document.getElementById('bk-hello-name'); if(n) n.textContent=d.first_name+'!';
         var b=document.getElementById('bk-fixname'); if(b) b.textContent='Not the right name?';
@@ -6948,9 +6949,10 @@ function bkRender(){
   /* their name at the top, and a way to give it or put it right */
   p.push('<div class="bk-hello"><span class="bk-hello-name" id="bk-hello-name">'+(nm?bkEsc(nm)+'!':'Hello!')+'</span>'
     +'<button type="button" class="bk-fixname" id="bk-fixname" onclick="bkNameForm()">'+(nm?'Not the right name?':'Tell us your name')+'</button></div>');
+  var ln=(r.last_name||'').trim();
   p.push('<form class="bk-nameform" id="bk-nameform" onsubmit="return bkNameSave(event)"'+(nm?' style="display:none"':'')+'>'
-    +'<label for="bk-name">Your first name</label>'
-    +'<input id="bk-name" class="bk-name-in" type="text" maxlength="40" autocomplete="given-name" value="'+bkEsc(nm)+'">'
+    +'<input id="bk-name" class="bk-name-in" type="text" maxlength="40" autocomplete="given-name" placeholder="First name" aria-label="First name" value="'+bkEsc(nm)+'">'
+    +'<input id="bk-lname" class="bk-name-in" type="text" maxlength="40" autocomplete="family-name" placeholder="Last name" aria-label="Last name" value="'+bkEsc(ln)+'">'
     +'<button type="submit" class="bk-name-go">Save</button>'
     +'<span class="bk-name-msg" id="bk-name-msg"></span></form>');
 
@@ -7006,7 +7008,7 @@ function bkPreviewAllowed(){
 function bkPreview(){
   var S={
     once:   {first_name:'Sarah',    total_gbp:20,   pay_count:1,  top_pct:62,  gives_monthly:false},
-    repeat: {first_name:'David',    total_gbp:145,  pay_count:4,  top_pct:18,  gives_monthly:false},
+    repeat: {first_name:'David',    last_name:'Hewson', total_gbp:145,  pay_count:4,  top_pct:18,  gives_monthly:false},
     major:  {first_name:'Elizabeth',total_gbp:5500, pay_count:9,  top_pct:0.4, gives_monthly:false},
     over:   {first_name:'Priya',    total_gbp:640,  pay_count:32, top_pct:3,   gives_monthly:true, monthly_gbp:50},
     at:     {first_name:'Tom',      total_gbp:240,  pay_count:12, top_pct:12,  gives_monthly:true, monthly_gbp:20},
