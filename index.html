@@ -5271,10 +5271,13 @@ document.addEventListener('keydown', function(e){
   else open();
 })();
 
-/* on a refresh, put the box back exactly where it was */
+/* on a refresh, put the box back exactly where it was; arriving by a link shows the page itself */
 (function(){
   var kept=epStoryKept();
   if(!kept || !kept.open) return;
+  var how='navigate';
+  try{ var nav=performance.getEntriesByType('navigation')[0]; if(nav && nav.type) how=nav.type; }catch(e){}
+  if(how!=='reload' && how!=='back_forward' && !/^\/story\//i.test(location.pathname||'')) return;
   var open=function(){ epStory(parseInt(kept.slide||1,10)||1); };
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', open);
   else open();
