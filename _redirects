@@ -1,2 +1,4 @@
 # Every slide has its own address: /story/N is the story itself, opened at slide N.
 /story/* /story-app/ 200
+# A door on our own domain to the preview build, so a preview link carries our name, not pages.dev.
+/go/preview https://backer-feedback-oct-2026.execprosec-website.pages.dev/story-app/ 302
