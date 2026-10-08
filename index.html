@@ -5208,11 +5208,11 @@ function epStoryKept(){
   try{ return JSON.parse(sessionStorage.getItem(EP_SB_KEY)||'null'); }catch(e){ return null; }
 }
 
-function epStory(slide){
+function epStory(slide, extra){
   var box=document.getElementById('storybox'), f=document.getElementById('sb-frame');
   if(!box||!f) return false;
   if(!f.getAttribute('data-loaded')){
-    f.src='/story-app/?embed=1' + (slide>1 ? ('&slide='+slide) : '');
+    f.src='/story-app/?embed=1' + (slide>1 ? ('&slide='+slide) : '') + (extra||'');
     f.setAttribute('data-loaded','1');
   }
   epStoryKeep({open:1});
@@ -5226,6 +5226,8 @@ function epStoryClose(){
   var box=document.getElementById('storybox');
   if(!box) return false;
   epStoryKeep({open:0});
+  /* the address bar goes back to the page itself */
+  try{ if(/^\/story\//i.test(location.pathname||'')) history.replaceState(null,'','/'); }catch(e){}
   box.classList.remove('open');
   box.setAttribute('aria-hidden','true');
   document.body.classList.remove('sb-open');
@@ -5234,7 +5236,11 @@ function epStoryClose(){
 /* the close button and the Escape key inside the slideshow reach us this way */
 window.addEventListener('message', function(e){
   if(!e || !e.data) return;
-  if(e.data.ep==='story-slide') epStoryKeep({slide:e.data.n});
+  if(e.data.ep==='story-slide'){
+    epStoryKeep({slide:e.data.n});
+    /* every slide has its own address, shown while it is on screen */
+    try{ var n=parseInt(e.data.n,10); if(n>=1) history.replaceState(null,'','/story/'+n); }catch(x){}
+  }
   if(e.data.ep==='story-close') epStoryClose();
   /* while a photograph, quote or film is open inside the story, our close button steps
      aside so the reader only ever sees one cross */
@@ -5248,6 +5254,22 @@ document.addEventListener('keydown', function(e){
   var box=document.getElementById('storybox');
   if(box && box.classList.contains('open')) epStoryClose();
 });
+
+/* A personal link, a preview persona or a slide address opens the story here, in the box on
+   this page, so what sits behind the story is always the current home page. The story's own
+   build hands over to this page when it is opened on its own. */
+(function(){
+  var q; try{ q=new URLSearchParams(location.search||''); }catch(e){ return; }
+  var m=/^\/story\/(\d+)/i.exec(location.pathname||'');
+  var slide=parseInt(q.get('slide')||(m?m[1]:'0'),10)||0;
+  var extra='';
+  if(q.get('link')) extra+='&link='+encodeURIComponent(q.get('link'));
+  if(q.get('bk')) extra+='&bk='+encodeURIComponent(q.get('bk'));
+  if(!extra && !slide && q.get('story')!=='1') return;
+  var open=function(){ epStory(slide>1?slide:1, extra); };
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', open);
+  else open();
+})();
 
 /* on a refresh, put the box back exactly where it was */
 (function(){

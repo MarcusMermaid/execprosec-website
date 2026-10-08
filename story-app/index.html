@@ -2,6 +2,24 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<script>
+/* This page is the story's own build. It is shown inside the box on the home page; opened on
+   its own it hands over to the home page, which opens the box with the same request, so what
+   sits behind the story is always the current home page and never a stale copy of it. */
+(function(){
+  try{
+    if(window.self!==window.top) return;
+    var q=new URLSearchParams(location.search||''), out=new URLSearchParams();
+    if(q.get('link')) out.set('link', q.get('link'));
+    if(q.get('bk')) out.set('bk', q.get('bk'));
+    var m=/^\/story\/(\d+)/i.exec(location.pathname||'');
+    var slide=parseInt(q.get('slide')||(m?m[1]:'0'),10)||0;
+    if(slide>1) out.set('slide', String(slide));
+    if(!out.toString()) out.set('story','1');
+    location.replace('/?'+out.toString());
+  }catch(e){}
+})();
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ExecProsec - Compatibility Assessment</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -7981,17 +7999,7 @@ body.ep-embed{overflow:hidden}
   /* The frame on the home page is the only place this layout makes sense. Opened on its own,
      from a shared or copied address, the same page is shown in the ordinary layout, at the
      slide asked for. */
-  var framed=true;
-  try{ framed=(window.self!==window.top); }catch(e){ framed=true; }
-  if(!framed){
-    var plain=parseInt(q.get('slide')||'0',10);
-    if(plain>=1){
-      window.addEventListener('DOMContentLoaded', function(){
-        setTimeout(function(){ try{ navTo('/story/'+plain); }catch(e){} }, 0);
-      });
-    }
-    return;
-  }
+  try{ if(window.self===window.top) return; }catch(e){}   /* on its own, the page has already handed over */
 
   document.documentElement.classList.add('ep-embed');
   var mark=function(){ if(document.body) document.body.classList.add('ep-embed'); };
