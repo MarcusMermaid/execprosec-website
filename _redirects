@@ -1,2 +1,2 @@
 # Every slide has its own address: /story/N is the story itself, opened at slide N.
-/story/* /story-app/index.html 200
+/story/* /story-app/ 200
