@@ -3553,10 +3553,13 @@ window.addEventListener('popstate', function(){
 window.addEventListener('DOMContentLoaded', function(){
   updateProgress(0);
   routeFromPath(location.pathname);
-  /* a preview persona goes straight to its own slide, the same as a personal link does */
+  /* a preview persona goes straight to its own slide, the same as a personal link does, and
+     ?slide=N asks for a particular slide */
   try{
-    if(BK_Q && bkPreviewAllowed() && !/^\/story\/\d+$/i.test(location.pathname||'')){
-      setTimeout(function(){ try{ navTo('/story/'+((ST_BACKER>=0?ST_BACKER:0)+1)); }catch(e){} }, 0);
+    var q0=new URLSearchParams(location.search||'');
+    var asked=parseInt(q0.get('slide')||'0',10)||0;
+    if(q0.get('embed')!=='1' && !q0.get('link') && (asked>=1 || (BK_Q && bkPreviewAllowed())) && !/^\/story\/\d+$/i.test(location.pathname||'')){
+      setTimeout(function(){ try{ navTo('/story/'+(asked>=1?asked:((ST_BACKER>=0?ST_BACKER:0)+1))); }catch(e){} }, 0);
     }
   }catch(e){}
   /* somebody coming back from Stripe is checked before they are thanked */
@@ -6752,7 +6755,9 @@ function bkFromLink(){
       try{ epTrack('story_gate_link', bkRec?'backer':'no_record', 'story'); }catch(e){}
       window.__bkLettingThrough=true;
       /* the link opens the story itself, at their own slide, not the cover page */
-      if(/^\/story\/\d+$/i.test(location.pathname||'')){ if(ST_BACKER>=0) stStepTo(ST_BACKER); else stStep(1); }
+      var askedFor=0; try{ askedFor=parseInt(new URLSearchParams(location.search).get('slide')||'0',10)||0; }catch(e){}
+      if(askedFor>=1){ navTo('/story/'+askedFor); }
+      else if(/^\/story\/\d+$/i.test(location.pathname||'')){ if(ST_BACKER>=0) stStepTo(ST_BACKER); else stStep(1); }
       else { navTo('/story/'+((ST_BACKER>=0?ST_BACKER:0)+1)); }
       window.__bkLettingThrough=false;
     })
