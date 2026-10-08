@@ -3082,7 +3082,7 @@ body.sb-open{overflow:hidden}
 
   <footer class="site-foot">
     <span class="sf-line">ExecProsec Ltd &middot; Not-for-profit &middot; Funded entirely by the public</span>
-    <span class="sf-line"><a href="#" class="sf-manage" onclick="return epManageOpen();">Change or stop your monthly backing</a></span>
+    <span class="sf-line"><a href="#" class="sf-manage" onclick="return epBackingManage();">Change or stop your monthly backing</a></span>
     <span class="sf-line">Registered in England and Wales</span>
     <span class="sf-line sf-num">10520032</span>
     <span class="sf-line">&copy; 2026 ExecProsec Ltd. All rights reserved.</span>
@@ -5488,7 +5488,7 @@ function epDonateFallback(tier){
 function epDonateOnce(){ epDonateStart('one_off'); }
 /* Existing backers reach their own billing page from the foot of the page; everyone else is sent
    into the story first, because nobody should back this without having read it. */
-function epManageOpen(){ epDonate(); epManage(); return false; }
+function epBackingManage(){ epDonate(); epManage(); return false; }
 function epManage(){
   epDbAt('manage');
   epDonateDrop();
