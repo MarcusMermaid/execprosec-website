@@ -52,7 +52,7 @@ footer a{color:rgba(255,255,255,.5);text-decoration:none}
 <div class="wrap">
 
   <header>
-    <a href="https://execprosec.org/" aria-label="ExecProsec home">
+    <a href="https://execprosec.org/" aria-label="ExecProsec home" target="_blank" rel="noopener">
       <img src="/_web/email/logo.png" alt="ExecProsec" width="55" height="34">
     </a>
     <span class="date">9 October 2026</span>
@@ -73,9 +73,9 @@ footer a{color:rgba(255,255,255,.5);text-decoration:none}
 
   <p>Secondly, read Our Story for the full detail of our work from the last 10 years here:</p>
   <div class="btns">
-    <a class="go" id="story" href="https://execprosec.org/story-app/">Open Our Story</a>
+    <a class="go" id="story" href="https://execprosec.org/story-app/" target="_blank" rel="noopener">Open Our Story</a>
     <!-- straight to "Back this work every month", slide 26 of the story -->
-    <a class="go skip" id="skip" href="https://execprosec.org/story/26">Skip the detail: back ExecProsec monthly now</a>
+    <a class="go skip" id="skip" href="https://execprosec.org/story/26" target="_blank" rel="noopener">Skip the detail: back ExecProsec monthly now</a>
   </div>
 
   <p>There is likely to be another referendum on EU membership, according to Prime Minister
@@ -95,7 +95,7 @@ footer a{color:rgba(255,255,255,.5);text-decoration:none}
   </div>
 
   <footer>
-    <a href="https://execprosec.org/">execprosec.org</a> &nbsp;&middot;&nbsp;
+    <a href="https://execprosec.org/" target="_blank" rel="noopener">execprosec.org</a> &nbsp;&middot;&nbsp;
     Sent to you because you have backed this work.
   </footer>
 </div>
@@ -313,13 +313,14 @@ footer a{color:rgba(255,255,255,.5);text-decoration:none}
   window.addEventListener('pagehide', leaving);
   document.addEventListener('visibilitychange', function () {
     if (document.visibilityState === 'hidden') leaving();
+    else sentLeave = false;     /* back from the story tab: the next leave is reported too */
   });
 
   /* ---- who is watching ---- */
   var story = document.getElementById('story');
   var skip = document.getElementById('skip');
   if (link) {
-    story.href = 'https://execprosec.org/story-app/?link=' + encodeURIComponent(link);
+    story.href = 'https://execprosec.org/story-app/?link=' + encodeURIComponent(link) + '&slide=2';
     skip.href = 'https://execprosec.org/story-app/?link=' + encodeURIComponent(link) + '&slide=26';
     fetch(API + '/public/backer/link', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
