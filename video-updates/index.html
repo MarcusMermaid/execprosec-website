@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- A page reached only by the link we email. Not in the navigation, not in the sitemap,
+     and told plainly to stay out of search results. -->
+<meta name="robots" content="noindex, nofollow, noarchive">
+<title>A video update for our backers | ExecProsec</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#041440;--navy2:#0a2060;--off:#f7f6f2;--gold:#DDBC66;--salmon:#D64045}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--navy);color:#fff;font:400 16px/1.7 'DM Sans',sans-serif;
+  -webkit-font-smoothing:antialiased}
+.wrap{max-width:900px;margin:0 auto;padding:28px 20px 72px}
+header{display:flex;align-items:center;gap:14px;margin:0 0 34px}
+header a{display:block;line-height:0}
+header img{height:42px;width:auto;display:block}
+h1{font-family:'DM Serif Display',serif;font-weight:400;font-size:clamp(27px,4.4vw,40px);
+  line-height:1.16;margin:0 0 14px}
+h1 u{text-decoration-color:var(--salmon);text-underline-offset:6px;text-decoration-thickness:3px}
+.lede{font-size:17px;line-height:1.75;color:rgba(255,255,255,.82);max-width:640px;margin:0 0 26px}
+.hello{font-size:14px;letter-spacing:.04em;color:var(--gold);margin:0 0 10px;min-height:21px}
+
+.player{position:relative;background:#000;border:4px solid var(--off);
+  box-shadow:0 24px 70px rgba(0,0,0,.5);line-height:0}
+video{width:100%;height:auto;display:block;background:#000}
+.vbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+  margin:12px 0 0;font-size:13px;color:rgba(255,255,255,.5)}
+.vq{display:flex;gap:8px}
+.vq button{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.22);color:#fff;
+  font:600 12px/1 'DM Sans',sans-serif;padding:7px 12px;border-radius:999px;cursor:pointer}
+.vq button.on{background:rgba(221,188,102,.2);border-color:var(--gold);color:var(--gold)}
+.vq button:hover{border-color:var(--gold)}
+
+.after{margin:46px 0 0;padding:28px 30px;border:1px solid rgba(221,188,102,.38);
+  border-left:3px solid var(--gold);background:rgba(221,188,102,.09)}
+.after h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:25px;line-height:1.2;
+  margin:0 0 12px}
+.after p{color:rgba(255,255,255,.88);margin:0 0 20px;max-width:620px}
+.go{display:inline-block;padding:17px 30px;border-radius:8px;cursor:pointer;text-decoration:none;
+  border:1px solid rgba(150,60,60,.5);
+  background:linear-gradient(180deg,#e88080 0%,#e06c6c 45%,#bf4f4f 100%);
+  color:#fff;font:700 16px/1.2 'DM Sans',sans-serif;
+  box-shadow:0 5px 0 rgba(130,55,55,.75),0 12px 22px rgba(0,0,0,.38),
+    0 2px 1px rgba(255,255,255,.4) inset;
+  transition:transform .12s ease,box-shadow .16s ease,filter .16s ease}
+.go:hover{filter:brightness(1.05);transform:translateY(-2px);
+  box-shadow:0 7px 0 rgba(130,55,55,.8),0 16px 28px rgba(0,0,0,.42),0 2px 1px rgba(255,255,255,.45) inset}
+.go:active{transform:translateY(4px);box-shadow:0 1px 0 rgba(130,55,55,.8),0 5px 10px rgba(0,0,0,.4)}
+.small{margin:16px 0 0;font-size:13px;color:rgba(255,255,255,.45)}
+footer{margin:54px 0 0;padding-top:22px;border-top:1px solid rgba(255,255,255,.12);
+  font-size:13px;color:rgba(255,255,255,.4)}
+footer a{color:rgba(255,255,255,.6)}
+@media(max-width:640px){
+  .wrap{padding:18px 16px 56px}
+  .after{padding:22px 18px}
+  .go{display:block;text-align:center}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <a href="https://execprosec.org/" aria-label="ExecProsec home">
+      <img src="/_web/email/logo.png" alt="ExecProsec" width="68" height="42">
+    </a>
+  </header>
+
+  <p class="hello" id="hello"></p>
+  <h1>A video update for the people who <u>paid for this work</u>.</h1>
+  <p class="lede">This is the long update. Marcus takes you through where the case stands, what
+    was done to it, and what happens next. Watch it when you have the time to sit with it.</p>
+
+  <div class="player">
+    <video id="v" controls playsinline preload="metadata"
+           poster="https://pub-583fc80826ad472382601185eaf83b3a.r2.dev/backer-update.jpg">
+      Your browser cannot play this video.
+    </video>
+  </div>
+  <div class="vbar">
+    <span id="vnote">17 minutes 39 seconds</span>
+    <span class="vq">
+      <button type="button" id="q-lite">Low data</button>
+      <button type="button" id="q-hq">Best quality</button>
+    </span>
+  </div>
+
+  <div class="after">
+    <h2>When you have watched it, read the rest.</h2>
+    <p>The full story is on the site: ten and a half years, slide by slide, with the evidence and
+      the documents. It ends with the one thing that decides whether this work finishes.</p>
+    <a class="go" id="story" href="https://execprosec.org/">Read the full story</a>
+    <p class="small">The same story you can reach from our home page. It opens where you left off.</p>
+  </div>
+
+  <footer>
+    <a href="https://execprosec.org/">execprosec.org</a> &nbsp;&middot;&nbsp;
+    <a href="https://execprosec.org/terms">Terms</a> &nbsp;&middot;&nbsp;
+    Sent to you because you have backed this work.
+  </footer>
+</div>
+
+<script>
+/* ---------------------------------------------------------------------------------------
+   What this page measures, and why it measures it this way.
+
+   Marcus needs to know, for each backer he sends this to: how long they watched, where they
+   stopped, which parts they went back over, and whether they reached the end.
+
+   So the page keeps a map of the video in five second blocks and counts how many times the
+   playhead passes through each one. A block watched twice counts twice, which is what makes
+   "they watched that bit three times" visible. The map goes to Central when they leave, as one
+   string of digits, one character per block. Everything else is a handful of plain events.
+
+   It is deliberately quiet: a heartbeat a minute and the discrete moments, rather than an event
+   every second, so a thousand backers cannot swamp the rate limit or the table.
+
+   Who they are comes from the link in their email. Without a link the page still works and the
+   watching is still recorded, just against a session rather than a person.
+--------------------------------------------------------------------------------------- */
+(function(){
+  var API   = 'https://central-2-mcp-production.up.railway.app';
+  var R2    = 'https://pub-583fc80826ad472382601185eaf83b3a.r2.dev/';
+  var PAGE  = 'video-updates';
+  var BLOCK = 5;                     /* seconds per block of the watch map */
+
+  var v = document.getElementById('v');
+  var link = (/[?&]link=([A-Za-z0-9_.\-]+)/.exec(location.search || '') || [])[1] || '';
+  var who = { email: '', pass: '' };
+  var sess = '';
+  try {
+    sess = sessionStorage.getItem('ep-vu-s') || '';
+    if (!sess) { sess = 'vu' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
+    sessionStorage.setItem('ep-vu-s', sess);
+  } catch (e) { sess = 'vu' + Date.now().toString(36); }
+
+  /* ---- talking to Central ---- */
+  function track(event, detail, meta, beacon) {
+    var body = JSON.stringify({
+      event: event, detail: String(detail === undefined ? '' : detail).slice(0, 180),
+      page: PAGE, site: 'execprosec', session: sess,
+      email: who.email, pass: who.pass, meta: String(meta || '').slice(0, 4000)
+    });
+    try {
+      if (beacon && navigator.sendBeacon) {
+        /* text/plain: anything else makes it a preflighted request, which a page being
+           closed never gets to finish */
+        navigator.sendBeacon(API + '/public/track', new Blob([body], { type: 'text/plain' }));
+        return;
+      }
+      fetch(API + '/public/track', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: body, keepalive: true
+      }).catch(function(){});
+    } catch (e) {}
+  }
+
+  /* ---- which rendition ---- */
+  function slowLine() {
+    try {
+      var c = navigator.connection || {};
+      if (c.saveData) return true;
+      if (c.effectiveType && /(^|-)2g$|^3g$/.test(c.effectiveType)) return true;
+      if (typeof c.downlink === 'number' && c.downlink > 0 && c.downlink < 1.8) return true;
+    } catch (e) {}
+    return false;
+  }
+  var quality = '';
+  try { quality = localStorage.getItem('ep-vq') || ''; } catch (e) {}
+  if (quality !== 'hq' && quality !== 'lite') quality = slowLine() ? 'lite' : 'hq';
+
+  function load(which, keepTime) {
+    var at = keepTime ? (v.currentTime || 0) : 0;
+    var playing = keepTime && !v.paused;
+    v.src = R2 + 'backer-update-' + which + '.mp4';
+    v.load();
+    if (at > 0) {
+      v.addEventListener('loadedmetadata', function once() {
+        v.removeEventListener('loadedmetadata', once);
+        try { v.currentTime = at; } catch (e) {}
+        if (playing) { v.play().catch(function(){}); }
+      });
+    }
+    document.getElementById('q-hq').className = which === 'hq' ? 'on' : '';
+    document.getElementById('q-lite').className = which === 'lite' ? 'on' : '';
+  }
+  function choose(which) {
+    if (which === quality) return;
+    quality = which;
+    try { localStorage.setItem('ep-vq', which); } catch (e) {}
+    track('video_quality', which);
+    load(which, true);
+  }
+  document.getElementById('q-hq').onclick = function(){ choose('hq'); };
+  document.getElementById('q-lite').onclick = function(){ choose('lite'); };
+  load(quality, false);
+
+  /* ---- the watch map ---- */
+  var blocks = [];          /* how many times each five second block has been played through */
+  var lastBlock = -1;
+  var furthest = 0;         /* the deepest point they ever reached */
+  var watchedSeconds = 0;   /* real seconds of video played, rewatches included */
+  var lastTime = 0;
+  var marks = { 25: 0, 50: 0, 75: 0, 90: 0 };
+  var started = false, finished = false;
+
+  function duration() { return (v.duration && isFinite(v.duration)) ? v.duration : 0; }
+  function pct() { var d = duration(); return d ? Math.round((furthest / d) * 100) : 0; }
+
+  function mapString() {
+    /* one character per block, capped at 9, so the whole of a 17 minute video is 212 characters */
+    var out = '';
+    for (var i = 0; i < blocks.length; i++) {
+      var n = blocks[i] || 0;
+      out += n > 9 ? '9' : String(n);
+    }
+    return out;
+  }
+  function summary() {
+    var d = duration();
+    var seen = 0, again = 0;
+    for (var i = 0; i < blocks.length; i++) {
+      if (blocks[i]) { seen++; if (blocks[i] > 1) again++; }
+    }
+    return JSON.stringify({
+      secs: Math.round(watchedSeconds),            /* how long they actually watched */
+      furthest: Math.round(furthest),              /* the deepest point reached */
+      pct: pct(),                                  /* and as a percentage */
+      of: Math.round(d),                           /* the length of the video */
+      covered: blocks.length ? Math.round((seen / blocks.length) * 100) : 0,
+      rewatched: again,                            /* blocks watched more than once */
+      finished: finished,
+      quality: quality,
+      map: mapString()
+    });
+  }
+
+  v.addEventListener('loadedmetadata', function () {
+    var d = duration();
+    if (d && !blocks.length) {
+      blocks = new Array(Math.ceil(d / BLOCK));
+      for (var i = 0; i < blocks.length; i++) blocks[i] = 0;
+    }
+  });
+
+  v.addEventListener('timeupdate', function () {
+    var t = v.currentTime || 0;
+    var step = t - lastTime;
+    /* only count time that ran forwards at something like real speed; a jump is a seek */
+    if (step > 0 && step < 1.5) watchedSeconds += step;
+    lastTime = t;
+    if (t > furthest) furthest = t;
+
+    var b = Math.floor(t / BLOCK);
+    if (b !== lastBlock && b >= 0 && b < blocks.length) {
+      blocks[b] = (blocks[b] || 0) + 1;
+      lastBlock = b;
+    }
+
+    var p = pct();
+    for (var key in marks) {
+      if (!marks[key] && p >= Number(key)) {
+        marks[key] = 1;
+        track('video_milestone', key + '%', summary());
+      }
+    }
+  });
+
+  v.addEventListener('play', function () {
+    if (!started) { started = true; track('video_start', quality, summary()); }
+    else { track('video_play', Math.round(v.currentTime) + 's'); }
+  });
+
+  v.addEventListener('pause', function () {
+    /* the pause at the very end is the end, not a pause */
+    if (v.ended) return;
+    track('video_pause', Math.round(v.currentTime) + 's', summary());
+  });
+
+  var seekFrom = null;
+  v.addEventListener('seeking', function () { if (seekFrom === null) seekFrom = lastTime; });
+  v.addEventListener('seeked', function () {
+    var to = v.currentTime || 0;
+    if (seekFrom !== null && Math.abs(to - seekFrom) > 1.5) {
+      track('video_seek', Math.round(seekFrom) + 's->' + Math.round(to) + 's',
+            (to < seekFrom ? 'back' : 'forward'));
+    }
+    seekFrom = null;
+    lastTime = to;
+    lastBlock = -1;      /* a new pass through this block counts again */
+  });
+
+  v.addEventListener('ended', function () {
+    finished = true;
+    track('video_complete', Math.round(watchedSeconds) + 's', summary());
+  });
+
+  v.addEventListener('error', function () { track('video_error', quality); });
+  var stalls = 0;
+  v.addEventListener('stalled', function () {
+    stalls++;
+    if (stalls === 2 && quality === 'hq') { choose('lite'); track('video_autodrop', 'stalled twice'); }
+  });
+
+  /* a heartbeat while it is playing, so a reader who never closes the tab is still counted */
+  setInterval(function () {
+    if (!v.paused && !v.ended && started) track('video_heartbeat', Math.round(v.currentTime) + 's', summary());
+  }, 60000);
+
+  /* and the whole picture when they go */
+  var sentLeave = false;
+  function leaving() {
+    if (sentLeave || !started) return;
+    sentLeave = true;
+    track('video_leave', Math.round(watchedSeconds) + 's', summary(), true);
+  }
+  window.addEventListener('pagehide', leaving);
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'hidden') leaving();
+  });
+
+  /* ---- who is watching ---- */
+  var story = document.getElementById('story');
+  if (link) {
+    story.href = 'https://execprosec.org/?link=' + encodeURIComponent(link);
+    fetch(API + '/public/backer/link', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ link: link })
+    }).then(function (r) { return r.json(); }).then(function (d) {
+      if (!d || !d.ok) { track('video_open', 'link not recognised'); return; }
+      who.email = d.email || '';
+      who.pass = d.pass || '';
+      var rec = d.rec || {};
+      var name = (rec.first_name || '').trim();
+      if (name && /^[A-Za-z'’\-]{2,20}$/.test(name)) {
+        document.getElementById('hello').textContent = 'For ' + name;
+      }
+      track('video_open', 'personal link');
+    }).catch(function () { track('video_open', 'link check failed'); });
+  } else {
+    track('video_open', 'no link');
+  }
+
+  story.addEventListener('click', function () {
+    track('video_to_story', Math.round(watchedSeconds) + 's watched', summary());
+  });
+})();
+</script>
+</body>
+</html>

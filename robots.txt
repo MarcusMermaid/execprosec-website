@@ -12,4 +12,7 @@ Disallow: /terms
 Disallow: /support
 Disallow: /donate
 
+# reached only by the link we email, and not for search
+Disallow: /video-updates
+
 Sitemap: https://execprosec.org/sitemap.xml
