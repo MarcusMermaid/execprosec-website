@@ -1914,6 +1914,9 @@ body.sb-open{overflow:hidden}
 .db-go[disabled]::after{display:none}
 .db-go[disabled]{opacity:.6;cursor:default;transform:none;box-shadow:none}
 @media(prefers-reduced-motion:reduce){.db-amt,.db-go{transition:none}}
+@keyframes epLowFlash{0%,100%{background:#fdecec}50%{background:#f39a9e}}
+.pb-in.pb-low,.db-other-in.pb-low{border-color:#D64045;box-shadow:0 0 0 2px rgba(214,64,69,.35);background:#fdecec;color:#7a1015;animation:epLowFlash .45s ease 3}
+.pb-min.pb-low,.db-min.pb-low{color:#ff6b70;font-weight:700}
 .db-note{font:400 13px/1.7 'DM Sans',sans-serif;color:rgba(255,255,255,.55);margin:18px 0 0}
 .db-note b{color:rgba(255,255,255,.8);font-weight:600}
 .db-once{margin:22px 0 0;padding:18px 0 0;border-top:1px solid rgba(255,255,255,.14)}
@@ -5366,9 +5369,31 @@ function epTierLabel(){
 }
 function epMoney(v){ v=Number(v)||0; return (Math.round(v*100)%100===0) ? String(Math.round(v)) : v.toFixed(2); }
 /* the backer typed their own amount: it becomes the pick, the tier buttons let go */
+var EP_LOW_T=null;
+function epLow(inp, low){
+  if(!inp) return;
+  inp.classList.remove('pb-low');
+  var note=document.getElementById('db-min'); if(note) note.classList.toggle('pb-low', !!low);
+  if(low){ void inp.offsetWidth; inp.classList.add('pb-low'); }
+  var go=document.getElementById('db-go');
+  if(go){ go.disabled=!!low; if(low) go.textContent='The minimum is \u00a310 a month'; }
+}
 function epOther(inp){
-  var v=parseFloat(inp.value);
-  if(!(v>=10)){ return; }
+  var raw=String(inp.value||'').trim(), v=parseFloat(raw);
+  if(EP_LOW_T){ clearTimeout(EP_LOW_T); EP_LOW_T=null; }
+  if(raw===''){
+    epLow(inp, false);
+    var d=document.querySelector('.db-amt[data-k="monthly_20"]'); if(d) epPick(d);
+    return;
+  }
+  if(!(v>=10)){
+    EP_LOW_T=setTimeout(function(){
+      epLow(inp, true);
+      try{ epTrack('donate_amount_too_low', raw, 'donate'); }catch(e){}
+    }, 700);
+    return;
+  }
+  epLow(inp, false);
   EP_OTHER=Math.round(v*100)/100;
   EP_PICKED='monthly_custom';
   epDbAt('tier', EP_PICKED);
@@ -5407,6 +5432,7 @@ function epDonateChooser(){
     '<div class="db-other"><label for="db-other">Or your own amount</label><span class="db-cur">&pound;</span>'+
     '<input id="db-other" class="db-input db-other-in" type="number" min="10" step="1" inputmode="decimal" placeholder="30" '+
     'value="'+(EP_PICKED==='monthly_custom'&&EP_OTHER?EP_OTHER:'')+'" oninput="epOther(this)"><span class="db-pm">a month</span></div>'+
+    '<p class="db-note db-min" id="db-min">The minimum is &pound;10 a month.</p>'+
     '<p class="db-note db-avg">We need an average of &pound;20 a month per backer for ExecProsec to be financially viable.</p>'+
     '<button class="db-go" id="db-go" type="button" onclick="epDonateStart()">Back ExecProsec with '+
       epTierLabel()+' a month</button>'+
@@ -5420,7 +5446,7 @@ function epDonateChooser(){
 }
 function epPick(btn){
   EP_PICKED = btn.getAttribute('data-k');
-  var other=document.getElementById('db-other'); if(other){ other.value=''; }
+  var other=document.getElementById('db-other'); if(other){ other.value=''; epLow(other, false); }
   epDbAt('tier', EP_PICKED);
   var all=document.querySelectorAll('.db-amt');
   for(var i=0;i<all.length;i++){ all[i].classList.toggle('on', all[i]===btn); }
@@ -5433,6 +5459,8 @@ function epEsc(x){
     .replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 }
 function epDonateStart(which){
+  var own=document.getElementById('db-other');
+  if(!which && own && String(own.value||'').trim()!=='' && !(parseFloat(own.value)>=10)){ epLow(own, true); return; }
   var tier = which || EP_PICKED;
   var go=document.getElementById('db-go');
   if(go && !which){ go.disabled=true; go.textContent='One moment\u2026'; }
