@@ -6802,14 +6802,17 @@ function stLoadingHide(){
   var d=document.getElementById('st-loading'); if(d && d.parentNode) d.parentNode.removeChild(d);
 }
 function bkFromLink(){
-  if(!BK_LINK || window.__bkChecked) return;
+  /* a personal link always decides who is reading, even in a tab that already holds somebody
+     else from the last two hours (a shared family computer, or one person's two links) */
+  if(!BK_LINK || window.__bkLinkDone) return;
+  window.__bkLinkDone=true;
   fetch(BK_BASE+'/public/backer/link',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({link:BK_LINK})})
     .then(function(r){ return r.json(); })
     .then(function(d){
       if(!(d && d.ok)){ stLoadingHide(); return; }
       bkEmail=d.email||''; bkRec=d.found?d.rec:null;
       try{ window.__bkStats=d.stats||null; window.__epEmail=bkEmail; if(d['pass']) window.__epPass=d['pass']; }catch(e){}
-      window.__bkChecked=true;
+      window.__bkChecked=true; window.__bkRestored=false;
       stKeepWrite({verified:true, email:bkEmail, rec:bkRec, stats:(window.__bkStats||null), pass:(window.__epPass||'')});
       try{ epTrack('story_gate_link', bkRec?'backer':'no_record', 'story'); }catch(e){}
       window.__bkLettingThrough=true;
