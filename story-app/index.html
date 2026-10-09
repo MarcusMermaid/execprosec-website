@@ -1387,7 +1387,7 @@ html:has(body.story-mode){overflow:hidden}
 .why-btns{display:flex;flex-wrap:nowrap;align-items:stretch;gap:10px;margin-top:26px}
 .why-btns button{flex:0 1 auto;white-space:normal;line-height:1.25;text-align:center}
 .why-btns .paynot{margin-left:0;border-color:#D64045;color:#D64045;background:rgba(214,64,69,.08)}
-.why-btns .paynot:hover{background:rgba(214,64,69,.18);border-color:#D64045;color:#fff}
+.why-btns .paynot:hover{background:rgba(214,64,69,.18);border-color:#D64045;color:#fff}.why-inline{display:none}@media(max-width:640px){.why-inline{display:flex;flex-direction:column;align-items:center;gap:12px;max-width:250px;margin:14px auto 20px}.why-inline button{width:100%}}
 .calw{display:flex;align-items:center;justify-content:center;gap:34px;flex:0 0 auto}
 .calw .why-btns{margin-top:0;flex-direction:column;gap:12px;max-width:250px}
 @media(max-width:640px){.calw{flex-direction:column;gap:16px}}
@@ -7502,7 +7502,12 @@ function stRender(){
     for(var pi=0;pi<fs.paras.length;pi++) fp+='<p>'+fs.paras[pi]+'</p>';
     h+=fp+'</div>';
   }
-  else if(d.body) h+='<div class="fin-copy" style="margin-top:22px">'+d.body+'</div>';
+  else if(d.body){
+    /* the ask page: on phones the two buttons also sit above and below the words, because the
+       calendar's own buttons were not showing there */
+    var ask=(d.custom==='cal')?stWhyBtns().replace('class="why-btns"','class="why-btns why-inline"'):'';
+    h+='<div class="fin-copy" style="margin-top:22px">'+ask+d.body+ask+'</div>';
+  }
   else h+='<div class="fin-copy" style="margin-top:22px"><p>Placeholder \u2014 slide '+(stIdx+1)+' of '+ST_SLIDES+'. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p><p>Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</p></div>';
   if(d.vid) h+=stVidBox(typeof d.vid==='string'?d.vid:'');
   if(d.vnote) h+='<p class="stvnote">'+d.vnote+'</p>';
