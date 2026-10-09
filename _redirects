@@ -3,3 +3,6 @@
 # A door on our own domain to the preview build, so a preview link carries our name, not pages.dev.
 /go/preview https://backer-feedback-oct-2026.execprosec-website.pages.dev/story-app/ 302
 /go/preview-home https://backer-feedback-oct-2026.execprosec-website.pages.dev/ 302
+# The backer update page was at /video-updates for its first day.
+/video-updates /backer-updates/ 301
+/video-updates/* /backer-updates/ 301
