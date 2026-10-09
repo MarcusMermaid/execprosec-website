@@ -15,18 +15,34 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--navy);color:#fff;font:400 16px/1.7 'DM Sans',sans-serif;
   -webkit-font-smoothing:antialiased}
-.wrap{max-width:900px;margin:0 auto;padding:28px 20px 72px}
-header{display:flex;align-items:center;gap:14px;margin:0 0 34px}
+.wrap{max-width:720px;margin:0 auto;padding:28px 20px 72px}
+header{display:flex;align-items:center;justify-content:space-between;gap:14px;
+  margin:0 0 40px;padding:0 0 18px;border-bottom:1px solid rgba(255,255,255,.12)}
 header a{display:block;line-height:0}
 header img{height:42px;width:auto;display:block}
-h1{font-family:'DM Serif Display',serif;font-weight:400;font-size:clamp(27px,4.4vw,40px);
-  line-height:1.16;margin:0 0 14px}
+.kicker{font:600 12px/1.4 'DM Sans',sans-serif;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--gold)}
+h1{font-family:'DM Serif Display',serif;font-weight:400;font-size:clamp(28px,4.6vw,42px);
+  line-height:1.14;margin:0 0 30px}
 h1 u{text-decoration-color:var(--salmon);text-underline-offset:6px;text-decoration-thickness:3px}
-.lede{font-size:17px;line-height:1.75;color:rgba(255,255,255,.82);max-width:640px;margin:0 0 26px}
-.hello{font-size:14px;letter-spacing:.04em;color:var(--gold);margin:0 0 10px;min-height:21px}
 
-.player{position:relative;background:#000;border:4px solid var(--off);
-  box-shadow:0 24px 70px rgba(0,0,0,.5);line-height:0}
+.letter{font-size:17px;line-height:1.78;color:rgba(255,255,255,.88)}
+.letter p{margin:0 0 20px}
+.letter .dear{color:#fff;font-weight:500}
+.letter strong{color:#fff;font-weight:600}
+.letter a{color:var(--gold);text-underline-offset:3px}
+.letter a:hover{color:#fff}
+
+.step{margin:34px 0;padding:0 0 0 58px;position:relative}
+.step .n{position:absolute;left:0;top:2px;width:38px;height:38px;border-radius:50%;
+  border:1px solid var(--gold);color:var(--gold);display:flex;align-items:center;justify-content:center;
+  font:400 19px/1 'DM Serif Display',serif}
+.step h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:24px;line-height:1.25;
+  color:#fff;margin:4px 0 10px}
+.step p{margin:0 0 16px}
+
+.player{position:relative;background:#000;border:3px solid var(--off);
+  box-shadow:0 20px 56px rgba(0,0,0,.5);line-height:0;margin:16px 0 0}
 video{width:100%;height:auto;display:block;background:#000}
 .vbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
   margin:12px 0 0;font-size:13px;color:rgba(255,255,255,.5)}
@@ -36,11 +52,17 @@ video{width:100%;height:auto;display:block;background:#000}
 .vq button.on{background:rgba(221,188,102,.2);border-color:var(--gold);color:var(--gold)}
 .vq button:hover{border-color:var(--gold)}
 
-.after{margin:46px 0 0;padding:28px 30px;border:1px solid rgba(221,188,102,.38);
+.context{margin:34px 0;padding:22px 26px;border-left:3px solid var(--salmon);
+  background:rgba(255,255,255,.05);color:#fff}
+.context p{margin:0}
+.ask{margin:44px 0 0;padding:28px 30px;border:1px solid rgba(221,188,102,.38);
   border-left:3px solid var(--gold);background:rgba(221,188,102,.09)}
-.after h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:25px;line-height:1.2;
-  margin:0 0 12px}
-.after p{color:rgba(255,255,255,.88);margin:0 0 20px;max-width:620px}
+.ask p{margin:0 0 18px}
+.ask p:last-of-type{margin-bottom:24px}
+.sign{margin:40px 0 0}
+.sign p{margin:0}
+.sign .name{font-family:'DM Serif Display',serif;font-size:26px;color:#fff;margin:10px 0 2px}
+.sign .role{font-size:14px;color:rgba(255,255,255,.55)}
 .go{display:inline-block;padding:17px 30px;border-radius:8px;cursor:pointer;text-decoration:none;
   border:1px solid rgba(150,60,60,.5);
   background:linear-gradient(180deg,#e88080 0%,#e06c6c 45%,#bf4f4f 100%);
@@ -57,7 +79,12 @@ footer{margin:54px 0 0;padding-top:22px;border-top:1px solid rgba(255,255,255,.1
 footer a{color:rgba(255,255,255,.6)}
 @media(max-width:640px){
   .wrap{padding:18px 16px 56px}
-  .after{padding:22px 18px}
+  header{margin-bottom:30px}
+  .letter{font-size:16px}
+  .step{padding-left:0}
+  .step .n{position:static;margin:0 0 12px}
+  .context{padding:18px 18px}
+  .ask{padding:22px 18px}
   .go{display:block;text-align:center}
 }
 </style>
@@ -69,33 +96,70 @@ footer a{color:rgba(255,255,255,.6)}
     <a href="https://execprosec.org/" aria-label="ExecProsec home">
       <img src="/_web/email/logo.png" alt="ExecProsec" width="68" height="42">
     </a>
+    <span class="kicker">Backer update &middot; 9 October 2026</span>
   </header>
 
-  <p class="hello" id="hello"></p>
-  <h1>A video update for the people who <u>paid for this work</u>.</h1>
-  <p class="lede">This is the long update. Marcus takes you through where the case stands, what
-    was done to it, and what happens next. Watch it when you have the time to sit with it.</p>
+  <h1>An urgent update, and <u>the biggest I have ever sent</u>.</h1>
 
-  <div class="player">
-    <video id="v" controls playsinline preload="metadata"
-           poster="https://pub-583fc80826ad472382601185eaf83b3a.r2.dev/backer-update.jpg">
-      Your browser cannot play this video.
-    </video>
-  </div>
-  <div class="vbar">
-    <span id="vnote">17 minutes 39 seconds</span>
-    <span class="vq">
-      <button type="button" id="q-lite">Low data</button>
-      <button type="button" id="q-hq">Best quality</button>
-    </span>
-  </div>
+  <div class="letter">
+    <p class="dear" id="dear">Dear backers,</p>
+    <p>I have an urgent update for you. It is the biggest I&rsquo;ve ever sent out.</p>
 
-  <div class="after">
-    <h2>When you have watched it, read the rest.</h2>
-    <p>The full story is on the site: ten and a half years, slide by slide, with the evidence and
-      the documents. It ends with the one thing that decides whether this work finishes.</p>
-    <a class="go" id="story" href="https://execprosec.org/">Read the full story</a>
-    <p class="small">The same story you can reach from our home page. It opens where you left off.</p>
+    <section class="step">
+      <span class="n">1</span>
+      <h2>Watch this video</h2>
+      <p>Firstly, please watch this video from me, which also includes the beginning of the
+        documentary film.</p>
+      <div class="player">
+        <video id="v" controls playsinline preload="metadata"
+               poster="https://pub-583fc80826ad472382601185eaf83b3a.r2.dev/backer-update.jpg">
+          Your browser cannot play this video.
+        </video>
+      </div>
+      <div class="vbar">
+        <span id="vnote">17 minutes 39 seconds</span>
+        <span class="vq">
+          <button type="button" id="q-lite">Low data</button>
+          <button type="button" id="q-hq">Best quality</button>
+        </span>
+      </div>
+    </section>
+
+    <section class="step">
+      <span class="n">2</span>
+      <h2>Read Our Story</h2>
+      <p>Secondly, go to our home page and click on <strong>Our Story</strong> for the full detail.</p>
+      <a class="go" id="story" href="https://execprosec.org/">Open Our Story</a>
+    </section>
+
+    <div class="context">
+      <p>There is likely to be another referendum on EU membership, according to Prime Minister
+        Burnham. We need to make sure that this time politicians are not allowed to lie to the
+        public in order to manipulate the result.</p>
+    </div>
+
+    <section class="step">
+      <span class="n">3</span>
+      <h2>Read our amendment</h2>
+      <p>Thirdly, <a href="https://bills.parliament.uk/publications/67959/documents/8872"
+        target="_blank" rel="noopener" id="amend">our amendment here</a>, which has been tabled
+        for the House of Lords committee stage by Baroness Jones, achieves just that and much more.</p>
+    </section>
+
+    <div class="ask">
+      <p><strong>We need monthly funding right now</strong> to get the press and communications
+        campaign to empower our amendments.</p>
+      <p>Our long fight to criminalise lying in politics is about to be over, but only if we can
+        get the press to cover this story in a huge way.</p>
+      <a class="go" id="story2" href="https://execprosec.org/">Become a monthly backer</a>
+      <p class="small">Opens Our Story, which ends with the option to back us monthly.</p>
+    </div>
+
+    <div class="sign">
+      <p>Thank you all and kind regards,</p>
+      <p class="name">Marcus J Ball</p>
+      <p class="role">Founder, ExecProsec</p>
+    </div>
   </div>
 
   <footer>
@@ -326,8 +390,9 @@ footer a{color:rgba(255,255,255,.6)}
 
   /* ---- who is watching ---- */
   var story = document.getElementById('story');
+  var story2 = document.getElementById('story2');
   if (link) {
-    story.href = 'https://execprosec.org/?link=' + encodeURIComponent(link);
+    story.href = story2.href = 'https://execprosec.org/?link=' + encodeURIComponent(link);
     fetch(API + '/public/backer/link', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ link: link })
@@ -338,7 +403,7 @@ footer a{color:rgba(255,255,255,.6)}
       var rec = d.rec || {};
       var name = (rec.first_name || '').trim();
       if (name && /^[A-Za-z'’\-]{2,20}$/.test(name)) {
-        document.getElementById('hello').textContent = 'For ' + name;
+        document.getElementById('dear').textContent = 'Dear ' + name + ',';
       }
       track('video_open', 'personal link');
     }).catch(function () { track('video_open', 'link check failed'); });
@@ -346,8 +411,15 @@ footer a{color:rgba(255,255,255,.6)}
     track('video_open', 'no link');
   }
 
+  /* which of the two buttons sent them to the story, and how much they had watched first */
   story.addEventListener('click', function () {
     track('video_to_story', Math.round(watchedSeconds) + 's watched', summary());
+  });
+  story2.addEventListener('click', function () {
+    track('video_to_story', Math.round(watchedSeconds) + 's watched, monthly button', summary());
+  });
+  document.getElementById('amend').addEventListener('click', function () {
+    track('video_to_amendment', Math.round(watchedSeconds) + 's watched');
   });
 })();
 </script>
