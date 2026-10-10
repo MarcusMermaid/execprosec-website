@@ -50,7 +50,8 @@ body::before{
 
 /* -- HEADER -- */
 header{
-  width:100%;max-width:1400px;
+  /* the logo and menu line up with the 680px column every page uses */
+  width:100%;max-width:728px;
   padding:16px 24px 12px;
   display:flex;align-items:flex-start;justify-content:flex-start;
   gap:20px;
@@ -2013,6 +2014,7 @@ body.sb-open{overflow:hidden}
     </div>
     <nav class="nav-links">
       <a href="/poabamendments" onclick="openPage('poabamendments');setNavActive('Amendments');return false;">Amendments</a>
+      <a href="/hol-briefing" title="House of Lords briefing">HOL Briefing</a>
       <a href="/news" onclick="epNews();return false;">News</a>
       <a href="/testimonials" onclick="openPage('testimonials');setNavActive('Testimonials');return false;">Testimonials</a>
       <a href="/contact" onclick="openPage('contact');setNavActive('Contact');return false;">Contact</a>
@@ -3667,7 +3669,7 @@ function epNews(){
   epSetUrl('/news', 'In the news | ExecProsec');
 }
 function epHome(){
-  try{ showScreen('screen-intro'); setNavActive('Home'); document.title='ExecProsec'; }catch(e){}
+  try{ showScreen('screen-intro'); setNavActive('Home'); document.title='ExecProsec: private prosecutions and the campaign to make lying in public office a crime'; }catch(e){}
   try{ if((window.location.pathname+window.location.hash) !== '/'){
     history.replaceState(null, '', '/'); } }catch(e){}
 }

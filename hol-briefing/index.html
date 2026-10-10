@@ -24,7 +24,7 @@ html{scroll-behavior:smooth}
 body{margin:0;background:var(--navy);color:var(--white);font:400 16px/1.6 'DM Sans',sans-serif;-webkit-font-smoothing:antialiased}
 
 /* ---- header: the same bar as the live site ---- */
-#nav{display:flex;align-items:center;gap:18px;padding:16px 24px 12px}
+#nav{display:flex;align-items:center;gap:18px;width:100%;max-width:728px;margin:0 auto;padding:16px 24px 12px}
 #nav .logo{line-height:0}
 #nav .logo img{height:45px;width:auto;display:block}
 .nav-links{display:flex;align-items:center;flex-wrap:wrap;gap:1px;line-height:1.2}
@@ -113,7 +113,8 @@ figure.bill figcaption{font-size:13px;color:var(--muted);font-style:italic;margi
 <header id="nav">
   <a class="logo" href="/" aria-label="ExecProsec home"><img src="/_web/brand/logo-nav.png" alt="ExecProsec" width="82" height="45"></a>
   <nav class="nav-links">
-    <a href="/poabamendments" class="active">Amendments</a>
+    <a href="/poabamendments">Amendments</a>
+    <a href="/hol-briefing" class="active" aria-current="page" title="House of Lords briefing">HOL Briefing</a>
     <a href="/news">News</a>
     <a href="/testimonials">Testimonials</a>
     <a href="/contact">Contact</a>
