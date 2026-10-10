@@ -11,36 +11,59 @@
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://execprosec.org/hol-briefing">
 <meta property="og:image" content="https://execprosec.org/_web/brand/share-og.png">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="/_web/brand/favicon.ico">
+<link rel="apple-touch-icon" href="/_web/brand/icon-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--navy:#041440;--navy2:#0a1f44;--gold:#DDBC66;--gold-ink:#9a7a2b;--ink:#1b2238;--muted:#5b6175;--rule:#e6e3da;--cream:#f7f6f2}
+:root{--navy:#041440;--gold:#DDBC66;--gold-ink:#9a7a2b;--salmon:#d64045;--white:#fff;--ink:#1b2238;--muted:#5b6175;--rule:#e6e3da}
 *,*::before,*::after{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;background:var(--navy);color:var(--ink);font:400 17px/1.72 'DM Sans',sans-serif;-webkit-font-smoothing:antialiased}
-.top{max-width:880px;margin:0 auto;padding:30px 24px 26px;display:flex;align-items:center;justify-content:space-between;gap:16px}
-.top a{line-height:0}
-.top img{height:34px;width:auto}
-.top .tag{font:600 12px/1 'DM Sans',sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--gold)}
-.sheet{max-width:880px;margin:0 auto 64px;background:#fff;padding:64px 76px 56px;border-top:4px solid var(--gold)}
-.kicker{font:600 12.5px/1.5 'DM Sans',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-ink);margin:0 0 14px}
-h1{font:400 clamp(30px,4.4vw,42px)/1.18 'DM Serif Display',serif;color:var(--navy);margin:0 0 18px}
-.byline{color:var(--muted);font-size:15px;margin:0 0 6px}
-.for{color:var(--muted);font-size:15px;margin:0 0 34px;padding-bottom:30px;border-bottom:1px solid var(--rule)}
-p{margin:0 0 16px}
-strong{color:var(--navy);font-weight:600}
-a{color:var(--navy);text-decoration-color:var(--gold);text-underline-offset:3px;word-break:break-word}
-a:hover{color:var(--gold-ink)}
-h2.sec{font:400 27px/1.25 'DM Serif Display',serif;color:var(--navy);margin:52px 0 18px;display:flex;gap:14px;align-items:baseline}
+body{margin:0;background:var(--navy);color:var(--white);font:400 16px/1.6 'DM Sans',sans-serif;-webkit-font-smoothing:antialiased}
+
+/* ---- header: the same bar as the live site ---- */
+#nav{display:flex;align-items:center;gap:18px;padding:16px 24px 12px}
+#nav .logo{line-height:0}
+#nav .logo img{height:45px;width:auto;display:block}
+.nav-links{display:flex;align-items:center;flex-wrap:wrap;gap:1px;line-height:1.2}
+.nav-links a{position:relative;overflow:hidden;font-size:12px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;
+  color:rgba(255,255,255,.45);padding:5px 8px;border-radius:2px;text-decoration:none;white-space:nowrap;transition:color .2s,background .2s}
+.nav-links a:hover{color:var(--white);background:rgba(255,255,255,.07)}
+.nav-links a.active{color:var(--gold)}
+.nav-links a::after{content:'';position:absolute;bottom:0;left:50%;width:0;height:1px;background:var(--gold);transition:width .25s ease,left .25s ease}
+.nav-links a:hover::after{width:100%;left:0}
+.nav-links a.nav-donate{display:inline-flex;align-items:center;margin-left:10px;background:var(--salmon);color:#fff;font-size:12px;font-weight:700;
+  letter-spacing:.08em;padding:7px 16px;transition:background .2s,transform .15s}
+.nav-links a.nav-donate:hover{background:#bf3238;transform:translateY(-1px)}
+.nav-links a.nav-donate::after{display:none}
+
+/* ---- page title: the same treatment as the live site's page titles ---- */
+.hero{max-width:680px;margin:0 auto;padding:40px 0 34px}
+.kicker{font:700 11.5px/1.6 'DM Sans',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin:0 0 16px}
+.page-h1{font:700 clamp(30px,4.6vw,46px)/1.1 'DM Serif Display',serif;letter-spacing:-.01em;color:var(--white);margin:0 0 8px}
+.page-h1 span{color:var(--gold)}
+.intro-rule{width:48px;height:2px;background:var(--gold);margin:16px 0 22px}
+.hero .for{color:rgba(255,255,255,.82);margin:0 0 4px}
+.hero .byline{color:rgba(255,255,255,.5);font-size:14px;margin:0}
+
+/* ---- the briefing itself, on a white sheet ---- */
+.sheet{max-width:820px;margin:0 auto 56px;background:#fff;color:var(--ink);padding:56px 70px 52px;border-top:3px solid var(--gold);
+  font-size:17px;line-height:1.72}
+.sheet p{margin:0 0 16px}
+.sheet strong{color:var(--navy);font-weight:600}
+.sheet a{color:var(--navy);text-decoration-color:var(--gold);text-underline-offset:3px;word-break:break-word}
+.sheet a:hover{color:var(--gold-ink)}
+h2.sec{font:400 27px/1.25 'DM Serif Display',serif;color:var(--navy);margin:50px 0 18px;display:flex;gap:14px;align-items:baseline}
+h2.sec:first-child{margin-top:0}
 h2.sec b{font:inherit;color:var(--gold)}
-h3{font:600 17.5px/1.4 'DM Sans',sans-serif;color:var(--navy);margin:30px 0 10px}
-h3 b{color:var(--gold-ink);font-weight:600;margin-right:6px}
+.sheet h3{font:600 17.5px/1.4 'DM Sans',sans-serif;color:var(--navy);margin:30px 0 10px}
+.sheet h3 b{color:var(--gold-ink);font-weight:600;margin-right:10px}
 .ask{font-size:18px;border-left:3px solid var(--gold);padding:4px 0 4px 16px;margin:22px 0}
-ul{margin:0 0 18px;padding-left:22px}
-li{margin:0 0 6px}
-li::marker{color:var(--gold-ink)}
+.sheet ul{margin:0 0 18px;padding-left:22px}
+.sheet li{margin:0 0 6px}
+.sheet li::marker{color:var(--gold-ink)}
 figure.bill{margin:18px 0 24px}
 figure.bill img{display:block;width:100%;height:auto;border:1px solid var(--rule)}
 figure.bill figcaption{font-size:13px;color:var(--muted);font-style:italic;margin-top:6px}
@@ -50,57 +73,67 @@ figure.bill figcaption{font-size:13px;color:var(--muted);font-style:italic;margi
 .amend .amd-name{font-weight:600;letter-spacing:.06em;font-size:13px;color:var(--muted);margin-bottom:12px}
 .amend .es{margin-top:16px;color:var(--muted)}
 .note{color:var(--muted);font-style:italic;font-size:15.5px}
-.raised{color:var(--muted);font-size:13.5px;font-style:italic;margin:-4px 0 8px}
-.voice{display:flex;gap:26px;align-items:flex-start;margin:44px 0 10px}
+.voice{display:flex;gap:26px;align-items:flex-start;margin:42px 0 6px}
 .voice .me{flex:0 0 132px;width:132px;height:132px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 4px #fff,0 0 0 6px var(--gold)}
 .bubble{position:relative;flex:1;background:var(--navy);color:rgba(255,255,255,.9);border-radius:18px;padding:26px 30px 22px;font-size:16.5px;line-height:1.65}
 .bubble::before{content:"";position:absolute;left:-14px;top:46px;border:14px solid transparent;border-left:0;border-right-color:var(--navy)}
+.bubble p{margin:0 0 14px}
 .bubble strong{color:#fff}
 .bubble .b-lead{font:400 23px/1.3 'DM Serif Display',serif;color:var(--gold);margin:0 0 12px}
 .bubble ol{margin:0 0 14px;padding-left:22px}
 .bubble li{margin:0 0 10px}
 .bubble li::marker{color:var(--gold);font-weight:700}
 .bubble .b-sign{margin:6px 0 0;color:var(--gold);font-size:14px;letter-spacing:.06em}
-.support{margin:10px 0 0}
-.peers{display:grid;grid-template-columns:repeat(3,1fr);gap:22px 18px;margin:20px 0 6px}
-.peer{margin:0;text-align:center}
-.peer img{width:96px;height:96px;border-radius:50%;object-fit:cover;display:block;margin:0 auto 10px;box-shadow:0 0 0 3px #fff,0 0 0 5px var(--gold)}
-.peer .pn{display:block;font-weight:600;color:var(--navy);font-size:15px;line-height:1.35}
-.peer .pp{display:block;font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold-ink);margin:2px 0 6px}
-.peer .pq{display:block;font-size:14px;color:var(--muted);font-style:italic;line-height:1.5}
-.sig-name{font-weight:600;color:var(--navy);margin:28px 0 0}
-.sig-org,.sig-link{margin:0}
+.sig-name{font-weight:600;color:var(--navy);margin:28px 0 0 !important}
+.sig-org,.sig-link{margin:0 !important}
 #references+ul{font-size:14.5px;color:var(--muted)}
-footer{max-width:880px;margin:0 auto;padding:0 24px 48px;font-size:13px;color:rgba(255,255,255,.45)}
-footer a{color:rgba(255,255,255,.7);text-decoration:none}
-@media(max-width:720px){
-  body{font-size:16px}
-  .sheet{padding:36px 20px 36px;margin-bottom:36px}
-  .top{padding:20px 16px}
+
+/* ---- footer: the same as the live site ---- */
+.site-foot{display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;font-size:12px;letter-spacing:.05em;
+  color:rgba(255,255,255,.38);padding:30px 18px 38px;border-top:1px solid rgba(255,255,255,.06)}
+.site-foot a{color:rgba(255,255,255,.5);text-decoration:none}
+.site-foot a:hover{color:var(--gold)}
+
+@media(max-width:760px){
+  .hero{padding:28px 20px 26px}
+  .sheet{padding:34px 20px 34px;margin-bottom:36px;font-size:16px}
+  #nav{padding:14px 16px 10px;gap:10px;flex-wrap:wrap}
+  #nav .logo img{height:38px}
+  .nav-links a{font-size:11px;padding:5px 6px;letter-spacing:.02em}
+  .nav-links a.nav-donate{font-size:11px;padding:7px 12px;margin-left:4px}
   .voice{flex-direction:column;align-items:center;gap:20px}
   .bubble::before{left:50%;top:-14px;margin-left:-14px;border:14px solid transparent;border-top:0;border-bottom-color:var(--navy)}
   .bubble{padding:22px 20px 18px}
-  .peers{grid-template-columns:repeat(2,1fr)}
   h2.sec{font-size:24px;margin-top:42px}
 }
-@media print{body{background:#fff}.top,footer{display:none}.sheet{margin:0;padding:0;border:0}}
+@media print{body{background:#fff}#nav,.site-foot,.hero .kicker{display:none}.hero{color:#000}.page-h1,.page-h1 span{color:#041440}.sheet{margin:0;padding:0;border:0}}
 </style>
 </head>
 <body>
-<div class="top">
-  <a href="https://execprosec.org/" aria-label="ExecProsec home"><img src="/_web/email/logo.png" alt="ExecProsec" width="55" height="34"></a>
-  <span class="tag">HOL Briefing</span>
+<header id="nav">
+  <a class="logo" href="/" aria-label="ExecProsec home"><img src="/_web/brand/logo-nav.png" alt="ExecProsec" width="82" height="45"></a>
+  <nav class="nav-links">
+    <a href="/poabamendments" class="active">Amendments</a>
+    <a href="/news">News</a>
+    <a href="/testimonials">Testimonials</a>
+    <a href="/contact">Contact</a>
+    <a class="nav-donate" href="/story/1">Donate</a>
+  </nav>
+</header>
+
+<div class="hero">
+  <p class="kicker">HOL Briefing &nbsp;&middot;&nbsp; Public Office (Accountability) Bill &nbsp;&middot;&nbsp; Amendment 66A, in the name of Baroness Jones of Moulsecoomb</p>
+  <h1 class="page-h1">Adding all UK legislators to <span>the duty of candour and the offence of misleading the public</span>, and defining capacity, functions and harm</h1>
+  <div class="intro-rule"></div>
+  <p class="for">A briefing for Members of the House of Lords. Committee of the Whole House.</p>
+  <p class="byline">Marcus J Ball, ExecProsec  ·  11 October 2026</p>
 </div>
+
 <main class="sheet">
-<p class="kicker">Public Office (Accountability) Bill &nbsp;&middot;&nbsp; Amendment 66A, in the name of Baroness Jones of Moulsecoomb</p>
-<h1>Adding all UK legislators to the duty of candour and the offence of misleading the public, and defining capacity, functions and harm</h1>
-<p class="byline">Marcus J Ball, ExecProsec &nbsp;&middot;&nbsp; 11 October 2026</p>
-<p class="for">A briefing for Members of the House of Lords. Committee of the Whole House.</p>
 <h2 class="sec" id="summary"><span>Summary</span></h2>
 <p><strong>What the amendment does. </strong>Amendment 66A brings every member of the UK’s four legislatures (Members of both Houses of Parliament, MSPs, Members of the Senedd and MLAs) within the duty of candour and the offence of misleading the public. It keeps everything said or done in parliamentary proceedings outside both offences, protects honestly held political opinion, and defines when a legislator, Minister or mayor is acting “in their capacity” as a public official and exercising their “functions”, and what counts as “harm”.</p>
-<p><strong>Why it is needed. </strong>As drafted, the Bill makes it a crime for almost every public official in the country to deceive the public, apart from the legislators who are passing it. And the offence of misleading the public depends on two ingredients, acting “in their capacity as such” and the person’s “functions”, which the Bill never defines. The last time a criminal case turned on an undefined test of this kind, the court never reached the question of whether the public had been deceived.</p>
-<p class="ask"><strong>The ask: </strong><strong>support Amendment 66A in Committee, and support a vote on it at Report.</strong></p>
-
+<p><strong>Why it is needed. </strong>As drafted, the Bill makes it a crime for almost every public official in the country to deceive the public, apart from the legislators who are passing it. And the offence of misleading the public depends on two ingredients, acting “in their capacity as such” and the person’s “functions”, which the Bill never defines. The last time a criminal case turned on an undefined test of this kind, the court never reached the question of whether the public had been deceived (Ball v Johnson 2019).</p>
+<p class="ask"><strong>The ask: support Amendment 66A in Committee, and support a vote on it at Report.</strong></p>
 <section class="voice" aria-label="In short">
   <img class="me" src="/_web/photos/mjb-face.webp" alt="Marcus J Ball" width="132" height="132">
   <div class="bubble">
@@ -116,7 +149,7 @@ footer a{color:rgba(255,255,255,.7);text-decoration:none}
 
 <h2 class="sec" id="s1"><b>1</b><span>What the Bill currently does</span></h2>
 <p>Clause 12 creates the offence of misleading the public. This is the offence as printed:</p>
-<figure class="bill"><img src="img/c12_1_3.png" alt="Clause 12(1) to (3), HL Bill 42, page 13." loading="lazy"><figcaption>Clause 12(1) to (3), HL Bill 42, page 13.</figcaption></figure>
+<figure class="bill"><img src="img/bill-1.png" alt="Clause 12(1) to (3), HL Bill 42, page 13." loading="lazy"><figcaption>Clause 12(1) to (3), HL Bill 42, page 13.</figcaption></figure>
 <p>This is a deliberately high bar. Being wrong is not enough. Changing your mind is not enough. A prosecution must prove all of the following:</p>
 <ul>
 <li>an intention to mislead the public, or recklessness as to whether the act would do so;</li>
@@ -126,33 +159,33 @@ footer a{color:rgba(255,255,255,.7);text-decoration:none}
 <li>that the person knew, or ought to have known, that the act was seriously improper, and that a reasonable person would agree.</li>
 </ul>
 <p>No prosecution can be brought without the consent of the Director of Public Prosecutions. The maximum sentence on indictment is two years.</p>
-<figure class="bill"><img src="img/s3_2.png" alt="Schedule 3, paragraph 2, HL Bill 42, page 55." loading="lazy"><figcaption>Schedule 3, paragraph 2, HL Bill 42, page 55.</figcaption></figure>
+<figure class="bill"><img src="img/bill-2.png" alt="Schedule 3, paragraph 2, HL Bill 42, page 55." loading="lazy"><figcaption>Schedule 3, paragraph 2, HL Bill 42, page 55.</figcaption></figure>
 <p>The offence is aimed only at the most serious, deliberate and reckless deception of the public. Within that, its reach is wide. It applies to the Prime Minister, every Minister of the Crown, the Scottish and Welsh Ministers, Northern Ireland Ministers, civil servants, the police, the Armed Forces and security services, NHS staff and local authorities.</p>
 <p>It does not apply to a single legislator. Schedule 2 excludes each legislature as a public authority, and no member of any of them is included as a public official:</p>
-<figure class="bill"><img src="img/s2_2_4.png" alt="Schedule 2, paragraph 2(4), HL Bill 42, page 51." loading="lazy"><figcaption>Schedule 2, paragraph 2(4), HL Bill 42, page 51.</figcaption></figure>
-<p>Ministers are covered, but only as Ministers. The same person, speaking as a Member of either House, is not covered at all.</p>
+<figure class="bill"><img src="img/bill-3.png" alt="Schedule 2, paragraph 2(4), HL Bill 42, page 51." loading="lazy"><figcaption>Schedule 2, paragraph 2(4), HL Bill 42, page 51.</figcaption></figure>
+<p>Ministers are covered, but only as Ministers. The same person, speaking as a legislator, is not covered at all.</p>
 <h2 class="sec" id="s2"><b>2</b><span>The problems with what it does</span></h2>
-<h3><b>2.1</b> The exclusion</h3>
+<h3><b>2.1</b>The exclusion</h3>
 <p>The people who speak to the public most are almost the only public officials left outside the law against deceiving it. Members of both Houses, and legislators in Edinburgh, Cardiff and Belfast, are on television, radio and social media every week of the year, speaking about the matters of greatest public importance. Under this Bill, a nurse, a constable and a civil servant can be prosecuted for deliberately deceiving the public. The legislators who passed the law cannot.</p>
-<h3><b>2.2</b> The offence does not define its own central test</h3>
+<h3><b>2.2</b>The offence does not define its own central test</h3>
 <p>Clause 12 only applies where the person acted “in their capacity as such an authority or official” (clause 12(1)), and it measures their conduct against “the proper exercise of the person’s functions” (clause 12(3)(c)). Neither phrase is defined. Clause 12(8), the interpretation subsection, defines “active service”, “armed forces”, “harm”, “the public”, “public authority” and “public official”. It does not define capacity, and it does not define functions.</p>
 <p>One clause later, the Bill does define the equivalent idea for the new statutory offence of misconduct in public office:</p>
-<figure class="bill"><img src="img/c13_2a.png" alt="Clause 13(2)(a), HL Bill 42, page 14." loading="lazy"><figcaption>Clause 13(2)(a), HL Bill 42, page 14.</figcaption></figure>
+<figure class="bill"><img src="img/bill-4.png" alt="Clause 13(2)(a), HL Bill 42, page 14." loading="lazy"><figcaption>Clause 13(2)(a), HL Bill 42, page 14.</figcaption></figure>
 <p>These are not points of detail. Capacity is the gateway to the whole offence. Before a jury can be asked whether the public were deceived, the prosecution has to establish that the person was acting in their official capacity. If the Bill does not say what that means, every defendant will argue that they were speaking privately, politically or as a candidate, and the offence will be argued on that point instead of on the deception.</p>
-<h3><b>2.3</b> The Law Commission has already warned about this</h3>
-<p>The common law offence of misconduct in public office is a different offence from misleading the public. But it rests on almost the same legal idea: that the official was “acting as such”, meaning in their official role. The Law Commission reviewed that offence in its report Reforming Misconduct in Public Office (Law Com No 397). It found that exactly what is meant by “public office” and “acting as such” is “not sufficiently clearly defined”, and that this lack of certainty “may be incompatible with article 7 of the European Convention on Human Rights (‘no punishment without law’)”. Article 7 means a person must be able to know in advance whether what they are about to do is a crime.</p>
+<h3><b>2.3</b>The Law Commission has already warned about this</h3>
+<p>The common law offence of misconduct in public office is a different offence from misleading the public. But it depends on almost the same legal idea: that the official was “acting as such”, meaning in their official role. The Law Commission reviewed that offence in its report Reforming Misconduct in Public Office (Law Com No 397). It found that exactly what is meant by “public office” and “acting as such” is “not sufficiently clearly defined”, and that this lack of certainty “may be incompatible with article 7 of the European Convention on Human Rights (‘no punishment without law’)”. Article 7 means a person must be able to know in advance whether what they are about to do is a crime.</p>
 <p>This Bill abolishes the common law offence, at clauses 17 and 18, because it was too uncertain. Then, at clause 12, it builds a brand new offence on a very similar test, and again leaves it undefined.</p>
-<h3><b>2.4</b> What happened the last time a case turned on capacity</h3>
-<p>In 2019 a summons was issued against Boris Johnson for misconduct in public office, over statements to the public about public spending during the EU referendum. The Divisional Court quashed it: R (Johnson) v Westminster Magistrates’ Court [2019] EWHC 1709 (Admin). That was my prosecution.</p>
-<p>At paragraph 29 the court held that “acting as such” required a finding that the official, in discharging the duties of the office, made the claims complained of. Holding the office was not enough, and the status and influence the office gave him were not enough. The court never decided whether the statements were true or false. The entire case turned on capacity, and it ended there.</p>
+<h3><b>2.4</b>What happened the last time a case turned on capacity</h3>
+<p>In 2019 a summons was issued against Boris Johnson for misconduct in public office, over statements to the public about public spending during the EU referendum. The Divisional Court quashed it: R (Johnson) v Westminster Magistrates’ Court [2019] EWHC 1709 (Admin). We at ExecProsec prosecuted that case which was led by me, private prosecutor Marcus J Ball.</p>
+<p>At paragraph 29 the court held that “acting as such” required a finding that the official, in discharging the duties of the office, made the claims complained of. Holding the office was not enough, and the status and influence the office gave him were not enough. The court never decided whether the statements were true or false. The entire case turned on capacity, and because of the complexity of definition it was never heard by a jury.</p>
 <p>If capacity and functions are left undefined in clause 12, prosecutions for misleading the public will go the same way: months of court time and very large sums of public money spent arguing about what capacity someone was speaking in, before anybody examines whether the public were deceived.</p>
-<h3><b>2.5</b> Elections and referendums</h3>
-<p>When Parliament is dissolved, Members of the House of Commons cease to be Members and become candidates. Government Ministers remain Ministers, with their offices, powers and functions, for the whole campaign. Members of this House remain Members for every day of it.</p>
+<h3><b>2.5</b>Elections and referendums</h3>
+<p>When Parliament is dissolved, Members of the House of Commons cease to be Members and become candidates. Government Ministers remain Ministers, with their offices, powers and functions, for the whole campaign. Members of the Lords remain Members for every day of it.</p>
 <p>So a Minister who goes on national television during an election and knowingly or recklessly makes false statements to the public about the powers or functions of their own office could be prosecuted. The person standing against them, perhaps the Leader of the Opposition, who at that moment is not a Member of anything, could not. Nor could any other opposition politician, for the whole of a general election. A general election in which only one side is bound by the criminal law on deceiving the public is a contest that is unbalanced by law.</p>
-<p>Referendums raise the same problem. During a referendum campaign, Ministers remain Ministers and the Government remains the Government. In 2016 the Government took an official position and campaigned for it officially, spending £9.3 million of public money on a leaflet sent to every household, headed “Why the Government believes that voting to remain in the European Union is the best decision for the UK”. The Mayor of London made leaving the European Union an official mayoral policy and campaigned for it. Clause 12 says nothing either way about whether it applies to conduct of this kind. We will only find out after the next referendum, in a test case, at enormous public expense.</p>
-<h3><b>2.6</b> The scale of the offence is not stated</h3>
+<p>Referendums raise the same problem. During a referendum campaign, Ministers remain Ministers and the Government remains the Government. In 2016 the Government took an official position and campaigned for it officially, spending £9.3 million of public money on a leaflet sent to every household, headed “Why the Government believes that voting to remain in the European Union is the best decision for the UK”. The Mayor of London made leaving the European Union an official mayoral policy and campaigned for it. Clause 12 says nothing either way about whether it applies to conduct of this kind, but the wording of the bill gives no reason not to permit a prosecution for lying during a referendum to go ahead. However we will only find out in full after the next referendum, in a test case, at enormous expense.</p>
+<h3><b>2.6</b>The scale of the offence is not stated</h3>
 <p>Few people are yet discussing this Bill as a law against lying a country into war. But nothing in the Bill prevents it from applying. Imagine a future Prime Minister who repeatedly tells the public that a foreign state possesses weapons that threaten this country. On the strength of that claim we go to war. People die, including British service personnel. Afterwards, evidence emerges that the Prime Minister knew the intelligence was false, or was reckless as to whether it was. Under clause 12, that Prime Minister could be prosecuted. That would make lying to the public to take this country into war a criminal offence for the first time in our history. I am not aware of any other country that has done this.</p>
-<p>I do not believe most Members of either House know that the Bill does this. That is precisely the point. We should not discover the scale of this offence through an enormously expensive test case after the next war. It should be stated on the face of the Act, so that every Minister and every public official knows the rules before they speak.</p>
+<p>I do not believe most Members of either House know that the Bill does this. That is precisely the point. We should not discover the scale of this offence through an enormously expensive test case after the next dishonesty started war. It should be stated on the face of the Act, so that every Minister and every public official knows the rules before they speak.</p>
 <h2 class="sec" id="s3"><b>3</b><span>Our solution: Amendment 66A</span></h2>
 <p>This is the amendment exactly as tabled, in the Supplementary to the Marshalled List published on 9 October 2026 (HL Bill 42–I(a)):</p>
 <div class="amend">
@@ -173,108 +206,65 @@ footer a{color:rgba(255,255,255,.7);text-decoration:none}
 <p>(18)  In sub-paragraphs (16) and (17), “the public” has the same meaning as in section 12.”</p>
 <p class="es"><strong>Member’s explanatory statement: </strong>This amendment would include members of the UK’s four legislatures within the duty of candour and offence of misleading the public, safeguard parliamentary privilege and political opinion, treat certain communications by legislators, Ministers and mayors as official, and treat undermining public confidence, including over war, elections and referendums, as harm.</p>
 </div>
-<p class="note">This amendment is a work in progress. The Public Bill Office adjusted our text before it was printed, which is not ideal. Our preferred version, which we intend to bring back at Report, is here: <a href="https://execprosec.org/poabamendments">https://execprosec.org/poabamendments</a></p>
+<p class="note"><em>This amendment is a work in progress. The Public Bill Office somewhat adjusted our text before it was printed. Our preferred version, which we intend to bring back at Report and further improve upon with the help of the Lords, is here: </em><a href="https://execprosec.org/poabamendments"><em>https://execprosec.org/poabamendments</em></a><em> </em></p>
 <p>Most of the amendment speaks for itself. These are the points that need explaining:</p>
 <p><strong>Where it sits. </strong>The amendment adds legislators to the definition of “public official” in Schedule 2, paragraph 3. The legislatures themselves remain excluded as public authorities, so it is individuals who are responsible, never Parliament or an assembly as an institution. “Subject to sub-paragraph (2)” means legislators are covered only to the extent of their functions, never in their private lives.</p>
-<p><strong>Why (15)(a) says “any person” and “any Parliament or legislative assembly”. </strong>Article IX of the Bill of Rights protects everyone who takes part in proceedings in Parliament, not only Members: clerks, officials, witnesses and experts giving evidence to committees. The safeguard therefore covers every participant. The Scottish Parliament, the Senedd and the Northern Ireland Assembly do not rely on Article IX in the same way, so the amendment gives their proceedings the same express protection.</p>
-<p><strong>How (16) defines capacity. </strong>It settles the question the Bill leaves open: when one of the listed people communicates with the public about a matter of significant public concern, they are acting in their public capacity and exercising their functions. That is the reality of the job. Scrutinising the Government in public, debating in public and explaining decisions to the people we serve is not something legislators do alongside the job. It is the job. Sub-paragraph (16) does not make any communication criminal by itself. Every other ingredient of clause 12 must still be proved.</p>
+<p><strong>Why (15)(a) says “any person” and “any Parliament or legislative assembly”. </strong>Article IX of the Bill of Rights protects everyone who takes part in proceedings in Parliament, not only Members: clerks, officials, witnesses and experts giving evidence to committees. The safeguard therefore covers every participant. The Scottish Parliament, the Senedd and the Northern Ireland Assembly do not have parliamentary privilege in the same way, so our amendment intentionally gives their proceedings the same protection from these offences.</p>
+<p><strong>How (16) defines capacity. </strong>It settles the question the Bill leaves open: when one of the listed people communicates with the public about a matter of significant public concern, they are acting in their public capacity and exercising their functions. That is the reality of the job. Scrutinising the Government in public, debating in public and explaining decisions to the people they serve is not something legislators do alongside the job. It is the job. Sub-paragraph (16) does not make any communication criminal by itself. Every other ingredient of clause 12 must still be proved.</p>
 <p><strong>The judicial exclusion in (16). </strong>Some Members of this House hold judicial office. While they do, section 137(3) of the Constitutional Reform Act 2005 disqualifies them from sitting or voting in the House. The exclusion ensures their judgments and anything said in their courts cannot be drawn into these offences through their membership of the House.</p>
 <p><strong>The scope of (17). </strong>The additional category of harm applies only to the public communications of the legislators, Ministers and mayors listed in (16). It does not change what counts as harm for anyone else under clause 12. The six purposes are examples, not new offences.</p>
 <h2 class="sec" id="s4"><b>4</b><span>Every objection, answered</span></h2>
-<h3><b>1.</b> Parliamentary privilege and Article 9 of the Bill of Rights</h3>
-<p class="raised">Raised by: Lord Marks, Lord Sandhurst, Baroness Levitt</p>
+<h3><b>1</b>Parliamentary privilege and Article 9 of the Bill of Rights</h3>
 <p>Neither offence can ever be used against anything said or done in proceedings in Parliament. Article IX of the Bill of Rights already guarantees that, and sub-paragraph (15)(a) puts it on the face of the Bill, extended expressly to the proceedings of the Scottish Parliament, the Senedd and the Northern Ireland Assembly. Debate in either Chamber, committee work and scrutiny of the Government are completely untouched. These offences could only ever apply to what a legislator says outside proceedings: on television, on radio, on social media and in public.</p>
-<p>Privilege cannot in principle be a bar to applying criminal offences to legislators, because this Bill already does it. Schedule 4 makes Members of both Houses, and of all three devolved legislatures, holders of public office for the new offences in clauses 13 and 14, with maximum sentences of ten and fourteen years:</p>
-<figure class="bill"><img src="img/s4_6.png" alt="Schedule 4, paragraph 6(1), HL Bill 42, page 56." loading="lazy"><figcaption>Schedule 4, paragraph 6(1), HL Bill 42, page 56.</figcaption></figure>
-<figure class="bill"><img src="img/s4_7_9.png" alt="Schedule 4, paragraphs 7 to 9, HL Bill 42, page 57." loading="lazy"><figcaption>Schedule 4, paragraphs 7 to 9, HL Bill 42, page 57.</figcaption></figure>
-<p>Speaking for the Government on 26 February 2026, Baroness Levitt confirmed: “Both those two very broad offences do apply to MPs and Peers, as well as to a number of other public office holders, including judges.” The constitutional step has already been taken. The only question is whether legislators should also be bound by the one offence in the Bill that is about honesty to the public.</p>
-<h3><b>2.</b> Parliament should regulate its own Members, and existing parliamentary sanctions are enough</h3>
-<p class="raised">Raised by: Lord Marks, Lord Sandhurst, Baroness Levitt</p>
-<p>Parliament’s own systems, the Commissioners for Standards, the codes of conduct and the procedures for misleading the House, deal with conduct in Parliament. This amendment does not touch any of them, and they will carry on exactly as now. The two offences could apply only to statements made outside parliamentary proceedings, so there is no overlap. For a falsehood told to the public on national television during an election campaign, there is currently no sanction at all, because no proceeding of Parliament is involved.</p>
-<h3><b>3.</b> The Nolan principles already require honesty</h3>
-<p class="raised">Raised by: Baroness Levitt</p>
+<h3><b>2</b>Parliament should regulate its own Members, and existing parliamentary sanctions are enough</h3>
+<p>Parliament’s own systems, the Commissioners for Standards, the codes of conduct and the procedures for misleading the House, deal with conduct in Parliament. This amendment does not touch any of them, and they will carry on exactly as now. The two offences could apply only to statements made outside parliamentary proceedings, so there is no overlap. For a falsehood told to the public on national television during a referendum campaign, there is currently no sanction at all, because Parliament does not take responsibility for it.</p>
+<h3><b>3</b>The Nolan principles already require honesty</h3>
 <p>The Nolan principles are valuable, and they establish that holders of public office have a duty to be honest. But they have been in place for three decades and have shown that they are not enough. They are not law. They create no offence, no independent adjudication and no remedy for the person deceived. The only criminal backstop has been the common law offence of misconduct in public office, which has never been successfully applied to a politician lying to the public, and which this Bill abolishes. A statutory offence is needed, and it needs to be clear and precise.</p>
-<h3><b>4.</b> Backbenchers do not take decisions on behalf of the state</h3>
-<p class="raised">Raised by: Lord Sandhurst, Baroness Levitt</p>
+<h3><b>4</b>Backbenchers do not take decisions on behalf of the state</h3>
 <p>Backbenchers scrutinise the decisions of the state, which is just as vital to our democracy. They examine Government decisions and Government spending, approve or reject budgets, and vote on legislation. They are among the most senior and most public-facing democratic leaders in the country. When they tell the public what the state is really doing, the public must be able to trust them.</p>
 <p>Neither a nurse nor a constable takes decisions on behalf of the state, and both are covered by clause 12. Liability under this offence has never depended on who takes the decision. It depends on who deceives the public. A backbencher does not need executive power to deceive the public effectively. They have the status, the platform, the connections and the trust that come with being a legislator, and those are what make deception damaging.</p>
-<h3><b>5.</b> Legislators do not have the information Ministers have</h3>
-<p class="raised">Raised by: Baroness Levitt</p>
+<h3><b>5</b>Legislators do not have the information Ministers have</h3>
 <p>A person does not need privileged information in order to deceive the public. What makes deception effective is status, access, connections, the public’s trust and the public’s expectation of honesty. A national legislator has all of these, in greater measure than almost anyone this Bill already covers.</p>
-<p>Consider a Minister and an opposition spokesperson debating on television. The Minister has access to Government information and the spokesperson does not. Under the Bill as drafted, the Minister commits an offence if they deliberately deceive the public about information they hold. The spokesperson commits no offence if they deliberately deceive the public about information they do not hold. That cannot be right.</p>
-<h3><b>6.</b> The offence is for Hillsborough-style cover-ups, not for politics</h3>
-<p class="raised">Raised by: Baroness Levitt, Lord Sandhurst</p>
-<p>The Bill does not say that anywhere. Clause 12 is written carefully to address deliberate and reckless deception of the public in general. It contains no limitation to disasters, to cover-ups or to any particular category of lie. A criminal statute is read by the courts according to its words, not the intentions of those who moved it. If Parliament wants the offence to be narrower than it reads, it must say so on the face of the Act. If it does not, the House should know now that it is creating an offence capable of reaching a Prime Minister who deceives the public to start a war.</p>
-<h3><b>7.</b> This is the wrong vehicle for regulating political speech</h3>
-<p class="raised">Raised by: Baroness Levitt</p>
+<p>Consider a Minister and a member of the opposition debating on television. The Minister has access to Government information, and the opposition spokesperson does not. Under the Bill as drafted, the Minister commits an offence if they deliberately deceive the public about information they hold. The spokesperson commits no offence if they deliberately deceive the public about information they do not hold. That sounds ridiculous because it is, and yet that is the current realty of this Bill.</p>
+<h3><b>6</b>The offence is for Hillsborough-style cover-ups, not for politics</h3>
+<p>The Bill does not say that anywhere. Clause 12 is written carefully to address deliberate and reckless deception of the public in general. It contains no limitation to disasters, to cover-ups or to any particular category of lie. A criminal statute is read by the courts according to the language employed within it. If Parliament wants the offence to be narrower than it reads, it must say so on the face of the Act. If it does not, the House should know now that it is creating an offence capable of reaching a Prime Minister who deceives the public to start a war. This is an excellent step forward for our democracy and will be very popular with the public who are still traumatised by the events of 2003.</p>
+<h3><b>7</b>This is the wrong vehicle for regulating political speech</h3>
 <p>The amendment does not regulate political speech. Freedom of political expression is protected by Article 10 of the European Convention on Human Rights, and sub-paragraph (15)(b) expressly excludes any honestly held political belief or opinion. Opinions, however unpopular or extreme, cannot be prosecuted if they are honestly held.</p>
 <p>What remains is the proven, intentional or reckless deception of the public on a matter of fact of significant public concern: lying to cover up a disaster such as Hillsborough, lying to take the country to war, or lying to manipulate the result of a referendum. That is not political speech. It is deception of the public.</p>
-<h3><b>8.</b> It would criminalise broken promises</h3>
-<p class="raised">Raised by: Lord Young of Acton</p>
-<p>It would not. Clause 12 requires proof of an intention to mislead the public, or recklessness as to whether the act would do so. A promise honestly made and later broken is not dishonest, and a change of policy is not a crime. The only case in which a broken promise could come near the offence is one where the person never intended to keep it, or knew they could not, when they made it. Proving that would require evidence, such as their own recorded words, that they did not believe what they were promising. In practice that evidence will rarely exist.</p>
-<h3><b>9.</b> The law should distinguish lying about politics from lying about personal character</h3>
-<p class="raised">Raised by: Lord Thomas of Cwmgiedd, endorsed by Lord Marks</p>
+<h3><b>8</b>It would criminalise broken promises</h3>
+<p>It would not. Clause 12 requires proof of an intention to mislead the public, or recklessness as to whether the act would do so. A promise honestly made and later broken is not dishonest, and a change of policy is not a crime. The only case in which a broken promise could come near the offence is one where the person never intended to keep it, or knew they could not, when they made it. Proving that would require evidence, such as their own recorded words, that they did not believe what they were promising. In practice sourcing such evidence would be challenging.</p>
+<h3><b>9</b>The law should distinguish lying about politics from lying about personal character</h3>
 <p>This point has real merit as a description of the current law, but it does not answer the question. The existing election offence of making false statements about a candidate’s personal character protects candidates from being lied about by each other. It is a narrow rule, set in a very different age, and it does little for the public.</p>
 <p>Today, what politicians say reaches us on our phones, on television, on radio and in the press, all day, every day, and it is recorded and archived as never before. Lies about a candidate’s personal character matter far less to the public than lies told to manipulate a referendum result, to win an election, to start a war, or to secure valuable public contracts during a national emergency such as the COVID-19 pandemic. The law currently protects a candidate’s reputation from lies but does not protect the electorate from them.</p>
-<h3><b>10.</b> Election periods would be especially dangerous</h3>
-<p class="raised">Raised by: Lord Thomas of Cwmgiedd</p>
+<h3><b>10</b>Election periods would be especially dangerous</h3>
 <p>Elections are the point of greatest risk, and that is the reason to act. An election is when the public has most contact with legislators, Ministers and politicians generally, and when deception does the most damage. It is the most important period in the life of a democracy. As explained in section 2.5, under the Bill as drafted Ministers remain covered throughout an election while their opponents are not.</p>
 <p>Public trust in politicians is already very low. The Ipsos Veracity Index has for many years placed politicians among the least trusted professions in the country. An election fought without any law against deceiving the public is not a safe default. It is part of the reason for that distrust. Applying the offence to election periods would require politicians to check their claims, take advice and stand behind what they say. It would make campaigns more careful, more professional and more honest.</p>
-<h3><b>11.</b> Politically motivated prosecutions and lawfare</h3>
-<p class="raised">Raised by: Lord Young of Acton, Lord Thomas of Cwmgiedd, Lord Marks, Lord Sandhurst</p>
+<h3><b>11</b>Politically motivated prosecutions and lawfare</h3>
 <p>No prosecution under clause 12 can begin without the consent of the Director of Public Prosecutions (Schedule 3, paragraph 2). That requires any private prosecution to meet the same standard as a prosecution brought by the Crown Prosecution Service. It is a strong and appropriate safeguard against vexatious and politically motivated cases.</p>
 <p>Amendment 80, in the names of Lord Keen of Elie and Lord Wolfson of Tredegar, would also require the consent of the Attorney General. I would urge the House to resist it. The Attorney General is appointed and can be dismissed by the Prime Minister of the day. A Government could block a prosecution of one of its own while leaving its opponents exposed. That would give the Government of the day protection from the criminal law that the opposition would not have.</p>
-<p>Prosecutions of senior politicians are already extremely rare, because of their cost, risk and difficulty. The only case of this kind that I am aware of being described as vexatious is my own, Ball v Johnson (2019). It was stopped by two judges, one of whom had previously acted as Mr Johnson’s lawyer, and the other of whom had written to him praising his profound sense of public duty. Neither disclosed this. A documentary film about the case, which alleges that it was unlawfully shut down, is in production with Sozo21, whose team has made films for Netflix, Amazon, Apple and Channel 4, and is produced by Emmy-nominated Tom Goodman-Hill.</p>
-<h3><b>12.</b> Complaints to the police would become routine</h3>
-<p class="raised">Raised by: Lord Thomas of Cwmgiedd, Lord Young of Acton, Lord Sandhurst</p>
-<p>Anyone can already complain to the police about a Member of either House under the common law offence of misconduct in public office, and will be able to do so under clause 13, because Schedule 4 already includes Members of both Houses. This amendment creates no new ability to complain.</p>
-<p>In the short term there will be complaints, which is exactly why the offence must be clearly defined. Sub-paragraph (16) settles the capacity question, so unmeritorious complaints can be disposed of quickly. In the longer term, a law of this kind should change how politicians communicate with the public. We expect it to make public communication more careful and more professional, and over time to end the habit of treating “politician” and “liar” as the same word.</p>
-<h3><b>13.</b> DPP consent is not enough, because investigation is itself a punishment</h3>
-<p class="raised">Raised by: Lord Marks, Lord Young of Acton</p>
+<p>Prosecutions of senior politicians are already extremely rare, because of their cost, risk and difficulty. The only case of this kind that I am aware of being described as vexatious is my own, Ball v Johnson (2019). It was stopped by two judges, one of whom had previously acted as Mayor Johnson’s lawyer, and the other of whom had written fan mail to him praising his profound sense of public duty. Neither disclosed this. A documentary film about the case, which alleges that it was unlawfully shut down, is in production with Sozo21(include link to website), whose team has made films for Netflix, Amazon, Apple and Channel 4, and it is produced by Emmy-nominated Tom Goodman-Hill.</p>
+<h3><b>12</b>Complaints to the police would become routine</h3>
+<p>In the short term there will be complaints, which is exactly why the offence must be clearly defined. In the longer term, a law of this kind should change how politicians communicate with the public. We expect it to make public communication more careful and more professional, and over time to end the habit of treating “politician” and “liar” as the same word.</p>
+<h3><b>13</b>DPP consent is not enough, because investigation is itself a punishment</h3>
 <p>This is true of every person the Bill covers. A nurse, a head teacher and a chief constable all live with the possibility of an investigation that ends in nothing. Anyone in society suspected of a criminal offence may be investigated before any decision to prosecute. Parliament is proposing to apply these offences to almost every other public official in the country. There is no principled basis on which legislators alone should be spared the same process.</p>
 <p>An investigation will not be pleasant for anyone. But the public feel that they have been deceived about matters of enormous importance for decades, and that has done them real harm too. It is time to change that.</p>
-<h3><b>14.</b> An authoritarian majority could abuse the offence</h3>
-<p class="raised">Raised by: Lord Sandhurst</p>
+<h3><b>14</b>An authoritarian majority could abuse the offence</h3>
 <p>This is exactly why the decision to prosecute must rest with the Director of Public Prosecutions, who is independent of Government, and not with the Attorney General, who is a member of it. More fundamentally, criminalising deliberate deception of the public makes authoritarian government less likely, not more. History shows that authoritarian movements have depended on deceiving the public at scale to gain power. That is much harder to do when those responsible face prosecution as individuals.</p>
-<h3><b>15.</b> It would chill debate and scrutiny</h3>
-<p class="raised">Raised by: Lord Marks, Lord Sandhurst</p>
+<h3><b>15</b>It would chill debate and scrutiny</h3>
 <p>Nothing said or done in proceedings of any UK Parliament or assembly can be touched, and sub-paragraph (15)(a) puts that beyond doubt. Outside proceedings, honestly held political opinion is expressly protected by (15)(b). The offence already requires proof of intentional or reckless deception. An honest Member has nothing to fear from this law.</p>
-<p>Healthy debate and effective scrutiny do not depend on the freedom to lie. The opposite is true. During the 2016 EU referendum, the winning side relied on a claim about the UK’s payments to the European Union that was shown to be false, and that leading politicians, including Boris Johnson MP, then Mayor of London, advanced knowing it to be false. Vote Leave’s campaign director later wrote that, without that claim, Leave would not have won. That is the lesson: with no law against it, deceiving the public about their own money can decide a national vote. Political debate needs to be held to honest statements.</p>
-<h3><b>16.</b> The ballot box is the remedy</h3>
-<p class="raised">Raised by: raised generally</p>
-<p>Elections decide who holds power. They are a verdict on everything at once, delivered every few years. They cannot examine evidence, test it, or decide beyond reasonable doubt whether someone abused their position by deceiving the public. Only a criminal trial can do that. The majority of Members of this House do not stand for election at all.</p>
-<p>In 2003 millions of people came to believe that the Government had deceived the public in order to invade Iraq, in a war in which hundreds of thousands of people died. Whether that is right has never been tested before a jury, because there was no statutory offence and no prosecution was brought. The Government was eventually voted out, but nobody believes that an election answered the question. The same is true of referendum campaigns and of conduct during the COVID-19 pandemic.</p>
-<p>A conviction would not automatically remove anyone from office either. A Member of the House of Commons is disqualified only by a prison sentence of more than one year; a shorter custodial sentence triggers a recall petition, which returns the decision to voters. A Member of this House ceases to be a Member only on a sentence of more than one year. Voters want to choose their representatives, and they also want to see them face a jury if they deceive the public about something serious enough.</p>
-<h3><b>17.</b> Judges are excluded too</h3>
-<p class="raised">Raised by: Baroness Levitt</p>
-<p>We raised this with the Government at our meeting with Lord Lemos, and our view is that judges should be included. But our campaign is focused on legislators, which is already a significant change. Judges are already within Schedule 4 for clauses 13 and 14. The question of including them in clause 12 can follow, once the offence has been seen to work.</p>
-<h3><b>18.</b> The cure may be worse than the disease</h3>
-<p class="raised">Raised by: Lord Sandhurst</p>
-<p>The disease is already serious. Politicians are among the least trusted people in our society, and doing nothing is a choice with consequences of its own.</p>
-<p>If this Bill becomes law with legislators written out of it, the press and the public will notice, and they will not forgive it. The pressure to correct it will be relentless, and when Parliament eventually includes itself, it will receive no credit, because it will be seen as the bare minimum. It is far better for Parliament to lead now than to be forced into it later.</p>
-
-<section class="support" aria-label="Members who have expressed support">
-  <h2 class="sec"><span>You would not be alone</span></h2>
-  <p>Members of this House who have told us they support including legislators:</p>
-  <div class="peers">
-    <figure class="peer"><img src="/_web/peers/jones.webp" alt="Baroness Jones of Moulsecoomb" width="96" height="96" loading="lazy">
-      <figcaption><span class="pn">Baroness Jones of Moulsecoomb</span><span class="pp">Green Party</span><span class="pq">Has tabled Amendment 66A.</span></figcaption></figure>
-    <figure class="peer"><img src="/_web/peers/knight.webp" alt="Lord Knight of Weymouth" width="96" height="96" loading="lazy">
-      <figcaption><span class="pn">Lord Knight of Weymouth</span><span class="pp">Labour</span><span class="pq">&ldquo;I agree with your main point.&rdquo;</span></figcaption></figure>
-    <figure class="peer"><img src="/_web/peers/butler.webp" alt="Lord Butler of Brockwell" width="96" height="96" loading="lazy">
-      <figcaption><span class="pn">Lord Butler of Brockwell</span><span class="pp">Crossbench</span><span class="pq">&ldquo;Subject to hearing the debate, I support this amendment.&rdquo;</span></figcaption></figure>
-    <figure class="peer"><img src="/_web/peers/lister.webp" alt="Baroness Lister of Burtersett" width="96" height="96" loading="lazy">
-      <figcaption><span class="pn">Baroness Lister of Burtersett</span><span class="pp">Labour</span><span class="pq">&ldquo;On the face of it I would agree with what you are proposing.&rdquo;</span></figcaption></figure>
-    <figure class="peer"><img src="/_web/peers/golding.webp" alt="Baroness Golding" width="96" height="96" loading="lazy">
-      <figcaption><span class="pn">Baroness Golding</span><span class="pp">Labour</span><span class="pq">&ldquo;I don&rsquo;t see why it shouldn&rsquo;t.&rdquo;</span></figcaption></figure>
-    <figure class="peer"><img src="/_web/peers/rennard.webp" alt="Lord Rennard" width="96" height="96" loading="lazy">
-      <figcaption><span class="pn">Lord Rennard</span><span class="pp">Liberal Democrat</span><span class="pq">&ldquo;As you know, I am sympathetic!&rdquo;</span></figcaption></figure>
-  </div>
-</section>
-
+<p>Healthy debate and effective scrutiny do not depend on the freedom to lie. The opposite is true. During the 2016 EU referendum, the winning side relied on a claim about the UK’s payments to the European Union that was shown to be false, and that leading politicians, including Boris Johnson MP, then Mayor of London, advanced knowing it to be false. Vote Leave’s campaign director later wrote that, without that claim, Leave would not have won. That is the lesson: with no law against it, deceiving the public about their own money can decide a national vote. Political debate needs to be held to honestly believed statements or it’s not political debate it’s political deceit.</p>
+<h3><b>16</b>The ballot box is the remedy</h3>
+<p>Elections decide who holds power. They are a verdict on everything at once, delivered every few years. They cannot examine evidence, test it, or decide beyond reasonable doubt whether someone abused their position by deceiving the public. Only a criminal trial can do that.</p>
+<p>In 2003 a great many people came to believe that the Government had deceived the public in order to invade Iraq, in a war in which hundreds of thousands of people died. Whether that is right has never been tested before a jury, because there was no statutory offence and no prosecution was brought. The Government was eventually voted out, but that election result didn’t answer the question of what really happened. It measured popular will for who should hold power, not whether Blair’s government criminally abused that power. The same is true of referendum campaigns and of conduct during the COVID-19 pandemic. Votes measure many things, but they cannot uncover the truth in court under careful analysis of the law and evidence.</p>
+<p>A conviction would not automatically remove anyone from office either. A Member of the House of Commons is disqualified only by a prison sentence of more than one year; a shorter custodial sentence triggers a recall petition, which returns the decision to voters. A Member of the House of Lords ceases to be a Member only on a sentence of more than one year. Voters want to choose their representatives, and they also want to see them face a jury if they deceive the public about something serious enough.</p>
+<h3><b>17</b>Judges are excluded too</h3>
+<p>We raised this with the Government at our meeting with Lord Lemos, and our view is that judges should be included. But our campaign is focused on legislators, which is already a significant change. We would prefer for them to be included but our resources are finite.</p>
+<h3><b>18</b>The cure may be worse than the disease</h3>
+<p>The disease is already serious. Politicians are among the least trusted people in our society, and doing nothing about that is a disease in itself.</p>
+<p>If this Bill becomes law with legislators written out of it, the press and the public will notice, and they will not forgive it. The pressure to correct it will be relentless, and when Parliament eventually includes itself, it will receive no credit, because it will be seen as the bare minimum. It is far better for Parliament to lead now than to be forced into it later. Cure the disease quickly, not slowly and painfully.</p>
 <h2 class="sec" id="s5"><b>5</b><span>Conclusion</span></h2>
 <p>Parliament cannot pass a law against deceiving the public that applies to almost everyone except itself. Amendment 66A includes every UK legislator safely: parliamentary privilege is protected on the face of the Bill, honest political opinion is protected, the criminal threshold is high, and every prosecution needs the consent of an independent prosecutor. It also fixes the undefined test at the heart of clause 12, which would otherwise weaken the offence in every case brought under it, against anyone.</p>
-<p class="ask"><strong>The ask: </strong><strong>please support Amendment 66A, speak in favour of it in Committee, add your name to it, and vote for it at Report.</strong></p>
+<p class="ask"><strong>The ask: please support Amendment 66A, speak in favour of it in Committee, add your name to it, and vote for it at Report.</strong></p>
 <p>I am grateful for your time. Every statement in this note can be checked against the Bill, the Law Commission’s report, the judgment and the debates referred to below.</p>
 <p class="sig-name">Marcus J Ball</p>
 <p class="sig-org">ExecProsec</p>
@@ -289,10 +279,12 @@ footer a{color:rgba(255,255,255,.7);text-decoration:none}
 <li>Constitutional Reform Act 2005, section 137(3). Bill of Rights 1689, Article IX.</li>
 </ul>
 </main>
-<footer>
-  ExecProsec Ltd, company number 10520032, England and Wales. &nbsp;&middot;&nbsp;
-  <a href="https://execprosec.org/poabamendments">Our amendments</a> &nbsp;&middot;&nbsp;
-  <a href="mailto:contact@execprosec.com">contact@execprosec.com</a>
+
+<footer class="site-foot">
+  <span class="sf-line">ExecProsec Ltd &middot; Not-for-profit &middot; Funded entirely by the public</span>
+  <span class="sf-line">Registered in England and Wales</span>
+  <span class="sf-line sf-num">10520032</span>
+  <span class="sf-line">&copy; 2026 ExecProsec Ltd. All rights reserved.</span>
 </footer>
 <!-- MJB unified analytics: page views, clicks, video plays -> Central wh_web_events -->
 <script>
