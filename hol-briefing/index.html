@@ -108,6 +108,34 @@ figure.bill figcaption{font-size:13px;color:var(--muted);font-style:italic;margi
 }
 @media print{body{background:#fff}#nav,.site-foot,.hero .kicker{display:none}.hero{color:#000}.page-h1,.page-h1 span{color:#041440}.sheet{margin:0;padding:0;border:0}}
 </style>
+<!-- standard site header -->
+<style>
+/* ---- standard site header: one line, logo hard left, Donate hard right ---- */
+header#nav{
+  width:100%; max-width:1180px; margin:0 auto;
+  padding:16px 28px 12px;
+  display:flex; align-items:center; justify-content:flex-start; gap:22px;
+  box-sizing:border-box;
+}
+header#nav .logo{ margin:0; flex:0 0 auto; }
+header#nav .nav-links{
+  display:flex; align-items:center; gap:2px;
+  flex:1 1 auto; flex-wrap:nowrap; line-height:1.2; overflow:visible;
+}
+header#nav .nav-links a{ white-space:nowrap; }
+header#nav .nav-links .nav-donate{ margin-left:auto; flex:0 0 auto; }
+/* an empty placeholder span would otherwise add a flex gap and push Donate off the right edge */
+header#nav > span:empty{ display:none; }
+@media(max-width:1080px){
+  header#nav{ padding:14px 18px 10px; gap:14px; }
+  header#nav .nav-links a{ font-size:11px; padding:5px 6px; letter-spacing:.02em; }
+}
+@media(max-width:880px){
+  header#nav{ flex-wrap:wrap; }
+  header#nav .nav-links{ flex-wrap:wrap; }
+}
+</style>
+
 </head>
 <body>
 <header id="nav">
@@ -115,6 +143,7 @@ figure.bill figcaption{font-size:13px;color:var(--muted);font-style:italic;margi
   <nav class="nav-links">
     <a href="/poabamendments">Amendments</a>
     <a href="/hol-briefing" class="active" aria-current="page" title="House of Lords briefing">HOL Briefing</a>
+    <a href="/lying-in-politics">Lying in Politics</a>
     <a href="/news">News</a>
     <a href="/testimonials">Testimonials</a>
     <a href="/contact">Contact</a>

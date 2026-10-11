@@ -109,6 +109,34 @@ img{max-width:100%}
 
 @media(max-width:760px){ .sheet{padding:34px 24px 32px;margin-top:40px} .wrap{padding:0 20px} .big .n{font-size:36px} }
 </style>
+<!-- standard site header -->
+<style>
+/* ---- standard site header: one line, logo hard left, Donate hard right ---- */
+header#nav{
+  width:100%; max-width:1180px; margin:0 auto;
+  padding:16px 28px 12px;
+  display:flex; align-items:center; justify-content:flex-start; gap:22px;
+  box-sizing:border-box;
+}
+header#nav .logo{ margin:0; flex:0 0 auto; }
+header#nav .nav-links{
+  display:flex; align-items:center; gap:2px;
+  flex:1 1 auto; flex-wrap:nowrap; line-height:1.2; overflow:visible;
+}
+header#nav .nav-links a{ white-space:nowrap; }
+header#nav .nav-links .nav-donate{ margin-left:auto; flex:0 0 auto; }
+/* an empty placeholder span would otherwise add a flex gap and push Donate off the right edge */
+header#nav > span:empty{ display:none; }
+@media(max-width:1080px){
+  header#nav{ padding:14px 18px 10px; gap:14px; }
+  header#nav .nav-links a{ font-size:11px; padding:5px 6px; letter-spacing:.02em; }
+}
+@media(max-width:880px){
+  header#nav{ flex-wrap:wrap; }
+  header#nav .nav-links{ flex-wrap:wrap; }
+}
+</style>
+
 </head>
 <body>
 
@@ -119,6 +147,7 @@ img{max-width:100%}
     <a href="/hol-briefing" title="House of Lords briefing">HOL Briefing</a>
     <a href="/lying-in-politics" class="active" aria-current="page">Lying in Politics</a>
     <a href="/news">News</a>
+    <a href="/testimonials">Testimonials</a>
     <a href="/contact">Contact</a>
     <a class="nav-donate" href="/story/1">Donate</a>
   </nav>
@@ -208,12 +237,9 @@ img{max-width:100%}
       <li>&ldquo;the remains of 300,000 innocent men, women and children <b>have been found</b> in mass graves in Iraq&rdquo; <i>White House Rose Garden, standing beside President Bush, 16 April 2004</i></li>
       <li>&ldquo;<b>We have found</b> the mass graves of 300,000 people <b>already</b> in Iraq. It doesn&rsquo;t get a great deal of publicity, but it&rsquo;s true.&rdquo; <i>BBC Radio 4, the Today programme, April 2004</i></li>
     </ul>
-    <p>Read what he is actually telling the public. Not that a great many people are believed to have died under Saddam Hussein, which is true and was never in dispute. Not that there are grave sites in Iraq holding an unknown number, which is also true. He is saying that the bodies <b>have been found</b>. Discovered. Already. He says it three times, and the third time he adds that it does not get enough publicity, but that it is true.</p>
-    <p>It was not true.</p>
-    <p>In July 2004 <i>The Guardian</i> asked the head of the coalition&rsquo;s own mass graves action plan how many bodies had been exhumed through official procedures. Her answer was: <b>&ldquo;Through official procedures? None.&rdquo;</b> A forensic scientist whose team had spent five months working on the grave sites said he did not believe any bodies had been exhumed in Iraq at all.</p>
-    <p>The figure had never been a count of anything. It came from a Human Rights Watch estimate of 290,000 people who had <i>disappeared</i> under the Ba&rsquo;athists, rounded up to a neater number. Human Rights Watch itself refused to use it as a count of bodies in graves, because nobody could know until the graves had actually been opened.</p>
-    <p>That same month, Downing Street conceded to <i>The Observer</i> that the Prime Minister&rsquo;s claim was untrue.</p>
-    <p>So this was not an argument about statistics, and it is not one now. A Prime Minister told the public, repeatedly and on the record, that something had been discovered. It had not been discovered. <b>Claiming to have found what you have not found is a different thing from overestimating, and it is worse.</b></p>
+    <p>He is not saying that a great many people are believed to have died under Saddam Hussein. He is saying the bodies <b>have been found</b>. Discovered. Already. He says it three times, and the third time he adds that it does not get a great deal of publicity, but that it is true.</p>
+    <p>It was not true. In July 2004 <i>The Guardian</i> asked the head of the coalition&rsquo;s own mass graves action plan how many bodies had been exhumed through official procedures. Her answer was: <b>&ldquo;Through official procedures? None.&rdquo;</b></p>
+    <p>Claiming to have found what you have not found is not an overestimate. It is an invention.</p>
     <p>The 45-minute claim at the centre of the September 2002 dossier rested on a single uncorroborated source. The February 2003 dossier was copied from a postgraduate thesis, with the wording hardened on the way: &ldquo;monitoring&rdquo; embassies became &ldquo;spying&rdquo; on them, &ldquo;aiding opposition groups&rdquo; became &ldquo;supporting terrorist organisations&rdquo;.</p>
 
     <p class="src">Sources:
