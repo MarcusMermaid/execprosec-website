@@ -48,6 +48,14 @@ img{max-width:100%}
 .intro-rule{width:48px;height:2px;background:var(--gold);margin:18px 0 22px}
 .stand{font-size:18px;line-height:1.66;color:rgba(255,255,255,.84);margin:0 0 14px}
 .forwho{font-size:14px;color:rgba(255,255,255,.5);margin:0 0 6px}
+.faces{display:flex;flex-wrap:wrap;gap:14px;margin:26px 0 4px}
+.faces figure{margin:0;width:78px;text-align:center}
+.faces img{width:78px;height:78px;border-radius:50%;object-fit:cover;display:block;
+  border:1.5px solid rgba(221,188,102,.55);filter:grayscale(1) contrast(1.05);transition:filter .2s,border-color .2s}
+.faces a:hover img,.faces a:focus-visible img{filter:none;border-color:var(--gold)}
+.faces figcaption{font-size:11px;line-height:1.35;color:rgba(255,255,255,.5);margin-top:7px;letter-spacing:.02em}
+.faces a{text-decoration:none}
+@media(max-width:520px){ .faces{gap:10px} .faces figure,.faces img{width:62px} .faces img{height:62px} }
 
 /* ---- one example ---- */
 .ex{padding:40px 0 6px;border-top:1px solid rgba(255,255,255,.12);margin-top:34px}
@@ -118,21 +126,28 @@ img{max-width:100%}
     <h1 class="page-h1">Examples of lying in <span>politics</span>.</h1>
     <div class="intro-rule"></div>
     <p class="stand">Seven examples. Different parties, different countries, forty years apart. In every one, somebody in public office said something to the public that was not true, and in every one but the last, nothing happened to them.</p>
-    <p class="forwho">Every claim below is sourced and linked. Prepared for Members of the House of Lords considering Amendment 66A to the Public Office (Accountability) Bill.</p>
+    <div class="faces">
+      <figure><a href="#ex1"><img src="/lying-in-politics/faces/johnson.jpg" alt="Boris Johnson" loading="lazy" width="78" height="78"></a><figcaption>Boris<br>Johnson</figcaption></figure>
+      <figure><a href="#ex2"><img src="/lying-in-politics/faces/blair.jpg" alt="Tony Blair" loading="lazy" width="78" height="78"></a><figcaption>Tony<br>Blair</figcaption></figure>
+      <figure><a href="#ex2"><img src="/lying-in-politics/faces/bush.jpg" alt="George W. Bush" loading="lazy" width="78" height="78"></a><figcaption>George W.<br>Bush</figcaption></figure>
+      <figure><a href="#ex3"><img src="/lying-in-politics/faces/mcnamara.jpg" alt="Robert McNamara" loading="lazy" width="78" height="78"></a><figcaption>Robert<br>McNamara</figcaption></figure>
+      <figure><a href="#ex4"><img src="/lying-in-politics/faces/clinton.jpg" alt="Hillary Clinton" loading="lazy" width="78" height="78"></a><figcaption>Hillary<br>Clinton</figcaption></figure>
+      <figure><a href="#ex5"><img src="/lying-in-politics/faces/clegg.jpg" alt="Nick Clegg" loading="lazy" width="78" height="78"></a><figcaption>Nick<br>Clegg</figcaption></figure>
+      <figure><a href="#ex6"><img src="/lying-in-politics/faces/mone.jpg" alt="Michelle Mone" loading="lazy" width="78" height="78"></a><figcaption>Michelle<br>Mone</figcaption></figure>
+      <figure><a href="#ex7"><img src="/lying-in-politics/faces/cahuzac.jpg" alt="J&eacute;r&ocirc;me Cahuzac" loading="lazy" width="78" height="78"></a><figcaption>J&eacute;r&ocirc;me<br>Cahuzac</figcaption></figure>
+    </div>
   </section>
 
   <!-- ================= 1 ================= -->
-  <section class="ex">
+  <section class="ex" id="ex1">
     <p class="ex-when">2016 &middot; The EU referendum</p>
     <h2 class="ex-h">How much we sent to Brussels.</h2>
     <p class="ex-who">Boris Johnson, Mayor of London and Member of Parliament</p>
 
-    <p>Watch him tell the public how their money was being spent.</p>
-
     <div class="film">
-      <video controls preload="none" playsinline data-slug="johnson-350m"
-        poster="https://pub-583fc80826ad472382601185eaf83b3a.r2.dev/johnson-350m.jpg"
-        controlsList="nodownload" aria-label="A United Kingdom divided by deception"></video>
+      <video controls preload="none" playsinline data-slug="brexit-numbers"
+        poster="https://pub-583fc80826ad472382601185eaf83b3a.r2.dev/brexit-numbers.jpg"
+        controlsList="nodownload" aria-label="Boris Johnson on what the UK sent to Brussels"></video>
     </div>
 
     <ul class="quotes">
@@ -144,18 +159,20 @@ img{max-width:100%}
     </ul>
 
     <p>Every one of those figures describes the same thing. No two of them agree.</p>
+
+    <p><b>So how much did we send to Brussels?</b> The &pound;350 million a week was the gross figure, before the rebate the United Kingdom never paid in the first place. After the rebate the actual payment was around <b>&pound;250 million a week</b>, and after the money that came back to Britain the net cost was roughly half the headline number. The UK Statistics Authority called the &pound;350 million claim <b>&ldquo;potentially misleading&rdquo;</b> during the campaign.</p>
     <p>After the result, Vote Leave&rsquo;s campaign director was asked in his own written account whether they would have won without the &pound;350 million claim. He answered: <b>&ldquo;All our research and the close result strongly suggests No.&rdquo;</b></p>
 
-    <p class="verdict">Mr Johnson demonstrated that he did not care about accuracy and was willing to recklessly and intentionally deceive the public. He did not consider that anyone would set his claims side by side.</p>
     <p class="src">Sources:
       <a href="http://www.telegraph.co.uk/opinion/2016/03/16/dont-be-taken-in-by-project-fear--staying-in-the-eu-is-the-risky/" target="_blank" rel="noopener">The Telegraph, 16 March 2016</a> &middot;
       <a href="https://www.thesun.co.uk/archives/politics/280319/boris-johnson-david-cameron-is-clutching-the-skirts-of-brussels/" target="_blank" rel="noopener">The Sun</a> &middot;
-      <a href="https://dominiccummings.com/2017/01/09/on-the-referendum-21-branching-histories-of-the-2016-referendum-and-the-frogs-before-the-storm-2/" target="_blank" rel="noopener">Dominic Cummings, January 2017</a>
+      <a href="https://dominiccummings.com/2017/01/09/on-the-referendum-21-branching-histories-of-the-2016-referendum-and-the-frogs-before-the-storm-2/" target="_blank" rel="noopener">Dominic Cummings, January 2017</a> &middot;
+      <a href="https://fullfact.org/europe/foreign-secretary-and-uk-statistics-authority-350-million-explained/" target="_blank" rel="noopener">Full Fact and the UK Statistics Authority on the &pound;350 million</a>
     </p>
   </section>
 
   <!-- ================= 2 ================= -->
-  <section class="ex">
+  <section class="ex" id="ex2">
     <p class="ex-when">2003 &middot; Iraq</p>
     <h2 class="ex-h">&ldquo;Absolutely right.&rdquo;</h2>
     <p class="ex-who">Tony Blair, Prime Minister</p>
@@ -168,13 +185,19 @@ img{max-width:100%}
 
     <p>At Camp David on 7 September 2002, President Bush said that a report from the International Atomic Energy Agency showed Iraq was <b>&ldquo;six months away from developing a weapon&rdquo;</b>. Standing beside him, the Prime Minister said: <b>&ldquo;Absolutely right.&rdquo;</b></p>
     <p>No such IAEA report existed. The agency&rsquo;s six to twenty-four month estimate described Iraq <b>before the 1991 Gulf War</b>, and it had found no evidence Iraq still had the capability. The White House later said the President had meant a different IAEA report. That one did not exist either.</p>
-    <p>On 20 November 2003 the Prime Minister told an audience: <b>&ldquo;We&rsquo;ve already discovered, just so far, the remains of 400,000 people in mass graves.&rdquo;</b> In July 2004 <b>Downing Street admitted to <i>The Observer</i> that this was untrue</b>. About five thousand bodies had been recovered.</p>
+    <p>Then there were the bodies, and he could not keep the number straight either.</p>
+    <ul class="quotes">
+      <li>&ldquo;We&rsquo;ve already discovered, just so far, the remains of <b>400,000</b> people in mass graves&rdquo; <i>London, 20 November 2003</i></li>
+      <li>&ldquo;the remains of <b>300,000</b> innocent men, women and children have been found in mass graves in Iraq&rdquo; <i>White House Rose Garden, standing beside President Bush, 16 April 2004</i></li>
+      <li>About <b>5,000</b> bodies had actually been recovered <i>Downing Street, admitting to The Observer, July 2004</i></li>
+    </ul>
+    <p>Four hundred thousand in November. Three hundred thousand five months later. Then an admission that the real number was about five thousand. A hundred thousand human beings appeared and disappeared between two statements, and neither figure was ever a count of anything.</p>
     <p>The 45-minute claim at the centre of the September 2002 dossier rested on a single uncorroborated source. The February 2003 dossier was copied from a postgraduate thesis, with the wording hardened on the way: &ldquo;monitoring&rdquo; embassies became &ldquo;spying&rdquo; on them, &ldquo;aiding opposition groups&rdquo; became &ldquo;supporting terrorist organisations&rdquo;.</p>
 
-    <p class="verdict">Approximately a million people died. No politician has ever faced a jury for any of it. That is why a great many people in this country still believe they were lied to about Iraq, and are disgusted that nobody was ever held to account.</p>
     <p class="src">Sources:
       <a href="https://georgewbush-whitehouse.archives.gov/news/releases/2002/09/20020907-2.html" target="_blank" rel="noopener">White House transcript, 7 September 2002</a> &middot;
       <a href="https://harpers.org/2002/09/weeklyreview2002-09-10/" target="_blank" rel="noopener">what the IAEA report actually said</a> &middot;
+      <a href="https://georgewbush-whitehouse.archives.gov/news/releases/2004/04/text/20040416-4.html" target="_blank" rel="noopener">White House transcript, 16 April 2004 (the 300,000 claim)</a> &middot;
       <a href="https://www.theguardian.com/politics/2004/jul/18/iraq.iraq1" target="_blank" rel="noopener">The Observer, 18 July 2004</a> &middot;
       <a href="https://www.nbcnews.com/news/world/chilcot-report-iraq-war-released-stops-short-saying-blair-lied-n604461" target="_blank" rel="noopener">the Chilcot report</a> &middot;
       <a href="https://www.aljazeera.com/opinions/2023/3/21/my-plagiarised-work-was-used-to-launch-the-war-on-iraq" target="_blank" rel="noopener">Ibrahim al-Marashi on the copied dossier</a>
@@ -182,7 +205,7 @@ img{max-width:100%}
   </section>
 
   <!-- ================= 3 ================= -->
-  <section class="ex">
+  <section class="ex" id="ex3">
     <p class="ex-when">1964 &middot; Vietnam</p>
     <h2 class="ex-h">An attack that never happened.</h2>
     <p class="ex-who">The Gulf of Tonkin</p>
@@ -199,13 +222,10 @@ img{max-width:100%}
   </section>
 
   <!-- ================= 4 ================= -->
-  <section class="ex">
+  <section class="ex" id="ex4">
     <p class="ex-when">2008 &middot; Bosnia</p>
     <h2 class="ex-h">Landing under sniper fire.</h2>
     <p class="ex-who">Hillary Clinton, United States Senator and candidate for President</p>
-
-    <p>In March 2008 she told an audience that when she arrived in Tuzla she had landed under sniper fire, and had run with her head down to the vehicles.</p>
-    <p>CBS News broadcast the footage of the arrival.</p>
 
     <div class="film">
       <video controls preload="metadata" playsinline
@@ -213,8 +233,9 @@ img{max-width:100%}
         controlsList="nodownload" aria-label="CBS News: video belies Clinton's Bosnia statements"></video>
     </div>
 
-    <p>She walked down the ramp with her sixteen-year-old daughter, unhurried, and stopped on the tarmac to meet an eight-year-old girl who read her a poem.</p>
-    <p>Asked about it the next day, she stood by the account: <b>&ldquo;Now, that is what happened.&rdquo;</b> A week later she said she had <b>&ldquo;misspoke&rdquo;</b>.</p>
+    <p>Running for President in March 2008, she told an audience that she had landed in Tuzla <b>under sniper fire</b>, and had run from the plane with her head down.</p>
+    <p>CBS News still had the tape. There was no sniper fire. There was a <b>greeting ceremony</b>. She walked down the ramp with her sixteen-year-old daughter, unhurried, shook hands on the tarmac and stopped to meet an eight-year-old girl who read her a poem.</p>
+    <p>She had made it up. Asked about it the next day she stood by it: <b>&ldquo;Now, that is what happened.&rdquo;</b> A week later, once the footage had been broadcast, she said she had <b>&ldquo;misspoke&rdquo;</b>.</p>
     <p class="verdict">A claim about her own judgement under fire, made while asking the public to elect her Commander-in-Chief, and it only collapsed because somebody still had the tape.</p>
     <p class="src">Sources:
       <a href="https://politifact.com/factchecks/2008/mar/25/hillary-clinton/video-shows-tarmac-welcome-no-snipers/" target="_blank" rel="noopener">PolitiFact, 25 March 2008</a> &middot;
@@ -223,7 +244,7 @@ img{max-width:100%}
   </section>
 
   <!-- ================= 5 ================= -->
-  <section class="ex">
+  <section class="ex" id="ex5">
     <p class="ex-when">2010 &middot; Tuition fees</p>
     <h2 class="ex-h">&ldquo;Under any circumstances.&rdquo;</h2>
     <p class="ex-who">Nick Clegg, Leader of the Liberal Democrats, later Deputy Prime Minister</p>
@@ -234,25 +255,33 @@ img{max-width:100%}
         controlsList="nodownload" aria-label="No more broken promises"></video>
     </div>
 
-    <p>He promised <b>&ldquo;an end to broken promises&rdquo;</b> in politics, and he promised to vote against any rise in university tuition fees <b>&ldquo;under any circumstances&rdquo;</b>. He signed it, and was photographed holding it.</p>
-    <p>After he became Deputy Prime Minister, he voted to triple tuition fees instead. Students felt betrayed. Central London was turned into a riot zone. People got hurt.</p>
-    <p>He later admitted that when he made the promise he was not <b>&ldquo;absolutely sure&rdquo;</b> he could keep it at all, let alone under any circumstances.</p>
-    <p class="verdict">The promise was knowingly unsafe when it was made. Hundreds of thousands of votes were won with it, and the system treated that as politics as usual.</p>
+    <p><b>Nick Clegg did not simply lie about tuition fees.</b> What he did is more complicated than that, and in one way worse.</p>
+    <p>His whole campaign was built on ending broken promises. That was the offer. A new kind of politics, a new period of hope, a politician who would finally keep his word. He campaigned on it hard, and he inspired a generation of young people who had never voted before.</p>
+    <p>The centrepiece of it was a signed pledge to vote against any rise in university tuition fees <b>&ldquo;under any circumstances&rdquo;</b>. He was photographed holding it.</p>
+    <p>After he became Deputy Prime Minister, he voted to triple tuition fees instead. Students felt betrayed. Central London was turned into a riot zone. People got hurt. An entire generation&rsquo;s first experience of voting in a general election was poisoned, and it left them feeling exploited, used and betrayed.</p>
+    <p>Then came the apology. He did not apologise for breaking the promise. He apologised for <b>making</b> it, because, he admitted, when he made it he had not been <b>&ldquo;absolutely sure&rdquo;</b> he could keep it at all.</p>
+    <p class="verdict">So the promise was dishonest at the moment it was made. He was campaigning to end broken promises forever, as his single biggest argument, while making a promise he already knew he might have to break.</p>
     <p class="src">Source:
       <a href="https://www.timeshighereducation.com/node/109505" target="_blank" rel="noopener">Times Higher Education, on the apology and the NUS response</a>
     </p>
   </section>
 
   <!-- ================= 6 ================= -->
-  <section class="ex">
+  <section class="ex" id="ex6">
     <p class="ex-when">2020 &middot; PPE Medpro</p>
     <h2 class="ex-h">&ldquo;Lying to the media is not a crime.&rdquo;</h2>
     <p class="ex-who">Baroness Mone, Member of the House of Lords</p>
 
+    <div class="film">
+      <video controls preload="metadata" playsinline
+        src="/lying-in-politics/mone-kuenssberg.mp4"
+        controlsList="nodownload" aria-label="Baroness Mone tells Laura Kuenssberg that lying over PPE contracts is not a crime"></video>
+    </div>
+
     <p>She referred PPE Medpro to the government through the high-priority channel open to parliamentarians during the pandemic. The company was awarded contracts worth more than <b>&pound;200 million</b>.</p>
     <p>For two years she denied, through lawyers and in public, that she had any connection to it.</p>
     <p>In December 2023, on the BBC, she admitted she had <b>&ldquo;made an error in saying to the press that I wasn&rsquo;t involved&rdquo;</b>, and that she is a beneficiary of trusts holding around <b>&pound;60 million</b> of the profit from the deal. In the same interview she said that lying to the media is <b>&ldquo;not a crime&rdquo;</b>.</p>
-    <p class="verdict">She was right. That is precisely the problem this Bill was written to fix, and precisely the gap that Amendment 66A closes.</p>
+    <p class="verdict">She was right. That is precisely the gap that Amendment 66A to the Public Office (Accountability) Bill is designed to close.</p>
     <p class="src">Sources:
       <a href="https://www.scotsman.com/news/politics/michelle-mone-ppe-contract-links-not-a-crime-4448796" target="_blank" rel="noopener">The Scotsman, on the Kuenssberg interview</a> &middot;
       <a href="https://www.insider.co.uk/news/mone-lying-over-ppe-contract-31695960" target="_blank" rel="noopener">Insider</a>
@@ -260,7 +289,7 @@ img{max-width:100%}
   </section>
 
   <!-- ================= 7 ================= -->
-  <section class="ex">
+  <section class="ex" id="ex7">
     <p class="ex-when">2013 &middot; France</p>
     <h2 class="ex-h">The minister for tax evasion.</h2>
     <p class="ex-who">J&eacute;r&ocirc;me Cahuzac, Budget Minister</p>
@@ -301,6 +330,13 @@ img{max-width:100%}
       <a class="a2" href="/poabamendments">See the amendments</a>
     </div>
   </section>
+</div>
+
+<div class="wrap">
+  <p style="font-size:12px;line-height:1.6;color:rgba(255,255,255,.34);margin:34px 0 0">
+    Portraits: Tony Blair, George W. Bush and Robert McNamara, public domain. Michelle Mone by B Milnes, CC BY-SA 3.0.
+    Hillary Clinton, US Department of State. Boris Johnson, Nick Clegg and J&eacute;r&ocirc;me Cahuzac from the ExecProsec archive.
+  </p>
 </div>
 
 <footer class="site-foot">
