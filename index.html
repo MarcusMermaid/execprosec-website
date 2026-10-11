@@ -2011,7 +2011,13 @@ header#nav .nav-links{
   flex:1 1 auto; flex-wrap:nowrap; line-height:1.2; overflow:visible;
 }
 header#nav .nav-links a{ white-space:nowrap; }
-header#nav .nav-links .nav-donate{ margin-left:auto; flex:0 0 auto; }
+header#nav .nav-links .nav-donate{ margin-left:18px; flex:0 0 auto; }
+/* the same brightness on every page: the home page rendered these full white and the
+   others at 45%, so the links looked different depending on which page you were on */
+header#nav .nav-links a:not(.nav-donate){ color:#fff; }
+header#nav .nav-links a:not(.nav-donate):hover{ color:#fff; background:rgba(255,255,255,.07); }
+header#nav .nav-links a.active,
+header#nav .nav-links a[aria-current="page"]{ color:var(--gold); }
 /* an empty placeholder span would otherwise add a flex gap and push Donate off the right edge */
 header#nav > span:empty{ display:none; }
 @media(max-width:1080px){

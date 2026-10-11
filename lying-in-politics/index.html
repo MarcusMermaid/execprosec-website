@@ -124,7 +124,13 @@ header#nav .nav-links{
   flex:1 1 auto; flex-wrap:nowrap; line-height:1.2; overflow:visible;
 }
 header#nav .nav-links a{ white-space:nowrap; }
-header#nav .nav-links .nav-donate{ margin-left:auto; flex:0 0 auto; }
+header#nav .nav-links .nav-donate{ margin-left:18px; flex:0 0 auto; }
+/* the same brightness on every page: the home page rendered these full white and the
+   others at 45%, so the links looked different depending on which page you were on */
+header#nav .nav-links a:not(.nav-donate){ color:#fff; }
+header#nav .nav-links a:not(.nav-donate):hover{ color:#fff; background:rgba(255,255,255,.07); }
+header#nav .nav-links a.active,
+header#nav .nav-links a[aria-current="page"]{ color:var(--gold); }
 /* an empty placeholder span would otherwise add a flex gap and push Donate off the right edge */
 header#nav > span:empty{ display:none; }
 @media(max-width:1080px){
@@ -239,7 +245,9 @@ header#nav > span:empty{ display:none; }
     </ul>
     <p>He is not saying that a great many people are believed to have died under Saddam Hussein. He is saying the bodies <b>have been found</b>. Discovered. Already. He says it three times, and the third time he adds that it does not get a great deal of publicity, but that it is true.</p>
     <p>It was not true. In July 2004 <i>The Guardian</i> asked the head of the coalition&rsquo;s own mass graves action plan how many bodies had been exhumed through official procedures. Her answer was: <b>&ldquo;Through official procedures? None.&rdquo;</b></p>
-    <p>Claiming to have found what you have not found is not an overestimate. It is an invention.</p>
+    <p>He was not rounding up an estimate. He was telling the public that the remains of three hundred thousand people had been dug up and counted, when not one body had been officially exhumed. That is a Prime Minister asserting the physical evidence of a crime on the scale of a genocide, and the evidence did not exist.</p>
+    <p>And look at when he said it. The weapons had not been found. The case he had taken the country to war on had already collapsed in public. So the justification was replaced, and this was the replacement.</p>
+    <p class="verdict">Claiming to have found what you have not found is not an overestimate. It is the fabrication of evidence, offered to a country that had just been told the first reason for the war was wrong.</p>
     <p>The 45-minute claim at the centre of the September 2002 dossier rested on a single uncorroborated source. The February 2003 dossier was copied from a postgraduate thesis, with the wording hardened on the way: &ldquo;monitoring&rdquo; embassies became &ldquo;spying&rdquo; on them, &ldquo;aiding opposition groups&rdquo; became &ldquo;supporting terrorist organisations&rdquo;.</p>
 
     <p class="src">Sources:
