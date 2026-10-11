@@ -51,8 +51,8 @@ img{max-width:100%}
 .faces{display:flex;flex-wrap:wrap;gap:14px;margin:26px 0 4px}
 .faces figure{margin:0;width:78px;text-align:center}
 .faces img{width:78px;height:78px;border-radius:50%;object-fit:cover;display:block;
-  border:1.5px solid rgba(221,188,102,.55);filter:grayscale(1) contrast(1.05);transition:filter .2s,border-color .2s}
-.faces a:hover img,.faces a:focus-visible img{filter:none;border-color:var(--gold)}
+  border:1.5px solid rgba(221,188,102,.55);transition:border-color .2s,transform .2s}
+.faces a:hover img,.faces a:focus-visible img{border-color:var(--gold);transform:translateY(-2px)}
 .faces figcaption{font-size:11px;line-height:1.35;color:rgba(255,255,255,.5);margin-top:7px;letter-spacing:.02em}
 .faces a{text-decoration:none}
 @media(max-width:520px){ .faces{gap:10px} .faces figure,.faces img{width:62px} .faces img{height:62px} }
