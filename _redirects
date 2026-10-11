@@ -6,6 +6,6 @@
 # The backer update page was at /video-updates for its first day.
 /video-updates /backer-updates/ 301
 /video-updates/* /backer-updates/ 301
-# The examples page lived at /lying-in-politics while it was being built.
-/lying-in-politics /examples 301
-/lying-in-politics/* /examples 301
+# The page was briefly at /examples.
+/examples /lying-in-politics 301
+/examples/* /lying-in-politics 301
