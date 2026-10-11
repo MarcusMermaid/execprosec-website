@@ -27,6 +27,7 @@ a{color:#fff;text-decoration-color:var(--gold);text-underline-offset:3px}
 a:hover{color:var(--gold)}
 video{width:100%;height:auto;display:block;background:#000;margin:30px 0 8px}
 .len{font-size:13px;color:rgba(255,255,255,.4);margin:0 0 34px}
+.vlabel{color:#fff;font-weight:600;margin:34px 0 0}
 .go{display:inline-block;margin:4px 0 34px;padding:14px 26px;border-radius:4px;
   background:#fff;color:var(--navy);font-weight:600;font-size:16px;text-decoration:none;
   transition:background .15s ease}
@@ -62,16 +63,23 @@ footer a{color:rgba(255,255,255,.5);text-decoration:none}
 
   <p id="dear">Dear backers,</p>
   <p>I have an urgent update for you. It is the biggest I&rsquo;ve ever sent out.</p>
-  <p>Firstly, please watch this video from me, which also includes the beginning of the
-    documentary film.</p>
+  <p>There are two videos below. They are separate, and they are short.</p>
 
+  <p class="vlabel">Firstly, an update from me.</p>
   <video id="v" controls playsinline preload="metadata"
-         poster="https://video.execprosec.org/backer-update.jpg">
+         poster="https://video.execprosec.org/backer-message.jpg">
     Your browser cannot play this video.
   </video>
-  <p class="len">17 minutes 39 seconds</p>
+  <p class="len">6 minutes</p>
 
-  <p>Secondly, read Our Story for the full detail of our work from the last 10 years here:</p>
+  <p class="vlabel">Secondly, a separate video: the opening of our documentary film.</p>
+  <video id="v2" controls playsinline preload="metadata"
+         poster="https://video.execprosec.org/film-opening.jpg">
+    Your browser cannot play this video.
+  </video>
+  <p class="len">3 minutes 44 seconds</p>
+
+  <p>Thirdly, read Our Story for the full detail of our work from the last 10 years here:</p>
   <div class="btns">
     <a class="go" id="story" href="https://execprosec.org/story-app/" target="_blank" rel="noopener">Open Our Story</a>
     <!-- straight to "Back this work every month", slide 26 of the story -->
@@ -81,7 +89,7 @@ footer a{color:rgba(255,255,255,.5);text-decoration:none}
   <p>There is likely to be another referendum on EU membership, according to Prime Minister
     Burnham. We need to make sure that this time politicians are not allowed to lie to the
     public in order to manipulate the result.</p>
-  <p>Thirdly, <a href="https://execprosec.org/amendment-66a.pdf"
+  <p>Fourthly, <a href="https://execprosec.org/amendment-66a.pdf"
     target="_blank" rel="noopener" id="amend">our amendment here 66A&#9733;</a>, which has been tabled for
     the House of Lords committee stage by Baroness Jones, achieves just that and much more.</p>
   <p>Lastly, we need monthly funding right now to get the press and communications campaign to
@@ -121,10 +129,16 @@ footer a{color:rgba(255,255,255,.5);text-decoration:none}
 (function(){
   var API   = 'https://central-2-mcp-production.up.railway.app';
   var R2    = 'https://video.execprosec.org/';
-  var PAGE  = 'backer-updates';
-  var BLOCK = 5;                     /* seconds per block of the watch map */
+  var PAGE  = 'backer-updates';     /* the page itself: opens, link checks, onward clicks */
+  var BLOCK = 5;                    /* seconds per block of the watch map */
 
-  var v = document.getElementById('v');
+  /* Two videos now, and each reports under its own page name. Averaging a six minute
+     message together with a four minute film opening would describe neither. */
+  var VIDEOS = [
+    { el: 'v',  slug: 'backer-message', page: 'backer-message' },
+    { el: 'v2', slug: 'film-opening',   page: 'film-opening' }
+  ];
+
   var link = (/[?&]link=([A-Za-z0-9_.\-]+)/.exec(location.search || '') || [])[1] || '';
   var who = { email: '', pass: '' };
   var sess = '';
@@ -135,10 +149,10 @@ footer a{color:rgba(255,255,255,.5);text-decoration:none}
   } catch (e) { sess = 'vu' + Date.now().toString(36); }
 
   /* ---- talking to Central ---- */
-  function track(event, detail, meta, beacon) {
+  function track(event, detail, meta, beacon, page) {
     var body = JSON.stringify({
       event: event, detail: String(detail === undefined ? '' : detail).slice(0, 180),
-      page: PAGE, site: 'execprosec', session: sess,
+      page: page || PAGE, site: 'execprosec', session: sess,
       email: who.email, pass: who.pass, meta: String(meta || '').slice(0, 4000)
     });
     try {
@@ -155,7 +169,7 @@ footer a{color:rgba(255,255,255,.5);text-decoration:none}
     } catch (e) {}
   }
 
-  /* ---- which rendition ---- */
+  /* ---- which rendition, decided once for the page ---- */
   function slowLine() {
     try {
       var c = navigator.connection || {};
@@ -169,152 +183,193 @@ footer a{color:rgba(255,255,255,.5);text-decoration:none}
   try { quality = localStorage.getItem('ep-vq') || ''; } catch (e) {}
   if (quality !== 'hq' && quality !== 'lite') quality = slowLine() ? 'lite' : 'hq';
 
-  function load(which, keepTime) {
-    var at = keepTime ? (v.currentTime || 0) : 0;
-    var playing = keepTime && !v.paused;
-    v.src = R2 + 'backer-update-' + which + '.mp4';
-    v.load();
-    if (at > 0) {
-      v.addEventListener('loadedmetadata', function once() {
-        v.removeEventListener('loadedmetadata', once);
-        try { v.currentTime = at; } catch (e) {}
-        if (playing) { v.play().catch(function(){}); }
-      });
-    }
-  }
+  var players = [];
   function choose(which) {
     if (which === quality) return;
     quality = which;
     try { localStorage.setItem('ep-vq', which); } catch (e) {}
-    track('video_quality', which);
-    load(which, true);
-  }
-  load(quality, false);
-
-  /* ---- the watch map ---- */
-  var blocks = [];          /* how many times each five second block has been played through */
-  var lastBlock = -1;
-  var furthest = 0;         /* the deepest point they ever reached */
-  var watchedSeconds = 0;   /* real seconds of video played, rewatches included */
-  var lastTime = 0;
-  var marks = { 25: 0, 50: 0, 75: 0, 90: 0 };
-  var started = false, finished = false;
-
-  function duration() { return (v.duration && isFinite(v.duration)) ? v.duration : 0; }
-  function pct() { var d = duration(); return d ? Math.round((furthest / d) * 100) : 0; }
-
-  function mapString() {
-    /* one character per block, capped at 9, so the whole of a 17 minute video is 212 characters */
-    var out = '';
-    for (var i = 0; i < blocks.length; i++) {
-      var n = blocks[i] || 0;
-      out += n > 9 ? '9' : String(n);
-    }
-    return out;
-  }
-  function summary() {
-    var d = duration();
-    var seen = 0, again = 0;
-    for (var i = 0; i < blocks.length; i++) {
-      if (blocks[i]) { seen++; if (blocks[i] > 1) again++; }
-    }
-    return JSON.stringify({
-      secs: Math.round(watchedSeconds),            /* how long they actually watched */
-      furthest: Math.round(furthest),              /* the deepest point reached */
-      pct: pct(),                                  /* and as a percentage */
-      of: Math.round(d),                           /* the length of the video */
-      covered: blocks.length ? Math.round((seen / blocks.length) * 100) : 0,
-      rewatched: again,                            /* blocks watched more than once */
-      finished: finished,
-      quality: quality,
-      map: mapString()
-    });
+    for (var i = 0; i < players.length; i++) players[i].requality(which);
   }
 
-  v.addEventListener('loadedmetadata', function () {
-    var d = duration();
-    if (d && !blocks.length) {
-      blocks = new Array(Math.ceil(d / BLOCK));
-      for (var i = 0; i < blocks.length; i++) blocks[i] = 0;
+  /* ---- one of these per video ---- */
+  function watcher(cfg) {
+    var v = document.getElementById(cfg.el);
+    if (!v) return null;
+    var PG = cfg.page;
+
+    var blocks = [];          /* how many times each five second block has been played through */
+    var lastBlock = -1;
+    var furthest = 0;         /* the deepest point they ever reached */
+    var watchedSeconds = 0;   /* real seconds of video played, rewatches included */
+    var lastTime = 0;
+    var marks = { 25: 0, 50: 0, 75: 0, 90: 0 };
+    var started = false, finished = false, sentLeave = false, stalls = 0;
+
+    function duration() { return (v.duration && isFinite(v.duration)) ? v.duration : 0; }
+    function pct() { var d = duration(); return d ? Math.round((furthest / d) * 100) : 0; }
+
+    function mapString() {
+      /* one character per block, capped at 9 */
+      var out = '';
+      for (var i = 0; i < blocks.length; i++) {
+        var n = blocks[i] || 0;
+        out += n > 9 ? '9' : String(n);
+      }
+      return out;
     }
-  });
-
-  v.addEventListener('timeupdate', function () {
-    var t = v.currentTime || 0;
-    var step = t - lastTime;
-    /* only count time that ran forwards at something like real speed; a jump is a seek */
-    if (step > 0 && step < 1.5) watchedSeconds += step;
-    lastTime = t;
-    if (t > furthest) furthest = t;
-
-    var b = Math.floor(t / BLOCK);
-    if (b !== lastBlock && b >= 0 && b < blocks.length) {
-      blocks[b] = (blocks[b] || 0) + 1;
-      lastBlock = b;
+    function summary() {
+      var d = duration();
+      var seen = 0, again = 0;
+      for (var i = 0; i < blocks.length; i++) {
+        if (blocks[i]) { seen++; if (blocks[i] > 1) again++; }
+      }
+      return JSON.stringify({
+        video: cfg.slug,
+        secs: Math.round(watchedSeconds),
+        furthest: Math.round(furthest),
+        pct: pct(),
+        of: Math.round(d),
+        covered: blocks.length ? Math.round((seen / blocks.length) * 100) : 0,
+        rewatched: again,
+        finished: finished,
+        quality: quality,
+        map: mapString()
+      });
     }
+    function say(event, detail, meta, beacon) { track(event, detail, meta, beacon, PG); }
 
-    var p = pct();
-    for (var key in marks) {
-      if (!marks[key] && p >= Number(key)) {
-        marks[key] = 1;
-        track('video_milestone', key + '%', summary());
+    function load(which, keepTime) {
+      var at = keepTime ? (v.currentTime || 0) : 0;
+      var playing = keepTime && !v.paused;
+      v.src = R2 + cfg.slug + '-' + which + '.mp4';
+      v.load();
+      if (at > 0) {
+        v.addEventListener('loadedmetadata', function once() {
+          v.removeEventListener('loadedmetadata', once);
+          try { v.currentTime = at; } catch (e) {}
+          if (playing) { v.play().catch(function(){}); }
+        });
       }
     }
-  });
+    load(quality, false);
 
-  v.addEventListener('play', function () {
-    if (!started) { started = true; track('video_start', quality, summary()); }
-    else { track('video_play', Math.round(v.currentTime) + 's'); }
-  });
+    v.addEventListener('loadedmetadata', function () {
+      var d = duration();
+      if (d && !blocks.length) {
+        blocks = new Array(Math.ceil(d / BLOCK));
+        for (var i = 0; i < blocks.length; i++) blocks[i] = 0;
+      }
+    });
 
-  v.addEventListener('pause', function () {
-    /* the pause at the very end is the end, not a pause */
-    if (v.ended) return;
-    track('video_pause', Math.round(v.currentTime) + 's', summary());
-  });
+    v.addEventListener('timeupdate', function () {
+      var t = v.currentTime || 0;
+      var step = t - lastTime;
+      /* only count time that ran forwards at something like real speed; a jump is a seek */
+      if (step > 0 && step < 1.5) watchedSeconds += step;
+      lastTime = t;
+      if (t > furthest) furthest = t;
 
-  var seekFrom = null;
-  v.addEventListener('seeking', function () { if (seekFrom === null) seekFrom = lastTime; });
-  v.addEventListener('seeked', function () {
-    var to = v.currentTime || 0;
-    if (seekFrom !== null && Math.abs(to - seekFrom) > 1.5) {
-      track('video_seek', Math.round(seekFrom) + 's->' + Math.round(to) + 's',
+      var b = Math.floor(t / BLOCK);
+      if (b !== lastBlock && b >= 0 && b < blocks.length) {
+        blocks[b] = (blocks[b] || 0) + 1;
+        lastBlock = b;
+      }
+
+      var p = pct();
+      for (var key in marks) {
+        if (!marks[key] && p >= Number(key)) {
+          marks[key] = 1;
+          say('video_milestone', key + '%', summary());
+        }
+      }
+    });
+
+    v.addEventListener('play', function () {
+      /* only one video plays at a time, so the other one stops rather than talking over it */
+      for (var i = 0; i < players.length; i++) {
+        if (players[i].el !== v && !players[i].el.paused) players[i].el.pause();
+      }
+      if (!started) { started = true; say('video_start', quality, summary()); }
+      else { say('video_play', Math.round(v.currentTime) + 's'); }
+    });
+
+    v.addEventListener('pause', function () {
+      /* the pause at the very end is the end, not a pause */
+      if (v.ended) return;
+      say('video_pause', Math.round(v.currentTime) + 's', summary());
+    });
+
+    var seekFrom = null;
+    v.addEventListener('seeking', function () { if (seekFrom === null) seekFrom = lastTime; });
+    v.addEventListener('seeked', function () {
+      var to = v.currentTime || 0;
+      if (seekFrom !== null && Math.abs(to - seekFrom) > 1.5) {
+        say('video_seek', Math.round(seekFrom) + 's->' + Math.round(to) + 's',
             (to < seekFrom ? 'back' : 'forward'));
-    }
-    seekFrom = null;
-    lastTime = to;
-    lastBlock = -1;      /* a new pass through this block counts again */
-  });
+      }
+      seekFrom = null;
+      lastTime = to;
+      lastBlock = -1;      /* a new pass through this block counts again */
+    });
 
-  v.addEventListener('ended', function () {
-    finished = true;
-    track('video_complete', Math.round(watchedSeconds) + 's', summary());
-  });
+    v.addEventListener('ended', function () {
+      finished = true;
+      say('video_complete', Math.round(watchedSeconds) + 's', summary());
+    });
 
-  v.addEventListener('error', function () { track('video_error', quality); });
-  var stalls = 0;
-  v.addEventListener('stalled', function () {
-    stalls++;
-    if (stalls === 2 && quality === 'hq') { choose('lite'); track('video_autodrop', 'stalled twice'); }
-  });
+    v.addEventListener('error', function () { say('video_error', quality); });
+    v.addEventListener('stalled', function () {
+      stalls++;
+      if (stalls === 2 && quality === 'hq') { choose('lite'); say('video_autodrop', 'stalled twice'); }
+    });
 
-  /* a heartbeat while it is playing, so a reader who never closes the tab is still counted */
+    return {
+      el: v,
+      page: PG,
+      summary: summary,
+      watched: function () { return watchedSeconds; },
+      started: function () { return started; },
+      requality: function (which) { load(which, true); say('video_quality', which); },
+      beat: function () {
+        if (!v.paused && !v.ended && started) say('video_heartbeat', Math.round(v.currentTime) + 's', summary());
+      },
+      leave: function () {
+        if (sentLeave || !started) return;
+        sentLeave = true;
+        say('video_leave', Math.round(watchedSeconds) + 's', summary(), true);
+      },
+      back: function () { sentLeave = false; }
+    };
+  }
+
+  for (var i = 0; i < VIDEOS.length; i++) {
+    var p = watcher(VIDEOS[i]);
+    if (p) players.push(p);
+  }
+
+  /* a heartbeat while something is playing, so a reader who never closes the tab is counted */
   setInterval(function () {
-    if (!v.paused && !v.ended && started) track('video_heartbeat', Math.round(v.currentTime) + 's', summary());
+    for (var i = 0; i < players.length; i++) players[i].beat();
   }, 60000);
 
   /* and the whole picture when they go */
-  var sentLeave = false;
-  function leaving() {
-    if (sentLeave || !started) return;
-    sentLeave = true;
-    track('video_leave', Math.round(watchedSeconds) + 's', summary(), true);
-  }
+  function leaving() { for (var i = 0; i < players.length; i++) players[i].leave(); }
   window.addEventListener('pagehide', leaving);
   document.addEventListener('visibilitychange', function () {
     if (document.visibilityState === 'hidden') leaving();
-    else sentLeave = false;     /* back from the story tab: the next leave is reported too */
+    else { for (var i = 0; i < players.length; i++) players[i].back(); }
   });
+
+  function totalWatched() {
+    var t = 0;
+    for (var i = 0; i < players.length; i++) t += players[i].watched();
+    return Math.round(t);
+  }
+  function bothSummaries() {
+    var out = [];
+    for (var i = 0; i < players.length; i++) out.push(JSON.parse(players[i].summary()));
+    return JSON.stringify(out);
+  }
 
   /* ---- who is watching ---- */
   var story = document.getElementById('story');
@@ -331,7 +386,7 @@ footer a{color:rgba(255,255,255,.5);text-decoration:none}
       who.pass = d.pass || '';
       var rec = d.rec || {};
       var name = (rec.first_name || '').trim();
-      if (name && /^[A-Za-z'’\-]{2,20}$/.test(name)) {
+      if (name && /^[A-Za-z\'\u2019\-]{2,20}$/.test(name)) {
         document.getElementById('dear').textContent = 'Dear ' + name + ',';
       }
       track('video_open', 'personal link');
@@ -340,15 +395,15 @@ footer a{color:rgba(255,255,255,.5);text-decoration:none}
     track('video_open', 'no link');
   }
 
-  /* how much they had watched before they went on */
+  /* how much they had watched, across both videos, before they went on */
   story.addEventListener('click', function () {
-    track('video_to_story', Math.round(watchedSeconds) + 's watched', summary());
+    track('video_to_story', totalWatched() + 's watched', bothSummaries());
   });
   skip.addEventListener('click', function () {
-    track('video_to_monthly', Math.round(watchedSeconds) + 's watched', summary());
+    track('video_to_monthly', totalWatched() + 's watched', bothSummaries());
   });
   document.getElementById('amend').addEventListener('click', function () {
-    track('video_to_amendment', Math.round(watchedSeconds) + 's watched');
+    track('video_to_amendment', totalWatched() + 's watched');
   });
 })();
 </script>
