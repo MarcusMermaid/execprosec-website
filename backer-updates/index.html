@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--navy:#041440;--gold:#DDBC66}
+:root{--navy:#041440;--gold:#DDBC66;--pink:#D64045}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--navy);color:rgba(255,255,255,.86);font:400 17px/1.75 'DM Sans',sans-serif;
   -webkit-font-smoothing:antialiased}
@@ -34,8 +34,11 @@ video{width:100%;height:auto;display:block;background:#000;margin:30px 0 8px}
 .go:hover{background:var(--gold);color:var(--navy)}
 .btns{display:flex;flex-wrap:wrap;gap:12px;margin:4px 0 34px}
 .btns .go{margin:0}
-.go.skip{background:transparent;color:#fff;box-shadow:inset 0 0 0 1px rgba(255,255,255,.5)}
-.go.skip:hover{background:transparent;color:var(--gold);box-shadow:inset 0 0 0 1px var(--gold)}
+.go.skip{background:var(--pink);color:#fff}
+.go.skip:hover{background:#e0565b;color:#fff}
+/* the same offer at the top, for anyone who has decided before they finish reading */
+.gotop{margin:0 0 40px}
+.gotop .go{margin:0}
 .sign{margin:36px 0 0}
 .sign p{margin:0}
 .sign .name{color:#fff;font-weight:500;margin-top:6px}
@@ -61,6 +64,11 @@ footer a{color:rgba(255,255,255,.5);text-decoration:none}
 
   <h1>Major update: Lying in politics is being criminalised right now in Parliament</h1>
 
+  <div class="gotop">
+    <a class="go skip" id="paytop" href="https://execprosec.org/?pay=1"
+       target="_blank" rel="noopener">Donate monthly</a>
+  </div>
+
   <p id="dear">Dear backers,</p>
   <p>I have an urgent update for you. It is the biggest I&rsquo;ve ever sent out.</p>
   <p>There are two videos below. They are separate, and they are short.</p>
@@ -82,8 +90,9 @@ footer a{color:rgba(255,255,255,.5);text-decoration:none}
   <p>Thirdly, read Our Story for the full detail of our work from the last 10 years here:</p>
   <div class="btns">
     <a class="go" id="story" href="https://execprosec.org/story-app/" target="_blank" rel="noopener">Open Our Story</a>
-    <!-- straight to "Back this work every month", slide 26 of the story -->
-    <a class="go skip" id="skip" href="https://execprosec.org/story/26" target="_blank" rel="noopener">Skip the detail: back ExecProsec monthly now</a>
+    <!-- ?pay=1 opens the story box straight on "Back this work every month" and nothing else:
+         no gate, no walking through twenty eight slides to reach the card form -->
+    <a class="go skip" id="skip" href="https://execprosec.org/?pay=1" target="_blank" rel="noopener">Skip the detail: back ExecProsec monthly now</a>
   </div>
 
   <p>There is likely to be another referendum on EU membership, according to Prime Minister
@@ -374,9 +383,13 @@ footer a{color:rgba(255,255,255,.5);text-decoration:none}
   /* ---- who is watching ---- */
   var story = document.getElementById('story');
   var skip = document.getElementById('skip');
+  var paytop = document.getElementById('paytop');
   if (link) {
-    story.href = 'https://execprosec.org/story-app/?link=' + encodeURIComponent(link) + '&slide=2';
-    skip.href = 'https://execprosec.org/story-app/?link=' + encodeURIComponent(link) + '&slide=26';
+    var who_link = encodeURIComponent(link);
+    story.href = 'https://execprosec.org/?link=' + who_link + '&slide=2';
+    var payHref = 'https://execprosec.org/?link=' + who_link + '&pay=1';
+    skip.href = payHref;
+    if (paytop) paytop.href = payHref;
     fetch(API + '/public/backer/link', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ link: link })
@@ -401,6 +414,11 @@ footer a{color:rgba(255,255,255,.5);text-decoration:none}
   });
   skip.addEventListener('click', function () {
     track('video_to_monthly', totalWatched() + 's watched', bothSummaries());
+  });
+  if (paytop) paytop.addEventListener('click', function () {
+    /* told apart from the one at the bottom, so we learn whether people decide before or
+       after they have read the rest of the page */
+    track('video_to_monthly', 'from the top, ' + totalWatched() + 's watched', bothSummaries());
   });
   document.getElementById('amend').addEventListener('click', function () {
     track('video_to_amendment', totalWatched() + 's watched');

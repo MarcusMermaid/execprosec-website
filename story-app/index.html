@@ -12,6 +12,7 @@
     var q=new URLSearchParams(location.search||''), out=new URLSearchParams();
     if(q.get('link')) out.set('link', q.get('link'));
     if(q.get('bk')) out.set('bk', q.get('bk'));
+    if(q.get('pay')) out.set('pay', q.get('pay'));
     var m=/^\/story\/(\d+)/i.exec(location.pathname||'');
     var slide=parseInt(q.get('slide')||(m?m[1]:'0'),10)||0;
     if(slide>1) out.set('slide', String(slide));
@@ -7224,6 +7225,15 @@ var ST_PAY=0, ST_NO=0;
 /* Page names: index 23 = the monthly ask (slide 24), ST_FUND = the Funding page (slide 25),
    index 25 = the thank-you page (slide 26), ST_REJECT = the Rejection page (slide 27). */
 var ST_ASK=0, ST_FUND=0, ST_REJECT=0, ST_THANKS=0, ST_BACKER=-1;
+/* ?pay=1 means: this person has already decided, take them straight to the payment slide.
+   They came from the backer email, where they have just watched the update. The gate exists
+   so nobody reads the ten year report anonymously, not to make somebody prove who they are
+   before we will take their money. So pay=1 opens the payment slide and the thank-you page
+   that follows it, and nothing else. */
+var ST_PAYONLY=/[?&]pay=1\b/.test(location.search||'');
+function stPayAllowed(n){
+  return ST_PAYONLY && (n===ST_FUND || n===ST_THANKS);
+}
 var ST_SLIDES=0, stIdx=0;
 /* Art used by each scene, for preloading only. Stale entries cost nothing but a missed preload. */
 var ST_PRE={
@@ -7566,7 +7576,7 @@ function stRender(){
   if(d.quotes && window.hydrateSupporterQuotes) window.hydrateSupporterQuotes();
   var prev=document.querySelector('.fin-prev'),next=document.querySelector('.fin-next');
   var done=stComplete();
-  if(prev) prev.style.visibility=(stIdx===0&&!done)?'hidden':'visible';
+  if(prev) prev.style.visibility=((stIdx===0&&!done)||ST_PAYONLY)?'hidden':'visible';
   var shut=(!stGateOpen() && stIdx===0);
   if(next) next.style.visibility=(shut||d.nonext||(stIdx===ST_SLIDES-1&&!done))?'hidden':'visible';
   var dots=document.getElementById('st-dotsbar');
@@ -7690,7 +7700,7 @@ function stGo(){
 function stStepTo(n){
   n=Math.max(0,Math.min(ST_SLIDES-1,n));
   /* the gate itself calls this once the code is right, so it is allowed through */
-  if(!stGateOpen() && n>0 && !window.__bkLettingThrough){ stGateNudge(); return; }
+  if(!stGateOpen() && n>0 && !window.__bkLettingThrough && !stPayAllowed(n)){ stGateNudge(); return; }
   stIdx=n;
   stGo();
 }
@@ -7774,7 +7784,7 @@ function stStep(d){
   /* Back from the Rejection page returns to the monthly ask, not through the thank-you page. */
   if(d<0 && stIdx===ST_REJECT){ stIdx=ST_ASK; stGo(); return; }
   var t=stIdx+d;
-  if(!stGateOpen() && t>0){ stGateNudge(); return; }
+  if(!stGateOpen() && t>0 && !stPayAllowed(t)){ stGateNudge(); return; }
   /* the backer screen belongs only to somebody we recognised: step over it for everyone else */
   if(t===ST_BACKER && !window.__bkChecked && ST_BACKER>=0) t=t+(d>0?1:-1);
   if(t<0||t>ST_SLIDES-1){
@@ -7789,6 +7799,8 @@ window.initStoryPage=function(){
   window.__stWant=null;
   /* a link straight to a slide must not walk past the gate either */
   if(stIdx>0 && typeof stGateOpen==='function' && !stGateOpen()) stIdx=0;
+  /* except the one that takes payment, which is the whole point of ?pay=1 */
+  if(ST_PAYONLY && ST_FUND>0) stIdx=ST_FUND;
   stRender();
   (function(){
     var h=document.getElementById('st-hero'), b=document.getElementById('st-body');
