@@ -5271,7 +5271,10 @@ document.addEventListener('keydown', function(e){
   var extra='';
   if(q.get('link')) extra+='&link='+encodeURIComponent(q.get('link'));
   if(q.get('bk')){ extra+='&bk='+encodeURIComponent(q.get('bk')); if(!slide) slide=2; }
-  if(!extra && !slide && q.get('story')!=='1') return;
+  /* straight to the payment slide, for somebody who has already decided */
+  var pay=q.get('pay')==='1';
+  if(pay) extra+='&pay=1';
+  if(!extra && !slide && !pay && q.get('story')!=='1') return;
   var open=function(){ epStory(slide>1?slide:1, extra); };
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', open);
   else open();
