@@ -5473,30 +5473,6 @@ function fuBurst(){
   }
   return '<span class="fufw" aria-hidden="true">'+m+'</span>';
 }
-/* The thank-you page is only reachable through here, once the form is actually filled in.
-   NOTE: no money moves yet. Stripe, Apple Pay and Google Pay are not connected. */
-function payPick(btn){
-  var all=document.querySelectorAll('#st-body .pay-m'), i;
-  for(i=0;i<all.length;i++) all[i].classList.remove('on');
-  btn.classList.add('on');
-  var w=document.getElementById('pay-warn'); if(w) w.style.display='none';
-}
-function payGo(btn){
-  var tier=document.querySelector('#st-body input[name="pay-tier"]:checked');
-  var sup=document.getElementById('pay-support'), ter=document.getElementById('pay-terms');
-  var warn=document.getElementById('pay-warn');
-  if(!tier || !sup || !sup.checked || !ter || !ter.checked){
-    if(warn) warn.style.display='block';
-    return;
-  }
-  if(warn) warn.style.display='none';
-  btn.disabled=true; btn.textContent='One moment\u2026';
-  var amount=tier.value, method='stripe';
-  try{ epTrack('payment_started', amount+' '+method, 'story', amount); }catch(e){}
-  setTimeout(function(){ btn.disabled=false; btn.textContent='Back us monthly';
-    try{ epTrack('payment_completed', amount+' '+method, 'story', amount); }catch(e){}
-    stStepTo(ST_THANKS); }, 350);
-}
 function rjFinish(btn){
   try{ epTrack('monthly_declined_confirmed','story-27','story'); }catch(e){}
   if(btn){ btn.disabled=true; }
@@ -5834,6 +5810,14 @@ document.addEventListener('click',function(e){
   phOpen(set, parseInt(im.getAttribute('data-ph'),10)||0);
 });
 /* --- countable progress: seven dots that slide along, plus the exact count --- */
+/* Is this key press or touch part of filling something in? Then it must never turn the page:
+   an arrow key moving the cursor in the amount box used to jump to the thank-you page. */
+function stInForm(t){
+  if(!t) return false;
+  var tag=String(t.tagName||'').toLowerCase();
+  if(tag==='input'||tag==='textarea'||tag==='select'||tag==='iframe'||t.isContentEditable) return true;
+  return !!(t.closest && t.closest('.pb-other,.pb-pay,#pb-pay,.pb-grid,.pb-own,form,.gate'));
+}
 /* make the story exactly one screen tall, so nothing scrolls behind the swipe */
 function stFit(){
   var el=document.getElementById('st-fit');
@@ -6432,21 +6416,25 @@ function pbLow(inp, low){
   var go=document.getElementById('pb-go');
   if(go){ go.disabled=!!low; if(low) go.textContent='The minimum is \u00a310 a month'; }
 }
-function pbOther(inp){
+function pbOther(inp, now){
   var raw=String(inp.value||'').trim(), v=parseFloat(raw);
   if(PB_LOW_T){ clearTimeout(PB_LOW_T); PB_LOW_T=null; }
+  if(!inp.__pbBlur){ inp.__pbBlur=true; inp.addEventListener('blur', function(){ pbOther(inp, true); }); }
   if(raw===''){
     pbLow(inp, false);
     var d=document.querySelector('.pb-amt[data-k="monthly_20"]'); if(d) pbPick(d);
     return;
   }
   if(!(v>=10)){
-    PB_LOW_T=setTimeout(function(){
+    var flag=function(){
       pbLow(inp, true);
       try{ epTrack('report_amount_too_low', raw, 'story'); }catch(e){}
-    }, 700);
+    };
+    /* phones are typed on slowly: give them a moment and a half, or until they leave the box */
+    if(now) flag(); else PB_LOW_T=setTimeout(flag, 1500);
     return;
   }
+  pbReset();
   pbLow(inp, false);
   PB_OTHER=Math.round(v*100)/100; PB_PICKED='monthly_custom';
   var all=document.querySelectorAll('.pb-amt'), i;
@@ -6467,9 +6455,9 @@ function pbPortal(btn){
     .then(function(d){
       if(d && d.ok && d.url){ window.open(d.url,'_blank','noopener'); pbSay('Your billing page has opened in a new tab. Change the amount there and it applies from your next payment.'); }
       else pbSay('We could not open your billing page. Use the Donate box on the website and we will email you a code.');
-      if(btn){ btn.disabled=false; btn.textContent='Change my monthly amount'; }
+      if(btn){ btn.disabled=false; btn.textContent=btn.getAttribute('data-label')||'Change my amount or card'; }
     })
-    .catch(function(){ pbSay('We could not open your billing page. Please try again in a moment.'); if(btn){ btn.disabled=false; btn.textContent='Change my monthly amount'; } });
+    .catch(function(){ pbSay('We could not open your billing page. Please try again in a moment.'); if(btn){ btn.disabled=false; btn.textContent=btn.getAttribute('data-label')||'Change my amount or card'; } });
 }
 
 function pbSay(message){
@@ -6478,7 +6466,18 @@ function pbSay(message){
   box.textContent=message||'';
   box.style.display=message?'block':'none';
 }
+/* Throw away an open card form (and any still loading), so a changed amount starts afresh. */
+var PB_GEN=0;
+function pbReset(){
+  PB_GEN++;
+  if(PB_CHECKOUT){ try{ PB_CHECKOUT.destroy(); }catch(e){} PB_CHECKOUT=null; }
+  if(PB_SLOW){ clearTimeout(PB_SLOW); PB_SLOW=null; }
+  var slot=document.getElementById('pb-pay'); if(slot) slot.innerHTML='';
+  var go=document.getElementById('pb-go');
+  if(go){ go.style.display=''; go.disabled=false; }
+}
 function pbPick(btn){
+  pbReset();
   PB_PICKED=btn.getAttribute('data-k');
   var all=document.querySelectorAll('.pb-amt'), i;
   for(i=0;i<all.length;i++) all[i].classList.toggle('on', all[i]===btn);
@@ -6497,11 +6496,19 @@ function pbReady(){
   var own=document.getElementById('pb-own'), r=bkRec;
   var gives=!!(r && ((r.gives_monthly!==undefined) ? r.gives_monthly : r.active_sub));
   var monthly=r ? Number(r.monthly_gbp||0) : 0;
+  var failing=r ? Number(r.monthly_failing_gbp||0) : 0;
   var grid=document.querySelector('.pb-grid'), other=document.querySelector('.pb-other'), go=document.getElementById('pb-go');
   if(own){
-    if(gives && monthly>0){
-      own.innerHTML='<p class="pb-p"><b>You already back us with £'+pbMoney(monthly)+' a month.</b> Thank you. To raise it, change it on your own billing page: same card, no second subscription.</p>'+
-        '<button class="pb-go" type="button" onclick="pbPortal(this)">Change my monthly amount</button>';
+    if(failing>0){
+      /* their bank keeps refusing the card: thanking them would be wrong, and a second subscription
+         would charge them twice once the card is fixed. Updating the card restarts the same backing. */
+      own.innerHTML='<p class="pb-p"><b>Your monthly backing of £'+pbMoney(failing)+' has stopped, because your bank declined the card we have.</b> '+
+        'Update your card on your own billing page and it carries on as before: nothing to set up again, and nothing taken twice.</p>'+
+        '<button class="pb-go" type="button" data-label="Update my card" onclick="pbPortal(this)">Update my card</button>';
+      if(grid) grid.style.display='none'; if(other) other.style.display='none'; if(go) go.style.display='none';
+    } else if(gives && monthly>0){
+      own.innerHTML='<p class="pb-p"><b>You already back us with £'+pbMoney(monthly)+' a month.</b> Thank you. To raise it or change your card, use your own billing page: same backing, no second subscription.</p>'+
+        '<button class="pb-go" type="button" data-label="Change my amount or card" onclick="pbPortal(this)">Change my amount or card</button>';
       if(grid) grid.style.display='none'; if(other) other.style.display='none'; if(go) go.style.display='none';
     } else { own.innerHTML=''; }
   }
@@ -6535,6 +6542,13 @@ function pbBoost(btn){
 function pbStart(){
   var own=document.getElementById('pb-other');
   if(own && String(own.value||'').trim()!=='' && !(parseFloat(own.value)>=10)){ pbLow(own, true); return; }
+  /* what is charged is read from the screen at the moment of pressing, never from memory */
+  if(own && String(own.value||'').trim()!==''){
+    PB_OTHER=Math.round(parseFloat(own.value)*100)/100; PB_PICKED='monthly_custom';
+  } else {
+    var on=document.querySelector('.pb-amt.on'); if(on) PB_PICKED=on.getAttribute('data-k');
+  }
+  pbReset();
   var go=document.getElementById('pb-go');
   if(go){ go.disabled=true; go.textContent='One moment\u2026'; }
   pbSay('');
@@ -6573,28 +6587,34 @@ function pbStripeJs(then){
 }
 function pbMount(data){
   var slot=document.getElementById('pb-pay'), go=document.getElementById('pb-go');
+  var gen=PB_GEN;
   if(go) go.style.display='none';
   pbStripeJs(function(){
+    if(gen!==PB_GEN) return;   /* the amount changed while Stripe was loading */
     try{
       var stripe=Stripe(data.publishable_key||PB_KEY);
       stripe.initEmbeddedCheckout({clientSecret:data.client_secret}).then(function(checkout){
+        if(gen!==PB_GEN){ try{ checkout.destroy(); }catch(e){} return; }
         PB_CHECKOUT=checkout;
         checkout.mount('#pb-pay');
-      },function(){ pbFailed(); });
+      },function(){ if(gen===PB_GEN) pbFailed(); });
     }catch(e){ pbFailed(); }
   });
 }
 
 /* Coming back from Stripe: the thank-you slide only appears if Central says the money moved, or
    that a Direct Debit is on its way. */
-function pbReturn(){
+function pbReturn(tries){
   var m=/[?&]session_id=(cs_[A-Za-z0-9_]+)/.exec(location.search||'');
   if(!m) return;
   var id=m[1];
+  tries=tries||0;
   fetch(PB_API+'/public/donate/status?session_id='+encodeURIComponent(id))
     .then(function(r){ return r.json(); })
     .then(function(d){
       var paid=!!(d && d.ok && (d.paid===true || d.pending===true));
+      window.__pbConfirmed=paid;
+      if(paid){ try{ stKeepWrite({paid_at:Date.now()}); }catch(e){} }
       window.__bkLettingThrough=true;
       stStepTo(paid ? ST_THANKS : ST_FUND);
       window.__bkLettingThrough=false;
@@ -6603,7 +6623,12 @@ function pbReturn(){
       }, 400);
       try{ epTrack('report_donate_result', paid?'paid':'failed', 'story'); }catch(e){}
     })
-    .catch(function(){});
+    .catch(function(){
+      /* could not ask Central: try again, then say plainly what to look for, never a false thank-you */
+      if(tries<3){ setTimeout(function(){ pbReturn(tries+1); }, 2000*(tries+1)); return; }
+      pbSay('We could not confirm your payment just now. If it went through, Stripe will email you a receipt within a few minutes. If no receipt arrives, nothing was taken.');
+      try{ epTrack('report_donate_result', 'unconfirmed', 'story'); }catch(e){}
+    });
 }
 
 function stPlay(slug,label){
@@ -7406,7 +7431,21 @@ function stCostWire(){
     run+=frac;
   }
 }
+/* Has Central confirmed a payment from this reader? Only then may the thank-you page show. */
+function pbPaid(){
+  if(window.__pbConfirmed===true) return true;
+  try{ var k=stKeepRead(); return !!(k && k.paid_at && (Date.now()-k.paid_at) < 7200000); }catch(e){ return false; }
+}
+function stGuardThanks(){
+  if(!(ST_THANKS>0) || stIdx!==ST_THANKS || pbPaid()) return;
+  /* not confirmed: back to the payment page, and say so if a return from Stripe is being checked */
+  stIdx=ST_FUND;
+  if(/[?&]session_id=cs_/.test(location.search||'')){
+    setTimeout(function(){ try{ pbSay('Checking your payment with Stripe\u2026 one moment.'); }catch(e){} }, 300);
+  }
+}
 function stRender(){
+  stGuardThanks();
   try{ if(window.__bkChecked) stKeepWrite({slide:stIdx}); }catch(e){}
   /* only report a slide the reader actually reached: a clamp back to the gate must not
      overwrite the place they were reading */
@@ -7783,7 +7822,11 @@ function stGateNudge(){
 function stStep(d){
   /* Back from the Rejection page returns to the monthly ask, not through the thank-you page. */
   if(d<0 && stIdx===ST_REJECT){ stIdx=ST_ASK; stGo(); return; }
+  /* Nothing steps forward off the payment page or the thank-you page: the thank-you page is
+     reached by paying, and the rejection page only by choosing it. */
+  if(d>0 && ST_FUND>0 && (stIdx===ST_FUND || stIdx===ST_THANKS)) return;
   var t=stIdx+d;
+  if(t===ST_THANKS && ST_THANKS>0 && !pbPaid()) return;
   if(!stGateOpen() && t>0 && !stPayAllowed(t)){ stGateNudge(); return; }
   /* the backer screen belongs only to somebody we recognised: step over it for everyone else */
   if(t===ST_BACKER && !window.__bkChecked && ST_BACKER>=0) t=t+(d>0?1:-1);
@@ -7810,6 +7853,7 @@ window.initStoryPage=function(){
     window.__stKeys=true;
     document.addEventListener('keydown',function(e){
       if(e.altKey||e.ctrlKey||e.metaKey) return;
+      if(stInForm(e.target)) return;
       var b=document.getElementById('st-body');
       if(!b||!b.isConnected) return;
       if(e.key==='ArrowRight'){ stStep(1); e.preventDefault(); }
@@ -7821,6 +7865,7 @@ window.initStoryPage=function(){
     stage.__stTouch=true;
     var tx=null, ty=null;
     stage.addEventListener('touchstart',function(e){
+      if(stInForm(e.target)){ tx=null; ty=null; return; }
       if(e.touches.length===1){ tx=e.touches[0].clientX; ty=e.touches[0].clientY; }
     },{passive:true});
     stage.addEventListener('touchend',function(e){
@@ -7845,6 +7890,7 @@ window.initFinancePage=function(){
     document.addEventListener('keydown',function(e){
       var hero=document.getElementById('fin-hero');
       if(!hero||!hero.isConnected) return;
+      if(stInForm(e.target)) return;
       if(e.key==='ArrowRight'){ finStep(1); e.preventDefault(); }
       else if(e.key==='ArrowLeft'){ finStep(-1); e.preventDefault(); }
     });
@@ -7853,7 +7899,7 @@ window.initFinancePage=function(){
   if(stage&&!stage.__finTouch){
     stage.__finTouch=true;
     var tx=null;
-    stage.addEventListener('touchstart',function(e){ if(e.touches.length===1) tx=e.touches[0].clientX; },{passive:true});
+    stage.addEventListener('touchstart',function(e){ if(stInForm(e.target)){ tx=null; return; } if(e.touches.length===1) tx=e.touches[0].clientX; },{passive:true});
     stage.addEventListener('touchend',function(e){
       if(tx===null) return;
       var dx=e.changedTouches[0].clientX-tx; tx=null;
