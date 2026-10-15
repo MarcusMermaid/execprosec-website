@@ -4683,7 +4683,7 @@ document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
   var EP='https://central-2-mcp-production.up.railway.app/public/analytics';
   var sid;
   try{ sid=localStorage.getItem('mjb_sid'); if(!sid){ sid='s_'+Math.random().toString(36).slice(2)+Date.now().toString(36); localStorage.setItem('mjb_sid',sid);} }catch(e){ sid=''; }
-  function send(ev,d){ try{ var b=JSON.stringify(Object.assign({site:SITE,event:ev,page:(location.pathname+location.hash).slice(0,300),session_id:sid,referrer:(document.referrer||'').slice(0,300)},d||{}));
+  function send(ev,d){ try{ var b=JSON.stringify(Object.assign({site:SITE,event:ev,page:(location.pathname+location.search+location.hash).slice(0,300),session_id:sid,referrer:(document.referrer||'').slice(0,300)},d||{}));
     if(navigator.sendBeacon){ navigator.sendBeacon(EP,new Blob([b],{type:'text/plain'})); } else { fetch(EP,{method:'POST',headers:{'Content-Type':'text/plain'},body:b,keepalive:true}); } }catch(e){} }
   send('pageview',{});
   window.addEventListener('hashchange',function(){ send('pageview',{}); });
