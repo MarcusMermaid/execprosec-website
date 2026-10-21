@@ -6500,7 +6500,7 @@ function pbReady(){
   var stopped=r ? Number(r.monthly_stopped_gbp||0) : 0;
   var grid=document.querySelector('.pb-grid'), other=document.querySelector('.pb-other'), go=document.getElementById('pb-go');
   if(own){
-    if(failing>0 && stopped>=failing){
+    if(failing>0 && (stopped>=failing || monthly===0)){
       /* Stripe has given up on their old backing (unpaid): a new card would not restart it, so they
          start a fresh one here, and Central closes the old one as soon as the new one is paid. */
       own.innerHTML='<p class="pb-p"><b>Your monthly backing has stopped, because your bank declined the card we had.</b> '+
