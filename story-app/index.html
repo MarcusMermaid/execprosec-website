@@ -6497,9 +6497,16 @@ function pbReady(){
   var gives=!!(r && ((r.gives_monthly!==undefined) ? r.gives_monthly : r.active_sub));
   var monthly=r ? Number(r.monthly_gbp||0) : 0;
   var failing=r ? Number(r.monthly_failing_gbp||0) : 0;
+  var stopped=r ? Number(r.monthly_stopped_gbp||0) : 0;
   var grid=document.querySelector('.pb-grid'), other=document.querySelector('.pb-other'), go=document.getElementById('pb-go');
   if(own){
-    if(failing>0){
+    if(failing>0 && (stopped>=failing || monthly===0)){
+      /* Stripe has given up on their old backing (unpaid): a new card would not restart it, so they
+         start a fresh one here, and Central closes the old one as soon as the new one is paid. */
+      own.innerHTML='<p class="pb-p"><b>Your monthly backing has stopped, because your bank declined the card we had.</b> '+
+        'Start it again below. It takes about a minute, and we close the old one, so nothing is ever taken twice.</p>';
+      if(grid) grid.style.display=''; if(other) other.style.display=''; if(go) go.style.display='';
+    } else if(failing>0){
       /* their bank keeps refusing the card: thanking them would be wrong, and a second subscription
          would charge them twice once the card is fixed. Updating the card restarts the same backing. */
       own.innerHTML='<p class="pb-p"><b>Your monthly backing of £'+pbMoney(failing)+' has stopped, because your bank declined the card we have.</b> '+

@@ -9,3 +9,8 @@
 # The page was briefly at /examples.
 /examples /lying-in-politics 301
 /examples/* /lying-in-politics 301
+# Press emails: each journalist's tracked links (/c/), open image (/p/) and the release page (/press/<story>).
+# Central logs the event and sends the reader on; the release page loads its text from Central.
+/c/* https://central-2-mcp-production.up.railway.app/public/press/c/:splat 302
+/p/* https://central-2-mcp-production.up.railway.app/public/press/p/:splat 302
+/press/* /press/ 200
