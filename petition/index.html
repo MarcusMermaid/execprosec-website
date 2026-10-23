@@ -7,7 +7,7 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="Petition to Parliament: include every MP, peer and UK legislator in the Hillsborough Law's offence of misleading the public.">
 <meta name="robots" content="noindex">
-<meta property="og:title" content="Include all politicians in the Hillsborough Law">
+<meta property="og:title" content="Include all lawmakers under the Hillsborough Law">
 <meta property="og:description" content="MPs and peers are left out of the new law against misleading the public. Sign the petition.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://execprosec.org/petition">
@@ -56,7 +56,19 @@ h1 em{font-style:normal;color:var(--gold)}
 
 /* ---- the card ---- */
 .card{background:var(--paper);color:var(--ink);border-top:4px solid var(--gold);border-radius:4px;box-shadow:0 24px 60px rgba(0,0,0,.38);overflow:hidden;scroll-margin-top:16px}
-.meter{padding:18px 20px 16px;background:var(--paper-2);border-bottom:1px solid var(--rule)}
+.meter{padding:14px 20px 16px;background:var(--paper-2);border-bottom:1px solid var(--rule)}
+.live{display:flex;align-items:center;gap:8px;min-height:22px;margin:0 0 10px;font-size:13.5px;color:var(--ink)}
+.live .dot{flex:0 0 8px;width:8px;height:8px;border-radius:50%;background:#2fa36b;animation:pulse 1.6s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(47,163,107,.55)}70%{box-shadow:0 0 0 8px rgba(47,163,107,0)}100%{box-shadow:0 0 0 0 rgba(47,163,107,0)}}
+#tickTxt{transition:opacity .3s,transform .3s}
+#tickTxt.out{opacity:0;transform:translateY(4px)}
+#tickTxt b{font-weight:700}
+.m-n.bump{color:var(--red)}
+.m-n{transition:color .4s}
+.deadline{display:flex;align-items:center;gap:8px;margin:12px 0 0;padding-top:10px;border-top:1px dashed var(--rule);font-size:13.5px;color:var(--red-dk);font-weight:600}
+.deadline svg{flex:0 0 16px;width:16px;height:16px}
+.kicker{font:700 12px/1.4 var(--f-body);letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin:0 0 10px}
+.lede + .lede{margin-top:-12px}
 .m-top{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
 .m-n{font:400 40px/1 var(--f-display);color:var(--navy);font-variant-numeric:tabular-nums}
 .m-l{font-size:14px;color:var(--muted)}
@@ -177,7 +189,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
 </head>
 <body>
 
-<div class="proto" id="proto"><span><b>Preview.</b> The numbers are samples. Nothing is saved or sent.</span><button type="button" id="resetBtn">Start again</button></div>
+<div class="proto" id="proto"><span><b>Preview.</b> Names and numbers are samples. Nothing is saved or sent.</span><button type="button" id="resetBtn">Start again</button></div>
 
 <header id="nav">
   <a class="logo" href="/" aria-label="ExecProsec home"><img src="/_web/brand/logo-nav.png" alt="ExecProsec" width="82" height="45"></a>
@@ -194,14 +206,18 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
 </header>
 
 <main class="page">
-  <h1>Include all politicians in the <em>Hillsborough&nbsp;Law</em></h1>
-  <p class="lede">The Hillsborough Law will make it a crime for public officials, including Government ministers, to mislead the public. MPs and peers are left out. Nothing they say in Parliament could be prosecuted anyway, so there is no reason to let them lie to you outside it. We are asking Parliament to include every politician.</p>
+  <p class="kicker">Petition to Parliament &amp; Press</p>
+  <h1>Include all lawmakers under the <em>Hillsborough&nbsp;Law</em></h1>
+  <p class="lede">For the first time, UK law will make it a crime for people in public office to deliberately or recklessly mislead the public. The Hillsborough Law will cover police officers, civil servants, the armed forces, NHS doctors and nurses, Government ministers, the Prime Minister and even the intelligence services. But the lawmakers writing it have left themselves out.</p>
+  <p class="lede">This petition, which we will present to Parliament and the press, calls on every lawmaker in the UK, including MPs, peers, and members of the Scottish Parliament, the Senedd and the Northern Ireland Assembly, to lead by example and include themselves. Anything less would be hypocritical, a betrayal of everything the Hillsborough Law stands for, an affront to equality under the law, and potentially the most damaging blow to public trust in our democracy the UK has ever seen.</p>
 
   <div class="card" id="card">
     <div class="meter">
+      <div class="live" aria-live="off"><span class="dot" aria-hidden="true"></span><span id="tickTxt"></span></div>
       <div class="m-top"><span class="m-n" id="countN">0</span><span class="m-l">signatures</span><span class="m-goal">Target <b id="goalN">10,000</b></span></div>
       <div class="bar" role="progressbar" aria-label="Signatures towards the target" aria-valuemin="0" id="bar"><i id="countBar"></i></div>
       <p class="m-sub" id="meterSub"></p>
+      <p class="deadline"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/></svg><span id="deadlineTxt"></span></p>
     </div>
     <div class="stephead"><ol class="steps" id="dots" aria-hidden="true"><li class="on"></li><li></li><li></li><li></li><li></li></ol><span id="stepLbl">Step 1 of 5</span></div>
 
@@ -218,7 +234,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       <div class="f" id="ctyWrap" hidden><label for="cty">Country</label><input id="cty" name="cty" autocomplete="country-name" maxlength="60"><span class="err" id="ctyErr" aria-live="polite"></span></div>
       <p style="margin:-4px 0 14px"><button type="button" class="link" id="abroadBtn">Not in the UK?</button></p>
       <fieldset>
-        <legend>Can we email you about this campaign?<span class="legend-sub">News of the vote and ways to help, including asking you to donate. Unsubscribe any time.</span></legend>
+        <legend>Can we email you about our campaign against lying in politics?<span class="legend-sub">We'll keep you posted and may ask for your help, for example by coming to an event, contacting politicians or journalists, or donating. Unsubscribe any time.</span></legend>
         <div class="opts">
           <label class="opt"><input type="radio" name="consent" value="yes"><span>Yes, email me</span></label>
           <label class="opt"><input type="radio" name="consent" value="no"><span>No, just sign</span></label>
@@ -226,7 +242,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
         <span class="err" id="consentErr" aria-live="polite"></span>
       </fieldset>
       <div class="hp" aria-hidden="true"><label>Leave this empty <input id="website" name="website" tabindex="-1" autocomplete="off"></label></div>
-      <p class="fine">By signing, you confirm you are 18 or over and consent to ExecProsec recording that you support this petition and keeping your details to count and check your signature and present it to Parliament, under our <a href="/terms" target="_blank" rel="noopener">Terms</a> and <a href="/privacy" target="_blank" rel="noopener">Privacy Notice</a>. Your email is never shown publicly.</p>
+      <p class="fine">By signing, you confirm you are 18 or over and consent to ExecProsec recording that you support this petition, showing your first name and town as a recent signer, and keeping your details to count and check your signature and present it to Parliament, under our <a href="/terms" target="_blank" rel="noopener">Terms</a> and <a href="/privacy" target="_blank" rel="noopener">Privacy Notice</a>. Your email is never shown publicly.</p>
       <button class="btn" type="submit">Sign the petition</button>
     </form>
 
@@ -341,6 +357,22 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   // the MP is. The live page takes the count from the server and posts each step to it.
   var PROTO = true;
   var START_COUNT = 6240;                    // sample; add ?count=9999 to the address to see a target being passed
+  var VOTE_DATE = '';                        // the day of the vote, e.g. '2026-12-08'; until it is set the page says "December"
+
+  // Recent signers, as first name and town. The live page plays out the real ones as they come in;
+  // these samples show how it feels.
+  var RECENT = ['Darren from Norwich', 'Millie from Edinburgh', 'Priya from Leicester', 'Tom from Cardiff', 'Sandra from Liverpool',
+    'Jamal from Birmingham', 'Helen from Bristol', 'Gary from Sunderland', 'Aoife from Belfast', 'Rob from Leeds', 'Kate from Brighton',
+    'Imran from Bradford', 'Sue from Plymouth', 'Callum from Glasgow', 'Jo from Canterbury', 'Megan from Swansea'];
+  // Postcode area to the town people would name. The live page uses the full postcode lookup.
+  var AREAS = { AB: 'Aberdeen', B: 'Birmingham', BA: 'Bath', BD: 'Bradford', BH: 'Bournemouth', BL: 'Bolton', BN: 'Brighton', BR: 'Bromley', BS: 'Bristol',
+    BT: 'Belfast', CB: 'Cambridge', CF: 'Cardiff', CH: 'Chester', CR: 'Croydon', CT: 'Canterbury', CV: 'Coventry', DD: 'Dundee', DE: 'Derby', DH: 'Durham',
+    DN: 'Doncaster', E: 'London', EC: 'London', EH: 'Edinburgh', EX: 'Exeter', G: 'Glasgow', GL: 'Gloucester', GU: 'Guildford', HU: 'Hull', IP: 'Ipswich',
+    IV: 'Inverness', L: 'Liverpool', LE: 'Leicester', LN: 'Lincoln', LS: 'Leeds', M: 'Manchester', ME: 'Kent', MK: 'Milton Keynes', N: 'London',
+    NE: 'Newcastle', NG: 'Nottingham', NN: 'Northampton', NP: 'Newport', NR: 'Norwich', NW: 'London', OX: 'Oxford', PE: 'Peterborough', PL: 'Plymouth',
+    PO: 'Portsmouth', PR: 'Preston', RG: 'Reading', S: 'Sheffield', SA: 'Swansea', SE: 'London', SO: 'Southampton', SR: 'Sunderland', SS: 'Southend',
+    ST: 'Stoke-on-Trent', SW: 'London', TN: 'Tunbridge Wells', TS: 'Teesside', W: 'London', WC: 'London', WV: 'Wolverhampton', YO: 'York' };
+  function townFor(pc) { var m = pc.match(/^([A-Z]{1,2})\d/); return (m && AREAS[m[1]]) || 'the UK'; }
 
   var $ = function (id) { return document.getElementById(id); };
   var fmt = function (n) { return Number(n).toLocaleString('en-GB'); };
@@ -383,6 +415,35 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       $('countN').textContent = fmt(Math.round(from + (c - from) * e));
       if (k < 1) requestAnimationFrame(frame);
     })(t0);
+  }
+
+  // ---------------------------------------------------------------- live feed and deadline
+  // Every few seconds the next recent signer appears and the count goes up by one, so the page
+  // moves while people read it.
+  var tickN = 0, tickHold = 0;
+  function showSigner(html) {
+    var el = $('tickTxt');
+    el.classList.add('out');
+    setTimeout(function () { el.innerHTML = html; el.classList.remove('out'); }, reduced ? 0 : 300);
+  }
+  function tick() {
+    if (Date.now() < tickHold) return;
+    showSigner(esc(RECENT[tickN++ % RECENT.length]) + ' has just signed');
+    S.count++;
+    renderMeter(false);
+    $('countN').classList.add('bump');
+    setTimeout(function () { $('countN').classList.remove('bump'); }, 600);
+  }
+  function nextTick() { setTimeout(function () { tick(); nextTick(); }, 3200 + Math.random() * 3600); }
+  function renderDeadline() {
+    var txt = 'Parliament votes on this in December. Sign before the vote.';
+    if (VOTE_DATE) {
+      var d = new Date(VOTE_DATE + 'T00:00:00'), days = Math.ceil((d - new Date()) / 86400000);
+      var when = d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long' });
+      txt = days > 1 ? 'Parliament votes on ' + when + '. ' + days + ' days left to sign.'
+        : days === 1 ? 'Parliament votes tomorrow. Last day to sign.' : 'Parliament votes today.';
+    }
+    $('deadlineTxt').textContent = txt;
   }
 
   // ---------------------------------------------------------------- MPs
@@ -542,15 +603,19 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     findMp(pc);
     var before = targetFor(S.count);
     S.count++;
+    S.myNumber = S.count;
     renderMeter(false);
+    // They see themselves appear in the live feed, and the feed waits a moment so they can.
+    tickHold = Date.now() + 7000;
+    showSigner('<b>' + esc(S.me.first) + ' from ' + esc(S.abroad ? cap(cty) : townFor(pc)) + '</b> has just signed. That\'s you.');
     document.querySelectorAll('.me-first').forEach(function (el) { el.textContent = S.me.first; });
     // The signer sees exactly what their signature did: the number they are, and how close we now are.
     if (S.count >= before) {
       $('thanksH').textContent = 'You took us to ' + fmt(before) + '!';
       $('thanksS').textContent = 'New target: ' + fmt(targetFor(S.count)) + '. Two quick questions: your answers show journalists and MPs how people feel.';
     } else {
-      $('thanksH').textContent = "You're signature number " + fmt(S.count) + '.';
-      $('thanksS').textContent = 'Only ' + fmt(before - S.count) + ' more to reach ' + fmt(before) + '. Two quick questions: your answers show journalists and MPs how people feel.';
+      $('thanksH').textContent = "You're signature number " + fmt(S.myNumber) + '.';
+      $('thanksS').textContent = 'Only ' + fmt(before - S.myNumber) + ' more to reach ' + fmt(before) + '. Two quick questions: your answers show journalists and MPs how people feel.';
     }
     go(2);
   });
@@ -663,7 +728,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     });
   });
   function share(k) {
-    var text = "I've signed the petition to include all politicians in the Hillsborough Law. Sign it here:", url = shareLink();
+    var text = "I've signed the petition to include all lawmakers under the Hillsborough Law. Sign it here:", url = shareLink();
     if (k === 'wa') window.open('https://wa.me/?text=' + encodeURIComponent(text + ' ' + url), '_blank', 'noopener');
     if (k === 'fb') window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url), '_blank', 'noopener');
     if (k === 'x') window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(text) + '&url=' + encodeURIComponent(url), '_blank', 'noopener');
@@ -704,7 +769,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       spacing(x, '5px'); x.fillStyle = 'rgba(255,255,255,.72)'; x.fillText('I SIGNED. WILL YOU?', 104, 380);
       spacing(x, '0px');
       x.fillStyle = '#ffffff'; x.font = '400 108px ' + SERIF;
-      var lines = wrap(x, 'Include all politicians in the Hillsborough Law', 872);
+      var lines = wrap(x, 'Include all lawmakers under the Hillsborough Law', 872);
       lines.forEach(function (l, i) { x.fillText(l, 104, 620 + i * 120); });
       x.fillStyle = 'rgba(255,255,255,.8)'; x.font = '400 46px ' + SANS;
       wrap(x, 'MPs and peers are left out of the new law against misleading the public.', 872)
@@ -748,7 +813,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
 
   // ---------------------------------------------------------------- 6: done
   function finish() {
-    var s = "You're signature number " + fmt(S.count) + '. We will take every signature to Parliament before the vote.';
+    var s = "You're signature number " + fmt(S.myNumber) + '. We will take every signature to Parliament before the vote.';
     if (S.mpSent) s += ' Your message goes to ' + (S.mp ? S.mp.name : 'your MP') + ' as soon as you tap the link in your email.';
     if (S.me.emailOk) s += " We'll email you when the vote is coming.";
     $('doneS').textContent = s;
@@ -766,10 +831,14 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     fundLabel();
     go(1, true);
     renderMeter(true);
+    renderDeadline();
+    tickN = 1; tickHold = 0;
+    $('tickTxt').textContent = RECENT[0] + ' has just signed';
   }
   $('resetBtn').addEventListener('click', function () { start(); window.scrollTo(0, 0); });
   $('proto').hidden = !PROTO;
   start();
+  nextTick();
 })();
 </script>
 </body>
