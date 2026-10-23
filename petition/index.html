@@ -69,6 +69,42 @@ h1 em{font-style:normal;color:var(--gold)}
 .deadline svg{flex:0 0 16px;width:16px;height:16px}
 .kicker{font:700 12px/1.4 var(--f-body);letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin:0 0 10px}
 .lede + .lede{margin-top:-12px}
+.cta-line{color:var(--paper);font-weight:700}
+.obj-btn{display:inline-flex;align-items:center;gap:8px;margin:-8px 0 24px;padding:10px 14px;border:1px solid rgba(221,188,102,.6);border-radius:3px;
+  background:transparent;color:var(--gold);font:600 14px/1.2 var(--f-body);cursor:pointer}
+.obj-btn:hover{background:rgba(221,188,102,.1)}
+.obj-btn svg{width:16px;height:16px}
+
+/* ---- objections panel: a full-height sheet on phones, a centred panel on laptops ---- */
+.obj{width:min(720px,100%);max-width:100%;max-height:100%;height:100%;margin:0 auto;padding:0;border:0;background:var(--paper);color:var(--ink)}
+.obj::backdrop{background:rgba(4,20,64,.72)}
+@media(min-width:760px){ .obj{height:auto;max-height:calc(100% - 48px);margin:24px auto;border-radius:6px} }
+.obj-in{display:flex;flex-direction:column;height:100%;max-height:inherit}
+.obj-head{display:flex;align-items:flex-start;gap:12px;padding-block:18px 14px;padding-left:max(20px, env(safe-area-inset-left, 0px));padding-right:max(20px, env(safe-area-inset-right, 0px));
+  padding-top:calc(18px + env(safe-area-inset-top, 0px));border-bottom:1px solid var(--rule);background:var(--paper-2)}
+.obj-head h2{flex:1;margin:0;font:400 26px/1.15 var(--f-display);color:var(--navy)}
+.obj-head p{margin:6px 0 0;font-size:13.5px;color:var(--muted)}
+.obj-x{flex:0 0 40px;width:40px;height:40px;border:0;border-radius:50%;background:transparent;color:var(--ink);cursor:pointer;display:grid;place-items:center}
+.obj-x:hover{background:var(--rule)}
+.obj-x svg{width:22px;height:22px}
+.obj-body{overflow:auto;-webkit-overflow-scrolling:touch;padding-block:8px 20px;padding-left:max(20px, env(safe-area-inset-left, 0px));padding-right:max(20px, env(safe-area-inset-right, 0px))}
+.obj-group{font:700 11px/1.4 var(--f-body);letter-spacing:.14em;text-transform:uppercase;color:var(--gold-ink);margin:18px 0 6px}
+.obj details{border-bottom:1px solid var(--rule)}
+.obj summary{list-style:none;display:flex;gap:12px;align-items:flex-start;padding:14px 0;cursor:pointer;font-weight:700;font-size:15.5px;line-height:1.4;color:var(--navy)}
+.obj summary::-webkit-details-marker{display:none}
+.obj summary::after{content:'+';margin-left:auto;flex:0 0 auto;font:400 22px/1 var(--f-body);color:var(--gold-ink)}
+.obj details[open] summary::after{content:'\2212'}
+.obj .ans{padding:0 0 16px;font-size:15px;line-height:1.6;color:var(--ink)}
+.obj .ans p{margin:0 0 10px}
+.obj .ans .who{font-size:13px;color:var(--muted);margin:0 0 10px}
+.obj .ans .who q{font-style:italic}
+.obj blockquote{margin:0 0 10px;padding:8px 12px;border-left:3px solid var(--gold);background:var(--paper-2);font-size:14px;line-height:1.55}
+.obj blockquote cite{display:block;margin-top:4px;font-style:normal;font-size:12px;font-weight:700;color:var(--gold-ink);letter-spacing:.02em}
+.obj-foot{padding-block:14px;padding-left:max(20px, env(safe-area-inset-left, 0px));padding-right:max(20px, env(safe-area-inset-right, 0px));
+  padding-bottom:calc(14px + env(safe-area-inset-bottom, 0px));border-top:1px solid var(--rule);background:var(--paper)}
+.deadline{align-items:flex-start;flex-wrap:wrap}
+.deadline svg{margin-top:2px}
+.deadline small{display:block;font-weight:400;color:var(--muted);font-size:12.5px;margin-top:2px}
 .m-top{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
 .m-n{font:400 40px/1 var(--f-display);color:var(--navy);font-variant-numeric:tabular-nums}
 .m-l{font-size:14px;color:var(--muted)}
@@ -208,8 +244,10 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
 <main class="page">
   <p class="kicker">Petition to Parliament &amp; Press</p>
   <h1>Include all lawmakers under the <em>Hillsborough&nbsp;Law</em></h1>
-  <p class="lede">For the first time, UK law will make it a crime for people in public office to deliberately or recklessly mislead the public. The Hillsborough Law will cover police officers, civil servants, the armed forces, NHS doctors and nurses, Government ministers, the Prime Minister and even the intelligence services. But the lawmakers writing it have left themselves out.</p>
-  <p class="lede">This petition, which we will present to Parliament and the press, calls on every lawmaker in the UK, including MPs, peers, and members of the Scottish Parliament, the Senedd and the Northern Ireland Assembly, to lead by example and include themselves. Anything less would be hypocritical, a betrayal of everything the Hillsborough Law stands for, an affront to equality under the law, and potentially the most damaging blow to public trust in our democracy the UK has ever seen.</p>
+  <p class="lede">For the first time, UK law will make it a crime for public officials to intentionally or recklessly mislead the public. The Hillsborough Law will cover police officers, civil servants, the armed forces, NHS doctors and nurses, Government ministers, the Prime Minister and even the intelligence services (outside of national security matters). But the lawmakers writing it have left themselves out. They will be almost the only ones permitted to continue to lie to the public.</p>
+  <p class="lede">This petition, which we will present to Parliament and the press, calls on every lawmaker in the UK, including members of the House of Commons, the House of Lords, the Scottish Parliament, the Senedd and the Northern Ireland Assembly, to lead by example and include themselves (only for acts outside proceedings in Parliament, which are protected by Article 9 of the Bill of Rights). Anything less would be hypocritical, a betrayal of the values behind this Bill, an affront to equality under the law, and potentially the most damaging blow to public trust in our democracy that the UK has ever seen.</p>
+  <p class="lede cta-line">Don't want lawmakers to have the right to lie to you? Sign this petition.</p>
+  <button class="obj-btn" type="button" id="objBtn" aria-haspopup="dialog">Objections to this argument <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
 
   <div class="card" id="card">
     <div class="meter">
@@ -347,6 +385,152 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   <a href="/privacy" target="_blank" rel="noopener">Privacy</a>
 </footer>
 
+<dialog class="obj" id="objDlg" aria-labelledby="objH">
+  <div class="obj-in">
+    <div class="obj-head">
+      <div><h2 id="objH">Objections to this argument</h2>
+        <p>From the Government, Parliament and the public, with our answers in the Bill's own words. Clauses are as numbered in the Bill as amended in Lords Committee.</p></div>
+      <button class="obj-x" type="button" id="objClose" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </div>
+    <div class="obj-body" id="objList"><!--OBJECTIONS-->
+<p class="obj-group">Parliament and privilege</p>
+
+<details><summary>MPs and peers can't be prosecuted for what they say in Parliament.</summary><div class="ans">
+<p>Correct, and this petition does not change that. Article 9 of the Bill of Rights protects everything said and done in proceedings in Parliament, and it always will. We are asking only that lawmakers be covered for what they say and do outside Parliament: on television and radio, in leaflets, at public events and online.</p>
+<blockquote>"That the Freedome of Speech and Debates or Proceedings in Parlyament ought not to be impeached or questioned in any Court or Place out of Parlyament."<cite>Bill of Rights 1689, Article 9</cite></blockquote>
+<!--GOV-PRIVILEGE-->
+</div></details>
+
+<details><summary>Parliament regulates its own members. It has its own ways of dealing with MPs who mislead.</summary><div class="ans">
+<!--GOV-SELFREG-->
+<p>Those procedures deal with misleading the House, inside Parliament. They do nothing about a lie told to the public on a television sofa, in a leaflet or on social media, which is all this petition is about.</p>
+<p>And the Bill itself already accepts that MPs and peers can face the criminal courts. Its new misconduct offence lists them as holders of public office. It leaves them out only of the offence of misleading the public.</p>
+<blockquote>"A Member of either House of Parliament."<cite>Schedule 4, paragraph 6(1): holders of public office for the misconduct offences</cite></blockquote>
+</div></details>
+
+<details><summary>Ministers are already covered, including the Prime Minister. Aren't they MPs too?</summary><div class="ans">
+<p>Ministers are covered only while they act as ministers. The Prime Minister can be prosecuted for lying as Prime Minister, but not when speaking as an MP, a party leader or a campaigner. Backbench MPs, the opposition and peers are not covered at all, though every law needs their votes.</p>
+<blockquote>"But an individual is a public official only to the extent of their functions as such an official."<cite>Schedule 2, paragraph 3(2)</cite></blockquote>
+</div></details>
+
+<details><summary>Is this even true? Are lawmakers really left out?</summary><div class="ans">
+<p>Yes. The Bill lists Parliament and every devolved legislature as "excluded bodies", so their members are not public officials for the offence of misleading the public.</p>
+<blockquote>"The following are excluded bodies— (a) a court; (b) either House of Parliament; (c) the Scottish Parliament; (d) Senedd Cymru; (e) the Northern Ireland Assembly"<cite>Schedule 2, paragraph 2(4)</cite></blockquote>
+</div></details>
+
+<details><summary>Backbenchers and peers don't take decisions for the state.</summary><div class="ans">
+<p>Neither do nurses or police constables, and the Bill covers them. The offence is about deceiving the public, not about who takes decisions. Lawmakers scrutinise the Government, vote on every law and every budget, and have the platform and public trust that make a lie believable.</p>
+<blockquote>"A public authority or public official commits an offence if, in their capacity as such an authority or official— (a) they act with the intention of misleading the public or are reckless as to whether their act will do so"<cite>Clause 12(1)</cite></blockquote>
+</div></details>
+
+<p class="obj-group">Free speech and politics</p>
+
+<details><summary>Who decides what counts as a lie?</summary><div class="ans">
+<p>Not political opponents and not the Government. The independent Director of Public Prosecutions must agree to any prosecution, and a court decides on the evidence, beyond reasonable doubt. The test is strict: the person must have intended to mislead the public or been reckless about it, and every part of this must be proved.</p>
+<blockquote>"(a) involved dishonesty that was significant or repeated (whether by means of falsehood, concealment, obfuscation or otherwise) in respect of matters of significant concern to the public, (b) caused, or contributed to causing, harm to one or more other persons, or had the potential to do so, and (c) departed significantly from what is to be expected in the proper exercise of the person's functions"<cite>Clause 12(3)</cite></blockquote>
+</div></details>
+
+<details><summary>It would criminalise opinions, broken promises and honest mistakes.</summary><div class="ans">
+<p>It would not. An honest opinion, a forecast that turns out wrong or a promise later broken is not dishonest. The offence needs dishonesty, and an intention to mislead or recklessness about it. A broken promise could only come close if the person never meant to keep it, and that would have to be proved.</p>
+<blockquote>"they act with the intention of misleading the public or are reckless as to whether their act will do so"<cite>Clause 12(1)(a)</cite></blockquote>
+</div></details>
+
+<details><summary>It's the wrong way to regulate political speech.</summary><div class="ans">
+<!--GOV-SPEECH-->
+<p>It does not regulate debate or opinion. It reaches only dishonesty that is significant or repeated, about matters of significant concern to the public, that causes or risks harm. The Bill already applies exactly this test to Government ministers, whose words are as political as anyone's.</p>
+<blockquote>"a reasonable person would consider it to be seriously improper, taking account of all the circumstances of the case"<cite>Clause 12(2)(b)</cite></blockquote>
+</div></details>
+
+<details><summary>It would be used to silence people. Whoever controls "the truth" controls politics.</summary><div class="ans">
+<p>It applies only to people in public office, never to the public, and the Bill expressly protects journalism. It would cover every lawmaker equally, regardless of which party is in power. And no one can bring a case on their own: every prosecution needs the consent of the independent Director of Public Prosecutions.</p>
+<blockquote>"Nothing in this section applies to an act done for the purposes of journalism by— (a) a recognised news publisher"<cite>Clause 12(4)</cite></blockquote>
+</div></details>
+
+<details><summary>It would chill debate and put good people off standing for office.</summary><div class="ans">
+<p>It chills only deliberate or reckless deception. Honest people, including people who get things wrong, have nothing to fear. The Bill applies the same rule to nurses, police officers, civil servants and ministers, and no one suggests it will stop people doing those jobs. Anyone charged can also rely on a reasonable excuse.</p>
+<blockquote>"It is a defence for a person charged with an offence under this section— … (b) to show that they otherwise had a reasonable excuse for their act."<cite>Clause 12(6)(b)</cite></blockquote>
+</div></details>
+
+<p class="obj-group">How it would work</p>
+
+<details><summary>Opponents would bring politically motivated prosecutions.</summary><div class="ans">
+<p>They could not do it alone. In England, Wales and Northern Ireland every prosecution, including a private one, needs the consent of the Director of Public Prosecutions. If a defendant raises a reasonable excuse, the prosecution has to disprove it beyond reasonable doubt.</p>
+<blockquote>"Proceedings for an offence under section 5 or 12 may be brought— (a) in England and Wales, only by or with the consent of the Director of Public Prosecutions; (b) in Northern Ireland, only by or with the consent of the Director of Public Prosecutions for Northern Ireland."<cite>Schedule 3, paragraph 2</cite></blockquote>
+</div></details>
+
+<details><summary>Judges shouldn't decide political arguments or send elected representatives to prison.</summary><div class="ans">
+<p>Courts would not judge policies, only whether someone dishonestly misled the public, as they judge dishonesty in fraud cases every day. MPs are already subject to the criminal law. In 2010 the Supreme Court ruled unanimously that parliamentary privilege did not stop MPs being prosecuted over false expenses claims (R v Chaytor [2010] UKSC 52). This Bill's own misconduct offence already applies to them.</p>
+<blockquote>"A person who holds public office commits an offence if— (a) they use their office to obtain a benefit (whether for themselves or another person) or to cause another person to suffer a detriment, and (b) they know, or ought to know, that doing so is a seriously improper act."<cite>Clause 13(1), which applies to MPs and peers through Schedule 4, paragraph 6(1)</cite></blockquote>
+</div></details>
+
+<details><summary>Spies and undercover police have to lie.</summary><div class="ans">
+<p>The Bill already deals with this, for everyone it covers. There is a defence where deception was necessary for the work of the intelligence services or the armed forces on active service, and a general defence of reasonable excuse. The offence is about deceiving the British public in a seriously improper way, not about operations against criminals or hostile states.</p>
+<blockquote>"It is a defence for a person charged with an offence under this section— (a) to prove that the act constituting the offence was necessary for the proper exercise of any function of— (i) an intelligence service, or (ii) the armed forces when engaged on active service"<cite>Clause 12(6)(a)</cite></blockquote>
+</div></details>
+
+<details><summary>There'd be nobody left in Parliament.</summary><div class="ans">
+<p>The bar is deliberately high, so prosecutions would be rare. The point is the standard it sets. Once lying to the public can lead to a criminal record, lawmakers check their claims before they make them, as ministers, police officers and nurses will have to.</p>
+<blockquote>"(c) departed significantly from what is to be expected in the proper exercise of the person's functions"<cite>Clause 12(3)(c)</cite></blockquote>
+</div></details>
+
+<details><summary>It won't change anything. They'll keep lying and it will never be used.</summary><div class="ans">
+<p>The Hillsborough Law is a Government Bill, so it will become law. A clear criminal offence changes behaviour even when it is rarely used: it is why people in public office will take advice and check what they say. Where the authorities will not act, ExecProsec will seek to bring the cases ourselves, with the consent the Bill requires.</p>
+<blockquote>"The purpose of this Act is to ensure that public authorities and public officials at all times perform their functions— (a) with candour, transparency and frankness, and (b) in the public interest."<cite>Clause 1(1)</cite></blockquote>
+</div></details>
+
+<p class="obj-group">Isn't it covered already?</p>
+
+<details><summary>There are already laws against lying at elections.</summary><div class="ans">
+<p>Only about a candidate's personal character or conduct. That law protects candidates from each other, not voters. Lies about policies, facts or figures, and lies told between elections, are not covered.</p>
+<blockquote>"makes or publishes any false statement of fact in relation to the candidate's personal character or conduct shall be guilty of an illegal practice"<cite>Representation of the People Act 1983, section 106(1)</cite></blockquote>
+</div></details>
+
+<details><summary>MPs can already be prosecuted for misconduct in public office.</summary><div class="ans">
+<p>This Bill abolishes that offence. Its replacement is about using an office to obtain a benefit or to harm someone, not about misleading the public. When it was tried against a politician for misleading the public, in 2019, the High Court stopped the case.</p>
+<blockquote>"The offence of misconduct in public office under the common law of England and Wales is abolished."<cite>Clause 17(1)</cite></blockquote>
+</div></details>
+
+<details><summary>Codes of conduct and the Nolan principles already require honesty.</summary><div class="ans">
+<p>They are not law. They create no offence and no remedy for the public, and the Ministerial Code is enforced by the Prime Minister of the day. The Bill exists because codes like these were not enough for anyone else in public life.</p>
+</div></details>
+
+<details><summary>Wales already does this.</summary><div class="ans">
+<p>Wales has committed to a law on deception by its own politicians, but it is not working law yet. The Hillsborough Law would cover the whole of the UK, Wales included, and it already lists members of the Senedd as holders of public office for its misconduct offences.</p>
+<blockquote>"A member of Senedd Cymru."<cite>Schedule 4, paragraph 8(1)</cite></blockquote>
+</div></details>
+
+<p class="obj-group">About this campaign</p>
+
+<details><summary>They'll never vote to include themselves.</summary><div class="ans">
+<p>Peers vote on including lawmakers separately from the rest of the Bill, and the vote is decided by whoever turns up on the day. Peers from across the House have already spoken about the gap. Public pressure changes votes, and that is what this petition is for.</p>
+</div></details>
+
+<details><summary>Including MPs could put the whole Hillsborough Law at risk.</summary><div class="ans">
+<p>It would not. The vote on including lawmakers is a separate vote on an amendment. If it fails, the rest of the Bill carries on unchanged.</p>
+</div></details>
+
+<details><summary>This is about one party.</summary><div class="ans">
+<p>It would apply to every lawmaker regardless of which party is in power: Labour, Conservative, Reform, Liberal Democrat, Green, the nationalist parties, independents and peers.</p>
+</div></details>
+
+<details><summary>Can it be backdated to cover past lies?</summary><div class="ans">
+<p>No. A new criminal offence cannot apply to things done before it became law. Once it is law, it would apply to everyone it covers from then on.</p>
+</div></details>
+
+<details><summary>Peers aren't even elected. Why does it matter?</summary><div class="ans">
+<p>Whatever the route in, every peer votes on our laws and should be under this one. Peers are already listed as holders of public office for the Bill's misconduct offences.</p>
+<blockquote>"A Member of either House of Parliament."<cite>Schedule 4, paragraph 6(1)</cite></blockquote>
+</div></details>
+
+<details><summary>Journalists lie too. Why aren't they included?</summary><div class="ans">
+<p>We agree that is a debate worth having, but it is a different one. This Bill is only about people in public office, and it expressly leaves out journalism.</p>
+<blockquote>"Nothing in this section applies to an act done for the purposes of journalism"<cite>Clause 12(4)</cite></blockquote>
+</div></details>
+<!--/OBJECTIONS--></div>
+    <div class="obj-foot"><button class="btn" type="button" id="objSign">Sign the petition</button></div>
+  </div>
+</dialog>
+
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
@@ -357,7 +541,10 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   // the MP is. The live page takes the count from the server and posts each step to it.
   var PROTO = true;
   var START_COUNT = 6240;                    // sample; add ?count=9999 to the address to see a target being passed
-  var VOTE_DATE = '';                        // the day of the vote, e.g. '2026-12-08'; until it is set the page says "December"
+  // The day of the vote. Not announced yet, so this is our estimate (a Wednesday in early December,
+  // when the Lords usually takes its big Report stage votes); set VOTE_ESTIMATED to false once it is confirmed.
+  var VOTE_DATE = '2026-12-02';
+  var VOTE_ESTIMATED = true;
 
   // Recent signers, as first name and town. The live page plays out the real ones as they come in;
   // these samples show how it feels.
@@ -436,14 +623,13 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   }
   function nextTick() { setTimeout(function () { tick(); nextTick(); }, 3200 + Math.random() * 3600); }
   function renderDeadline() {
-    var txt = 'Parliament votes on this in December. Sign before the vote.';
-    if (VOTE_DATE) {
-      var d = new Date(VOTE_DATE + 'T00:00:00'), days = Math.ceil((d - new Date()) / 86400000);
-      var when = d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long' });
-      txt = days > 1 ? 'Parliament votes on ' + when + '. ' + days + ' days left to sign.'
-        : days === 1 ? 'Parliament votes tomorrow. Last day to sign.' : 'Parliament votes today.';
-    }
-    $('deadlineTxt').textContent = txt;
+    var d = new Date(VOTE_DATE + 'T00:00:00'), days = Math.ceil((d - new Date()) / 86400000);
+    var when = d.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' });
+    var head = days > 1 ? days + ' days left to sign.' : days === 1 ? 'Last day to sign.' : 'Parliament votes today.';
+    var line = VOTE_ESTIMATED
+      ? 'Parliament is expected to vote on ' + when + '. This is our estimate: the Government has not announced the date yet.'
+      : 'Parliament votes on ' + when + '.';
+    $('deadlineTxt').innerHTML = '<b>' + head + '</b><small>' + esc(line) + '</small>';
   }
 
   // ---------------------------------------------------------------- MPs
@@ -820,6 +1006,21 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     go(6);
   }
   $('shareAgain').addEventListener('click', function () { go(4); });
+
+  // ---------------------------------------------------------------- objections
+  function closeObj() { if ($('objDlg').open) $('objDlg').close(); }
+  $('objBtn').addEventListener('click', function () {
+    var d = $('objDlg');
+    if (d.showModal) d.showModal(); else d.setAttribute('open', '');
+    $('objList').scrollTop = 0;
+  });
+  $('objClose').addEventListener('click', closeObj);
+  $('objDlg').addEventListener('click', function (e) { if (e.target === this) closeObj(); });   // a tap on the dimmed backdrop
+  $('objSign').addEventListener('click', function () {
+    closeObj();
+    $('card').scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
+    if (!S.signed) setTimeout(function () { $('first').focus({ preventScroll: true }); }, reduced ? 0 : 500);
+  });
 
   // ---------------------------------------------------------------- start
   function start() {
