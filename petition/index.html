@@ -24,7 +24,7 @@
   /* Layout: one narrow column at every size: title, one paragraph, then the card with the target
      meter and the form. Brand: the site's navy, gold and red; DM Serif Display for the title. */
   --navy:#041440; --navy-3:#142a6b;
-  --gold:#ddbc66; --gold-ink:#8a6b1f; --red:#d64045; --red-dk:#b9323a;
+  --gold:#ddbc66; --gold-ink:#8a6b1f; --red:#d64045; --red-dk:#b9323a; --pink:#d6336c; --pink-dk:#b82659;
   --paper:#ffffff; --paper-2:#f5f3ec; --ink:#141b33; --muted:#5a6075; --rule:#e2ddcf; --field:#c9c3b1;
   --on-navy:rgba(255,255,255,.86); --on-navy-2:rgba(255,255,255,.6); --line-navy:rgba(255,255,255,.13);
   --t0:#7d87a6; --t1:#b39d55; --t2:#d4913b; --t3:#dc6c37; --t4:#d64045; --t5:#9b1c2a;
@@ -43,23 +43,19 @@ a{color:inherit}
 :focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 [hidden]{display:none!important}
 
-.proto{background:var(--gold);color:var(--navy);font-size:12.5px;line-height:1.4;padding-block:6px;padding-left:var(--gl);padding-right:var(--gr);
-  display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap;text-align:center}
-.proto button{background:var(--navy);color:var(--paper);border:0;border-radius:3px;padding:3px 9px;font-size:12px;font-weight:600;cursor:pointer}
 .top{max-width:1160px;margin:0 auto;padding-block:16px 4px;padding-left:var(--gl);padding-right:var(--gr)}
 .top img{height:40px;width:auto}
 
 /* Phones: the case, the press, then the petition. Laptops: the case and the press on the left, the
    petition pinned on the right, so everything that matters is in the first screen. */
 .page{max-width:1160px;margin:0 auto;padding-block:20px 48px;padding-left:var(--gl);padding-right:var(--gr);
-  display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:"pitch" "press" "side" "sources";row-gap:24px}
+  display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:"pitch" "press" "side";row-gap:24px}
 .pitch{grid-area:pitch;min-width:0}
 .press{grid-area:press;min-width:0}
 .side{grid-area:side;min-width:0}
-.sources{grid-area:sources;min-width:0}
 @media(min-width:960px){
-  .page{grid-template-columns:minmax(0,1fr) 410px;grid-template-rows:auto 1fr auto;column-gap:56px;row-gap:28px;align-items:start;padding-top:18px;
-    grid-template-areas:"pitch side" "press side" "sources sources"}
+  .page{grid-template-columns:minmax(0,1fr) 410px;grid-template-rows:auto 1fr;column-gap:56px;row-gap:28px;align-items:start;padding-top:18px;
+    grid-template-areas:"pitch side" "press side"}
   /* a tighter card, so the whole form fits a laptop screen */
   .side .meter{padding:12px 20px}
   .side .live{margin-bottom:6px}
@@ -102,32 +98,30 @@ h1 em{font-style:normal;color:var(--gold)}
 .lede + .lede{margin-top:-12px}
 .cta-line{color:var(--paper);font-weight:700}
 .more-btns{display:flex;flex-wrap:wrap;gap:10px;margin:-6px 0 0}
-.obj-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border:1px solid rgba(221,188,102,.6);border-radius:3px;
-  background:transparent;color:var(--gold);font:600 14px/1.2 var(--f-body);cursor:pointer;text-decoration:none}
+.obj-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;flex:1 1 220px;min-height:48px;padding:12px 18px;border:0;border-radius:4px;
+  background:var(--pink);color:#fff;font:700 14.5px/1.2 var(--f-body);letter-spacing:.01em;cursor:pointer;text-decoration:none;
+  box-shadow:0 6px 18px rgba(214,51,108,.28);transition:background .15s,transform .12s,box-shadow .15s}
+.obj-btn:hover{background:var(--pink-dk);transform:translateY(-1px);box-shadow:0 8px 22px rgba(214,51,108,.36)}
+.obj-btn:active{transform:translateY(0)}
+.obj-btn svg{width:16px;height:16px;flex:0 0 16px}
 
-/* ---- the Bill's name, reference numbers, press, sources ---- */
-h1 .bill{display:block;margin-top:10px;font:500 clamp(14px,1.6vw,17px)/1.3 var(--f-body);letter-spacing:0;color:var(--on-navy-2);text-decoration:underline;
-  text-decoration-color:rgba(221,188,102,.5);text-underline-offset:3px}
-h1 .bill:hover{color:var(--gold)}
+/* ---- the Bill link, reference numbers, press, the phone Sign bar ---- */
+.bill-link{color:var(--paper);font-weight:600;text-decoration:underline;text-decoration-color:var(--gold);text-underline-offset:3px}
+.bill-link:hover{color:var(--gold)}
 .ref{font-size:.68em;line-height:0;vertical-align:super;margin-left:1px}
 .ref a{display:inline-block;min-width:16px;padding:0 3px;border-radius:2px;color:var(--gold);font-weight:700;text-decoration:none;text-align:center}
 .ref a:hover,.ref a:focus-visible{background:rgba(221,188,102,.18)}
-.press-l{margin:0 0 8px;font:700 11px/1.4 var(--f-body);letter-spacing:.16em;text-transform:uppercase;color:var(--on-navy-2)}
-.press-row{display:flex;flex-wrap:wrap;gap:8px}
-.press-row a{display:flex;align-items:center;justify-content:center;flex:1 1 0;min-width:96px;height:52px;padding:8px 12px;background:#fff;border-radius:4px;
-  transition:transform .15s,box-shadow .15s}
-.press-row a:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(0,0,0,.3)}
-.press-row img{max-height:26px;width:auto;max-width:100%}
-.sources{border-top:1px solid var(--line-navy);padding-top:18px;font-size:13px;color:var(--on-navy-2)}
-.sources h2{margin:0 0 8px;font:700 11px/1.4 var(--f-body);letter-spacing:.16em;text-transform:uppercase;color:var(--on-navy-2)}
-.sources ol{margin:0 0 8px;padding-left:20px;display:flex;flex-direction:column;gap:4px}
-.sources a{color:var(--on-navy)}
-.sources p{margin:0}
+.press{padding-top:22px;border-top:1px solid rgba(255,255,255,.08)}
+.press-label{font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:rgba(255,255,255,.7);margin:0 0 14px;text-align:center}
+.press-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px 8px;align-items:center;justify-items:center}
+.press-item{display:flex;align-items:center;justify-content:center;width:100%;padding:10px 8px;text-decoration:none;
+  transition:transform .15s cubic-bezier(.22,1,.36,1)}
+.press-item:hover{transform:translateY(-2px)}
+.press-item img{display:block;height:26px;width:auto;max-width:100%;object-fit:contain;opacity:.85;transition:opacity .2s}
+.press-item:hover img{opacity:1}
 .sticky{position:fixed;left:0;right:0;bottom:0;z-index:20;background:rgba(4,20,64,.97);border-top:1px solid var(--line-navy);
   padding-top:10px;padding-bottom:calc(10px + env(safe-area-inset-bottom, 0px));padding-left:var(--gl);padding-right:var(--gr)}
 .sticky .btn{min-height:50px}
-.obj-btn:hover{background:rgba(221,188,102,.1)}
-.obj-btn svg{width:16px;height:16px}
 
 /* ---- objections panel: a full-height sheet on phones, a centred panel on laptops ---- */
 .obj{width:min(720px,100%);max-width:100%;max-height:100%;height:100%;margin:0 auto;padding:0;border:0;background:var(--paper);color:var(--ink)}
@@ -283,8 +277,6 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
 </head>
 <body>
 
-<div class="proto" id="proto"><span><b>Preview.</b> Names and numbers are samples. Nothing is saved or sent.</span><button type="button" id="resetBtn">Start again</button></div>
-
 <header id="nav">
   <a class="logo" href="/" aria-label="ExecProsec home"><img src="/_web/brand/logo-nav.png" alt="ExecProsec" width="82" height="45"></a>
   <nav class="nav-links">
@@ -302,8 +294,8 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
 <main class="page">
  <div class="pitch">
   <p class="kicker">Petition to Parliament &amp; Press</p>
-  <h1>Include all lawmakers under the <em>Hillsborough&nbsp;Law</em><a class="bill" href="https://bills.parliament.uk/bills/4019" target="_blank" rel="noopener">(Public Office (Accountability) Bill)</a></h1>
-  <p class="lede">For the first time, UK law will make it a crime for public officials to intentionally or recklessly mislead the public.<sup class="ref"><a href="https://bills.parliament.uk/publications/68275/documents/8957#sec_12" target="_blank" rel="noopener" title="Source 1">1</a></sup> The Hillsborough Law will cover police officers, civil servants, the armed forces, NHS doctors and nurses, Government ministers, the Prime Minister<sup class="ref"><a href="https://bills.parliament.uk/publications/68275/documents/8957#sched_2__pt_2" target="_blank" rel="noopener" title="Source 2">2</a></sup> and even the intelligence services (outside of national security matters).<sup class="ref"><a href="https://bills.parliament.uk/publications/68275/documents/8957#sec_12__subsec_6" target="_blank" rel="noopener" title="Source 3">3</a></sup> But the lawmakers writing it have left themselves out.<sup class="ref"><a href="https://bills.parliament.uk/publications/68275/documents/8957#sched_2__para_2__subpara_4__intro" target="_blank" rel="noopener" title="Source 4">4</a></sup> They will be almost the only ones permitted to continue to lie to the public.</p>
+  <h1>Include all lawmakers under the <em>Hillsborough&nbsp;Law</em></h1>
+  <p class="lede"><a class="bill-link" href="https://bills.parliament.uk/bills/4019" target="_blank" rel="noopener">The Public Office (Accountability) Bill</a> will, for the first time, make it a crime for public officials to intentionally or recklessly mislead the public.<sup class="ref"><a href="https://bills.parliament.uk/publications/68275/documents/8957#sec_12" target="_blank" rel="noopener" title="Source 1">1</a></sup> The Hillsborough Law will cover police officers, civil servants, the armed forces, NHS doctors and nurses, Government ministers, the Prime Minister<sup class="ref"><a href="https://bills.parliament.uk/publications/68275/documents/8957#sched_2__pt_2" target="_blank" rel="noopener" title="Source 2">2</a></sup> and even the intelligence services (outside of national security matters).<sup class="ref"><a href="https://bills.parliament.uk/publications/68275/documents/8957#sec_12__subsec_6" target="_blank" rel="noopener" title="Source 3">3</a></sup> But the lawmakers writing it have left themselves out.<sup class="ref"><a href="https://bills.parliament.uk/publications/68275/documents/8957#sched_2__para_2__subpara_4__intro" target="_blank" rel="noopener" title="Source 4">4</a></sup> They will be almost the only ones permitted to continue to lie to the public.</p>
   <p class="lede">This petition, which we will present to Parliament and the press, calls on every lawmaker in the UK, including members of the House of Commons, the House of Lords, the Scottish Parliament, the Senedd and the Northern Ireland Assembly, to lead by example and include themselves (only for acts outside proceedings in Parliament, which are protected by Article 9 of the Bill of Rights<sup class="ref"><a href="https://www.legislation.gov.uk/aep/WillandMarSess2/1/2/introduction" target="_blank" rel="noopener" title="Source 5">5</a></sup>). Anything less would be hypocritical, a betrayal of the values behind this Bill, an affront to equality under the law, and potentially the most damaging blow to public trust in our democracy that the UK has ever seen.</p>
   <p class="lede cta-line">Don't want lawmakers to have the right to lie to you? Sign this petition.</p>
   <div class="more-btns">
@@ -313,11 +305,11 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
  </div>
 
  <div class="press">
-  <p class="press-l">As reported in</p>
-  <div class="press-row">
-    <a href="https://news.sky.com/story/hillsborough-law-will-criminalise-lying-by-senior-ministers-say-campaigners-13509580" target="_blank" rel="noopener" aria-label="Sky News: Hillsborough law will criminalise lying by senior ministers, say campaigners"><img src="/_web/press/sky-news.svg" alt="Sky News" width="76" height="32"></a>
-    <a href="https://www.telegraph.co.uk/news/2026/10/17/burnham-accused-of-hypocrisy-over-hillsborough-law/" target="_blank" rel="noopener" aria-label="The Telegraph: Burnham accused of hypocrisy over Hillsborough law"><img src="/_web/press/the-telegraph.svg" alt="The Telegraph" width="112" height="18"></a>
-    <a href="https://www.express.co.uk/news/politics/2257971/comment-marcus-ball-hillsborough-law-lawmakers" target="_blank" rel="noopener" aria-label="Daily Express: Marcus J Ball on the Hillsborough Law and lawmakers"><img src="/_web/press/daily-express.svg" alt="Daily Express" width="120" height="24"></a>
+  <div class="press-label">This campaign has been covered by</div>
+  <div class="press-grid">
+    <a class="press-item" href="https://news.sky.com/story/hillsborough-law-will-criminalise-lying-by-senior-ministers-say-campaigners-13509580" target="_blank" rel="noopener noreferrer" aria-label="Sky News"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNjAgNDQiIGhlaWdodD0iMzIiPjx0ZXh0IHg9IjgwIiB5PSIzMiIgZm9udC1mYW1pbHk9IkFyaWFsIEJsYWNrIiBmb250LXdlaWdodD0iOTAwIiBmb250LXNpemU9IjI0IiBmaWxsPSIjZjdmNmYyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBsZXR0ZXItc3BhY2luZz0iMSI+U0tZIE5FV1M8L3RleHQ+PC9zdmc+" alt="Sky News"></a>
+    <a class="press-item" href="https://www.telegraph.co.uk/news/2026/10/17/burnham-accused-of-hypocrisy-over-hillsborough-law/" target="_blank" rel="noopener noreferrer" aria-label="The Telegraph"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMTUgNDQiIGhlaWdodD0iMzIiPjx0ZXh0IHg9IjEwNy41IiB5PSIzMiIgZm9udC1mYW1pbHk9IlRpbWVzIE5ldyBSb21hbixzZXJpZiIgZm9udC13ZWlnaHQ9IjcwMCIgZm9udC1zaXplPSIyMSIgZmlsbD0iI2Y3ZjZmMiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgbGV0dGVyLXNwYWNpbmc9IjIiPlRIRSBURUxFR1JBUEg8L3RleHQ+PC9zdmc+" alt="The Telegraph"></a>
+    <a class="press-item" href="https://www.express.co.uk/news/politics/2257971/comment-marcus-ball-hillsborough-law-lawmakers" target="_blank" rel="noopener noreferrer" aria-label="Daily Express"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNDQiIGhlaWdodD0iMzIiPjx0ZXh0IHg9IjEwMC4wIiB5PSIzMiIgZm9udC1mYW1pbHk9Ikdlb3JnaWEsc2VyaWYiIGZvbnQtd2VpZ2h0PSI3MDAiIGZvbnQtc2l6ZT0iMjIiIGZpbGw9IiNmN2Y2ZjIiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkRhaWx5IEV4cHJlc3M8L3RleHQ+PC9zdmc+" alt="Daily Express"></a>
   </div>
  </div>
 
@@ -453,23 +445,11 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   </div>
  </div>
 
- <section class="sources" aria-labelledby="srcH">
-  <h2 id="srcH">Sources</h2>
-  <ol>
-    <li id="src1"><a href="https://bills.parliament.uk/publications/68275/documents/8957#sec_12" target="_blank" rel="noopener">Public Office (Accountability) Bill, clause 12: offence of misleading the public</a> (HL Bill 60, as amended in Lords Committee)</li>
-    <li id="src2"><a href="https://bills.parliament.uk/publications/68275/documents/8957#sched_2__pt_2" target="_blank" rel="noopener">Schedule 2, Part 2: who counts as a public authority and a public official</a></li>
-    <li id="src3"><a href="https://bills.parliament.uk/publications/68275/documents/8957#sec_12__subsec_6" target="_blank" rel="noopener">Clause 12(6): the defence for the intelligence services and the armed forces</a></li>
-    <li id="src4"><a href="https://bills.parliament.uk/publications/68275/documents/8957#sched_2__para_2__subpara_4__intro" target="_blank" rel="noopener">Schedule 2, paragraph 2(4): Parliament and the devolved legislatures listed as excluded bodies</a></li>
-    <li id="src5"><a href="https://www.legislation.gov.uk/aep/WillandMarSess2/1/2/introduction" target="_blank" rel="noopener">Bill of Rights 1689, Article 9: freedom of speech and proceedings in Parliament</a></li>
-  </ol>
-  <p>The Bill's progress through Parliament: <a href="https://bills.parliament.uk/bills/4019" target="_blank" rel="noopener">bills.parliament.uk/bills/4019</a></p>
- </section>
 </main>
 <div class="sticky" id="sticky" hidden><button class="btn" type="button" id="stickyBtn">Sign the petition</button></div>
 
 <footer class="foot">
   <span>ExecProsec Ltd · Registered in England and Wales 10520032</span>
-  <span>An ExecProsec petition, not an official UK Parliament e-petition</span>
   <a href="/terms" target="_blank" rel="noopener">Terms</a>
   <a href="/privacy" target="_blank" rel="noopener">Privacy</a>
 </footer>
@@ -1176,8 +1156,6 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     tickN = 1; tickHold = 0;
     $('tickTxt').textContent = RECENT[0] + ' has just signed';
   }
-  $('resetBtn').addEventListener('click', function () { start(); window.scrollTo(0, 0); });
-  $('proto').hidden = !PROTO;
   start();
   updateSticky();
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(pinCard);
