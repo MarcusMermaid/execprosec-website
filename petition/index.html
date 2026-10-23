@@ -97,13 +97,8 @@ h1 em{font-style:normal;color:var(--gold)}
 .kicker{font:700 12px/1.4 var(--f-body);letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin:0 0 10px}
 .lede + .lede{margin-top:-12px}
 .cta-line{color:var(--paper);font-weight:700}
-.more-btns{display:flex;flex-wrap:wrap;gap:10px;margin:-6px 0 0}
-.obj-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;flex:1 1 220px;min-height:48px;padding:12px 18px;border:0;border-radius:4px;
-  background:var(--pink);color:#fff;font:700 14.5px/1.2 var(--f-body);letter-spacing:.01em;cursor:pointer;text-decoration:none;
-  box-shadow:0 6px 18px rgba(214,51,108,.28);transition:background .15s,transform .12s,box-shadow .15s}
-.obj-btn:hover{background:var(--pink-dk);transform:translateY(-1px);box-shadow:0 8px 22px rgba(214,51,108,.36)}
-.obj-btn:active{transform:translateY(0)}
-.obj-btn svg{width:16px;height:16px;flex:0 0 16px}
+.inline-link{background:none;border:0;padding:0;font:inherit;color:var(--gold);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.inline-link:hover{color:var(--paper)}
 
 /* ---- the Bill link, reference numbers, press, the phone Sign bar ---- */
 .bill-link{color:var(--paper);font-weight:600;text-decoration:underline;text-decoration-color:var(--gold);text-underline-offset:3px}
@@ -192,6 +187,16 @@ h1 em{font-style:normal;color:var(--gold)}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 .opt-l{font-weight:400;color:var(--muted)}
 .hint-g{font-size:12.5px;color:var(--muted)}
+.stmt{margin:0 0 12px;padding:12px 14px;border-left:3px solid var(--gold);background:var(--paper-2);font:400 19px/1.35 var(--f-display);color:var(--navy)}
+.opts.agree{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.f textarea.short{min-height:88px;font-size:16px}
+.qfoot{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.counter{margin-left:auto;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.counter.low{color:var(--red-dk);font-weight:600}
+.hint{font-size:13px;color:var(--gold-ink)}
+.hint:empty{display:none}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;line-height:1.45;margin:0 0 10px;cursor:pointer}
+.check input{flex:0 0 20px;width:20px;height:20px;margin:1px 0 0;accent-color:var(--navy)}
 
 fieldset{border:0;margin:0 0 16px;padding:0;min-width:0}
 legend{padding:0;margin:0 0 8px;font-size:14px;font-weight:600;line-height:1.4;color:var(--ink)}
@@ -293,15 +298,11 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
 
 <main class="page">
  <div class="pitch">
-  <p class="kicker">Petition to Parliament &amp; Press</p>
+  <p class="kicker">Petition to Press &amp; Parliament</p>
   <h1>Include all lawmakers under the <em>Hillsborough&nbsp;Law</em></h1>
-  <p class="lede"><a class="bill-link" href="https://bills.parliament.uk/bills/4019" target="_blank" rel="noopener">The Public Office (Accountability) Bill</a> will, for the first time, make it a crime for public officials to intentionally or recklessly mislead the public.<sup class="ref"><a href="https://bills.parliament.uk/publications/68275/documents/8957#sec_12" target="_blank" rel="noopener" title="Source 1">1</a></sup> The Hillsborough Law will cover police officers, civil servants, the armed forces, NHS doctors and nurses, Government ministers, the Prime Minister<sup class="ref"><a href="https://bills.parliament.uk/publications/68275/documents/8957#sched_2__pt_2" target="_blank" rel="noopener" title="Source 2">2</a></sup> and even the intelligence services (outside of national security matters).<sup class="ref"><a href="https://bills.parliament.uk/publications/68275/documents/8957#sec_12__subsec_6" target="_blank" rel="noopener" title="Source 3">3</a></sup> But the lawmakers writing it have left themselves out.<sup class="ref"><a href="https://bills.parliament.uk/publications/68275/documents/8957#sched_2__para_2__subpara_4__intro" target="_blank" rel="noopener" title="Source 4">4</a></sup> They will be almost the only ones permitted to continue to lie to the public.</p>
-  <p class="lede">This petition, which we will present to Parliament and the press, calls on every lawmaker in the UK, including members of the House of Commons, the House of Lords, the Scottish Parliament, the Senedd and the Northern Ireland Assembly, to lead by example and include themselves (only for acts outside proceedings in Parliament, which are protected by Article 9 of the Bill of Rights<sup class="ref"><a href="https://www.legislation.gov.uk/aep/WillandMarSess2/1/2/introduction" target="_blank" rel="noopener" title="Source 5">5</a></sup>). Anything less would be hypocritical, a betrayal of the values behind this Bill, an affront to equality under the law, and potentially the most damaging blow to public trust in our democracy that the UK has ever seen.</p>
+  <p class="lede"><a class="bill-link" href="https://bills.parliament.uk/bills/4019" target="_blank" rel="noopener">The Public Office (Accountability) Bill</a> will, for the first time, make it a crime for public officials to intentionally or recklessly mislead the public.<sup class="ref"><a href="https://bills.parliament.uk/publications/68275/documents/8957#sec_12" target="_blank" rel="noopener" title="Source 1">1</a></sup> This &ldquo;Hillsborough Law&rdquo; will cover police officers, civil servants, the armed forces, NHS doctors and nurses, Government ministers, the Prime Minister<sup class="ref"><a href="https://bills.parliament.uk/publications/68275/documents/8957#sched_2__pt_2" target="_blank" rel="noopener" title="Source 2">2</a></sup> and even the intelligence services (outside of national security matters).<sup class="ref"><a href="https://bills.parliament.uk/publications/68275/documents/8957#sec_12__subsec_6" target="_blank" rel="noopener" title="Source 3">3</a></sup> But the lawmakers writing it have left themselves out.<sup class="ref"><a href="https://bills.parliament.uk/publications/68275/documents/8957#sched_2__para_2__subpara_4__intro" target="_blank" rel="noopener" title="Source 4">4</a></sup> They will be almost the only ones permitted to continue to lie to the public (<a class="inline-link" href="https://execprosec.org/lying-in-politics" target="_blank" rel="noopener">examples</a>).</p>
+  <p class="lede">This petition, which we will present to Parliament and the press, calls on every lawmaker in the UK, including members of the House of Commons, the House of Lords, the Scottish Parliament, the Senedd and the Northern Ireland Assembly, to lead by example and include themselves (only for acts outside proceedings in Parliament, which are protected by Article 9 of the Bill of Rights<sup class="ref"><a href="https://www.legislation.gov.uk/aep/WillandMarSess2/1/2/introduction" target="_blank" rel="noopener" title="Source 5">5</a></sup>; <button type="button" class="inline-link" id="objLink" aria-haspopup="dialog">read other objections here</button>). Anything less would be hypocritical, a betrayal of the values behind this Bill, an affront to equality under the law, and potentially the most damaging blow to public trust in our democracy that the UK has ever seen.</p>
   <p class="lede cta-line">Don't want lawmakers to have the right to lie to you? Sign this petition.</p>
-  <div class="more-btns">
-    <button class="obj-btn" type="button" id="objBtn" aria-haspopup="dialog">Objections to this argument <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
-    <a class="obj-btn" href="https://execprosec.org/lying-in-politics" target="_blank" rel="noopener">Examples of lying in politics <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-  </div>
  </div>
 
  <div class="press">
@@ -347,33 +348,31 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
         <span class="err" id="consentErr" aria-live="polite"></span>
       </fieldset>
       <div class="hp" aria-hidden="true"><label>Leave this empty <input id="website" name="website" tabindex="-1" autocomplete="off"></label></div>
-      <p class="fine">By signing, you confirm you are 18 or over and consent to ExecProsec recording that you support this petition, showing your first name and town as a recent signer, and keeping your details to count and check your signature and present it to Parliament, under our <a href="/terms" target="_blank" rel="noopener">Terms</a> and <a href="/privacy" target="_blank" rel="noopener">Privacy Notice</a>. Your email is never shown publicly.</p>
+      <p class="fine">By signing, you agree to our <a href="/terms" target="_blank" rel="noopener">Terms</a> and <a href="/privacy" target="_blank" rel="noopener">Privacy Notice</a>.</p>
       <button class="btn" type="submit">Sign the petition</button>
     </form>
 
-    <!-- 2: two questions -->
+    <!-- 2: one statement and their own words -->
     <form class="panel" id="p2" novalidate hidden>
       <h2 id="thanksH">Thank you.</h2>
       <p class="sub" id="thanksS"></p>
       <fieldset>
-        <legend>How damaging is it to public trust in our democracy and Parliament that politicians can lie to the public without breaking this law?</legend>
-        <div class="scale">
-          <label class="opt" style="--c:var(--t0)"><input type="radio" name="trust" value="0"><span>Not damaging</span></label>
-          <label class="opt" style="--c:var(--t1)"><input type="radio" name="trust" value="1"><span>Mildly damaging</span></label>
-          <label class="opt" style="--c:var(--t2)"><input type="radio" name="trust" value="2"><span>Damaging</span></label>
-          <label class="opt" style="--c:var(--t3)"><input type="radio" name="trust" value="3"><span>Very damaging</span></label>
-          <label class="opt" style="--c:var(--t4)"><input type="radio" name="trust" value="4"><span>Extremely damaging</span></label>
-          <label class="opt" style="--c:var(--t5)"><input type="radio" name="trust" value="5"><span>Disastrous</span></label>
+        <legend>Do you agree?</legend>
+        <p class="stmt" id="stmtTxt"></p>
+        <div class="opts agree">
+          <label class="opt"><input type="radio" name="agree" value="strongly"><span>Strongly agree</span></label>
+          <label class="opt"><input type="radio" name="agree" value="agree"><span>Agree</span></label>
+          <label class="opt"><input type="radio" name="agree" value="disagree"><span>Disagree</span></label>
+          <label class="opt"><input type="radio" name="agree" value="unsure"><span>Not sure</span></label>
         </div>
       </fieldset>
-      <fieldset>
-        <legend>If your MP voted to keep MPs out of this law, would it change how you vote?</legend>
-        <div class="opts">
-          <label class="opt"><input type="radio" name="vote" value="yes"><span>Yes</span></label>
-          <label class="opt"><input type="radio" name="vote" value="maybe"><span>Possibly</span></label>
-          <label class="opt"><input type="radio" name="vote" value="no"><span>No</span></label>
-        </div>
-      </fieldset>
+      <div class="f">
+        <label for="quote">In a sentence or two, how do you feel about lawmakers leaving themselves out?</label>
+        <textarea id="quote" class="short" maxlength="200" rows="3" placeholder="Say it the way you'd say it to your MP."></textarea>
+        <div class="qfoot"><span><span class="err" id="quoteErr" aria-live="polite"></span><span class="hint" id="quoteHint" aria-live="polite"></span></span><span class="counter" id="qCount">200</span></div>
+      </div>
+      <label class="check"><input type="checkbox" id="press"><span>A journalist can contact me about this. We'll ask you first.</span></label>
+      <p class="fine">No swearing, abuse or threats. We may share your words with your first name and town, including with journalists.</p>
       <button class="btn navy" type="submit">Next</button>
       <button class="link skip" type="button" id="skipQs">Skip</button>
     </form>
@@ -698,10 +697,26 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     var from = Math.max(0, Math.round(c * 0.9)), t0 = performance.now();
     (function frame(now) {
       var k = Math.min(1, (now - t0) / 900), e = 1 - Math.pow(1 - k, 3);
-      $('countN').textContent = fmt(Math.round(from + (c - from) * e));
+      $('countN').textContent = fmt(Math.round(from + (S.count - from) * e));   // ends on the latest count, even if someone signs meanwhile
       if (k < 1) requestAnimationFrame(frame);
     })(t0);
   }
+
+  // ---------------------------------------------------------------- statements
+  // Each signer is asked about one statement, picked at random from the ones running now. When a
+  // statement has 10,000 answers it is retired and the next one starts, so every 10,000 gives a
+  // fresh headline ("10,000 members of the public agree that..."), with three running at once.
+  // Random rather than in turn, so a result is not skewed by who happened to sign that week.
+  var STATEMENTS = [
+    { id: 's1', t: 'MPs and peers who exempt themselves from the Hillsborough Law are hypocrites: a law for thee, but not for me.' },
+    { id: 's2', t: 'Lawmakers should be held to at least the same standard of honesty as nurses, police officers and soldiers.' },
+    { id: 's3', t: 'If MPs and peers vote to exempt themselves, I will trust Parliament less.' },
+    { id: 's4', t: 'Knowingly lying to the public to win an election should be a crime.' },
+    { id: 's5', t: 'The Prime Minister should be covered by this law whether speaking as Prime Minister or as an MP.' },
+    { id: 's6', t: 'Peers who vote to exempt themselves should have to explain why, in public.' }
+  ];
+  var RUNNING = 3;                                  // the first three not yet at 10,000 answers (the live page asks the server)
+  function pickStatement() { return STATEMENTS[Math.floor(Math.random() * RUNNING)]; }
 
   // ---------------------------------------------------------------- live feed and deadline
   // Every few seconds the next recent signer appears and the count goes up by one, so the page
@@ -782,6 +797,22 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     /\b(hope|wish|pray)\s+(they|he|she|you|u)\s+(all\s+)?(die|dies|rot|burn|suffer)\b/,
     /\b(guillotine|firing\s+squad|gallows|noose|lynch\w*|pitchforks?|molotov|bomb(s|ing|ed)?|death\s+to)\b/
   ];
+  var TOPIC = /\b(jews?|jewish|jewry|zionis[mt]s?|zion|israel(i|is)?|gaza|palestin\w*|antisemit\w*|holocaust)\b/;
+  // Naming a person goes to a check first: we may publish the quote, so we carry the risk of what it says.
+  var NAMES = /\b(starmer|sunak|johnson|boris|truss|cameron|blair|farage|badenoch|reeves|rayner|burnham|lammy|streeting|mahmood|davey|corbyn|patel|braverman|jenrick|tice|galloway|gove|hancock|mone|zahawi|mogg|miliband|sturgeon|swinney|lemos|hoyle|symonds|levitt|faulks|falkner|wolfson|anderson|cummings|trump)\b/;
+  function quoteCheck(t) {
+    var p = plain(t);
+    if (t.replace(/\s/g, '').length < 8) return { ok: false, msg: 'A few more words, please.' };
+    if (swears(t)) return { ok: false, msg: 'Please take out the swearing or offensive word. Quotes need to be fit to print.' };
+    if (TOPIC.test(p)) return { ok: false, msg: 'Please keep your words to this law and why it matters to you.' };
+    if (VIOLENCE.some(function (r) { return r.test(p); })) return { ok: false, msg: 'Please take out anything that sounds like violence or a threat. Anger is fine, threats are not.' };
+    if (/(https?:\/\/|www\.|\b[a-z0-9-]+\.(com|co\.uk|org|net|io|uk|info|ly|me)\b)/.test(p)) return { ok: false, msg: 'Please take out the web link.' };
+    if (/[^\s@]+@[^\s@]+\.[a-z]{2,}/.test(p) || /\+?\d[\d\s\-()]{9,}\d/.test(p)) return { ok: false, msg: "Please don't include email addresses or phone numbers." };
+    var letters = t.replace(/[^A-Za-z]/g, '');
+    if (letters.length >= 12 && letters.replace(/[^A-Z]/g, '').length / letters.length > 0.7) return { ok: false, msg: "Please don't write it all in capitals." };
+    if (/(.)\1{5,}/.test(t)) return { ok: false, msg: "Please don't repeat the same character over and over." };
+    return { ok: true, hold: NAMES.test(p) };
+  }
   function letterProblem(t) {
     if (swears(t)) return 'Please take out the swearing or offensive word.';
     var p = plain(t);
@@ -903,7 +934,9 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     }
     S.signed = true;
     updateSticky();
-    S.me = { first: cap(first), last: cap(last), email: email, emailOk: consent.value === 'yes',
+    S.stmt = pickStatement();
+    $('stmtTxt').textContent = S.stmt.t;
+    S.me = { first: cap(first), last: cap(last), email: email, emailOk: consent.value === 'yes', town: S.abroad ? cap(cty) : townFor(pc),
       pc: S.abroad ? '' : pc.replace(/^(.+)(\d[A-Z]{2})$/, '$1 $2') };
     S.code = Math.random().toString(36).slice(2, 8).toUpperCase();
     findMp(pc);
@@ -918,23 +951,43 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     // The signer sees exactly what their signature did: the number they are, and how close we now are.
     if (S.count >= before) {
       $('thanksH').textContent = 'You took us to ' + fmt(before) + '!';
-      $('thanksS').textContent = 'New target: ' + fmt(targetFor(S.count)) + '. Two quick questions: your answers show journalists and MPs how people feel.';
+      $('thanksS').textContent = 'New target: ' + fmt(targetFor(S.count)) + '. One quick question, and your own words if you like: they go to journalists and MPs.';
     } else {
       $('thanksH').textContent = "You're signature number " + fmt(S.myNumber) + '.';
-      $('thanksS').textContent = 'Only ' + fmt(before - S.myNumber) + ' more to reach ' + fmt(before) + '. Two quick questions: your answers show journalists and MPs how people feel.';
+      $('thanksS').textContent = 'Only ' + fmt(before - S.myNumber) + ' more to reach ' + fmt(before) + '. One quick question, and your own words if you like: they go to journalists and MPs.';
     }
     go(2);
   });
 
-  // ---------------------------------------------------------------- 2: two questions
-  function saveAnswers() {
-    var f = $('p2');
-    var t = f.querySelector('input[name=trust]:checked'), v = f.querySelector('input[name=vote]:checked');
-    S.answers.trust = t ? +t.value : null;
-    S.answers.vote = v ? v.value : null;
+  // ---------------------------------------------------------------- 2: one statement and their own words
+  var qTimer;
+  $('quote').addEventListener('input', function () {
+    var left = 200 - this.value.length, v = this.value;
+    $('qCount').textContent = left;
+    $('qCount').classList.toggle('low', left <= 20);
+    clearTimeout(qTimer);
+    qTimer = setTimeout(function () {
+      if (!v.trim()) { setErr('quote'); $('quoteHint').textContent = ''; return; }
+      var r = quoteCheck(v);
+      setErr('quote', r.ok || v.trim().length < 8 ? '' : r.msg);
+      $('quoteHint').textContent = r.ok && r.hold ? "Your words name a person, so we'll check them before we share them." : '';
+    }, 350);
+  });
+  function saveAnswers(withQuote) {
+    var a = $('p2').querySelector('input[name=agree]:checked');
+    S.answers.statement = S.stmt.id;
+    S.answers.agree = a ? a.value : null;
+    S.answers.press = $('press').checked;
+    S.quote = null;
+    var t = withQuote ? $('quote').value.trim().replace(/\s+/g, ' ') : '';
+    if (!t) return true;
+    var r = quoteCheck(t);
+    if (!r.ok) { setErr('quote', r.msg); $('quote').focus(); return false; }
+    S.quote = { t: t, held: !!r.hold };
+    return true;
   }
-  $('p2').addEventListener('submit', function (e) { e.preventDefault(); saveAnswers(); toMp(); });
-  $('skipQs').addEventListener('click', function () { saveAnswers(); toMp(); });
+  $('p2').addEventListener('submit', function (e) { e.preventDefault(); if (saveAnswers(true)) toMp(); });
+  $('skipQs').addEventListener('click', function () { saveAnswers(false); toMp(); });
 
   // ---------------------------------------------------------------- 3: your MP
   // Parliament's petition site shows you your MP's page and leaves the rest to you. We find the MP
@@ -957,15 +1010,11 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       })
       .catch(function () {});
   }
-  var TRUST_WORDS = ['not damaging', 'mildly damaging', 'damaging', 'very damaging', 'extremely damaging', 'disastrous'];
   function mpLetter() {
-    var mp = S.mp, me = S.me, lines = [], feel = [];
+    var mp = S.mp, me = S.me, lines = [];
     lines.push('Dear ' + (mp ? mp.name : '[your MP]') + ',');
     lines.push('I live in your constituency' + (me.pc ? ' (' + me.pc + ')' : '') + ' and I have signed the petition calling on Parliament to include every MP, peer and other legislator in the UK in the Hillsborough Law\'s offence of misleading the public, for what they say and do outside Parliament.');
-    if (S.answers.trust >= 1) feel.push('I think leaving MPs and peers out is ' + TRUST_WORDS[S.answers.trust] + ' for public trust in our democracy and in Parliament.');
-    if (S.answers.vote === 'yes') feel.push('How you vote on this will affect how I vote at the next election.');
-    if (S.answers.vote === 'maybe') feel.push('How you vote on this could affect how I vote at the next election.');
-    if (feel.length) lines.push(feel.join(' '));
+    if (S.quote) lines.push('In my own words: "' + S.quote.t + '"');
     lines.push('Will you support including MPs and peers in the Bill? I would be grateful for a reply.');
     lines.push('Yours sincerely,\n' + me.first + ' ' + me.last + (me.pc ? '\n' + me.pc : ''));
     return lines.join('\n\n');
@@ -1072,14 +1121,32 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       x.fillStyle = g; x.fillRect(0, 0, 1080, 1920);
       x.strokeStyle = 'rgba(221,188,102,.5)'; x.lineWidth = 3; x.strokeRect(48, 48, 984, 1824);
       spacing(x, '8px'); x.fillStyle = '#ddbc66'; x.font = '700 34px ' + SANS; x.fillText('EXECPROSEC', 104, 316);
-      spacing(x, '5px'); x.fillStyle = 'rgba(255,255,255,.72)'; x.fillText('I SIGNED. WILL YOU?', 104, 380);
+      var live = S.quote && !S.quote.held;
+      spacing(x, '5px'); x.fillStyle = 'rgba(255,255,255,.72)'; x.fillText(live ? 'I SIGNED THE PETITION' : 'I SIGNED. WILL YOU?', 104, 380);
       spacing(x, '0px');
-      x.fillStyle = '#ffffff'; x.font = '400 108px ' + SERIF;
-      var lines = wrap(x, 'Include all lawmakers under the Hillsborough Law', 872);
-      lines.forEach(function (l, i) { x.fillText(l, 104, 620 + i * 120); });
-      x.fillStyle = 'rgba(255,255,255,.8)'; x.font = '400 46px ' + SANS;
-      wrap(x, 'MPs and peers are left out of the new law against misleading the public.', 872)
-        .forEach(function (l, i) { x.fillText(l, 104, 620 + lines.length * 120 + 50 + i * 64); });
+      var lines, size;
+      if (live) {
+        x.fillStyle = '#ddbc66'; x.font = '400 260px ' + SERIF; x.fillText('\u201C', 88, 640);
+        for (size = 84; size >= 48; size -= 4) {
+          x.font = '400 ' + size + 'px ' + SERIF;
+          lines = wrap(x, S.quote.t, 872);
+          if (lines.length * size * 1.2 <= 560) break;
+        }
+        x.fillStyle = '#ffffff';
+        lines.forEach(function (l, i) { x.fillText(l, 104, 680 + i * size * 1.2); });
+        x.fillStyle = '#ddbc66'; x.font = '600 48px ' + SANS;
+        x.fillText(S.me.first + ', ' + S.me.town, 104, 680 + (lines.length - 1) * size * 1.2 + 100);
+        x.fillStyle = 'rgba(221,188,102,.7)'; x.fillRect(104, 1290, 120, 4);
+        x.fillStyle = '#ffffff'; x.font = '400 56px ' + SERIF;
+        wrap(x, 'Include all lawmakers under the Hillsborough Law', 872).forEach(function (l, i) { x.fillText(l, 104, 1372 + i * 66); });
+      } else {
+        x.fillStyle = '#ffffff'; x.font = '400 108px ' + SERIF;
+        lines = wrap(x, 'Include all lawmakers under the Hillsborough Law', 872);
+        lines.forEach(function (l, i) { x.fillText(l, 104, 620 + i * 120); });
+        x.fillStyle = 'rgba(255,255,255,.8)'; x.font = '400 46px ' + SANS;
+        wrap(x, 'MPs and peers are left out of the new law against misleading the public.', 872)
+          .forEach(function (l, i) { x.fillText(l, 104, 620 + lines.length * 120 + 50 + i * 64); });
+      }
       x.fillStyle = '#d64045';
       if (x.roundRect) { x.beginPath(); x.roundRect(104, 1490, 872, 104, 10); x.fill(); } else x.fillRect(104, 1490, 872, 104);
       x.fillStyle = '#ffffff'; x.font = '700 38px ' + SANS; spacing(x, '2px'); x.textAlign = 'center';
@@ -1129,7 +1196,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
 
   // ---------------------------------------------------------------- objections
   function closeObj() { if ($('objDlg').open) $('objDlg').close(); }
-  $('objBtn').addEventListener('click', function () {
+  $('objLink').addEventListener('click', function () {
     var d = $('objDlg');
     if (d.showModal) d.showModal(); else d.setAttribute('open', '');
     $('objList').scrollTop = 0;
@@ -1146,7 +1213,8 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   function start() {
     fresh();
     ['p1', 'p2', 'p3', 'p5'].forEach(function (id) { $(id).reset(); });
-    ['first', 'last', 'email', 'pc', 'cty', 'otherAmt', 'mpMsg'].forEach(function (id) { setErr(id); });
+    ['first', 'last', 'email', 'pc', 'cty', 'otherAmt', 'mpMsg', 'quote'].forEach(function (id) { setErr(id); });
+    $('quoteHint').textContent = ''; $('qCount').textContent = '200';
     $('consentErr').textContent = ''; $('emailFix').hidden = true;
     $('pcWrap').hidden = false; $('ctyWrap').hidden = true; $('otherWrap').hidden = true; $('abroadBtn').textContent = 'Not in the UK?';
     fundLabel();
