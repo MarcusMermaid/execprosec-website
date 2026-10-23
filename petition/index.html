@@ -8,7 +8,7 @@
 <meta name="description" content="Petition to Parliament: include every MP, peer and UK legislator in the Hillsborough Law's offence of misleading the public.">
 <meta name="robots" content="noindex">
 <meta property="og:title" content="Include all politicians in the Hillsborough Law">
-<meta property="og:description" content="MPs and peers are left out of the new law against misleading the public. Sign, and say why.">
+<meta property="og:description" content="MPs and peers are left out of the new law against misleading the public. Sign the petition.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://execprosec.org/petition">
 <meta property="og:image" content="https://execprosec.org/_web/brand/share-og.png">
@@ -21,15 +21,12 @@
 <noscript><link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"></noscript>
 <style>
 :root{
-  /* Layout: phones get one column (the ask, the sign card, then the quotes); laptops keep the sign
-     card pinned on the right while the quotes and the case scroll on the left. Brand: the site's navy,
-     gold and red, DM Serif Display for the voice, DM Sans for everything you read or tap. */
-  --navy:#041440; --navy-2:#0a1b4f; --navy-3:#142a6b;
+  /* Layout: one narrow column at every size: title, one paragraph, then the card with the target
+     meter and the form. Brand: the site's navy, gold and red; DM Serif Display for the title. */
+  --navy:#041440; --navy-3:#142a6b;
   --gold:#ddbc66; --gold-ink:#8a6b1f; --red:#d64045; --red-dk:#b9323a;
   --paper:#ffffff; --paper-2:#f5f3ec; --ink:#141b33; --muted:#5a6075; --rule:#e2ddcf; --field:#c9c3b1;
   --on-navy:rgba(255,255,255,.86); --on-navy-2:rgba(255,255,255,.6); --line-navy:rgba(255,255,255,.13);
-  --ok:#1f7a4d;
-  /* how damaging, from "not" to "disastrous" */
   --t0:#7d87a6; --t1:#b39d55; --t2:#d4913b; --t3:#dc6c37; --t4:#d64045; --t5:#9b1c2a;
   --f-display:'DM Serif Display', Georgia, 'Times New Roman', serif;
   --f-body:'DM Sans', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
@@ -41,62 +38,35 @@
 html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--navy);color:var(--paper);font:400 16px/1.55 var(--f-body);-webkit-font-smoothing:antialiased}
 img{max-width:100%;display:block}
-button,input,textarea,select{font:inherit;color:inherit}
+button,input,textarea{font:inherit;color:inherit}
 a{color:inherit}
 :focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 [hidden]{display:none!important}
 
-/* ---- prototype strip ---- */
-.proto{background:var(--gold);color:var(--navy);font-size:13px;line-height:1.4;padding-block:8px;padding-left:var(--gl);padding-right:var(--gr);
+.proto{background:var(--gold);color:var(--navy);font-size:12.5px;line-height:1.4;padding-block:6px;padding-left:var(--gl);padding-right:var(--gr);
   display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap;text-align:center}
-.proto button{background:var(--navy);color:var(--paper);border:0;border-radius:3px;padding:5px 10px;font-size:12px;font-weight:600;cursor:pointer}
-
-/* ---- header ---- */
-.top{max-width:1120px;margin:0 auto;padding-block:16px 4px;padding-left:var(--gl);padding-right:var(--gr);display:flex;align-items:center;gap:14px}
+.proto button{background:var(--navy);color:var(--paper);border:0;border-radius:3px;padding:3px 9px;font-size:12px;font-weight:600;cursor:pointer}
+.top{max-width:600px;margin:0 auto;padding-block:16px 4px;padding-left:var(--gl);padding-right:var(--gr)}
 .top img{height:40px;width:auto}
-.top .tag{font:700 11px/1 var(--f-body);letter-spacing:.16em;text-transform:uppercase;color:var(--gold);border-left:1px solid var(--line-navy);padding-left:14px}
 
-/* ---- layout ---- */
-.layout{max-width:1120px;margin:0 auto;padding-block:8px 48px;padding-left:var(--gl);padding-right:var(--gr);
-  display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:"intro" "side" "wall" "say" "why" "next";row-gap:40px}
-.intro{grid-area:intro;min-width:0;padding-top:14px}
-.side{grid-area:side;min-width:0}
-.wall{grid-area:wall;min-width:0}
-.say{grid-area:say;min-width:0}
-.why{grid-area:why;min-width:0}
-.next{grid-area:next;min-width:0}
-@media(min-width:960px){
-  .layout{grid-template-columns:minmax(0,1fr) 410px;column-gap:56px;row-gap:56px;align-items:start;
-    grid-template-areas:"intro side" "wall side" "say side" "why side" "next side"}
-  .side.stick{position:sticky;top:20px} /* the script lowers top when the card is taller than the screen */
-  .intro{padding-top:36px}
-}
-
-/* ---- intro ---- */
-.kicker{font:700 12px/1.4 var(--f-body);letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin:0 0 12px}
-h1{font:400 clamp(36px,6.4vw,64px)/1.03 var(--f-display);letter-spacing:-.01em;margin:0 0 18px;text-wrap:balance}
+.page{max-width:600px;margin:0 auto;padding-block:28px 56px;padding-left:var(--gl);padding-right:var(--gr)}
+h1{font:400 clamp(34px,7vw,54px)/1.05 var(--f-display);letter-spacing:-.01em;margin:0 0 16px;text-wrap:balance}
 h1 em{font-style:normal;color:var(--gold)}
-.ask{font-size:clamp(17px,2.1vw,20px);line-height:1.5;font-weight:500;margin:0 0 12px;max-width:34em}
-.lede{font-size:16.5px;color:var(--on-navy);margin:0 0 20px;max-width:36em}
-.by{display:flex;align-items:center;gap:12px;font-size:14px;color:var(--on-navy-2)}
-.by img{width:44px;height:44px;border-radius:50%;object-fit:cover;border:1.5px solid var(--gold)}
-.by b{color:var(--paper);font-weight:600}
-/* on a phone the sign card has to come up fast; the longer case is repeated further down */
-@media(max-width:600px){ .lede{display:none} .ask{font-size:16.5px;margin-bottom:16px} h1{margin-bottom:14px} .intro{padding-top:6px} }
+.lede{font-size:17px;line-height:1.6;color:var(--on-navy);margin:0 0 26px}
 
 /* ---- the card ---- */
 .card{background:var(--paper);color:var(--ink);border-top:4px solid var(--gold);border-radius:4px;box-shadow:0 24px 60px rgba(0,0,0,.38);overflow:hidden;scroll-margin-top:16px}
-.count{padding:18px 20px 14px;border-bottom:1px solid var(--rule);background:var(--paper-2)}
-.count-n{font:400 42px/1 var(--f-display);color:var(--navy);font-variant-numeric:tabular-nums}
-.count-l{font-size:14px;color:var(--muted);margin-left:8px}
-.bar{height:8px;background:#e4dfcf;border-radius:99px;margin:12px 0 8px;overflow:hidden}
-.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),#e39a43);border-radius:99px;transition:width .9s ease}
-.count-goal{font-size:13px;color:var(--muted);display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
-.count-goal b{color:var(--ink)}
-.ticker{font-size:13px;display:flex;align-items:center;gap:8px;margin-top:10px;min-height:20px}
-.ticker .dot{flex:0 0 8px;width:8px;height:8px;border-radius:50%;background:#2fa36b;animation:pulse 2s infinite}
-@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(47,163,107,.5)}70%{box-shadow:0 0 0 8px rgba(47,163,107,0)}100%{box-shadow:0 0 0 0 rgba(47,163,107,0)}}
-#tickTxt{transition:opacity .3s}
+.meter{padding:18px 20px 16px;background:var(--paper-2);border-bottom:1px solid var(--rule)}
+.m-top{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.m-n{font:400 40px/1 var(--f-display);color:var(--navy);font-variant-numeric:tabular-nums}
+.m-l{font-size:14px;color:var(--muted)}
+.m-goal{margin-left:auto;font-size:14px;color:var(--muted)}
+.m-goal b{color:var(--ink);font-variant-numeric:tabular-nums}
+.bar{position:relative;height:12px;background:#e4dfcf;border-radius:99px;margin:12px 0 8px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),#e39a43);border-radius:99px;transition:width 1s cubic-bezier(.2,.7,.2,1)}
+.m-sub{margin:0;font-size:13.5px;color:var(--ink);font-variant-numeric:tabular-nums}
+.m-sub b{font-weight:700}
+.m-won{color:var(--gold-ink);font-weight:700}
 .stephead{display:flex;align-items:center;gap:12px;padding:16px 20px 0}
 .steps{display:flex;gap:5px;flex:1;margin:0;padding:0}
 .steps li{list-style:none;flex:1;height:4px;border-radius:2px;background:var(--rule)}
@@ -104,7 +74,7 @@ h1 em{font-style:normal;color:var(--gold)}
 #stepLbl{font-size:12px;font-weight:600;color:var(--muted);white-space:nowrap}
 
 .panel{padding:14px 20px 22px}
-.panel h2{font:400 27px/1.15 var(--f-display);color:var(--navy);margin:0 0 6px;text-wrap:balance}
+.panel h2{font:400 26px/1.15 var(--f-display);color:var(--navy);margin:0 0 6px;text-wrap:balance}
 .panel h2:focus{outline:none}
 .sub{font-size:14.5px;color:var(--muted);margin:0 0 16px}
 .row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
@@ -112,18 +82,16 @@ h1 em{font-style:normal;color:var(--gold)}
 .f label{font-size:13px;font-weight:600}
 .f input,.f textarea{width:100%;height:48px;border:1.5px solid var(--field);border-radius:3px;background:var(--paper);color:var(--ink);
   padding:0 12px;font-size:16px;transition:border-color .15s,box-shadow .15s}
-.f textarea{height:auto;min-height:92px;padding:10px 12px;line-height:1.45;resize:vertical}
+.f textarea{height:auto;min-height:220px;padding:10px 12px;line-height:1.45;font-size:15px;resize:vertical}
 .f input:focus,.f textarea:focus{outline:none;border-color:var(--navy);box-shadow:0 0 0 3px rgba(221,188,102,.55)}
 .f.bad input,.f.bad textarea{border-color:var(--red)}
 .err{font-size:13px;color:var(--red-dk)}
 .err:empty{display:none}
-.hint{font-size:13px;color:var(--gold-ink)}
-.hint:empty{display:none}
-.qfoot{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
-.counter{margin-left:auto;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
-.counter.low{color:var(--red-dk);font-weight:600}
+.fix{font-size:13px;background:var(--paper-2);border-left:3px solid var(--gold);padding:6px 10px;border-radius:2px}
 .link{background:none;border:0;padding:0;color:var(--navy);text-decoration:underline;text-underline-offset:3px;font-size:13px;cursor:pointer}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.opt-l{font-weight:400;color:var(--muted)}
+.hint-g{font-size:12.5px;color:var(--muted)}
 
 fieldset{border:0;margin:0 0 16px;padding:0;min-width:0}
 legend{padding:0;margin:0 0 8px;font-size:14px;font-weight:600;line-height:1.4;color:var(--ink)}
@@ -138,10 +106,6 @@ legend{padding:0;margin:0 0 8px;font-size:14px;font-weight:600;line-height:1.4;c
 .scale{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
 .scale .opt span{min-height:52px;font-size:13px;border-bottom:4px solid var(--c)}
 .scale .opt input:checked + span{background:var(--c);border-color:var(--c);color:#fff}
-.names .opt{flex:1 1 100%}
-.names .opt span{justify-content:flex-start;text-align:left;font-weight:500}
-.check{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;line-height:1.45;margin:0 0 14px;cursor:pointer}
-.check input{flex:0 0 20px;width:20px;height:20px;margin:1px 0 0;accent-color:var(--navy)}
 
 .btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:56px;border:0;border-radius:3px;background:var(--red);color:#fff;
   font:700 16px/1.1 var(--f-body);letter-spacing:.05em;text-transform:uppercase;cursor:pointer;transition:background .15s,transform .1s}
@@ -149,10 +113,19 @@ legend{padding:0;margin:0 0 8px;font-size:14px;font-weight:600;line-height:1.4;c
 .btn:active{transform:scale(.985)}
 .btn.navy{background:var(--navy)}
 .btn.navy:hover{background:var(--navy-3)}
-.fine{font-size:12px;line-height:1.5;color:var(--muted);margin:12px 0 0}
-.fine.above{margin:0 0 12px}
+.fine{font-size:12px;line-height:1.5;color:var(--muted);margin:0 0 12px}
 .fine a{color:var(--navy)}
+.below{margin:12px 0 0}
 .skip{display:block;margin:16px auto 0}
+.alt{margin:14px 0 0;text-align:center;font-size:13px;color:var(--muted)}
+
+.mp{display:flex;align-items:center;gap:12px;padding:12px 14px;margin:0 0 14px;border:1.5px solid var(--rule);border-radius:4px;background:var(--paper-2)}
+.mp-dot{flex:0 0 40px;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font:700 14px/1 var(--f-body);color:#fff;background:var(--muted)}
+.mp-who{display:flex;flex-direction:column;min-width:0;font-size:13.5px;color:var(--muted);line-height:1.35}
+.mp-who b{font-size:16px;color:var(--ink);font-weight:700}
+.mp-mail{overflow-wrap:anywhere}
+.notice{display:flex;gap:10px;align-items:flex-start;margin:0 0 16px;padding:12px 14px;background:#eef6f0;border:1px solid #b9dcc5;border-radius:4px;font-size:14px;line-height:1.45;color:#174b30}
+.notice svg{flex:0 0 20px;width:20px;height:20px;margin-top:1px}
 
 .sharewrap{display:grid;grid-template-columns:126px minmax(0,1fr);gap:14px;align-items:start;margin-bottom:14px}
 .sharewrap img{width:126px;aspect-ratio:9/16;height:auto;border-radius:6px;box-shadow:0 6px 18px rgba(4,20,64,.25);background:var(--navy)}
@@ -163,19 +136,6 @@ legend{padding:0;margin:0 0 8px;font-size:14px;font-weight:600;line-height:1.4;c
 .sh.wa{background:#25d366;border-color:#25d366;color:#06361a}
 @media(max-width:350px){.sharewrap{grid-template-columns:1fr}}
 
-.fix{font-size:13px;color:var(--ink);background:var(--paper-2);border-left:3px solid var(--gold);padding:6px 10px;border-radius:2px}
-.mp{display:flex;align-items:center;gap:12px;padding:12px 14px;margin:0 0 14px;border:1.5px solid var(--rule);border-radius:4px;background:var(--paper-2)}
-.mp-dot{flex:0 0 40px;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font:700 14px/1 var(--f-body);color:#fff;background:var(--muted)}
-.mp-who{display:flex;flex-direction:column;min-width:0;font-size:13.5px;color:var(--muted);line-height:1.35}
-.mp-who b{font-size:16px;color:var(--ink);font-weight:700}
-.mp-mail{overflow-wrap:anywhere}
-.f textarea.msg{min-height:230px;font-size:15px}
-.opt-l{font-weight:400;color:var(--muted)}
-.hint-g{font-size:12.5px;color:var(--muted)}
-.alt{margin:14px 0 0;text-align:center;font-size:13px;color:var(--muted)}
-.notice{display:flex;gap:10px;align-items:flex-start;margin:0 0 16px;padding:12px 14px;background:#eef6f0;border:1px solid #b9dcc5;border-radius:4px;font-size:14px;line-height:1.45;color:#174b30}
-.notice svg{flex:0 0 20px;width:20px;height:20px;margin-top:1px}
-.notice b{font-weight:700}
 .funds{display:flex;flex-wrap:wrap;gap:6px 16px;margin:0 0 16px;padding:0;list-style:none;font-size:13.5px}
 .funds li{display:flex;align-items:center;gap:7px}
 .funds li::before{content:'';width:7px;height:7px;background:var(--gold);transform:rotate(45deg)}
@@ -183,76 +143,14 @@ legend{padding:0;margin:0 0 8px;font-size:14px;font-weight:600;line-height:1.4;c
 .amts .opt span{min-height:52px;font-size:18px}
 .amts + .f{margin-top:12px}
 
-/* ---- sections on navy ---- */
-.sec-h{font:400 clamp(28px,3.6vw,40px)/1.1 var(--f-display);margin:0 0 8px;text-wrap:balance}
-.sec-sub{color:var(--on-navy);margin:0 0 18px;max-width:38em}
-.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line-navy);margin-bottom:16px}
-.tab{background:none;border:0;border-bottom:2px solid transparent;margin-bottom:-1px;padding:10px 12px;color:var(--on-navy-2);font-weight:600;font-size:14px;cursor:pointer}
-.tab[aria-selected="true"]{color:var(--gold);border-bottom-color:var(--gold)}
-.qs{display:flex;flex-direction:column;gap:12px;margin:0;padding:0;list-style:none}
-.q{background:var(--navy-2);border:1px solid var(--line-navy);border-radius:4px;padding:16px 16px 10px}
-.q.lead{border-color:rgba(221,188,102,.55);background:linear-gradient(180deg,rgba(221,188,102,.11),rgba(221,188,102,0) 75%),var(--navy-2)}
-.q.mine{border-color:var(--gold)}
-.q-flag{font:700 10.5px/1 var(--f-body);letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin:0 0 9px}
-.q blockquote{margin:0 0 10px;font:400 19px/1.38 var(--f-display);color:var(--paper);overflow-wrap:anywhere}
-.q.lead blockquote{font-size:23px}
-.q-meta{font-size:13px;color:var(--on-navy-2);margin-bottom:8px;display:flex;flex-wrap:wrap;gap:4px 8px;align-items:center}
-.q-meta b{color:var(--on-navy);font-weight:600}
-.pill{font:700 10px/1 var(--f-body);letter-spacing:.1em;text-transform:uppercase;padding:4px 6px;border-radius:2px;background:rgba(255,255,255,.1);color:var(--on-navy-2)}
-.pill.me{background:var(--gold);color:var(--navy)}
-.pill.wait{background:rgba(214,64,69,.22);color:#ffc2c4}
-.q-act{display:flex;align-items:center;gap:10px}
-.second{display:inline-flex;align-items:center;gap:6px;min-height:38px;padding:0 14px;border-radius:99px;border:1.5px solid var(--gold);background:transparent;
-  color:var(--gold);font-weight:700;font-size:13.5px;cursor:pointer;transition:background .15s,color .15s;white-space:nowrap}
-.second svg{width:15px;height:15px}
-.second[aria-pressed="true"]{background:var(--gold);color:var(--navy)}
-.second:disabled{opacity:.45;cursor:default}
-.q-n{font-size:13px;color:var(--on-navy-2);font-variant-numeric:tabular-nums;min-width:0}
-.q-n b{color:var(--paper)}
-.ico{margin-left:auto;display:flex}
-.ib{width:38px;height:38px;display:grid;place-items:center;border:0;background:none;color:var(--on-navy-2);border-radius:50%;cursor:pointer}
-.ib:hover{background:rgba(255,255,255,.08);color:var(--paper)}
-.ib:disabled{opacity:.35;cursor:default}
-.ib svg{width:18px;height:18px}
-.more{margin-top:14px;width:100%;min-height:48px;border:1px solid var(--line-navy);background:transparent;color:var(--paper);font-weight:600;border-radius:3px;cursor:pointer}
-.more:hover{background:rgba(255,255,255,.06)}
-
-.chart{display:flex;flex-direction:column;gap:9px;margin:0 0 24px}
-.cr{display:grid;grid-template-columns:140px minmax(0,1fr) 46px;align-items:center;gap:12px;font-size:14px}
-.cr .k{color:var(--on-navy)}
-.cr .tr{height:14px;background:rgba(255,255,255,.07);border-radius:2px;overflow:hidden}
-.cr .tr i{display:block;height:100%;background:var(--c);width:0;transition:width .9s ease}
-.cr .v{text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
-.cr.you .k{color:var(--gold);font-weight:700}
-.figs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
-.fig{border-top:1px solid var(--line-navy);padding-top:12px}
-.fig b{display:block;font:400 46px/1 var(--f-display);color:var(--gold);margin-bottom:6px;font-variant-numeric:tabular-nums}
-.fig span{font-size:14px;color:var(--on-navy)}
-.src{font-size:12.5px;color:var(--on-navy-2);margin:16px 0 0}
-@media(max-width:480px){.cr{grid-template-columns:112px minmax(0,1fr) 40px;gap:8px;font-size:13px}.figs{grid-template-columns:1fr}}
-
-.prose p{font-size:17px;line-height:1.7;color:var(--on-navy);margin:0 0 14px;max-width:36em}
-.prose p b{color:var(--paper);font-weight:600}
-.prose .pull{border-left:3px solid var(--gold);padding:2px 0 2px 18px;margin:20px 0;font:400 22px/1.42 var(--f-display);color:var(--paper)}
-.tl{list-style:none;margin:0;padding:0;counter-reset:t;display:flex;flex-direction:column;gap:16px}
-.tl li{counter-increment:t;display:grid;grid-template-columns:34px minmax(0,1fr);gap:14px;font-size:16.5px;line-height:1.6;color:var(--on-navy)}
-.tl li::before{content:counter(t);width:32px;height:32px;border-radius:50%;border:1.5px solid var(--gold);color:var(--gold);display:grid;place-items:center;font-weight:700;font-size:14px}
-.tl b{color:var(--paper);font-weight:600}
-
-.foot{max-width:1120px;margin:0 auto;padding-block:24px 120px;padding-left:var(--gl);padding-right:var(--gr);border-top:1px solid var(--line-navy);
-  font-size:12.5px;color:var(--on-navy-2);display:flex;flex-wrap:wrap;gap:6px 18px}
+.foot{max-width:600px;margin:0 auto;padding-block:20px 40px;padding-left:var(--gl);padding-right:var(--gr);border-top:1px solid var(--line-navy);
+  font-size:12px;color:var(--on-navy-2);display:flex;flex-wrap:wrap;gap:4px 16px}
 .foot a{color:var(--on-navy)}
-
-.sticky{position:fixed;left:0;right:0;bottom:0;z-index:20;background:rgba(4,20,64,.97);border-top:1px solid var(--line-navy);
-  padding-top:10px;padding-bottom:calc(10px + env(safe-area-inset-bottom, 0px));padding-left:var(--gl);padding-right:var(--gr);display:flex;align-items:center;gap:14px}
-.sticky .btn{min-height:50px;flex:1}
-.sticky .sn{font-size:12px;color:var(--on-navy-2);line-height:1.25;white-space:nowrap}
-.sticky .sn b{display:block;color:var(--paper);font-size:17px;font-variant-numeric:tabular-nums}
-@media(min-width:960px){.sticky{display:none!important}}
-.toast{position:fixed;left:50%;bottom:calc(86px + env(safe-area-inset-bottom, 0px));z-index:30;transform:translate(-50%,10px);opacity:0;pointer-events:none;
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom, 0px));z-index:30;transform:translate(-50%,10px);opacity:0;pointer-events:none;
   width:max-content;max-width:min(440px, calc(100vw - 32px));background:var(--paper);color:var(--ink);padding:12px 16px;border-radius:4px;border-left:4px solid var(--gold);
   box-shadow:0 10px 30px rgba(0,0,0,.4);font-size:14px;line-height:1.45;transition:opacity .2s,transform .2s}
 .toast.on{opacity:1;transform:translate(-50%,0)}
+@media(max-width:600px){ .page{padding-top:18px} .lede{font-size:16px;margin-bottom:20px} }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
 </style>
 <style>
@@ -279,7 +177,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
 </head>
 <body>
 
-<div class="proto" id="proto"><span><b>Prototype.</b> Quotes, names and numbers are samples. Nothing you type is saved or sent.</span><button type="button" id="resetBtn">Start again</button></div>
+<div class="proto" id="proto"><span><b>Preview.</b> The numbers are samples. Nothing is saved or sent.</span><button type="button" id="resetBtn">Start again</button></div>
 
 <header id="nav">
   <a class="logo" href="/" aria-label="ExecProsec home"><img src="/_web/brand/logo-nav.png" alt="ExecProsec" width="82" height="45"></a>
@@ -295,235 +193,154 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   </nav>
 </header>
 
-<main class="layout">
+<main class="page">
+  <h1>Include all politicians in the <em>Hillsborough&nbsp;Law</em></h1>
+  <p class="lede">The Hillsborough Law will make it a crime for public officials, including Government ministers, to mislead the public. MPs and peers are left out. Nothing they say in Parliament could be prosecuted anyway, so there is no reason to let them lie to you outside it. We are asking Parliament to include every politician.</p>
 
-  <section class="intro" aria-labelledby="h1">
-    <p class="kicker">Petition to Parliament</p>
-    <h1 id="h1">Include all politicians in the <em>Hillsborough&nbsp;Law</em></h1>
-    <p class="ask">We call on Parliament to include every MP, every peer and every other legislator in the UK in the Hillsborough Law's offence of misleading the public, for what they say and do outside Parliament.</p>
-    <p class="lede">The new law makes it a crime for public officials, including Government ministers, to mislead the public. MPs and peers are left out.</p>
-    <div class="by"><img src="/_web/photos/mjb-face.webp" alt="" width="44" height="44"><span>Started by <b>Marcus J Ball</b>, ExecProsec</span></div>
-  </section>
-
-  <aside class="side stick" id="side" aria-label="Sign the petition">
-    <div class="card" id="card">
-      <div class="count">
-        <div id="countBox">
-          <div><span class="count-n" id="countN">0</span><span class="count-l">signatures</span></div>
-          <div class="bar" aria-hidden="true"><i id="countBar"></i></div>
-          <div class="count-goal"><span>Next goal: <b id="goalN">0</b></span><span id="toGo"></span></div>
-        </div>
-        <div class="ticker"><span class="dot" aria-hidden="true"></span><span id="tickTxt">Hannah from Exeter signed · just now</span></div>
-      </div>
-      <div class="stephead"><ol class="steps" id="dots" aria-hidden="true"><li class="on"></li><li></li><li></li><li></li><li></li></ol><span id="stepLbl">Step 1 of 5</span></div>
-
-      <!-- 1: sign -->
-      <form class="panel" id="p1" novalidate>
-        <h2>Sign the petition</h2>
-        <p class="sub">Add your name before peers vote on it in the House of Lords.</p>
-        <div class="row">
-          <div class="f"><label for="first">First name</label><input id="first" name="first" autocomplete="given-name" autocapitalize="words" maxlength="50"><span class="err" id="firstErr" aria-live="polite"></span></div>
-          <div class="f"><label for="last">Last name</label><input id="last" name="last" autocomplete="family-name" autocapitalize="words" maxlength="50"><span class="err" id="lastErr" aria-live="polite"></span></div>
-        </div>
-        <div class="f"><label for="email">Email</label><input id="email" name="email" type="email" inputmode="email" autocomplete="email" autocapitalize="off" spellcheck="false" maxlength="120"><span class="err" id="emailErr" aria-live="polite"></span>
-          <span class="fix" id="emailFix" hidden>Did you mean <b id="emailFixTo"></b>? <button type="button" class="link" id="emailFixBtn">Yes, fix it</button></span></div>
-        <div class="f" id="pcWrap"><label for="pc">Postcode</label><input id="pc" name="pc" autocomplete="postal-code" autocapitalize="characters" spellcheck="false" maxlength="10"><span class="err" id="pcErr" aria-live="polite"></span></div>
-        <div class="f" id="ctyWrap" hidden><label for="cty">Country</label><input id="cty" name="cty" autocomplete="country-name" maxlength="60"><span class="err" id="ctyErr" aria-live="polite"></span></div>
-        <p style="margin:-4px 0 14px"><button type="button" class="link" id="abroadBtn">Not in the UK?</button></p>
-        <fieldset>
-          <legend>Can we email you about this campaign?<span class="legend-sub">News of the vote and ways to help, including asking you to donate. Unsubscribe any time.</span></legend>
-          <div class="opts">
-            <label class="opt"><input type="radio" name="consent" value="yes"><span>Yes, email me</span></label>
-            <label class="opt"><input type="radio" name="consent" value="no"><span>No, just sign</span></label>
-          </div>
-          <span class="err" id="consentErr" aria-live="polite"></span>
-        </fieldset>
-        <div class="hp" aria-hidden="true"><label>Leave this empty <input id="website" name="website" tabindex="-1" autocomplete="off"></label></div>
-        <p class="fine above">By signing, you confirm you are 18 or over and consent to ExecProsec recording that you support this petition and keeping your details to count and check your signature and present it to Parliament, under our <a href="/terms" target="_blank" rel="noopener">Terms</a> and <a href="/privacy" target="_blank" rel="noopener">Privacy Notice</a>. Your email is never shown publicly.</p>
-        <button class="btn" type="submit">Sign the petition</button>
-      </form>
-
-      <!-- 2: your voice -->
-      <form class="panel" id="p2" novalidate hidden>
-        <h2>You've signed, <span class="me-first"></span>. Now add your voice.</h2>
-        <p class="sub">Journalists and MPs will read these. Every answer helps us show how people feel.</p>
-        <fieldset>
-          <legend>How damaging is it to public trust in our democracy and Parliament that politicians can lie to the public without breaking this law?</legend>
-          <div class="scale">
-            <label class="opt" style="--c:var(--t0)"><input type="radio" name="trust" value="0"><span>Not damaging</span></label>
-            <label class="opt" style="--c:var(--t1)"><input type="radio" name="trust" value="1"><span>Mildly damaging</span></label>
-            <label class="opt" style="--c:var(--t2)"><input type="radio" name="trust" value="2"><span>Damaging</span></label>
-            <label class="opt" style="--c:var(--t3)"><input type="radio" name="trust" value="3"><span>Very damaging</span></label>
-            <label class="opt" style="--c:var(--t4)"><input type="radio" name="trust" value="4"><span>Extremely damaging</span></label>
-            <label class="opt" style="--c:var(--t5)"><input type="radio" name="trust" value="5"><span>Disastrous</span></label>
-          </div>
-        </fieldset>
-        <fieldset>
-          <legend>If your MP voted to keep MPs out of this law, would it change how you vote?</legend>
-          <div class="opts">
-            <label class="opt"><input type="radio" name="vote" value="yes"><span>Yes</span></label>
-            <label class="opt"><input type="radio" name="vote" value="maybe"><span>Possibly</span></label>
-            <label class="opt"><input type="radio" name="vote" value="no"><span>No</span></label>
-          </div>
-        </fieldset>
-        <div class="f">
-          <label for="quote">Why are you signing? Say it in a sentence or two.</label>
-          <textarea id="quote" name="quote" maxlength="200" rows="3" placeholder="Say it the way you'd say it to your MP."></textarea>
-          <div class="qfoot"><span><span class="err" id="quoteErr" aria-live="polite"></span><span class="hint" id="quoteHint" aria-live="polite"></span></span><span class="counter" id="qCount">200</span></div>
-        </div>
-        <fieldset>
-          <legend>Show my quote with</legend>
-          <div class="opts names">
-            <label class="opt"><input type="radio" name="show" value="first" checked><span id="showShort">My first name and area</span></label>
-            <label class="opt"><input type="radio" name="show" value="full"><span id="showFull">My full name and area</span></label>
-          </div>
-        </fieldset>
-        <label class="check"><input type="checkbox" id="press"><span>A journalist can contact me about why I signed. We'll ask you before passing on your details.</span></label>
-        <p class="fine above">No swearing, abuse or links. Quotes that name a person are checked before they go up. Your quote appears on this page with the name you choose, and we may share it with journalists and on our social media.</p>
-        <button class="btn" type="submit">Publish my quote</button>
-        <button class="link skip" type="button" id="skipQuote">Skip, just save my answers</button>
-      </form>
-
-      <!-- 3: your MP -->
-      <form class="panel" id="p3" novalidate hidden>
-        <h2>Now tell your MP.</h2>
-        <p class="sub">We've written it from your answers. Change anything you like, then send. It goes in your name, with your email address, so they can reply to you.</p>
-        <div class="mp" id="mpCard">
-          <span class="mp-dot" id="mpDot" aria-hidden="true"></span>
-          <span class="mp-who"><b id="mpName">Your MP</b><span id="mpSeat"></span><span class="mp-mail" id="mpMail"></span></span>
-        </div>
-        <p class="note" id="mpNote" hidden></p>
-        <div class="f">
-          <label for="mpSubj">Subject</label>
-          <input id="mpSubj" maxlength="120">
-        </div>
-        <div class="f">
-          <label for="mpMsg">Your message</label>
-          <textarea id="mpMsg" class="msg" maxlength="2000"></textarea>
-          <span class="err" id="mpMsgErr" aria-live="polite"></span>
-        </div>
-        <div class="f">
-          <label for="mpAddr">Your street address <span class="opt-l">(optional)</span></label>
-          <input id="mpAddr" autocomplete="street-address" maxlength="120" placeholder="e.g. 12 Hall Road">
-          <span class="hint-g">MPs' offices answer faster when they can see you live in their constituency.</span>
-        </div>
-        <p class="fine above">Your name, email address, postcode, any address you add and this message go to <span class="mp-to">your MP</span>, with a copy to you. We send it once you've confirmed your email address.</p>
-        <button class="btn" type="submit" id="mpSend">Send to your MP</button>
-        <p class="alt"><button class="link" type="button" id="mpOwn">Send it from my own email instead</button> · <button class="link" type="button" id="mpSkip">Skip</button></p>
-      </form>
-
-      <!-- 4: share -->
-      <div class="panel" id="p4" hidden>
-        <div class="notice" id="confirmNote"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 6L2 7"/></svg><span id="confirmTxt"></span></div>
-        <h2 id="shareH">Your quote is live.</h2>
-        <p class="sub" id="shareS">Now get it seen. Sharing is how petitions grow.</p>
-        <div class="sharewrap">
-          <img id="shareImg" alt="Your picture to share" width="126" height="224">
-          <div class="shares">
-            <button class="sh wa" type="button" data-share="wa"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5z"/></svg>WhatsApp</button>
-            <button class="sh" type="button" data-share="ig"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.4A4 4 0 1 1 12.6 8 4 4 0 0 1 16 11.4z"/><path d="M17.5 6.5h.01"/></svg>Instagram</button>
-            <button class="sh" type="button" data-share="fb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>Facebook</button>
-            <button class="sh" type="button" data-share="x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4l16 16M20 4L4 20"/></svg>X</button>
-            <button class="sh" type="button" data-share="copy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.8 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg>Copy link</button>
-          </div>
-        </div>
-        <p class="fine above">Your link is personal, so we can thank you for everyone who signs through it.</p>
-        <button class="btn navy" type="button" id="toFund">Next: pay for the adverts</button>
-      </div>
-
-      <!-- 5: fund -->
-      <form class="panel" id="p5" novalidate hidden>
-        <h2>Make sure Parliament knows we're watching.</h2>
-        <p class="sub">A petition is easy to ignore. Your quotes in the papers, on the Tube and on the radio are not.</p>
-        <ul class="funds"><li>Newspaper adverts</li><li>Tube adverts</li><li>Radio adverts</li><li>A protest on the day of the vote</li></ul>
-        <fieldset>
-          <legend>Back the campaign every month</legend>
-          <div class="amts">
-            <label class="opt"><input type="radio" name="amt" value="10"><span>£10</span></label>
-            <label class="opt"><input type="radio" name="amt" value="20" checked><span>£20</span></label>
-            <label class="opt"><input type="radio" name="amt" value="50"><span>£50</span></label>
-            <label class="opt"><input type="radio" name="amt" value="other"><span>Other</span></label>
-          </div>
-          <div class="f" id="otherWrap" hidden><label for="otherAmt">Your amount each month (£10 or more)</label><input id="otherAmt" type="number" inputmode="numeric" min="10" step="1"><span class="err" id="otherAmtErr" aria-live="polite"></span></div>
-        </fieldset>
-        <button class="btn" type="submit" id="fundBtn">Back it with £20 a month</button>
-        <p class="fine">Cancel any time. Secure payment by Stripe.</p>
-        <button class="link skip" type="button" id="skipFund">Not now</button>
-      </form>
-
-      <!-- 6: done -->
-      <div class="panel" id="p6" hidden>
-        <h2>Thank you, <span class="me-first"></span>.</h2>
-        <p class="sub" id="doneS"></p>
-        <button class="btn navy" type="button" id="shareAgain">Share the petition again</button>
-        <button class="link skip" type="button" id="toWall">Read and second the quotes</button>
-      </div>
+  <div class="card" id="card">
+    <div class="meter">
+      <div class="m-top"><span class="m-n" id="countN">0</span><span class="m-l">signatures</span><span class="m-goal">Target <b id="goalN">10,000</b></span></div>
+      <div class="bar" role="progressbar" aria-label="Signatures towards the target" aria-valuemin="0" id="bar"><i id="countBar"></i></div>
+      <p class="m-sub" id="meterSub"></p>
     </div>
-  </aside>
+    <div class="stephead"><ol class="steps" id="dots" aria-hidden="true"><li class="on"></li><li></li><li></li><li></li><li></li></ol><span id="stepLbl">Step 1 of 5</span></div>
 
-  <section class="wall" id="wall" aria-labelledby="wallH">
-    <h2 class="sec-h" id="wallH">Why people are signing</h2>
-    <p class="sec-sub">Second the quotes you agree with. The most seconded rise to the top, and they're the ones we take to journalists and to Parliament.</p>
-    <div class="tabs" role="tablist">
-      <button class="tab" type="button" role="tab" aria-selected="true" data-sort="top">Most seconded</button>
-      <button class="tab" type="button" role="tab" aria-selected="false" data-sort="new">Newest</button>
+    <!-- 1: sign -->
+    <form class="panel" id="p1" novalidate>
+      <h2>Sign the petition</h2>
+      <div class="row">
+        <div class="f"><label for="first">First name</label><input id="first" name="first" autocomplete="given-name" autocapitalize="words" maxlength="50"><span class="err" id="firstErr" aria-live="polite"></span></div>
+        <div class="f"><label for="last">Last name</label><input id="last" name="last" autocomplete="family-name" autocapitalize="words" maxlength="50"><span class="err" id="lastErr" aria-live="polite"></span></div>
+      </div>
+      <div class="f"><label for="email">Email</label><input id="email" name="email" type="email" inputmode="email" autocomplete="email" autocapitalize="off" spellcheck="false" maxlength="120"><span class="err" id="emailErr" aria-live="polite"></span>
+        <span class="fix" id="emailFix" hidden>Did you mean <b id="emailFixTo"></b>? <button type="button" class="link" id="emailFixBtn">Yes, fix it</button></span></div>
+      <div class="f" id="pcWrap"><label for="pc">Postcode</label><input id="pc" name="pc" autocomplete="postal-code" autocapitalize="characters" spellcheck="false" maxlength="10"><span class="err" id="pcErr" aria-live="polite"></span></div>
+      <div class="f" id="ctyWrap" hidden><label for="cty">Country</label><input id="cty" name="cty" autocomplete="country-name" maxlength="60"><span class="err" id="ctyErr" aria-live="polite"></span></div>
+      <p style="margin:-4px 0 14px"><button type="button" class="link" id="abroadBtn">Not in the UK?</button></p>
+      <fieldset>
+        <legend>Can we email you about this campaign?<span class="legend-sub">News of the vote and ways to help, including asking you to donate. Unsubscribe any time.</span></legend>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="consent" value="yes"><span>Yes, email me</span></label>
+          <label class="opt"><input type="radio" name="consent" value="no"><span>No, just sign</span></label>
+        </div>
+        <span class="err" id="consentErr" aria-live="polite"></span>
+      </fieldset>
+      <div class="hp" aria-hidden="true"><label>Leave this empty <input id="website" name="website" tabindex="-1" autocomplete="off"></label></div>
+      <p class="fine">By signing, you confirm you are 18 or over and consent to ExecProsec recording that you support this petition and keeping your details to count and check your signature and present it to Parliament, under our <a href="/terms" target="_blank" rel="noopener">Terms</a> and <a href="/privacy" target="_blank" rel="noopener">Privacy Notice</a>. Your email is never shown publicly.</p>
+      <button class="btn" type="submit">Sign the petition</button>
+    </form>
+
+    <!-- 2: two questions -->
+    <form class="panel" id="p2" novalidate hidden>
+      <h2 id="thanksH">Thank you.</h2>
+      <p class="sub" id="thanksS"></p>
+      <fieldset>
+        <legend>How damaging is it to public trust in our democracy and Parliament that politicians can lie to the public without breaking this law?</legend>
+        <div class="scale">
+          <label class="opt" style="--c:var(--t0)"><input type="radio" name="trust" value="0"><span>Not damaging</span></label>
+          <label class="opt" style="--c:var(--t1)"><input type="radio" name="trust" value="1"><span>Mildly damaging</span></label>
+          <label class="opt" style="--c:var(--t2)"><input type="radio" name="trust" value="2"><span>Damaging</span></label>
+          <label class="opt" style="--c:var(--t3)"><input type="radio" name="trust" value="3"><span>Very damaging</span></label>
+          <label class="opt" style="--c:var(--t4)"><input type="radio" name="trust" value="4"><span>Extremely damaging</span></label>
+          <label class="opt" style="--c:var(--t5)"><input type="radio" name="trust" value="5"><span>Disastrous</span></label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>If your MP voted to keep MPs out of this law, would it change how you vote?</legend>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="vote" value="yes"><span>Yes</span></label>
+          <label class="opt"><input type="radio" name="vote" value="maybe"><span>Possibly</span></label>
+          <label class="opt"><input type="radio" name="vote" value="no"><span>No</span></label>
+        </div>
+      </fieldset>
+      <button class="btn navy" type="submit">Next</button>
+      <button class="link skip" type="button" id="skipQs">Skip</button>
+    </form>
+
+    <!-- 3: your MP -->
+    <form class="panel" id="p3" novalidate hidden>
+      <h2>Now tell your MP.</h2>
+      <p class="sub">We've written it from your answers. Change anything you like, then send. It goes in your name, with your email address, so they can reply to you.</p>
+      <div class="mp">
+        <span class="mp-dot" id="mpDot" aria-hidden="true"></span>
+        <span class="mp-who"><b id="mpName">Your MP</b><span id="mpSeat"></span><span class="mp-mail" id="mpMail"></span></span>
+      </div>
+      <div class="f"><label for="mpSubj">Subject</label><input id="mpSubj" maxlength="120"></div>
+      <div class="f"><label for="mpMsg">Your message</label><textarea id="mpMsg" maxlength="2000"></textarea><span class="err" id="mpMsgErr" aria-live="polite"></span></div>
+      <div class="f">
+        <label for="mpAddr">Your street address <span class="opt-l">(optional)</span></label>
+        <input id="mpAddr" autocomplete="street-address" maxlength="120" placeholder="e.g. 12 Hall Road">
+        <span class="hint-g">MPs' offices answer faster when they can see you live in their constituency.</span>
+      </div>
+      <p class="fine">Your name, email address, postcode, any address you add and this message go to <span class="mp-to">your MP</span>, with a copy to you. We send it once you've confirmed your email address.</p>
+      <button class="btn" type="submit" id="mpSend">Send to your MP</button>
+      <p class="alt"><button class="link" type="button" id="mpOwn">Send it from my own email instead</button> · <button class="link" type="button" id="mpSkip">Skip</button></p>
+    </form>
+
+    <!-- 4: share -->
+    <div class="panel" id="p4" hidden>
+      <div class="notice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 6L2 7"/></svg><span id="confirmTxt"></span></div>
+      <h2>Now share it.</h2>
+      <p class="sub" id="shareS"></p>
+      <div class="sharewrap">
+        <img id="shareImg" alt="Your picture to share" width="126" height="224">
+        <div class="shares">
+          <button class="sh wa" type="button" data-share="wa"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5z"/></svg>WhatsApp</button>
+          <button class="sh" type="button" data-share="ig"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.4A4 4 0 1 1 12.6 8 4 4 0 0 1 16 11.4z"/><path d="M17.5 6.5h.01"/></svg>Instagram</button>
+          <button class="sh" type="button" data-share="fb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>Facebook</button>
+          <button class="sh" type="button" data-share="x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4l16 16M20 4L4 20"/></svg>X</button>
+          <button class="sh" type="button" data-share="copy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.8 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg>Copy link</button>
+        </div>
+      </div>
+      <button class="btn navy" type="button" id="toFund">Next: pay for the adverts</button>
     </div>
-    <ul class="qs" id="qs"></ul>
-    <button class="more" type="button" id="more">Show more quotes</button>
-  </section>
 
-  <section class="say" aria-labelledby="sayH">
-    <h2 class="sec-h" id="sayH">What signers say</h2>
-    <p class="sec-sub">How damaging is it to public trust that politicians can lie to the public without breaking this law?</p>
-    <div class="chart" id="chart"></div>
-    <div class="figs">
-      <div class="fig"><b id="figVote">0%</b><span>say it could change how they vote, if their MP voted to keep MPs out</span></div>
-      <div class="fig"><b id="figWorst">0%</b><span>say leaving MPs and peers out is extremely damaging or disastrous</span></div>
+    <!-- 5: fund -->
+    <form class="panel" id="p5" novalidate hidden>
+      <h2>Make sure Parliament knows we're watching.</h2>
+      <p class="sub">A petition is easy to ignore. Adverts in the papers, on the Tube and on the radio are not.</p>
+      <ul class="funds"><li>Newspaper adverts</li><li>Tube adverts</li><li>Radio adverts</li><li>A protest on the day of the vote</li></ul>
+      <fieldset>
+        <legend>Back the campaign every month</legend>
+        <div class="amts">
+          <label class="opt"><input type="radio" name="amt" value="10"><span>£10</span></label>
+          <label class="opt"><input type="radio" name="amt" value="20" checked><span>£20</span></label>
+          <label class="opt"><input type="radio" name="amt" value="50"><span>£50</span></label>
+          <label class="opt"><input type="radio" name="amt" value="other"><span>Other</span></label>
+        </div>
+        <div class="f" id="otherWrap" hidden><label for="otherAmt">Your amount each month (£10 or more)</label><input id="otherAmt" type="number" inputmode="numeric" min="10" step="1"><span class="err" id="otherAmtErr" aria-live="polite"></span></div>
+      </fieldset>
+      <button class="btn" type="submit" id="fundBtn">Back it with £20 a month</button>
+      <p class="fine below">Cancel any time. Secure payment by Stripe.</p>
+      <button class="link skip" type="button" id="skipFund">Not now</button>
+    </form>
+
+    <!-- 6: done -->
+    <div class="panel" id="p6" hidden>
+      <h2>Thank you, <span class="me-first"></span>.</h2>
+      <p class="sub" id="doneS"></p>
+      <button class="btn navy" type="button" id="shareAgain">Share the petition again</button>
     </div>
-    <p class="src" id="sayNote">Sample figures in this prototype. The live page shows signers' real answers.</p>
-  </section>
-
-  <section class="why prose" aria-labelledby="whyH">
-    <h2 class="sec-h" id="whyH">Why this matters</h2>
-    <p>The Public Office (Accountability) Bill, known as the Hillsborough Law, is going through Parliament now. It creates a duty of candour and a new crime of misleading the public.</p>
-    <p>It covers public officials, including Government ministers. <b>MPs and peers are left out.</b></p>
-    <p>For months the Government said they had to be left out because Parliament deals with its own members. On 21 October it accepted in the House of Lords that nothing said in Parliament could be prosecuted under this law anyway, because of parliamentary privilege.</p>
-    <p class="pull">If an MP or a peer deliberately lies to the public outside Parliament, on television, on the radio, at a public event or on social media, they should face the same law as everyone else in public office.</p>
-    <p>Regardless of which party is in power.</p>
-  </section>
-
-  <section class="next" aria-labelledby="nextH">
-    <h2 class="sec-h" id="nextH">What happens next</h2>
-    <ol class="tl">
-      <li><span><b>Peers vote at Report stage.</b> The House of Lords votes on bringing MPs and peers into the law.</span></li>
-      <li><span><b>We hand it in.</b> Every signature, with the most seconded quotes, goes to Parliament and to journalists before the vote.</span></li>
-      <li><span><b>We make it impossible to ignore.</b> With your help, the quotes go on newspaper pages, the Tube and the radio, and we stand outside Parliament on the day.</span></li>
-    </ol>
-  </section>
-
+  </div>
 </main>
 
 <footer class="foot">
-  <span>ExecProsec Ltd · Not-for-profit · Funded entirely by the public</span>
-  <span>Registered in England and Wales 10520032</span>
+  <span>ExecProsec Ltd · Registered in England and Wales 10520032</span>
   <span>An ExecProsec petition, not an official UK Parliament e-petition</span>
   <a href="/terms" target="_blank" rel="noopener">Terms</a>
   <a href="/privacy" target="_blank" rel="noopener">Privacy</a>
 </footer>
 
-<div class="sticky" id="sticky" hidden><div class="sn" id="stickyN"><b id="stickyCount">0</b>signed</div><button class="btn" type="button" id="stickyBtn">Sign the petition</button></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
 (function () {
   'use strict';
 
-  // PROTOTYPE: everything runs in the browser and nothing leaves it. The live page takes the count,
-  // quotes and answers from the server and posts each step to it (notes at the end of the file).
+  // PROTOTYPE: everything runs in the browser and nothing leaves it, except asking Parliament who
+  // the MP is. The live page takes the count from the server and posts each step to it.
   var PROTO = true;
-  var SHOW_COUNT_FROM = 10000; // Marcus's rule: no small live numbers. Below this the count stays hidden.
-  var GOALS = [10000, 25000, 50000, 100000, 250000, 500000, 1000000];
-  var PAGE_SIZE = 8;
+  var START_COUNT = 6240;                    // sample; add ?count=9999 to the address to see a target being passed
 
   var $ = function (id) { return document.getElementById(id); };
   var fmt = function (n) { return Number(n).toLocaleString('en-GB'); };
@@ -533,31 +350,44 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   };
   var cap = function (s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : s; };
 
-  var SAMPLES = [
-    { id: 'q1', t: 'A nurse can be struck off for one false entry. An MP can lie to millions on live TV and nothing happens.', n: 'Sarah', a: 'Leeds', m: 190, s: 1204 },
-    { id: 'q2', t: "If this law is good enough for police officers, it's good enough for the people who write it.", n: 'Dave', a: 'Liverpool', m: 320, s: 987 },
-    { id: 'q3', t: "I don't care which party they're from. Lie to the public and you answer for it.", n: 'Priya', a: 'Birmingham', m: 95, s: 856 },
-    { id: 'q4', t: 'They wrote themselves out of their own law. That tells you everything.', n: 'Tom', a: 'Cardiff', m: 410, s: 731 },
-    { id: 'q5', t: 'Lying to win an election should be a crime, not a strategy.', n: 'Margaret', a: 'Norwich', m: 60, s: 690 },
-    { id: 'q6', t: 'My vote means nothing if the people asking for it can say anything to get it.', n: 'James', a: 'Glasgow', m: 240, s: 544 },
-    { id: 'q7', t: 'Parliament is protected already. Outside it, they should live by the same rules as the rest of us.', n: 'Aisha', a: 'Manchester', m: 33, s: 498 },
-    { id: 'q8', t: "I'm 71 and I've never signed a petition before. This one matters.", n: 'Jean', a: 'Swansea', m: 510, s: 455 },
-    { id: 'q9', t: "Trust in politics won't come back until lying has a price.", n: 'Rob', a: 'Bristol', m: 18, s: 402 },
-    { id: 'q10', t: 'Every other public job has consequences for lying. Why not the one that makes the laws?', n: 'Kerry', a: 'Newcastle', m: 150, s: 377 },
-    { id: 'q11', t: 'Make it law. No exceptions, no excuses.', n: 'Neil', a: 'Leicester', m: 75, s: 341 },
-    { id: 'q12', t: "If they've nothing to hide, they've nothing to fear. Isn't that what they always tell us?", n: 'Claire', a: 'Southampton', m: 12, s: 298 },
-    { id: 'q13', t: 'Teachers, doctors, police: covered. MPs and peers: not covered. Explain that to me.', n: 'Gary', a: 'Sheffield', m: 44, s: 276 },
-    { id: 'q14', t: 'I want my children to grow up believing what politicians tell them.', n: 'Fatima', a: 'London', m: 5, s: 251 },
-    { id: 'q15', t: 'The people who make the rules should be the first to follow them.', n: 'Ian', a: 'Edinburgh', m: 280, s: 233 },
-    { id: 'q16', t: "Honesty shouldn't be optional for the most powerful people in the country.", n: 'Lucy', a: 'Kent', m: 3, s: 190 },
-    { id: 'q17', t: "I've voted in every election since 1979. I'm tired of being lied to by all sides.", n: 'Pete', a: 'York', m: 22, s: 168 },
-    { id: 'q18', t: 'Put them under the law like everyone else. Simple as that.', n: 'Shona', a: 'Belfast', m: 1, s: 140 }
-  ];
-  var TRUST_LABELS = ['Not damaging', 'Mildly damaging', 'Damaging', 'Very damaging', 'Extremely damaging', 'Disastrous'];
-  var TRUST_BASE = [96, 150, 450, 950, 1450, 1900];
-  var VOTE_BASE = { yes: 3120, maybe: 940, no: 610 };
-  // A few real MPs, taken from Parliament's Members data on 23 Oct 2026, so the prototype can show
-  // the real thing for these postcodes. The live page asks Parliament for every postcode.
+  // ---------------------------------------------------------------- the target
+  // Targets climb 10,000, 25,000, 50,000, 100,000, 250,000, 500,000, 1 million, 2.5 million,
+  // 5 million, 10 million and on, for ever. Each one is 2 or 2.5 times the last, so the moment a
+  // target is passed the bar is already 40-50% of the way to the next: it never drops back to
+  // empty, and the next goal always looks within reach.
+  function targetFor(count) {
+    for (var p = 10000; ; p *= 10) {
+      var steps = [p, p * 2.5, p * 5];
+      for (var i = 0; i < 3; i++) if (steps[i] > count) return steps[i];
+    }
+  }
+  function previousTarget(count) {
+    var t = targetFor(count), before = 0;
+    for (var p = 10000; ; p *= 10) {
+      var steps = [p, p * 2.5, p * 5];
+      for (var i = 0; i < 3; i++) { if (steps[i] >= t) return before; before = steps[i]; }
+    }
+  }
+  function renderMeter(animate) {
+    var c = S.count, t = targetFor(c), passed = previousTarget(c);
+    $('goalN').textContent = fmt(t);
+    $('countBar').style.width = (c / t * 100).toFixed(2) + '%';
+    $('bar').setAttribute('aria-valuemax', t);
+    $('bar').setAttribute('aria-valuenow', c);
+    $('meterSub').innerHTML = (passed ? '<span class="m-won">' + fmt(passed) + ' passed.</span> ' : '') +
+      '<b>' + fmt(t - c) + '</b> more to reach ' + fmt(t) + '.';
+    if (!animate || reduced) { $('countN').textContent = fmt(c); return; }
+    var from = Math.max(0, Math.round(c * 0.9)), t0 = performance.now();
+    (function frame(now) {
+      var k = Math.min(1, (now - t0) / 900), e = 1 - Math.pow(1 - k, 3);
+      $('countN').textContent = fmt(Math.round(from + (c - from) * e));
+      if (k < 1) requestAnimationFrame(frame);
+    })(t0);
+  }
+
+  // ---------------------------------------------------------------- MPs
+  // A few real MPs from Parliament's Members data (23 Oct 2026), for viewers that can't reach
+  // Parliament. Anywhere else the page asks Parliament directly.
   var MPS = {
     NR22PW: ['Norwich South', 'Clive Lewis', 'Labour', 'clive.lewis.mp@parliament.uk'],
     ME138GD: ['Faversham and Mid Kent', 'Helen Whately', 'Conservative', 'helen.whately.mp@parliament.uk'],
@@ -572,93 +402,54 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     BT15GS: ['Belfast South and Mid Down', 'Claire Hanna', 'Social Democratic & Labour Party', 'claire.hanna.mp@parliament.uk'],
     NE14ST: ['Newcastle upon Tyne Central and West', 'Dame Chi Onwurah', 'Labour', 'chi.onwurah.mp@parliament.uk'],
     S12HE: ['Sheffield Central', 'Abtisam Mohamed', 'Labour', 'abtisam.mohamed.mp@parliament.uk'],
-    E16AN: ['Bethnal Green and Stepney', 'Rushanara Ali', 'Labour', 'rushanara.ali.mp@parliament.uk']
+    E16AN: ['Bethnal Green and Stepney', 'Rushanara Ali', 'Labour', 'rushanara.ali.mp@parliament.uk'],
+    SE17PB: ['Vauxhall and Camberwell Green', 'Florence Eshalomi', 'Labour (Co-op)', 'florence.eshalomi.mp@parliament.uk']
   };
-  var TICK = ['Hannah from Exeter', 'Mo from Bradford', 'Jo from Kent', 'Chris from Derby', 'Anna from Cardiff', 'Ray from Hull', 'Sam from London', 'Bev from Wigan'];
+  var PARTY_COLOUR = { Labour: '#d50000', 'Labour (Co-op)': '#d50000', Conservative: '#0063ba', 'Liberal Democrat': '#faa61a', 'Green Party': '#6ab023',
+    'Scottish National Party': '#fff95d', 'Reform UK': '#12b6cf', 'Plaid Cymru': '#348837', 'Social Democratic & Labour Party': '#2aa82c' };
 
-  // Postcode area to a place name people recognise. The live page uses the full postcode lookup.
-  var AREAS = { AB: 'Aberdeen', AL: 'St Albans', B: 'Birmingham', BA: 'Bath', BB: 'Blackburn', BD: 'Bradford', BH: 'Bournemouth', BL: 'Bolton', BN: 'Brighton',
-    BR: 'Bromley', BS: 'Bristol', BT: 'Belfast', CA: 'Carlisle', CB: 'Cambridge', CF: 'Cardiff', CH: 'Chester', CM: 'Chelmsford', CO: 'Colchester', CR: 'Croydon',
-    CT: 'Canterbury', CV: 'Coventry', CW: 'Crewe', DA: 'Dartford', DD: 'Dundee', DE: 'Derby', DG: 'Dumfries', DH: 'Durham', DL: 'Darlington', DN: 'Doncaster',
-    DT: 'Dorchester', DY: 'Dudley', E: 'London', EC: 'London', EH: 'Edinburgh', EN: 'Enfield', EX: 'Exeter', FK: 'Falkirk', FY: 'Blackpool', G: 'Glasgow',
-    GL: 'Gloucester', GU: 'Guildford', HA: 'Harrow', HD: 'Huddersfield', HG: 'Harrogate', HP: 'Hemel Hempstead', HR: 'Hereford', HS: 'Outer Hebrides', HU: 'Hull',
-    HX: 'Halifax', IG: 'Ilford', IP: 'Ipswich', IV: 'Inverness', KA: 'Kilmarnock', KT: 'Kingston', KW: 'Kirkwall', KY: 'Kirkcaldy', L: 'Liverpool',
-    LA: 'Lancaster', LD: 'Powys', LE: 'Leicester', LL: 'North Wales', LN: 'Lincoln', LS: 'Leeds', LU: 'Luton', M: 'Manchester', ME: 'Kent', MK: 'Milton Keynes',
-    ML: 'Motherwell', N: 'London', NE: 'Newcastle', NG: 'Nottingham', NN: 'Northampton', NP: 'Newport', NR: 'Norwich', NW: 'London', OL: 'Oldham',
-    OX: 'Oxford', PA: 'Paisley', PE: 'Peterborough', PH: 'Perth', PL: 'Plymouth', PO: 'Portsmouth', PR: 'Preston', RG: 'Reading', RH: 'Redhill', RM: 'Romford',
-    S: 'Sheffield', SA: 'Swansea', SE: 'London', SG: 'Stevenage', SK: 'Stockport', SL: 'Slough', SM: 'Sutton', SN: 'Swindon', SO: 'Southampton', SP: 'Salisbury',
-    SR: 'Sunderland', SS: 'Southend', ST: 'Stoke-on-Trent', SW: 'London', SY: 'Shrewsbury', TA: 'Taunton', TD: 'Scottish Borders', TF: 'Telford',
-    TN: 'Tunbridge Wells', TQ: 'Torquay', TR: 'Truro', TS: 'Teesside', TW: 'Twickenham', UB: 'Southall', W: 'London', WA: 'Warrington', WC: 'London',
-    WD: 'Watford', WF: 'Wakefield', WN: 'Wigan', WR: 'Worcester', WS: 'Walsall', WV: 'Wolverhampton', YO: 'York', ZE: 'Shetland' };
-
-  var ICON = {
-    plus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>',
-    tick: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>',
-    share: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M16 6l-4-4-4 4"/><path d="M12 2v13"/></svg>',
-    flag: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><path d="M4 22v-7"/></svg>'
-  };
-
-  // ---------------------------------------------------------------- moderation
-  // The same checks run on the server, with a fuller list and a second check by AI. The word list
-  // is encoded so the page source does not carry it in plain text.
+  // ---------------------------------------------------------------- checks on the letter
+  // The same checks run on the server, with a fuller list. The word list is encoded so the page
+  // source does not carry it in plain text.
   var MOD = JSON.parse(atob('eyJwIjpbImZ1Y2siLCJtb3RoZXJmdWNrIiwic2hpdCIsImN1bnQiLCJ3YW5rIiwidHdhdCIsImJvbG9jayIsImJhc3RhcmQiLCJiaXRjaCIsImFyc2Vob2xlIiwiYXNob2xlIiwiYmVsZW5kIiwiZmFnb3QiLCJyZXRhcmQiLCJzY3VtIiwiY29ja3N1Y2siLCJkaWNraGVhZCIsImtub2JoZWFkIiwidG9zc2VyIiwic3Bhc3RpYyIsInBhZWRvIiwibmlnZyIsImdvbHl3b2ciXSwiZSI6WyJuaWdnZXIiLCJuaWdnZXJzIiwibmlnZ2EiLCJuaWdnYXMiLCJuaWdhIiwibmlnYXMiLCJwYWtpIiwicGFraXMiLCJjaGluayIsImNoaW5rcyIsInNwaWMiLCJzcGljcyIsImtpa2UiLCJraWtlcyIsIndvZyIsIndvZ3MiLCJjb29uIiwiY29vbnMiLCJneXBvIiwiZ3lwcG8iLCJnaXBwbyIsInBpa2V5IiwicGlrZXlzIiwiZmFnIiwiZmFncyIsImR5a2UiLCJkeWtlcyIsInRyYW5ueSIsInRyYW5uaWVzIiwibW9uZyIsIm1vbmdzIiwibm9uY2UiLCJub25jZXMiLCJwZWRvIiwicGVkb3MiLCJzbHV0Iiwic2x1dHMiLCJ3aG9yZSIsIndob3JlcyIsInNsYWciLCJzbGFncyIsImRpY2siLCJkaWNrcyIsImNvY2siLCJjb2NrcyIsInByaWNrIiwicHJpY2tzIiwicGlzcyIsInBpc3NlZCIsInBpc3NpbmciLCJhcnNlIiwiYXJzZXMiLCJhc3MiLCJhc3NlcyIsImJsb29keSIsImRhbW4iLCJnb2RkYW1uIiwiYnVnZ2VyIiwiY3JhcCIsInNwYXoiLCJtdXp6aWUiLCJtdXp6aWVzIiwicmFnaGVhZCIsInJhZ2hlYWRzIiwidG93ZWxoZWFkIiwidG93ZWxoZWFkcyIsImRhcmtpZSIsImRhcmtpZXMiLCJzYW1ibyIsImphcCIsImphcHMiLCJnb29rIiwiZ29va3MiLCJuYXppIiwibmF6aXMiLCJiZWxsZW5kIiwiYm9sbG9ja3MiLCJ3YW5rZXIiLCJ3YW5rZXJzIl19'));
   var collapse = function (w) { return w.replace(/([a-z])\1+/g, '$1'); };
   var MOD_E = {}; MOD.e.forEach(function (w) { MOD_E[w] = 1; });
   var MOD_P = MOD.p.map(collapse);
   var plain = function (s) { return s.normalize('NFKD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[‘’]/g, "'"); };
   var LEET = { '0': 'o', '1': 'i', '3': 'e', '4': 'a', '5': 's', '7': 't', '8': 'b', '@': 'a', '$': 's' };
-  function words(s) {
-    var raw = plain(s).replace(/[0134578@$]/g, function (c) { return LEET[c]; }).split(/[^a-z]+/).filter(Boolean);
-    var out = raw.slice(), run = [];
-    raw.concat(['']).forEach(function (w) {          // "f u c k" and "f.u.c.k" join back into one word
-      if (w.length === 1) run.push(w); else { if (run.length >= 3) out.push(run.join('')); run = []; }
-    });
-    return out;
-  }
   function swears(s) {
-    return words(s).some(function (w) {
+    var raw = plain(s).replace(/[0134578@$]/g, function (c) { return LEET[c]; }).split(/[^a-z]+/).filter(Boolean);
+    var words = raw.slice(), run = [];
+    raw.concat(['']).forEach(function (w) {          // "f u c k" and "f.u.c.k" join back into one word
+      if (w.length === 1) run.push(w); else { if (run.length >= 3) words.push(run.join('')); run = []; }
+    });
+    return words.some(function (w) {
       var c = collapse(w);
       if (MOD_E[w] || MOD_E[c]) return true;
       return MOD_P.some(function (p) { return c.indexOf(p) === 0 || w.indexOf(p) === 0; });
     });
   }
-  var TOPIC = /\b(jews?|jewish|jewry|zionis[mt]s?|zion|israel(i|is)?|gaza|palestin\w*|antisemit\w*|holocaust)\b/;
   var VIOLENCE = [
-    /\b(kill|shoot|hang|lynch|behead|stab|burn|execute|murder|hurt|attack|beat|punch)\s+(them|him|her|em|'em|all|every\w*|the\s+lot|these|those|mps?|peers?|politicians?|ministers?)\b/,
-    /\b(should|must|deserves?|ought|needs?|want)\s+(all\s+|both\s+|every\s+one\s+of\s+them\s+)?(to\s+)?(be\s+)?(shot|hanged|hung|killed|executed|lynched|strung\s+up|burn(ed|t)|stabbed|beheaded|dead|murdered|beaten)\b/,
-    /\bstring\s+(them|him|her|em|'em)\s+(all\s+)?up\b/,
+    /\b(kill|shoot|hang|lynch|behead|stab|burn|execute|murder|hurt|attack|beat|punch)\s+(them|him|her|em|'em|all|every\w*|the\s+lot|these|those|mps?|peers?|politicians?|ministers?|you)\b/,
+    /\b(should|must|deserves?|ought|needs?|want)\s+(all\s+|both\s+)?(to\s+)?(be\s+)?(shot|hanged|hung|killed|executed|lynched|strung\s+up|burn(ed|t)|stabbed|beheaded|dead|murdered|beaten)\b/,
+    /\bstring\s+(them|him|her|you|em|'em)\s+(all\s+)?up\b/,
     /\b(hope|wish|pray)\s+(they|he|she|you|u)\s+(all\s+)?(die|dies|rot|burn|suffer)\b/,
     /\b(guillotine|firing\s+squad|gallows|noose|lynch\w*|pitchforks?|molotov|bomb(s|ing|ed)?|death\s+to)\b/
   ];
-  // Naming a person goes to a check first: we publish the quote, so we carry the risk of what it says.
-  var NAMES = /\b(starmer|sunak|johnson|boris|truss|cameron|blair|farage|badenoch|reeves|rayner|burnham|lammy|streeting|mahmood|davey|corbyn|patel|braverman|jenrick|tice|galloway|gove|hancock|mone|zahawi|mogg|miliband|sturgeon|swinney|lemos|hoyle|symonds|levitt|faulks|falkner|wolfson|anderson|cummings|trump)\b/;
-
-  function checkQuote(t) {
+  function letterProblem(t) {
+    if (swears(t)) return 'Please take out the swearing or offensive word.';
     var p = plain(t);
-    if (t.replace(/\s/g, '').length < 8) return { ok: false, msg: 'A few more words, please.' };
-    if (swears(t)) return { ok: false, msg: 'Please take out the swearing or offensive word. Quotes need to be fit to print.' };
-    if (TOPIC.test(p)) return { ok: false, msg: "Please keep your quote to this law and why you're signing." };
-    if (VIOLENCE.some(function (r) { return r.test(p); })) return { ok: false, msg: 'Please take out anything that sounds like violence or a threat. Anger is fine, threats are not.' };
-    if (/(https?:\/\/|www\.|\b[a-z0-9-]+\.(com|co\.uk|org|net|io|uk|info|ly|me)\b)/.test(p)) return { ok: false, msg: 'Please take out the web link.' };
-    if (/[^\s@]+@[^\s@]+\.[a-z]{2,}/.test(p) || /\+?\d[\d\s\-()]{9,}\d/.test(p)) return { ok: false, msg: "Please don't include email addresses or phone numbers." };
-    var letters = t.replace(/[^A-Za-z]/g, '');
-    if (letters.length >= 12 && letters.replace(/[^A-Z]/g, '').length / letters.length > 0.7) return { ok: false, msg: "Please don't write it all in capitals." };
-    if (/(.)\1{5,}/.test(t)) return { ok: false, msg: "Please don't repeat the same character over and over." };
-    if (NAMES.test(p)) return { ok: true, hold: true };
-    return { ok: true };
+    if (VIOLENCE.some(function (r) { return r.test(p); })) return 'Please take out anything that sounds like violence or a threat.';
+    return '';
   }
 
   // ---------------------------------------------------------------- state
-  var S, QUOTES, TRUST, VOTE;
+  var S;
   function fresh() {
-    S = { count: 12480, signed: false, me: null, mp: null, mpSent: false, quote: null, seconded: {}, reported: {}, sort: 'top', shown: PAGE_SIZE,
-      answers: {}, code: '', abroad: false, cardSeen: true };
-    QUOTES = SAMPLES.map(function (q) { return Object.assign({}, q); });
-    TRUST = TRUST_BASE.slice();
-    VOTE = Object.assign({}, VOTE_BASE);
+    var q = (location.search.match(/[?&]count=(\d+)/) || [])[1];
+    S = { count: q ? +q : START_COUNT, signed: false, me: null, mp: null, mpSent: false, answers: {}, code: '', abroad: false };
   }
 
-  // ---------------------------------------------------------------- toast
   var toastTimer;
   function toast(msg) {
     var t = $('toast');
@@ -668,38 +459,12 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     toastTimer = setTimeout(function () { t.classList.remove('on'); }, 4200);
   }
 
-  // ---------------------------------------------------------------- count and ticker
-  function renderCount() {
-    var c = S.count, show = c >= SHOW_COUNT_FROM;
-    $('countBox').hidden = !show;
-    $('stickyN').hidden = !show;
-    if (!show) return;
-    var goal = GOALS.filter(function (g) { return g > c; })[0] || c;
-    $('countN').textContent = fmt(c);
-    $('stickyCount').textContent = fmt(c);
-    $('goalN').textContent = fmt(goal);
-    $('toGo').textContent = fmt(goal - c) + ' to go';
-    $('countBar').style.width = Math.min(100, c / goal * 100).toFixed(1) + '%';
-  }
-  var tickN = 0;
-  function tick() {
-    var el = $('tickTxt');
-    el.style.opacity = 0;
-    setTimeout(function () {
-      tickN++;
-      el.textContent = TICK[tickN % TICK.length] + ' signed · ' + (tickN % 3 === 0 ? 'just now' : (tickN % 3) + ' min ago');
-      el.style.opacity = 1;
-    }, reduced ? 0 : 300);
-  }
-
   // ---------------------------------------------------------------- steps
   function go(n, quiet) {
     for (var i = 1; i <= 6; i++) $('p' + i).hidden = i !== n;
     var dots = $('dots').children;
     for (var j = 0; j < dots.length; j++) dots[j].classList.toggle('on', j < n);
     $('stepLbl').textContent = n <= 5 ? 'Step ' + n + ' of 5' : 'Done';
-    $('side').classList.toggle('stick', n === 1);
-    pinCard();
     if (quiet) return;
     var h = $('p' + n).querySelector('h2');
     if (h) { h.setAttribute('tabindex', '-1'); h.focus({ preventScroll: true }); }
@@ -712,17 +477,10 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     var e = $(id + 'Err');
     if (e) e.textContent = msg || '';
   }
-  function updateSticky() {
-    $('sticky').hidden = S.signed || S.cardSeen;
-  }
 
   // ---------------------------------------------------------------- 1: sign
   var EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
   var NAME = /^[\p{L}][\p{L}' .\-]{0,49}$/u;
-  function areaFor(pc) {
-    var m = pc.toUpperCase().match(/^([A-Z]{1,2})\d/);
-    return (m && AREAS[m[1]]) || 'UK';
-  }
   // Parliament makes you type your email twice. We catch the usual slips instead.
   var DOMAINS = ['gmail.com', 'googlemail.com', 'hotmail.com', 'hotmail.co.uk', 'outlook.com', 'outlook.co.uk', 'live.com', 'live.co.uk', 'msn.com',
     'yahoo.com', 'yahoo.co.uk', 'ymail.com', 'icloud.com', 'me.com', 'mac.com', 'aol.com', 'aol.co.uk', 'btinternet.com', 'sky.com', 'talktalk.net',
@@ -752,7 +510,6 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     $('emailFix').hidden = true;
     setErr('email');
   });
-
   $('abroadBtn').addEventListener('click', function () {
     S.abroad = !S.abroad;
     $('pcWrap').hidden = S.abroad;
@@ -767,89 +524,55 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     var first = $('first').value.trim(), last = $('last').value.trim(), email = $('email').value.trim();
     var pc = $('pc').value.trim().toUpperCase().replace(/\s+/g, ''), cty = $('cty').value.trim();
     var consent = this.querySelector('input[name=consent]:checked');
-    var ok = true;
     setErr('first', NAME.test(first) ? '' : 'Please enter your first name.');
     setErr('last', NAME.test(last) ? '' : 'Please enter your last name.');
     setErr('email', EMAIL.test(email) ? '' : 'Please enter your email address, like name@example.com.');
     if (S.abroad) setErr('cty', cty.length >= 2 ? '' : 'Please enter your country.');
     else setErr('pc', /^[A-Z]{1,2}\d[A-Z\d]?\d[A-Z]{2}$/.test(pc) ? '' : 'Please enter your full postcode, like ME13 8GD.');
     $('consentErr').textContent = consent ? '' : 'Please choose yes or no.';
-    ok = !this.querySelector('.f.bad') && !!consent;
-    if (!ok) {
+    if (this.querySelector('.f.bad') || !consent) {
       var bad = this.querySelector('.f.bad input') || this.querySelector('input[name=consent]');
       if (bad) bad.focus();
       return;
     }
     S.signed = true;
-    S.me = { first: cap(first), last: cap(last), email: email, area: S.abroad ? cap(cty) : areaFor(pc), emailOk: consent.value === 'yes',
+    S.me = { first: cap(first), last: cap(last), email: email, emailOk: consent.value === 'yes',
       pc: S.abroad ? '' : pc.replace(/^(.+)(\d[A-Z]{2})$/, '$1 $2') };
-    findMp(pc);
     S.code = Math.random().toString(36).slice(2, 8).toUpperCase();
+    findMp(pc);
+    var before = targetFor(S.count);
     S.count++;
-    renderCount();
-    updateSticky();
+    renderMeter(false);
     document.querySelectorAll('.me-first').forEach(function (el) { el.textContent = S.me.first; });
-    $('showShort').textContent = S.me.first + ', ' + S.me.area;
-    $('showFull').textContent = S.me.first + ' ' + S.me.last + ', ' + S.me.area;
-    renderWall();
+    // The signer sees exactly what their signature did: the number they are, and how close we now are.
+    if (S.count >= before) {
+      $('thanksH').textContent = 'You took us to ' + fmt(before) + '!';
+      $('thanksS').textContent = 'New target: ' + fmt(targetFor(S.count)) + '. Two quick questions: your answers show journalists and MPs how people feel.';
+    } else {
+      $('thanksH').textContent = "You're signature number " + fmt(S.count) + '.';
+      $('thanksS').textContent = 'Only ' + fmt(before - S.count) + ' more to reach ' + fmt(before) + '. Two quick questions: your answers show journalists and MPs how people feel.';
+    }
     go(2);
   });
 
-  // ---------------------------------------------------------------- 2: your voice
-  var qTimer;
-  $('quote').addEventListener('input', function () {
-    var left = 200 - this.value.length;
-    $('qCount').textContent = left;
-    $('qCount').classList.toggle('low', left <= 20);
-    clearTimeout(qTimer);
-    var v = this.value;
-    qTimer = setTimeout(function () {
-      if (!v.trim()) { setErr('quote'); $('quoteHint').textContent = ''; return; }
-      var r = checkQuote(v);
-      setErr('quote', r.ok || v.trim().length < 8 ? '' : r.msg);
-      $('quoteHint').textContent = r.hold ? "Your quote names a person, so we'll check it before it goes up." : '';
-    }, 350);
-  });
+  // ---------------------------------------------------------------- 2: two questions
   function saveAnswers() {
     var f = $('p2');
     var t = f.querySelector('input[name=trust]:checked'), v = f.querySelector('input[name=vote]:checked');
-    if (t && S.answers.trust == null) { S.answers.trust = +t.value; TRUST[+t.value]++; }
-    if (v && !S.answers.vote) { S.answers.vote = v.value; VOTE[v.value]++; }
-    S.answers.press = $('press').checked;
-    renderSay();
+    S.answers.trust = t ? +t.value : null;
+    S.answers.vote = v ? v.value : null;
   }
-  $('p2').addEventListener('submit', function (e) {
-    e.preventDefault();
-    var t = $('quote').value.trim().replace(/\s+/g, ' ');
-    if (!t) { setErr('quote', 'Write a sentence, or tap "Skip" below.'); $('quote').focus(); return; }
-    var r = checkQuote(t);
-    if (!r.ok) { setErr('quote', r.msg); $('quote').focus(); return; }
-    var key = plain(t).replace(/[^a-z0-9]/g, '');
-    if (QUOTES.some(function (q) { return plain(q.t).replace(/[^a-z0-9]/g, '') === key; })) {
-      setErr('quote', 'Someone has already said exactly that. Second their quote, or put it your own way.');
-      return;
-    }
-    var full = this.querySelector('input[name=show]:checked').value === 'full';
-    S.quote = { id: 'me', t: t, n: full ? S.me.first + ' ' + S.me.last : S.me.first, a: S.me.area, m: 0, s: 0, mine: true, held: !!r.hold };
-    QUOTES.unshift(S.quote);
-    saveAnswers();
-    renderWall();
-    toMp();
-  });
-  $('skipQuote').addEventListener('click', function () { saveAnswers(); toMp(); });
+  $('p2').addEventListener('submit', function (e) { e.preventDefault(); saveAnswers(); toMp(); });
+  $('skipQs').addEventListener('click', function () { saveAnswers(); toMp(); });
 
   // ---------------------------------------------------------------- 3: your MP
   // Parliament's petition site shows you your MP's page and leaves the rest to you. We find the MP
-  // from the postcode, write the message from their own answers, and send it with one tap.
-  var PARTY_COLOUR = { Labour: '#d50000', 'Labour (Co-op)': '#d50000', Conservative: '#0063ba', 'Liberal Democrat': '#faa61a', 'Green Party': '#6ab023',
-    'Scottish National Party': '#fff95d', 'Reform UK': '#12b6cf', 'Plaid Cymru': '#348837', 'Social Democratic & Labour Party': '#2aa82c' };
+  // from the postcode, write the letter from their answers, and send it with one tap.
   function findMp(pc) {
     S.mp = null;
     if (S.abroad) return;
     var m = MPS[pc];
     if (m) { S.mp = { seat: m[0], name: m[1], party: m[2], email: m[3] }; return; }
-    // The live page asks our own server, which asks Parliament and keeps the answer. The prototype
-    // tries Parliament directly and, where the browser won't allow that, shows a stand-in.
     var api = 'https://members-api.parliament.uk/api/';
     fetch(api + 'Location/Constituency/Search?searchText=' + encodeURIComponent(pc) + '&skip=0&take=1').then(function (r) { return r.json(); })
       .then(function (r) {
@@ -864,12 +587,10 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       .catch(function () {});
   }
   var TRUST_WORDS = ['not damaging', 'mildly damaging', 'damaging', 'very damaging', 'extremely damaging', 'disastrous'];
-  function mpMessage() {
-    var mp = S.mp, me = S.me, lines = [];
+  function mpLetter() {
+    var mp = S.mp, me = S.me, lines = [], feel = [];
     lines.push('Dear ' + (mp ? mp.name : '[your MP]') + ',');
     lines.push('I live in your constituency' + (me.pc ? ' (' + me.pc + ')' : '') + ' and I have signed the petition calling on Parliament to include every MP, peer and other legislator in the UK in the Hillsborough Law\'s offence of misleading the public, for what they say and do outside Parliament.');
-    if (S.quote) lines.push('In my own words: "' + S.quote.t + '"');
-    var feel = [];
     if (S.answers.trust >= 1) feel.push('I think leaving MPs and peers out is ' + TRUST_WORDS[S.answers.trust] + ' for public trust in our democracy and in Parliament.');
     if (S.answers.vote === 'yes') feel.push('How you vote on this will affect how I vote at the next election.');
     if (S.answers.vote === 'maybe') feel.push('How you vote on this could affect how I vote at the next election.');
@@ -887,26 +608,23 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     $('mpDot').textContent = mp ? mp.name.replace(/^(Dame|Sir|Dr) /, '').split(' ').map(function (w) { return w.charAt(0); }).join('').slice(0, 2) : 'MP';
     $('mpDot').style.background = (mp && PARTY_COLOUR[mp.party]) || '';
     $('mpDot').style.color = mp && mp.party === 'Scottish National Party' ? '#041440' : '';
-    $('mpNote').hidden = !!mp || !PROTO;
-    $('mpNote').textContent = 'In this prototype we only know the MPs for a few postcodes, such as NR2 2PW. The live page finds every MP.';
     $('mpSubj').value = 'Please include MPs and peers in the Hillsborough Law';
-    $('mpMsg').value = mpMessage();
+    $('mpMsg').value = mpLetter();
     setErr('mpMsg');
-    var who = mp ? mp.name : 'your MP';
-    $('mpSend').textContent = 'Send to ' + who;
+    $('mpSend').textContent = 'Send to ' + (mp ? mp.name : 'your MP');
     document.querySelectorAll('.mp-to').forEach(function (el) { el.textContent = mp ? mp.name + ' MP' : 'your MP'; });
     go(3);
   }
   $('p3').addEventListener('submit', function (e) {
     e.preventDefault();
-    if ($('mpMsg').value.trim().length < 40) { setErr('mpMsg', 'Please keep a message for your MP, or tap Skip.'); $('mpMsg').focus(); return; }
-    var r = checkQuote($('mpMsg').value.replace(/[A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2}/g, ''));
-    if (!r.ok && !/capitals|few more/.test(r.msg)) { setErr('mpMsg', r.msg); $('mpMsg').focus(); return; }
-    // An address they add goes above the postcode at the foot of the letter, if the foot is still ours.
     var msg = $('mpMsg').value.replace(/\s+$/, ''), addr = $('mpAddr').value.trim();
+    if (msg.length < 40) { setErr('mpMsg', 'Please keep a message for your MP, or tap Skip.'); $('mpMsg').focus(); return; }
+    var bad = letterProblem(msg);
+    if (bad) { setErr('mpMsg', bad); $('mpMsg').focus(); return; }
+    // An address they add goes above the postcode at the foot of the letter, if the foot is still ours.
     if (addr && S.me.pc && msg.slice(-S.me.pc.length) === S.me.pc) msg = msg.slice(0, -S.me.pc.length) + addr + '\n' + S.me.pc;
     S.mpSent = true;
-    S.mpLetter = { to: S.mp, subject: $('mpSubj').value.trim(), body: msg };
+    S.letter = { to: S.mp, subject: $('mpSubj').value.trim(), body: msg };
     toShare();
   });
   $('mpOwn').addEventListener('click', function () {
@@ -918,22 +636,18 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
 
   // ---------------------------------------------------------------- 4: share
   function toShare() {
-    var to = S.mp ? S.mp.name : 'your MP';
     $('confirmTxt').innerHTML = '<b>One last tap.</b> We\'ve emailed you a link at ' + esc(S.me.email) + '. Tap it to confirm your signature' +
-      (S.mpSent ? ' and send your message to ' + esc(to) : '') + '.';
-    if (S.quote && !S.quote.held) { $('shareH').textContent = 'Your quote is live.'; $('shareS').textContent = 'Now get it seen. Sharing is how petitions grow.'; }
-    else if (S.quote) { $('shareH').textContent = "We'll check your quote first."; $('shareS').textContent = 'Quotes that name a person are checked before they go up, usually within a day. You can share the petition now.'; }
-    else { $('shareH').textContent = 'Now share it.'; $('shareS').textContent = 'Sharing is how petitions grow. Send it to three people who would sign.'; }
+      (S.mpSent ? ' and send your message to ' + esc(S.mp ? S.mp.name : 'your MP') : '') + '.';
+    var t = targetFor(S.count);
+    $('shareS').textContent = fmt(t - S.count) + ' more signatures to reach ' + fmt(t) + '. Send it to three people who would sign.';
     $('shareImg').removeAttribute('src');
     go(4);
     buildCard();
   }
   function shareLink() { return 'https://execprosec.org/petition?r=' + S.code; }
   var SHARE_SAYS = {
-    wa: 'opens WhatsApp with your quote and your link, ready to send',
-    fb: 'opens Facebook with your link ready to post',
-    x: 'opens X with your quote and your link ready to post',
-    copy: 'copies your personal link',
+    wa: 'opens WhatsApp with your link ready to send', fb: 'opens Facebook with your link ready to post',
+    x: 'opens X with your link ready to post', copy: 'copies your personal link',
     ig: 'saves this picture to your phone for your Instagram story'
   };
   document.querySelectorAll('[data-share]').forEach(function (b) {
@@ -941,8 +655,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       var k = b.getAttribute('data-share');
       // The prototype never sends anyone to the petition address: it isn't live yet.
       if (PROTO) {
-        toast(k === 'ig'
-          ? 'On the live page this saves the picture for your Instagram story. Here, press and hold the picture to save it.'
+        toast(k === 'ig' ? 'On the live page this saves the picture for your Instagram story.'
           : 'On the live page this ' + SHARE_SAYS[k] + ': ' + shareLink().replace('https://', ''));
         return;
       }
@@ -950,20 +663,20 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     });
   });
   function share(k) {
-    var text = (S.quote && !S.quote.held ? '"' + S.quote.t + '" ' : '') + "I've signed the petition to include all politicians in the Hillsborough Law. Sign it here:";
-    var url = shareLink();
+    var text = "I've signed the petition to include all politicians in the Hillsborough Law. Sign it here:", url = shareLink();
     if (k === 'wa') window.open('https://wa.me/?text=' + encodeURIComponent(text + ' ' + url), '_blank', 'noopener');
     if (k === 'fb') window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url), '_blank', 'noopener');
     if (k === 'x') window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(text) + '&url=' + encodeURIComponent(url), '_blank', 'noopener');
     if (k === 'copy') navigator.clipboard.writeText(url).then(function () { toast('Link copied.'); }, function () { toast(url); });
-    if (k === 'ig') cardFile().then(function (file) {
-      if (navigator.canShare && navigator.canShare({ files: [file] })) return navigator.share({ files: [file] });
-      var a = document.createElement('a'); a.href = URL.createObjectURL(file); a.download = file.name; a.click();
-    }).catch(function () {});
+    if (k === 'ig' && cardCanvas) cardCanvas.toBlob(function (b) {
+      var file = new File([b], 'hillsborough-law-petition.png', { type: 'image/png' });
+      if (navigator.canShare && navigator.canShare({ files: [file] })) navigator.share({ files: [file] }).catch(function () {});
+    }, 'image/png');
   }
   $('toFund').addEventListener('click', function () { go(5); });
 
-  // The 1080 x 1920 picture for Instagram stories and WhatsApp status, drawn from their own quote.
+  // The 1080 x 1920 picture for Instagram stories and WhatsApp status. Instagram lays its own bar
+  // over the top 250px and the reply box over the bottom 340px, so everything sits between them.
   var cardCanvas;
   function wrap(x, text, maxW) {
     var out = [], line = '';
@@ -977,50 +690,25 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   function spacing(x, v) { if ('letterSpacing' in x) x.letterSpacing = v; }
   function buildCard() {
     var fonts = document.fonts && document.fonts.load
-      ? Promise.all([document.fonts.load('400 80px "DM Serif Display"'), document.fonts.load('700 40px "DM Sans"'), document.fonts.load('600 40px "DM Sans"')]).catch(function () {})
+      ? Promise.all([document.fonts.load('400 80px "DM Serif Display"'), document.fonts.load('700 40px "DM Sans"')]).catch(function () {})
       : Promise.resolve();
     return fonts.then(function () {
       var cv = document.createElement('canvas'); cv.width = 1080; cv.height = 1920;
-      var x = cv.getContext('2d');
-      var SERIF = '"DM Serif Display", Georgia, serif', SANS = '"DM Sans", Arial, sans-serif';
+      var x = cv.getContext('2d'), SERIF = '"DM Serif Display", Georgia, serif', SANS = '"DM Sans", Arial, sans-serif';
       x.fillStyle = '#041440'; x.fillRect(0, 0, 1080, 1920);
       var g = x.createRadialGradient(920, 160, 40, 920, 160, 1000);
       g.addColorStop(0, 'rgba(221,188,102,.20)'); g.addColorStop(1, 'rgba(221,188,102,0)');
       x.fillStyle = g; x.fillRect(0, 0, 1080, 1920);
       x.strokeStyle = 'rgba(221,188,102,.5)'; x.lineWidth = 3; x.strokeRect(48, 48, 984, 1824);
-      // Instagram lays its own bar over the top 250px and the reply box over the bottom 340px of a
-      // story, so everything that matters sits between those two.
-      x.textBaseline = 'alphabetic';
       spacing(x, '8px'); x.fillStyle = '#ddbc66'; x.font = '700 34px ' + SANS; x.fillText('EXECPROSEC', 104, 316);
-      var live = S.quote && !S.quote.held;
-      spacing(x, '5px'); x.fillStyle = 'rgba(255,255,255,.72)'; x.font = '700 34px ' + SANS;
-      x.fillText(live ? 'I SIGNED THE PETITION' : 'I SIGNED. WILL YOU?', 104, 380);
+      spacing(x, '5px'); x.fillStyle = 'rgba(255,255,255,.72)'; x.fillText('I SIGNED. WILL YOU?', 104, 380);
       spacing(x, '0px');
-      var size, lines;
-      if (live) {
-        x.fillStyle = '#ddbc66'; x.font = '400 260px ' + SERIF; x.fillText('“', 88, 640);
-        for (size = 84; size >= 48; size -= 4) {
-          x.font = '400 ' + size + 'px ' + SERIF;
-          lines = wrap(x, S.quote.t, 872);
-          if (lines.length * size * 1.2 <= 560) break;
-        }
-        x.fillStyle = '#ffffff';
-        lines.forEach(function (l, i) { x.fillText(l, 104, 680 + i * size * 1.2); });
-        x.fillStyle = '#ddbc66'; x.font = '600 48px ' + SANS;
-        x.fillText(S.quote.n + ', ' + S.quote.a, 104, 680 + (lines.length - 1) * size * 1.2 + 100);
-      } else {
-        x.fillStyle = '#ffffff'; x.font = '400 108px ' + SERIF;
-        lines = wrap(x, 'Include all politicians in the Hillsborough Law', 872);
-        lines.forEach(function (l, i) { x.fillText(l, 104, 620 + i * 120); });
-        x.fillStyle = 'rgba(255,255,255,.8)'; x.font = '400 46px ' + SANS;
-        wrap(x, 'MPs and peers are left out of the new law against misleading the public.', 872)
-          .forEach(function (l, i) { x.fillText(l, 104, 620 + lines.length * 120 + 50 + i * 64); });
-      }
-      x.fillStyle = 'rgba(221,188,102,.7)'; x.fillRect(104, 1290, 120, 4);
-      if (live) {
-        x.fillStyle = '#ffffff'; x.font = '400 56px ' + SERIF;
-        wrap(x, 'Include all politicians in the Hillsborough Law', 872).forEach(function (l, i) { x.fillText(l, 104, 1372 + i * 66); });
-      }
+      x.fillStyle = '#ffffff'; x.font = '400 108px ' + SERIF;
+      var lines = wrap(x, 'Include all politicians in the Hillsborough Law', 872);
+      lines.forEach(function (l, i) { x.fillText(l, 104, 620 + i * 120); });
+      x.fillStyle = 'rgba(255,255,255,.8)'; x.font = '400 46px ' + SANS;
+      wrap(x, 'MPs and peers are left out of the new law against misleading the public.', 872)
+        .forEach(function (l, i) { x.fillText(l, 104, 620 + lines.length * 120 + 50 + i * 64); });
       x.fillStyle = '#d64045';
       if (x.roundRect) { x.beginPath(); x.roundRect(104, 1490, 872, 104, 10); x.fill(); } else x.fillRect(104, 1490, 872, 104);
       x.fillStyle = '#ffffff'; x.font = '700 38px ' + SANS; spacing(x, '2px'); x.textAlign = 'center';
@@ -1028,12 +716,6 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       x.textAlign = 'left'; spacing(x, '0px');
       cardCanvas = cv;
       $('shareImg').src = cv.toDataURL('image/png');
-    });
-  }
-  function cardFile() {
-    return new Promise(function (res, rej) {
-      if (!cardCanvas) return rej();
-      cardCanvas.toBlob(function (b) { b ? res(new File([b], 'hillsborough-law-petition.png', { type: 'image/png' })) : rej(); }, 'image/png');
     });
   }
 
@@ -1060,161 +742,35 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     if (a < 10) { setErr('otherAmt', 'The minimum is £10 a month.'); $('otherAmt').focus(); return; }
     setErr('otherAmt');
     if (PROTO) toast('On the live page this opens the secure card form for £' + fmt(a) + ' a month, the same one as on the home page.');
-    S.answers.fund = a;
     finish();
   });
   $('skipFund').addEventListener('click', finish);
 
   // ---------------------------------------------------------------- 6: done
   function finish() {
-    var bits = ["You've signed"];
-    if (S.quote) bits.push(S.quote.held ? 'your quote is waiting for a check' : 'your quote is on the wall');
-    var s = bits.join(', and ') + '. We will take every signature to Parliament before the vote.';
+    var s = "You're signature number " + fmt(S.count) + '. We will take every signature to Parliament before the vote.';
     if (S.mpSent) s += ' Your message goes to ' + (S.mp ? S.mp.name : 'your MP') + ' as soon as you tap the link in your email.';
     if (S.me.emailOk) s += " We'll email you when the vote is coming.";
     $('doneS').textContent = s;
     go(6);
   }
   $('shareAgain').addEventListener('click', function () { go(4); });
-  $('toWall').addEventListener('click', function () { $('wall').scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' }); });
-
-  // ---------------------------------------------------------------- the wall
-  function ago(m) {
-    if (m < 1) return 'just now';
-    if (m < 60) return m + ' min ago';
-    if (m < 1440) return Math.floor(m / 60) + ' h ago';
-    return Math.floor(m / 1440) + ' d ago';
-  }
-  function listed() {
-    // Your own quote stays at the top for you. Sorting uses the counts as they were when the list
-    // was drawn, so seconding a quote never makes it jump out from under your finger.
-    var mine = QUOTES.filter(function (q) { return q.mine; });
-    var rest = QUOTES.filter(function (q) { return !q.mine && !q.held; });
-    rest.sort(S.sort === 'top' ? function (a, b) { return b.s - a.s; } : function (a, b) { return a.m - b.m; });
-    return mine.concat(rest);
-  }
-  function card(q, lead) {
-    var on = !!S.seconded[q.id], n = q.s + (on ? 1 : 0);
-    var pills = (q.mine ? '<span class="pill me">Your quote</span>' : '') +
-      (q.held ? '<span class="pill wait">Waiting for a check</span>' : '') +
-      (PROTO && !q.mine ? '<span class="pill">Sample</span>' : '');
-    var count = q.mine ? (n ? 'Seconded by <b>' + fmt(n) + '</b>' : 'No seconds yet') : 'Seconded by <b>' + fmt(n) + '</b>';
-    return '<li class="q' + (lead ? ' lead' : '') + (q.mine ? ' mine' : '') + '">' +
-      (lead ? '<p class="q-flag">Most seconded</p>' : '') +
-      '<blockquote>' + esc(q.t) + '</blockquote>' +
-      '<div class="q-meta"><span><b>' + esc(q.n) + '</b>, ' + esc(q.a) + ' · ' + ago(q.m) + '</span>' + pills + '</div>' +
-      '<div class="q-act">' +
-        (q.mine ? '' : '<button class="second" type="button" data-act="second" data-id="' + q.id + '" aria-pressed="' + on + '">' + (on ? ICON.tick + 'Seconded' : ICON.plus + 'Second') + '</button>') +
-        '<span class="q-n">' + count + '</span>' +
-        '<span class="ico">' +
-          '<button class="ib" type="button" data-act="share" data-id="' + q.id + '" aria-label="Share this quote" title="Share this quote">' + ICON.share + '</button>' +
-          (q.mine ? '' : '<button class="ib" type="button" data-act="report" data-id="' + q.id + '" aria-label="Report this quote" title="Report this quote"' + (S.reported[q.id] ? ' disabled' : '') + '>' + ICON.flag + '</button>') +
-        '</span>' +
-      '</div></li>';
-  }
-  function renderWall() {
-    var list = listed(), shown = list.slice(0, S.shown), leadDone = false;
-    $('qs').innerHTML = shown.map(function (q) {
-      var lead = S.sort === 'top' && !q.mine && !leadDone;
-      if (lead) leadDone = true;
-      return card(q, lead);
-    }).join('');
-    $('more').hidden = list.length <= S.shown;
-  }
-  $('qs').addEventListener('click', function (e) {
-    var b = e.target.closest('[data-act]');
-    if (!b) return;
-    var id = b.getAttribute('data-id'), act = b.getAttribute('data-act');
-    if (act === 'second') {
-      if (!S.signed) {
-        toast('Sign the petition first. Then you can second as many quotes as you like.');
-        go(1, true);
-        $('card').scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
-        setTimeout(function () { $('first').focus({ preventScroll: true }); }, reduced ? 0 : 500);
-        return;
-      }
-      S.seconded[id] = !S.seconded[id];
-      renderWall();
-      var again = $('qs').querySelector('[data-act="second"][data-id="' + id + '"]');
-      if (again) again.focus();
-    } else if (act === 'share') {
-      toast(PROTO ? 'On the live page this shares the quote, with a link to sign, on WhatsApp, Instagram, Facebook or X.' : 'Shared.');
-    } else if (act === 'report') {
-      S.reported[id] = true;
-      renderWall();
-      toast("Thanks. We'll check this quote.");
-    }
-  });
-  document.querySelectorAll('.tab').forEach(function (t) {
-    t.addEventListener('click', function () {
-      S.sort = t.getAttribute('data-sort');
-      S.shown = PAGE_SIZE;
-      document.querySelectorAll('.tab').forEach(function (o) { o.setAttribute('aria-selected', String(o === t)); });
-      renderWall();
-    });
-  });
-  $('more').addEventListener('click', function () { S.shown += PAGE_SIZE; renderWall(); });
-
-  // ---------------------------------------------------------------- what signers say
-  function renderSay() {
-    var total = TRUST.reduce(function (a, b) { return a + b; }, 0), max = Math.max.apply(null, TRUST);
-    $('chart').innerHTML = TRUST.map(function (n, i) {
-      var pct = Math.round(n / total * 100);
-      return '<div class="cr' + (S.answers.trust === i ? ' you' : '') + '" style="--c:var(--t' + i + ')"><span class="k">' + TRUST_LABELS[i] + (S.answers.trust === i ? ' · you' : '') +
-        '</span><span class="tr"><i data-w="' + (n / max * 100).toFixed(1) + '"></i></span><span class="v">' + pct + '%</span></div>';
-    }).join('');
-    requestAnimationFrame(function () {
-      $('chart').querySelectorAll('i').forEach(function (i) { i.style.width = i.getAttribute('data-w') + '%'; });
-    });
-    $('figVote').textContent = Math.round((VOTE.yes + VOTE.maybe) / (VOTE.yes + VOTE.maybe + VOTE.no) * 100) + '%';
-    $('figWorst').textContent = Math.round((TRUST[4] + TRUST[5]) / TRUST.reduce(function (a, b) { return a + b; }, 0) * 100) + '%';
-  }
-
-  // On a laptop the card is pinned beside the quotes. When it is taller than the screen it pins by
-  // its bottom edge instead, so the Sign button is always in reach.
-  function pinCard() {
-    $('side').style.top = Math.min(20, window.innerHeight - $('side').offsetHeight - 20) + 'px';
-  }
-  window.addEventListener('resize', pinCard);
-
-  // ---------------------------------------------------------------- sticky button on phones
-  if ('IntersectionObserver' in window) {
-    new IntersectionObserver(function (es) { S.cardSeen = es[0].isIntersecting; updateSticky(); }, { threshold: 0.05 }).observe($('card'));
-  }
-  $('stickyBtn').addEventListener('click', function () {
-    $('card').scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
-    setTimeout(function () { $('first').focus({ preventScroll: true }); }, reduced ? 0 : 500);
-  });
 
   // ---------------------------------------------------------------- start
   function start() {
     fresh();
     ['p1', 'p2', 'p3', 'p5'].forEach(function (id) { $(id).reset(); });
-    ['first', 'last', 'email', 'pc', 'cty', 'quote', 'otherAmt', 'mpMsg'].forEach(function (id) { setErr(id); });
-    $('emailFix').hidden = true;
-    $('consentErr').textContent = ''; $('quoteHint').textContent = ''; $('qCount').textContent = '200';
+    ['first', 'last', 'email', 'pc', 'cty', 'otherAmt', 'mpMsg'].forEach(function (id) { setErr(id); });
+    $('consentErr').textContent = ''; $('emailFix').hidden = true;
     $('pcWrap').hidden = false; $('ctyWrap').hidden = true; $('otherWrap').hidden = true; $('abroadBtn').textContent = 'Not in the UK?';
     fundLabel();
-    document.querySelectorAll('.tab').forEach(function (o, i) { o.setAttribute('aria-selected', String(i === 0)); });
-    renderCount(); renderWall(); renderSay(); go(1, true); updateSticky();
+    go(1, true);
+    renderMeter(true);
   }
-  $('resetBtn').addEventListener('click', function () { start(); window.scrollTo(0, 0); toast('Started again.'); });
+  $('resetBtn').addEventListener('click', function () { start(); window.scrollTo(0, 0); });
   $('proto').hidden = !PROTO;
   start();
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(pinCard);
-  setInterval(tick, 3800);
 })();
 </script>
-<!--
-  Live version (not built yet):
-  - Page served by Cloudflare from execprosec.org/petition. Sign, second and quote go to
-    Cloudflare Functions with Turnstile (invisible bot check) and a D1 database at the edge, so a
-    traffic spike never reaches Railway. Central copies new signers every minute for emails,
-    Listmonk and the warehouse.
-  - The count, the wall and "what signers say" are one JSON file rebuilt every 30 seconds and
-    cached at the edge.
-  - Confirmation email per signature; the confirmed total is the one we give the press.
-  - Postcode to constituency (postcodes.io, cached) for "N people in X's constituency signed".
--->
 </body>
 </html>
