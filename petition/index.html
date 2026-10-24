@@ -181,7 +181,27 @@ a{color:inherit}
 .opt-l{font-weight:400;color:var(--muted)}
 .hint-g{font-size:12.5px;color:var(--muted)}
 .stmt{margin:0 0 12px;padding:12px 14px;border-left:3px solid var(--gold);background:var(--paper-2);font:400 19px/1.35 var(--f-display);color:var(--navy)}
-.opts.agree{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.lk{margin:0 0 16px}
+.lk-head{display:none}
+.lk-row{padding:12px 0;border-top:1px solid var(--rule)}
+.lk-t{margin:0 0 10px;font-size:15px;line-height:1.45;color:var(--ink);font-weight:500}
+.lk-scale{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px}
+.lk-opt{position:relative;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;text-align:center}
+.lk-opt input{position:absolute;inset:0;width:100%;height:100%;opacity:0;margin:0;cursor:pointer}
+.lk-dot{width:28px;height:28px;border-radius:50%;border:2px solid var(--field);background:#fff;transition:background .15s,border-color .15s,box-shadow .15s}
+.lk-opt:hover .lk-dot{border-color:var(--navy)}
+.lk-opt input:checked + .lk-dot{background:var(--navy);border-color:var(--navy);box-shadow:inset 0 0 0 5px #fff}
+.lk-opt input:focus-visible + .lk-dot{box-shadow:0 0 0 3px rgba(221,188,102,.8)}
+.lk-l{font-size:11px;line-height:1.2;color:var(--muted)}
+.lk-saved{margin:8px 0 0;font-size:12.5px;font-weight:600;color:var(--ok)}
+@media(min-width:600px){
+  .lk-head,.lk-row{display:grid;grid-template-columns:minmax(0,1fr) 290px;column-gap:16px;align-items:center}
+  .lk-head{padding-bottom:6px}
+  .lk-head .lk-scale span{font-size:11px;line-height:1.2;color:var(--muted);text-align:center}
+  .lk-t{margin:0}
+  .lk-l{display:none}
+  .lk-saved{grid-column:1 / -1}
+}
 .f textarea.short{min-height:88px;font-size:16px}
 .qfoot{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
 .counter{margin-left:auto;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
@@ -221,7 +241,14 @@ legend{padding:0;margin:0 0 8px;font-size:14px;font-weight:600;line-height:1.4;c
 .mp-dot{flex:0 0 40px;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font:700 14px/1 var(--f-body);color:#fff;background:var(--muted)}
 .mp-who{display:flex;flex-direction:column;min-width:0;font-size:13.5px;color:var(--muted);line-height:1.35}
 .mp-who b{font-size:16px;color:var(--ink);font-weight:700}
-.mp-mail{overflow-wrap:anywhere}
+.cp{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"l b" "v v";gap:4px 10px;align-items:center;margin:0 0 10px;padding:10px 12px;
+  border:1.5px solid var(--rule);border-radius:4px}
+.cp-l{grid-area:l;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.cp-v{grid-area:v;font-size:15px;line-height:1.45;color:var(--ink);overflow-wrap:anywhere;white-space:pre-wrap}
+.cp-msg .cp-v{font-size:14px}
+.cp-b{grid-area:b;min-height:32px;padding:0 14px;border:0;border-radius:3px;background:var(--navy);color:#fff;font:700 13px/1 var(--f-body);cursor:pointer}
+.cp-b.done{background:var(--ok)}
+.cp-b:disabled{opacity:.4;cursor:default}
 .notice{display:flex;gap:10px;align-items:flex-start;margin:0 0 16px;padding:12px 14px;background:#eef6f0;border:1px solid #b9dcc5;border-radius:4px;font-size:14px;line-height:1.45;color:#174b30}
 .notice svg{flex:0 0 20px;width:20px;height:20px;margin-top:1px}
 
@@ -335,16 +362,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     <form class="panel" id="p2" novalidate hidden>
       <h2 id="thanksH">Thank you.</h2>
       <p class="sub" id="thanksS"></p>
-      <fieldset>
-        <legend>Do you agree?</legend>
-        <p class="stmt" id="stmtTxt"></p>
-        <div class="opts agree">
-          <label class="opt"><input type="radio" name="agree" value="strongly"><span>Strongly agree</span></label>
-          <label class="opt"><input type="radio" name="agree" value="agree"><span>Agree</span></label>
-          <label class="opt"><input type="radio" name="agree" value="disagree"><span>Disagree</span></label>
-          <label class="opt"><input type="radio" name="agree" value="unsure"><span>Not sure</span></label>
-        </div>
-      </fieldset>
+      <div class="lk" id="likert" role="group" aria-label="How far do you agree?"></div>
       <div class="f">
         <label for="quote">In a sentence or two, how do you feel about lawmakers leaving themselves out?</label>
         <textarea id="quote" class="short" maxlength="200" rows="3" placeholder="Say it the way you'd say it to your MP."></textarea>
@@ -356,24 +374,19 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     </form>
 
     <!-- 3: your MP -->
-    <form class="panel" id="p3" novalidate hidden>
-      <h2>Now tell your MP.</h2>
-      <p class="sub">We've written it from your answers. Change anything you like, then send. It goes in your name, with your email address, so they can reply to you.</p>
+    <div class="panel" id="p3" hidden>
+      <h2>Now email your MP.</h2>
+      <p class="sub">Copy these into an email from your own address. It takes a minute.</p>
       <div class="mp">
         <span class="mp-dot" id="mpDot" aria-hidden="true"></span>
-        <span class="mp-who"><b id="mpName">Your MP</b><span id="mpSeat"></span><span class="mp-mail" id="mpMail"></span></span>
+        <span class="mp-who"><b id="mpName">Your MP</b><span id="mpSeat"></span></span>
       </div>
-      <div class="f"><label for="mpSubj">Subject</label><input id="mpSubj" maxlength="120"></div>
-      <div class="f"><label for="mpMsg">Your message</label><textarea id="mpMsg" maxlength="2000"></textarea><span class="err" id="mpMsgErr" aria-live="polite"></span></div>
-      <div class="f">
-        <label for="mpAddr">Your street address <span class="opt-l">(optional)</span></label>
-        <input id="mpAddr" autocomplete="street-address" maxlength="120" placeholder="e.g. 12 Hall Road">
-        <span class="hint-g">MPs' offices answer faster when they can see you live in their constituency.</span>
-      </div>
-      <p class="fine">Your name, email address, postcode, any address you add and this message go to <span class="mp-to">your MP</span>, with a copy to you. We send it once you've confirmed your email address.</p>
-      <button class="btn" type="submit" id="mpSend">Send to your MP</button>
-      <p class="alt"><button class="link" type="button" id="mpOwn">Send it from my own email instead</button> · <button class="link" type="button" id="mpSkip">Skip</button></p>
-    </form>
+      <div class="cp"><span class="cp-l">To</span><span class="cp-v" id="mpMail"></span><button class="cp-b" type="button" data-copy="mpMail">Copy</button></div>
+      <div class="cp"><span class="cp-l">Subject</span><span class="cp-v" id="mpSubj"></span><button class="cp-b" type="button" data-copy="mpSubj">Copy</button></div>
+      <div class="cp cp-msg"><span class="cp-l">Message</span><span class="cp-v" id="mpMsg"></span><button class="cp-b" type="button" data-copy="mpMsg">Copy</button></div>
+      <button class="btn navy" type="button" id="mpDone">Done, next</button>
+      <p class="alt"><button class="link" type="button" id="mpOwn">Open it in my email app</button> · <button class="link" type="button" id="mpSkip">Skip</button></p>
+    </div>
 
     <!-- 4: share -->
     <div class="panel" id="p4" hidden>
@@ -704,8 +717,28 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     { id: 's6', t: 'If the misleading the public offence applies to Government ministers but not to the opposition or backbenchers, democracy will be destabilised.' },
     { id: 's7', t: 'Elections and criminal courts do different jobs: being elected should not put a lawmaker above the criminal law.' }
   ];
-  var RUNNING = 3;                                  // the first three not yet at 10,000 answers (the live page asks the server)
-  function pickStatement() { return STATEMENTS[Math.floor(Math.random() * RUNNING)]; }
+  // Everyone is asked about every statement, in a shuffled order so no statement always gets the
+  // fresh first look. Each answer is kept the moment it is tapped, whether or not they finish.
+  var SCALE = ['Strongly disagree', 'Disagree', 'Not sure', 'Agree', 'Strongly agree'];
+  function buildLikert() {
+    var order = STATEMENTS.slice();
+    for (var i = order.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = order[i]; order[i] = order[j]; order[j] = t; }
+    var head = '<div class="lk-head" aria-hidden="true"><span></span><span class="lk-scale">' +
+      SCALE.map(function (l) { return '<span>' + l + '</span>'; }).join('') + '</span></div>';
+    $('likert').innerHTML = head + order.map(function (st) {
+      return '<div class="lk-row" data-id="' + st.id + '"><p class="lk-t" id="lk_' + st.id + '">' + esc(st.t) + '</p>' +
+        '<div class="lk-scale" role="radiogroup" aria-labelledby="lk_' + st.id + '">' +
+        SCALE.map(function (l, v) {
+          return '<label class="lk-opt"><input type="radio" name="lk_' + st.id + '" value="' + (v - 2) + '" aria-label="' + l + '"><span class="lk-dot"></span><span class="lk-l">' + l + '</span></label>';
+        }).join('') + '</div><p class="lk-saved" hidden>&#10003; Answer recorded</p></div>';
+    }).join('');
+  }
+  $('likert').addEventListener('change', function (e) {
+    var row = e.target.closest('.lk-row');
+    if (!row) return;
+    S.answers[row.getAttribute('data-id')] = +e.target.value;   // the live page posts this to the server here
+    row.querySelector('.lk-saved').hidden = false;
+  });
 
   // ---------------------------------------------------------------- live feed and deadline
   // Every few seconds the next recent signer appears and the count goes up by one, so the page
@@ -802,18 +835,12 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     if (/(.)\1{5,}/.test(t)) return { ok: false, msg: "Please don't repeat the same character over and over." };
     return { ok: true, hold: NAMES.test(p) };
   }
-  function letterProblem(t) {
-    if (swears(t)) return 'Please take out the swearing or offensive word.';
-    var p = plain(t);
-    if (VIOLENCE.some(function (r) { return r.test(p); })) return 'Please take out anything that sounds like violence or a threat.';
-    return '';
-  }
 
   // ---------------------------------------------------------------- state
   var S;
   function fresh() {
     var q = (location.search.match(/[?&]count=(\d+)/) || [])[1];
-    S = { count: q ? +q : START_COUNT, signed: false, me: null, mp: null, mpSent: false, answers: {}, code: '', abroad: false };
+    S = { count: q ? +q : START_COUNT, signed: false, me: null, mp: null, answers: {}, code: '', abroad: false };
   }
 
   var toastTimer;
@@ -922,8 +949,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     }
     S.signed = true;
     updateSticky();
-    S.stmt = pickStatement();
-    $('stmtTxt').textContent = S.stmt.t;
+    buildLikert();
     S.me = { first: cap(first), last: cap(last), email: email, emailOk: consent.value === 'yes', town: S.abroad ? cap(cty) : townFor(pc),
       pc: S.abroad ? '' : pc.replace(/^(.+)(\d[A-Z]{2})$/, '$1 $2') };
     S.code = Math.random().toString(36).slice(2, 8).toUpperCase();
@@ -939,10 +965,10 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     // The signer sees exactly what their signature did: the number they are, and how close we now are.
     if (S.count >= before) {
       $('thanksH').textContent = 'Done. You took us to ' + fmt(before) + '!';
-      $('thanksS').textContent = 'Your signature is in. New target: ' + fmt(targetFor(S.count)) + '. Want to help more? Answer one question and we will quote the result to journalists and parliamentarians.';
+      $('thanksS').textContent = 'Your signature is in. New target: ' + fmt(targetFor(S.count)) + '. Want to help more? Tell us how far you agree with these. Each answer is recorded as soon as you tap it, and we quote the results to journalists and parliamentarians.';
     } else {
       $('thanksH').textContent = "Done. You're signature number " + fmt(S.myNumber) + '.';
-      $('thanksS').textContent = 'Your signature is in. Want to help more? Answer one question and we will quote the result to journalists and parliamentarians.';
+      $('thanksS').textContent = 'Your signature is in. Want to help more? Tell us how far you agree with these. Each answer is recorded as soon as you tap it, and we quote the results to journalists and parliamentarians.';
     }
     go(2);
   });
@@ -962,9 +988,6 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     }, 350);
   });
   function saveAnswers(withQuote) {
-    var a = $('p2').querySelector('input[name=agree]:checked');
-    S.answers.statement = S.stmt.id;
-    S.answers.agree = a ? a.value : null;
     S.quote = null;
     var t = withQuote ? $('quote').value.trim().replace(/\s+/g, ' ') : '';
     if (!t) return true;
@@ -997,54 +1020,57 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       })
       .catch(function () {});
   }
+  // The letter is short and says what the petition says. It goes from the signer's own email:
+  // we never send it for them, so nothing about it can touch our own domain's standing.
+  var MP_SUBJECT = 'Include all lawmakers under the Hillsborough Law';
   function mpLetter() {
-    var mp = S.mp, me = S.me, lines = [];
-    lines.push('Dear ' + (mp ? mp.name : '[your MP]') + ',');
-    lines.push('I live in your constituency' + (me.pc ? ' (' + me.pc + ')' : '') + ' and I have signed the petition calling on Parliament to include every MP, peer and other legislator in the UK in the Hillsborough Law\'s offence of misleading the public, for what they say and do outside Parliament.');
-    if (S.quote) lines.push('In my own words: "' + S.quote.t + '"');
-    lines.push('Will you support including MPs and peers in the Bill? I would be grateful for a reply.');
-    lines.push('Yours sincerely,\n' + me.first + ' ' + me.last + (me.pc ? '\n' + me.pc : ''));
-    return lines.join('\n\n');
+    var mp = S.mp, me = S.me;
+    return 'Dear ' + (mp ? mp.name + ' MP' : '[your MP]') + ',\n\n' +
+      'I am your constituent' + (me.pc ? ' (' + me.pc + ')' : '') + ' and I have signed the petition to include all lawmakers under the Hillsborough Law.\n\n' +
+      'Please support ending the carve-out for lawmakers (MPs, peers, MSPs, MSs and MLAs) from the duty of candour and the offence of misleading the public in the Public Office (Accountability) Bill, for reckless or intentionally deceitful acts outside the proceedings of their parliaments.\n\n' +
+      'Yours sincerely,\n' + me.first + ' ' + me.last + (me.pc ? '\n' + me.pc : '');
   }
   function toMp() {
     if (S.abroad) { toShare(); return; }
     var mp = S.mp;
     $('mpName').textContent = mp ? mp.name + ' MP' : 'Your MP';
     $('mpSeat').textContent = mp ? mp.party + ' · ' + mp.seat : 'Found from your postcode on the live page';
-    $('mpMail').textContent = mp && mp.email ? mp.email : '';
     $('mpDot').textContent = mp ? mp.name.replace(/^(Dame|Sir|Dr) /, '').split(' ').map(function (w) { return w.charAt(0); }).join('').slice(0, 2) : 'MP';
     $('mpDot').style.background = (mp && PARTY_COLOUR[mp.party]) || '';
     $('mpDot').style.color = mp && mp.party === 'Scottish National Party' ? '#041440' : '';
-    $('mpSubj').value = 'Please include MPs and peers in the Hillsborough Law';
-    $('mpMsg').value = mpLetter();
-    setErr('mpMsg');
-    $('mpSend').textContent = 'Send to ' + (mp ? mp.name : 'your MP');
-    document.querySelectorAll('.mp-to').forEach(function (el) { el.textContent = mp ? mp.name + ' MP' : 'your MP'; });
+    $('mpMail').textContent = mp && mp.email ? mp.email : "Your MP's email address appears here";
+    document.querySelector('[data-copy="mpMail"]').disabled = !(mp && mp.email);
+    $('mpSubj').textContent = MP_SUBJECT;
+    $('mpMsg').textContent = mpLetter();
+    document.querySelectorAll('.cp-b').forEach(function (b) { b.classList.remove('done'); b.textContent = 'Copy'; });
     go(3);
   }
-  $('p3').addEventListener('submit', function (e) {
-    e.preventDefault();
-    var msg = $('mpMsg').value.replace(/\s+$/, ''), addr = $('mpAddr').value.trim();
-    if (msg.length < 40) { setErr('mpMsg', 'Please keep a message for your MP, or tap Skip.'); $('mpMsg').focus(); return; }
-    var bad = letterProblem(msg);
-    if (bad) { setErr('mpMsg', bad); $('mpMsg').focus(); return; }
-    // An address they add goes above the postcode at the foot of the letter, if the foot is still ours.
-    if (addr && S.me.pc && msg.slice(-S.me.pc.length) === S.me.pc) msg = msg.slice(0, -S.me.pc.length) + addr + '\n' + S.me.pc;
-    S.mpSent = true;
-    S.letter = { to: S.mp, subject: $('mpSubj').value.trim(), body: msg };
-    toShare();
+  document.querySelectorAll('.cp-b').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var text = $(b.getAttribute('data-copy')).textContent;
+      var shown = function () { b.classList.add('done'); b.textContent = 'Copied'; S.mpCopied = true; };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(shown, function () { selectText($(b.getAttribute('data-copy'))); });
+      } else selectText($(b.getAttribute('data-copy')));
+    });
   });
+  function selectText(el) {
+    var r = document.createRange(); r.selectNodeContents(el);
+    var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r);
+    toast('Selected. Copy it with your phone or keyboard.');
+  }
   $('mpOwn').addEventListener('click', function () {
     var to = S.mp && S.mp.email ? S.mp.email : '';
-    if (PROTO) { toast('On the live page this opens your own email app with the message to ' + (to || 'your MP') + ' ready to send.'); return; }
-    location.href = 'mailto:' + to + '?subject=' + encodeURIComponent($('mpSubj').value) + '&body=' + encodeURIComponent($('mpMsg').value);
+    S.mpCopied = true;
+    if (PROTO) { toast('On the live page this opens your own email app with the email to ' + (to || 'your MP') + ' ready to send.'); return; }
+    location.href = 'mailto:' + to + '?subject=' + encodeURIComponent(MP_SUBJECT) + '&body=' + encodeURIComponent(mpLetter());
   });
+  $('mpDone').addEventListener('click', toShare);
   $('mpSkip').addEventListener('click', toShare);
 
   // ---------------------------------------------------------------- 4: share
   function toShare() {
-    $('confirmTxt').innerHTML = '<b>One last tap.</b> We\'ve emailed you a link at ' + esc(S.me.email) + '. Tap it to confirm your signature' +
-      (S.mpSent ? ' and send your message to ' + esc(S.mp ? S.mp.name : 'your MP') : '') + '.';
+    $('confirmTxt').innerHTML = '<b>One last tap.</b> We\'ve emailed you a link at ' + esc(S.me.email) + '. Tap it to confirm your signature.';
     var t = targetFor(S.count);
     $('shareS').textContent = fmt(t - S.count) + ' more signatures to reach ' + fmt(t) + '. Send it to three people who would sign.';
     $('shareImg').removeAttribute('src');
@@ -1174,7 +1200,6 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   // ---------------------------------------------------------------- 6: done
   function finish() {
     var s = "You're signature number " + fmt(S.myNumber) + '. We will take every signature to Parliament before the vote.';
-    if (S.mpSent) s += ' Your message goes to ' + (S.mp ? S.mp.name : 'your MP') + ' as soon as you tap the link in your email.';
     if (S.me.emailOk) s += " We'll email you when the vote is coming.";
     $('doneS').textContent = s;
     go(6);
@@ -1199,7 +1224,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   // ---------------------------------------------------------------- start
   function start() {
     fresh();
-    ['p1', 'p2', 'p3', 'p5'].forEach(function (id) { $(id).reset(); });
+    ['p1', 'p2', 'p5'].forEach(function (id) { $(id).reset(); });
     ['first', 'last', 'email', 'pc', 'cty', 'otherAmt', 'mpMsg', 'quote'].forEach(function (id) { setErr(id); });
     $('quoteHint').textContent = ''; $('qCount').textContent = '200';
     $('consentErr').textContent = ''; $('emailFix').hidden = true;
