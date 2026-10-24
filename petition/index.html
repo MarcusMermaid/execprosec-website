@@ -933,7 +933,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   // On a phone the card comes after the case, so a Sign button stays at the bottom of the screen
   // until the card is in view or they have signed.
   var cardSeen = false;
-  function updateSticky() { $('sticky').hidden = cardSeen || (S && S.signed); }
+  function updateSticky() { $('sticky').hidden = cardSeen || (S && (S.signed || S.sig)); }
   if ('IntersectionObserver' in window) {
     new IntersectionObserver(function (es) { cardSeen = es[0].isIntersecting; updateSticky(); }, { threshold: 0.1 }).observe($('card'));
   }
@@ -1063,6 +1063,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   function showWait() {
     var dom = (S.me.email.split('@')[1] || '').toLowerCase();
     var box = MAILBOXES.filter(function (m) { return m[0].test(dom); })[0];
+    updateSticky();
     $('wH').textContent = 'Now confirm it in your email inbox.';
     $('wEmail').textContent = S.me.email;
     $('wS').hidden = false;
