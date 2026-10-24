@@ -267,6 +267,18 @@ legend{padding:0;margin:0 0 8px;font-size:14px;font-weight:600;line-height:1.4;c
   width:max-content;max-width:min(440px, calc(100vw - 32px));background:var(--paper);color:var(--ink);padding:12px 16px;border-radius:4px;border-left:4px solid var(--gold);
   box-shadow:0 10px 30px rgba(0,0,0,.4);font-size:14px;line-height:1.45;transition:opacity .2s,transform .2s}
 .toast.on{opacity:1;transform:translate(-50%,0)}
+[hidden]{display:none!important}
+/* ---- confirm in your inbox ---- */
+.mailbig{width:56px;height:56px;margin:2px 0 12px;border-radius:50%;display:grid;place-items:center;background:#eef6f0;color:#174b30}
+.mailbig svg{width:28px;height:28px}
+#wS b{color:var(--ink)}
+.waiting{display:flex;align-items:center;gap:10px;margin:14px 0 10px;font-size:14px;color:var(--muted)}
+.spin{flex:0 0 16px;width:16px;height:16px;border:2px solid var(--rule);border-top-color:var(--navy);border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.btn:disabled{opacity:.65;cursor:default}
+.notice.bad{background:#fbeeee;border-color:#e7bcbc;color:#7a1f1f}
+.pay-back{margin:0 0 12px}
+#payBox{min-height:320px}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
 </style>
 <style>
@@ -316,8 +328,8 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       <p class="explain">End the carve-out for lawmakers (MPs, peers, MSPs, MSs and MLAs) from the duty of candour and the offence of misleading the public in the <a class="bill-link" href="https://bills.parliament.uk/bills/4019" target="_blank" rel="noopener">Public Office (Accountability) Bill</a>,<sup class="ref"><a href="https://bills.parliament.uk/publications/68275/documents/8957#sched_2__para_2__subpara_4__intro" target="_blank" rel="noopener" title="Source 1">1</a></sup> for reckless or intentionally deceitful acts outside the proceedings of their parliaments:<sup class="ref"><a href="https://www.legislation.gov.uk/aep/WillandMarSess2/1/2/introduction" target="_blank" rel="noopener" title="Source 2">2</a></sup> on TV and radio, on social media, at events, etc.</p>
     </div>
     <div class="meter">
-      <div class="live" aria-live="off"><span class="dot" aria-hidden="true"></span><span id="tickTxt"></span></div>
-      <div class="m-top"><span class="m-n" id="countN">0</span><span class="m-l">signatures</span><span class="m-goal">Target <b id="goalN">10,000</b></span></div>
+      <div class="live" id="live" aria-live="off" hidden><span class="dot" aria-hidden="true"></span><span id="tickTxt"></span></div>
+      <div class="m-top"><span class="m-n" id="countN">&hellip;</span><span class="m-l">signatures</span><span class="m-goal">Target <b id="goalN">10,000</b></span></div>
       <div class="bar" role="progressbar" aria-label="Signatures towards the target" aria-valuemin="0" id="bar"><i id="countBar"></i></div>
       <p class="m-sub" id="meterSub"></p>
       <p class="deadline"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/></svg><span id="deadlineTxt"></span></p>
@@ -347,8 +359,21 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       </fieldset>
       <div class="hp" aria-hidden="true"><label>Leave this empty <input id="website" name="website" tabindex="-1" autocomplete="off"></label></div>
       <p class="fine">By signing, you agree to our <a href="/terms" target="_blank" rel="noopener">Terms</a> and <a href="/privacy" target="_blank" rel="noopener">Privacy Notice</a>.</p>
-      <button class="btn" type="submit">Sign the petition</button>
+      <button class="btn" type="submit" id="signBtn">Sign the petition</button>
     </form>
+
+    <!-- 1b: confirm in your inbox. Nobody is told "Done" until they have. -->
+    <div class="panel" id="pw" hidden>
+      <div class="mailbig" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 6L2 7"/></svg></div>
+      <h2 id="wH">Now confirm it in your email inbox.</h2>
+      <p class="sub" id="wS">We've sent an email to <b id="wEmail"></b>. Open it and tap <b>Confirm my signature</b>. Your signature only counts once you've confirmed it.</p>
+      <a class="btn navy" id="wOpen" href="#" target="_blank" rel="noopener" hidden>Open Gmail</a>
+      <p class="waiting"><span class="spin" aria-hidden="true"></span><span id="wWait">Waiting for you to confirm&hellip;</span></p>
+      <div id="wMore">
+        <p class="fine">Can't find it? Check your spam or junk folder.</p>
+        <p class="alt"><button class="link" type="button" id="wResend">Send it again</button> · <button class="link" type="button" id="wChange">Change my email</button></p>
+      </div>
+    </div>
 
     <!-- 2: one statement and their own words -->
     <form class="panel" id="p2" novalidate hidden>
@@ -382,7 +407,8 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
 
     <!-- 4: fund -->
     <form class="panel" id="p4" novalidate hidden>
-      <div class="notice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 6L2 7"/></svg><span id="confirmTxt"></span></div>
+     <div id="fundAsk">
+      <p class="notice bad" id="fundNote" hidden>That payment did not go through, and nothing has been taken. Try again, or use a card instead of a wallet.</p>
       <h2>Make sure Parliament knows we're watching.</h2>
       <p class="sub">This petition is just the start. We need this to be a full national campaign.</p>
       <ul class="funds"><li>Newspaper adverts and open letters</li><li>Billboards and posters</li><li>Social media adverts</li><li>A rally on the day of the vote</li></ul>
@@ -399,11 +425,17 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       <button class="btn" type="submit" id="fundBtn">Back it with £20 a month</button>
       <p class="fine below">Cancel any time. Secure payment by Stripe.</p>
       <button class="link skip" type="button" id="skipFund">Not now</button>
+     </div>
+     <div id="payWrap" hidden>
+      <p class="pay-back"><button class="link" type="button" id="payBack">Back</button></p>
+      <div id="payBox"></div>
+      <p class="fine below">Your card details go straight to Stripe. They never touch our website.</p>
+     </div>
     </form>
 
     <!-- 5: done -->
     <div class="panel" id="p5" hidden>
-      <h2>Thank you, <span class="me-first"></span>.</h2>
+      <h2 id="doneH">Thank you, <span class="me-first"></span>.</h2>
       <p class="sub" id="doneS"></p>
       <a class="btn navy" href="https://www.instagram.com/marcusjball/" target="_blank" rel="noopener">Follow Marcus J Ball on Instagram</a>
     </div>
@@ -611,29 +643,48 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
 (function () {
   'use strict';
 
-  // PROTOTYPE: everything runs in the browser and nothing leaves it, except asking Parliament who
-  // the MP is. The live page takes the count from the server and posts each step to it.
-  var PROTO = true;
-  var START_COUNT = 6240;                    // sample; add ?count=9999 to the address to see a target being passed
+  // Signatures, answers and quotes go to Central, and the count and the recent signers come back
+  // from it. Nothing is sent to an MP for anyone: signers email their MP from their own address.
+  var API = 'https://central-2-mcp-production.up.railway.app/public/';
   // The day of the vote. Not announced yet, so this is our estimate (a Wednesday in early December,
   // when the Lords usually takes its big Report stage votes); set VOTE_ESTIMATED to false once it is confirmed.
   var VOTE_DATE = '2026-12-02';
   var VOTE_ESTIMATED = true;
+  // Where the visitor came from (?ref=ig on a link, or the site that sent them), kept with the signature.
+  var REF = ((location.search.match(/[?&](?:ref|utm_source)=([\w.\-]{1,40})/) || [])[1] ||
+    (function () { try { return new URL(document.referrer).hostname; } catch (e) { return ''; } })()).slice(0, 40);
 
-  // Recent signers, as first name and town. The live page plays out the real ones as they come in;
-  // these samples show how it feels.
-  var RECENT = ['Darren from Norwich', 'Millie from Edinburgh', 'Priya from Leicester', 'Tom from Cardiff', 'Sandra from Liverpool',
-    'Jamal from Birmingham', 'Helen from Bristol', 'Gary from Sunderland', 'Aoife from Belfast', 'Rob from Leeds', 'Kate from Brighton',
-    'Imran from Bradford', 'Sue from Plymouth', 'Callum from Glasgow', 'Jo from Canterbury', 'Megan from Swansea'];
-  // Postcode area to the town people would name. The live page uses the full postcode lookup.
-  var AREAS = { AB: 'Aberdeen', B: 'Birmingham', BA: 'Bath', BD: 'Bradford', BH: 'Bournemouth', BL: 'Bolton', BN: 'Brighton', BR: 'Bromley', BS: 'Bristol',
-    BT: 'Belfast', CB: 'Cambridge', CF: 'Cardiff', CH: 'Chester', CR: 'Croydon', CT: 'Canterbury', CV: 'Coventry', DD: 'Dundee', DE: 'Derby', DH: 'Durham',
-    DN: 'Doncaster', E: 'London', EC: 'London', EH: 'Edinburgh', EX: 'Exeter', G: 'Glasgow', GL: 'Gloucester', GU: 'Guildford', HU: 'Hull', IP: 'Ipswich',
-    IV: 'Inverness', L: 'Liverpool', LE: 'Leicester', LN: 'Lincoln', LS: 'Leeds', M: 'Manchester', ME: 'Kent', MK: 'Milton Keynes', N: 'London',
-    NE: 'Newcastle', NG: 'Nottingham', NN: 'Northampton', NP: 'Newport', NR: 'Norwich', NW: 'London', OX: 'Oxford', PE: 'Peterborough', PL: 'Plymouth',
-    PO: 'Portsmouth', PR: 'Preston', RG: 'Reading', S: 'Sheffield', SA: 'Swansea', SE: 'London', SO: 'Southampton', SR: 'Sunderland', SS: 'Southend',
-    ST: 'Stoke-on-Trent', SW: 'London', TN: 'Tunbridge Wells', TS: 'Teesside', W: 'London', WC: 'London', WV: 'Wolverhampton', YO: 'York' };
-  function townFor(pc) { var m = pc.match(/^([A-Z]{1,2})\d/); return (m && AREAS[m[1]]) || 'the UK'; }
+  // Posted as plain text, so the browser sends it at once without first asking permission.
+  function post(path, body, keep) {
+    return fetch(API + path, { method: 'POST', body: JSON.stringify(body), keepalive: !!keep, headers: { 'Content-Type': 'text/plain;charset=UTF-8' } })
+      .then(function (r) { return r.json().catch(function () { return { ok: false }; }); });
+  }
+  function getJson(path) {
+    return fetch(API + path).then(function (r) { return r.json(); });
+  }
+  // This browser's own key. Signing again from the same browser picks up the same signature;
+  // somebody else typing your email address cannot.
+  function browserKey() {
+    var k = '';
+    try { k = localStorage.getItem('ep_petition_key') || ''; } catch (e) {}
+    if (!/^[A-Za-z0-9_-]{20,64}$/.test(k)) {
+      var a = new Uint8Array(18);
+      (window.crypto || window.msCrypto).getRandomValues(a);
+      k = Array.prototype.map.call(a, function (b) { return ('0' + b.toString(16)).slice(-2); }).join('');
+      try { localStorage.setItem('ep_petition_key', k); } catch (e) {}
+    }
+    return k;
+  }
+  // One page view to the site's own analytics, so the morning report can say how many visited and
+  // did not sign. Clicks are not sent from this page: under a crowd they would be thousands a minute.
+  (function () {
+    var sid = '';
+    try { sid = localStorage.getItem('mjb_sid') || ''; if (!sid) { sid = 's_' + Math.random().toString(36).slice(2) + Date.now().toString(36); localStorage.setItem('mjb_sid', sid); } } catch (e) {}
+    try {
+      var b = JSON.stringify({ site: 'execprosec', event: 'pageview', page: location.pathname.slice(0, 300), session_id: sid, referrer: (document.referrer || '').slice(0, 300) });
+      if (navigator.sendBeacon) navigator.sendBeacon(API + 'analytics', new Blob([b], { type: 'text/plain' }));
+    } catch (e) {}
+  })();
 
   var $ = function (id) { return document.getElementById(id); };
   var fmt = function (n) { return Number(n).toLocaleString('en-GB'); };
@@ -711,28 +762,74 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   $('likert').addEventListener('change', function (e) {
     var row = e.target.closest('.lk-row');
     if (!row) return;
-    S.answers[row.getAttribute('data-id')] = +e.target.value;   // the live page posts this to the server here
-    row.querySelector('.lk-saved').hidden = false;
+    S.answers[row.getAttribute('data-id')] = +e.target.value;
+    clearTimeout(ansTimer);
+    ansTimer = setTimeout(function () { sendAnswers(false, 0); }, 250);
   });
+  // All the answers so far go each time, so a lost request costs nothing. "Answer recorded"
+  // only shows once the server has it.
+  var ansTimer;
+  function sendAnswers(keep, tries) {
+    var batch = {}, n = 0;
+    for (var k in S.answers) { batch[k] = S.answers[k]; n++; }
+    if (!n || !S.key) return;
+    post('petition/answer', { sig: S.sig, key: S.key, answers: batch }, keep).then(function (d) {
+      if (!d.ok) return;
+      for (var id in batch) {
+        var row = $('likert').querySelector('[data-id="' + id + '"]');
+        if (row && S.answers[id] === batch[id]) row.querySelector('.lk-saved').hidden = false;
+      }
+    }, function () { if (tries < 2) setTimeout(function () { sendAnswers(keep, tries + 1); }, 3000); });
+  }
 
-  // ---------------------------------------------------------------- live feed and deadline
-  // Every few seconds the next recent signer appears and the count goes up by one, so the page
-  // moves while people read it.
-  var tickN = 0, tickHold = 0;
+  // ---------------------------------------------------------------- live count, feed and deadline
+  // The count and the most recent signers come from Central, which serves them from memory, so a
+  // crowd costs it almost nothing. Only confirmed signatures are counted or shown, and each name
+  // says how long ago it was, so nothing on the page is invented.
+  var feed = [], feedN = 0, feedHold = 0, statsAt = 0, pageAt = Date.now(), statsLoaded = false;
+  function ago(secs) {
+    var m = Math.round(secs / 60);
+    if (m < 60) return m + (m === 1 ? ' minute ago' : ' minutes ago');
+    var h = Math.round(m / 60);
+    if (h < 24) return h + (h === 1 ? ' hour ago' : ' hours ago');
+    var d = Math.round(h / 24);
+    return d + (d === 1 ? ' day ago' : ' days ago');
+  }
   function showSigner(html) {
     var el = $('tickTxt');
     el.classList.add('out');
     setTimeout(function () { el.innerHTML = html; el.classList.remove('out'); }, reduced ? 0 : 300);
   }
-  function tick() {
-    if (Date.now() < tickHold) return;
-    showSigner(esc(RECENT[tickN++ % RECENT.length]) + ' has just signed');
-    S.count++;
-    renderMeter(false);
-    $('countN').classList.add('bump');
-    setTimeout(function () { $('countN').classList.remove('bump'); }, 600);
+  function playFeed() {
+    if (Date.now() < feedHold || document.hidden) return;
+    if (!feed.length) { if (!S.signed) $('live').hidden = true; return; }
+    $('live').hidden = false;
+    var f = feed[feedN++ % feed.length], secs = f.ago + (Date.now() - statsAt) / 1000;
+    showSigner(esc(f.name) + ' from ' + esc(f.town) + (secs < 120 ? ' has just signed' : ' signed ' + ago(secs)));
   }
-  function nextTick() { setTimeout(function () { tick(); nextTick(); }, 3200 + Math.random() * 3600); }
+  function loadStats(first) {
+    getJson('petition/stats').then(function (d) {
+      if (!d || !d.ok) throw new Error('no stats');
+      statsAt = Date.now();
+      feed = d.recent || [];
+      feedN = 0;
+      var grew = d.count > S.count;
+      S.count = Math.max(S.count, d.count);
+      if (first || !statsLoaded) { statsLoaded = true; renderMeter(true); playFeed(); return; }
+      if (grew) {
+        renderMeter(false);
+        $('countN').classList.add('bump');
+        setTimeout(function () { $('countN').classList.remove('bump'); }, 600);
+      }
+    }).catch(function () { if (!statsLoaded) { statsLoaded = true; renderMeter(false); } });
+  }
+  // A fresh count every 30 seconds while the page is on screen, for the first 20 minutes.
+  function nextStats() {
+    setTimeout(function () {
+      if (!document.hidden && Date.now() - pageAt < 20 * 60000) loadStats(false);
+      nextStats();
+    }, 30000);
+  }
   function renderDeadline() {
     var d = new Date(VOTE_DATE + 'T00:00:00'), days = Math.ceil((d - new Date()) / 86400000);
     var when = d.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' });
@@ -814,8 +911,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   // ---------------------------------------------------------------- state
   var S;
   function fresh() {
-    var q = (location.search.match(/[?&]count=(\d+)/) || [])[1];
-    S = { count: q ? +q : START_COUNT, signed: false, me: null, mp: null, answers: {}, code: '', abroad: false };
+    S = { count: 0, signed: false, me: null, mp: null, answers: {}, abroad: false, sig: 0, key: '', myNumber: 0 };
   }
 
   var toastTimer;
@@ -846,14 +942,17 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   });
 
   function go(n, quiet) {
+    var w = n === 'w';                                  // the "confirm it in your inbox" screen
+    $('pw').hidden = !w;
+    if (w) waitStart(); else waitStop();
     for (var i = 1; i <= 5; i++) $('p' + i).hidden = i !== n;
     var dots = $('dots').children;
     for (var j = 0; j < dots.length; j++) dots[j].classList.toggle('on', j < n);
     $('stepLbl').textContent = n <= 4 ? 'Step ' + n + ' of 4' : 'Done';
-    $('card').classList.toggle('first', n === 1);   // the step bar appears once they have signed
+    $('card').classList.toggle('first', n === 1 || w);   // the step bar appears once they have confirmed
     pinCard();
     if (quiet) return;
-    var h = $('p' + n).querySelector('h2');
+    var h = $(w ? 'pw' : 'p' + n).querySelector('h2');
     if (h) { h.setAttribute('tabindex', '-1'); h.focus({ preventScroll: true }); }
     var top = $('card').getBoundingClientRect().top;
     if (top < 0 || top > window.innerHeight * 0.5) $('card').scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
@@ -922,31 +1021,141 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       if (bad) bad.focus();
       return;
     }
+    var btn = $('signBtn');
+    btn.disabled = true;
+    btn.textContent = 'Signing\u2026';
+    var body = { first: first, last: last, email: email, consent: consent.value, key: browserKey(), ref: REF, website: $('website').value };
+    if (S.abroad) body.country = cty; else body.pc = pc;
+    var done = function () { btn.disabled = false; btn.textContent = 'Sign the petition'; };
+    post('petition/sign', body).then(function (d) {
+      done();
+      if (!d.ok) {
+        var field = d.field === 'pc' && S.abroad ? 'cty' : d.field;
+        if (field === 'consent') $('consentErr').textContent = d.reason;
+        else if (field && $(field)) { setErr(field, d.reason); $(field).focus(); }
+        else toast(d.reason || 'Something went wrong. Please try again.');
+        return;
+      }
+      S.sig = d.sig;
+      S.key = d.key || '';
+      S.me = { first: cap(first), last: cap(last), email: email, emailOk: consent.value === 'yes', town: d.town || 'the UK',
+        pc: S.abroad ? '' : pc.replace(/^(.+)(\d[A-Z]{2})$/, '$1 $2') };
+      findMp(S.abroad ? '' : pc);
+      if (d.confirmed) { confirmed({ number: 0, already: true }); return; }
+      showWait();
+    }, function () {
+      done();
+      toast("We couldn't reach our server. Check your connection and try again.");
+    });
+  });
+
+  // ---------------------------------------------------------------- 1b: confirm in your inbox
+  // A signature only counts once its owner has tapped the link we email them. This screen sends
+  // them to their inbox, and moves on by itself the moment they confirm, here or on another device.
+  var MAILBOXES = [
+    [/^(gmail|googlemail)\.com$/, 'Open Gmail', 'https://mail.google.com/mail/u/0/#search/from%3Aexecprosec+in%3Aanywhere'],
+    [/^(hotmail|outlook|live|msn)\.(com|co\.uk)$/, 'Open Outlook', 'https://outlook.live.com/mail/0/'],
+    [/^(yahoo|ymail)\.(com|co\.uk)$/, 'Open Yahoo Mail', 'https://mail.yahoo.com/'],
+    [/^(icloud|me|mac)\.com$/, 'Open iCloud Mail', 'https://www.icloud.com/mail/'],
+    [/^(proton\.me|protonmail\.com)$/, 'Open Proton Mail', 'https://mail.proton.me/']
+  ];
+  function showWait() {
+    var dom = (S.me.email.split('@')[1] || '').toLowerCase();
+    var box = MAILBOXES.filter(function (m) { return m[0].test(dom); })[0];
+    $('wH').textContent = 'Now confirm it in your email inbox.';
+    $('wEmail').textContent = S.me.email;
+    $('wS').hidden = false;
+    $('wOpen').hidden = !box;
+    if (box) { $('wOpen').textContent = box[1]; $('wOpen').href = box[2]; }
+    $('wWait').textContent = 'Waiting for you to confirm\u2026';
+    $('wMore').hidden = false;
+    $('wResend').hidden = !S.key;
+    go('w');
+  }
+  var waitTimer = 0, waitUntil = 0;
+  function waitStart() { waitStop(); waitUntil = Date.now() + 30 * 60000; waitTimer = setTimeout(checkConfirmed, 4000); }
+  function waitStop() { clearTimeout(waitTimer); waitTimer = 0; }
+  function checkConfirmed() {
+    waitTimer = 0;
+    if ($('pw').hidden || !S.sig || Date.now() > waitUntil) return;
+    if (document.hidden) { waitTimer = setTimeout(checkConfirmed, 4000); return; }
+    getJson('petition/status?sig=' + S.sig).then(function (d) {
+      if ($('pw').hidden) return;
+      if (d && d.confirmed) { confirmed({ number: d.number, count: S.count + 1 }); return; }
+      waitTimer = setTimeout(checkConfirmed, 4000);
+    }, function () { waitTimer = setTimeout(checkConfirmed, 8000); });
+  }
+  // Back from the email app: look straight away rather than at the next tick.
+  document.addEventListener('visibilitychange', function () {
+    if (!document.hidden && !$('pw').hidden && S.sig && waitTimer) { waitStop(); checkConfirmed(); }
+  });
+  $('wResend').addEventListener('click', function () {
+    var b = this;
+    b.disabled = true;
+    post('petition/resend', { sig: S.sig, key: S.key }).then(function (d) {
+      b.disabled = false;
+      if (d.confirmed) { checkConfirmed(); return; }
+      toast(d.ok ? 'Sent again to ' + S.me.email + '. It can take a minute to arrive.' : (d.reason || 'Please try again in a minute.'));
+    }, function () { b.disabled = false; toast("We couldn't reach our server. Please try again."); });
+  });
+  $('wChange').addEventListener('click', function () {
+    go(1);
+    $('email').focus();
+    $('email').select();
+  });
+
+  // The link in the email opens this page with its token. The page confirms it (a click, not just
+  // opening the link, so an email scanner checking links can't confirm for somebody), then carries on.
+  function confirmFromLink(t) {
+    $('wH').textContent = 'Confirming your signature\u2026';
+    $('wS').hidden = true; $('wOpen').hidden = true; $('wMore').hidden = true;
+    $('wWait').textContent = 'One moment\u2026';
+    go('w', true);
+    post('petition/confirm', { t: t }).then(function (d) {
+      try { history.replaceState({}, '', location.pathname); } catch (e) {}
+      if (!d.ok) { go(1, true); toast(d.reason || "That link didn't work. Try tapping it in the email again."); return; }
+      S.sig = d.sig;
+      S.key = d.key || '';
+      S.abroad = !!d.country;
+      S.me = { first: d.first, last: d.last, email: d.email, emailOk: !!d.email_ok, town: d.town || d.country || 'the UK', pc: d.pc || '' };
+      findMp(S.abroad ? '' : (d.pc || '').replace(/\s+/g, ''));
+      confirmed(d);
+    }, function () {
+      go(1, true);
+      toast("We couldn't reach our server to confirm. Tap the link in the email again in a moment.");
+    });
+  }
+
+  // Confirmed: now, and only now, they are told it is done.
+  function confirmed(d) {
+    var number = d.number || 0;
     S.signed = true;
     updateSticky();
-    buildLikert();
-    S.me = { first: cap(first), last: cap(last), email: email, emailOk: consent.value === 'yes', town: S.abroad ? cap(cty) : townFor(pc),
-      pc: S.abroad ? '' : pc.replace(/^(.+)(\d[A-Z]{2})$/, '$1 $2') };
-    S.code = Math.random().toString(36).slice(2, 8).toUpperCase();
-    findMp(pc);
-    var before = targetFor(S.count);
-    S.count++;
-    S.myNumber = S.count;
+    S.myNumber = number;
+    S.count = Math.max(S.count, d.count || 0, number);
     renderMeter(false);
-    // They see themselves appear in the live feed, and the feed waits a moment so they can.
-    tickHold = Date.now() + 7000;
-    showSigner('<b>' + esc(S.me.first) + ' from ' + esc(S.abroad ? cap(cty) : townFor(pc)) + '</b> has just signed. That\'s you.');
-    document.querySelectorAll('.me-first').forEach(function (el) { el.textContent = S.me.first; });
-    // The signer sees exactly what their signature did: the number they are, and how close we now are.
-    if (S.count >= before) {
-      $('thanksH').textContent = 'Done. You took us to ' + fmt(before) + '!';
-      $('thanksS').textContent = 'Your signature is in. New target: ' + fmt(targetFor(S.count)) + '. Want to help more? Tell us how far you agree with these. Each answer is recorded as soon as you tap it, and we quote the results to journalists and parliamentarians.';
-    } else {
-      $('thanksH').textContent = "Done. You're signature number " + fmt(S.myNumber) + '.';
-      $('thanksS').textContent = 'Your signature is in. Want to help more? Tell us how far you agree with these. Each answer is recorded as soon as you tap it, and we quote the results to journalists and parliamentarians.';
+    if (!d.already) {
+      feedHold = Date.now() + 8000;
+      $('live').hidden = false;
+      showSigner('<b>' + esc(S.me.first) + ' from ' + esc(S.me.town) + '</b> has just signed. That\'s you.');
     }
+    document.querySelectorAll('.me-first').forEach(function (el) { el.textContent = S.me.first; });
+    var reached = number && number >= targetFor(number - 1) ? targetFor(number - 1) : 0;
+    var more = 'Want to help more? Tell us how far you agree with these. Each answer is recorded as soon as you tap it, and we quote the results to journalists and parliamentarians.';
+    if (d.already) {
+      $('thanksH').textContent = "You've already signed, " + S.me.first + '. Thank you.';
+      $('thanksS').textContent = 'Your signature is confirmed. ' + more;
+    } else if (reached) {
+      $('thanksH').textContent = 'Done. You took us to ' + fmt(reached) + '!';
+      $('thanksS').textContent = 'Your signature is confirmed. New target: ' + fmt(targetFor(number)) + '. ' + more;
+    } else {
+      $('thanksH').textContent = number ? "Done. You're signature number " + fmt(number) + '.' : 'Done. Your signature is confirmed.';
+      $('thanksS').textContent = 'Your signature is confirmed. ' + more;
+    }
+    if (!S.key) { toMp(); return; }       // signed from another browser: their answers can't be kept here
+    buildLikert();
     go(2);
-  });
+  }
 
   // ---------------------------------------------------------------- 2: one statement and their own words
   var qTimer;
@@ -969,17 +1178,18 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     var r = quoteCheck(t);
     if (!r.ok) { setErr('quote', r.msg); $('quote').focus(); return false; }
     S.quote = { t: t, held: !!r.hold };
+    if (S.key) post('petition/quote', { sig: S.sig, key: S.key, text: t }, true).catch(function () {});
     return true;
   }
-  $('p2').addEventListener('submit', function (e) { e.preventDefault(); if (saveAnswers(true)) toMp(); });
-  $('skipQs').addEventListener('click', function () { saveAnswers(false); toMp(); });
+  $('p2').addEventListener('submit', function (e) { e.preventDefault(); if (saveAnswers(true)) { sendAnswers(true, 0); toMp(); } });
+  $('skipQs').addEventListener('click', function () { saveAnswers(false); sendAnswers(true, 0); toMp(); });
 
   // ---------------------------------------------------------------- 3: your MP
   // Parliament's petition site shows you your MP's page and leaves the rest to you. We find the MP
   // from the postcode, write the letter from their answers, and send it with one tap.
   function findMp(pc) {
     S.mp = null;
-    if (S.abroad) return;
+    if (S.abroad || !pc) return;
     var m = MPS[pc];
     if (m) { S.mp = { seat: m[0], name: m[1], party: m[2], email: m[3] }; return; }
     var api = 'https://members-api.parliament.uk/api/';
@@ -1011,7 +1221,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     if (S.abroad) { toFund(); return; }
     var mp = S.mp;
     $('mpName').textContent = mp ? mp.name + ' MP' : 'Your MP';
-    $('mpSeat').textContent = mp ? mp.party + ' · ' + mp.seat : 'Found from your postcode on the live page';
+    $('mpSeat').textContent = mp ? mp.party + ' · ' + mp.seat : 'We couldn\'t look up your MP just now. Find their email at members.parliament.uk';
     $('mpDot').textContent = mp ? mp.name.replace(/^(Dame|Sir|Dr) /, '').split(' ').map(function (w) { return w.charAt(0); }).join('').slice(0, 2) : 'MP';
     $('mpDot').style.background = (mp && PARTY_COLOUR[mp.party]) || '';
     $('mpDot').style.color = mp && mp.party === 'Scottish National Party' ? '#041440' : '';
@@ -1039,7 +1249,6 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   $('mpOwn').addEventListener('click', function () {
     var to = S.mp && S.mp.email ? S.mp.email : '';
     S.mpCopied = true;
-    if (PROTO) { toast('On the live page this opens your own email app with the email to ' + (to || 'your MP') + ' ready to send.'); return; }
     location.href = 'mailto:' + to + '?subject=' + encodeURIComponent(MP_SUBJECT) + '&body=' + encodeURIComponent(mpLetter());
   });
   $('mpDone').addEventListener('click', toFund);
@@ -1049,8 +1258,14 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   // Their videos travel further than any graphic would, so after the MP email it is straight to
   // funding, and the thank-you points to Marcus's Instagram.
   function toFund() {
-    $('confirmTxt').innerHTML = '<b>One last tap.</b> We\'ve emailed you a link at ' + esc(S.me.email) + '. Tap it to confirm your signature.';
+    showAsk();
     go(4);
+  }
+  function showAsk() {
+    if (S.checkout) { try { S.checkout.destroy(); } catch (e) {} S.checkout = null; }
+    $('payBox').innerHTML = '';
+    $('payWrap').hidden = true;
+    $('fundAsk').hidden = false;
   }
   $('p4').addEventListener('change', function (e) {
     if (e.target.name !== 'amt') return;
@@ -1073,14 +1288,71 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     var a = fundAmount();
     if (a < 10) { setErr('otherAmt', 'The minimum is £10 a month.'); $('otherAmt').focus(); return; }
     setErr('otherAmt');
-    if (PROTO) toast('On the live page this opens the secure card form for £' + fmt(a) + ' a month, the same one as on the home page.');
-    finish();
+    var btn = $('fundBtn');
+    btn.disabled = true;
+    btn.textContent = 'One moment\u2026';
+    $('fundNote').hidden = true;
+    // Stripe sends them back to this page when they have paid; this is what it needs to say thank you.
+    try { sessionStorage.setItem('ep_petition_me', JSON.stringify({ first: S.me.first, number: S.myNumber, emailOk: S.me.emailOk })); } catch (e) {}
+    post('donate/session', { tier: 'monthly_custom', amount: a, return_url: location.origin + location.pathname }).then(function (d) {
+      if (!d || !d.ok || !d.client_secret) throw new Error('no checkout');
+      return stripeJs().then(function () { return Stripe(d.publishable_key).initEmbeddedCheckout({ clientSecret: d.client_secret }); });
+    }).then(function (checkout) {
+      S.checkout = checkout;
+      $('fundAsk').hidden = true;
+      $('payWrap').hidden = false;
+      checkout.mount('#payBox');
+      btn.disabled = false;
+      fundLabel();
+    }).catch(function () {
+      btn.disabled = false;
+      fundLabel();
+      toast("The card form didn't load. Please try again in a moment.");
+    });
   });
+  $('payBack').addEventListener('click', showAsk);
+  function stripeJs() {
+    return new Promise(function (ok, fail) {
+      if (window.Stripe) { ok(); return; }
+      var tag = document.createElement('script');
+      tag.src = 'https://js.stripe.com/v3/';
+      tag.onload = ok;
+      tag.onerror = fail;
+      document.head.appendChild(tag);
+    });
+  }
+  // Back from Stripe. A checkout can finish while its first payment failed, so only "paid" counts as
+  // money received; a Direct Debit still being set up is the honest exception.
+  function backFromStripe(id) {
+    var me = {};
+    try { me = JSON.parse(sessionStorage.getItem('ep_petition_me') || '{}') || {}; } catch (e) {}
+    S.me = { first: me.first || '', emailOk: !!me.emailOk };
+    S.myNumber = me.number || 0;
+    S.signed = true;
+    updateSticky();
+    document.querySelectorAll('.me-first').forEach(function (el) { el.textContent = S.me.first; });
+    if (!S.me.first) $('doneH').textContent = 'Thank you.';
+    $('doneS').textContent = 'Checking your payment\u2026';
+    go(5, true);
+    getJson('donate/status?session_id=' + encodeURIComponent(id)).then(function (d) {
+      try { history.replaceState({}, '', location.pathname); } catch (e) {}
+      var paid = !!(d && d.ok && (d.paid === true || d.payment_status === 'paid'));
+      var pending = !paid && !!(d && d.ok && d.pending === true);
+      if (paid || pending) {
+        var amt = d.amount_total ? '£' + Number(d.amount_total).toFixed(0) + ' a month' : 'monthly backing';
+        $('doneS').textContent = 'Your ' + amt + (pending ? ' is set up' : ' is with us') + '. It goes on the adverts, the billboards and the rally that make sure Parliament knows we\'re watching. ' +
+          (pending ? 'Your Direct Debit takes a few working days to start. ' : '') + 'Stripe has emailed your receipt, with a link to change or stop it any time.';
+        return;
+      }
+      toFund();
+      $('fundNote').hidden = false;
+    }).catch(function () { $('doneS').textContent = 'Thank you. Stripe will email you a receipt.'; });
+  }
   $('skipFund').addEventListener('click', finish);
 
   // ---------------------------------------------------------------- 5: done
   function finish() {
-    var s = "You're signature number " + fmt(S.myNumber) + '. We will take every signature to Parliament before the vote.';
+    var s = (S.myNumber ? "You're signature number " + fmt(S.myNumber) + '. ' : '') + 'We will take every signature to Parliament before the vote.';
     if (S.me.emailOk) s += " We'll email you when the vote is coming.";
     $('doneS').textContent = s;
     go(5);
@@ -1111,15 +1383,18 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     $('pcWrap').hidden = false; $('ctyWrap').hidden = true; $('otherWrap').hidden = true; $('abroadBtn').textContent = 'Not in the UK?';
     fundLabel();
     go(1, true);
-    renderMeter(true);
     renderDeadline();
-    tickN = 1; tickHold = 0;
-    $('tickTxt').textContent = RECENT[0] + ' has just signed';
+    var q = location.search;
+    var token = (q.match(/[?&]c=([A-Za-z0-9_-]{20,64})/) || [])[1];
+    var paid = (q.match(/[?&]session_id=(cs_[A-Za-z0-9_]+)/) || [])[1];
+    if (token) confirmFromLink(token);
+    else if (paid) backFromStripe(paid);
+    loadStats(true);
   }
   start();
   updateSticky();
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(pinCard);
-  nextTick();
+  setInterval(playFeed, 5200);
+  nextStats();
 })();
 </script>
 </body>
