@@ -252,14 +252,6 @@ legend{padding:0;margin:0 0 8px;font-size:14px;font-weight:600;line-height:1.4;c
 .notice{display:flex;gap:10px;align-items:flex-start;margin:0 0 16px;padding:12px 14px;background:#eef6f0;border:1px solid #b9dcc5;border-radius:4px;font-size:14px;line-height:1.45;color:#174b30}
 .notice svg{flex:0 0 20px;width:20px;height:20px;margin-top:1px}
 
-.sharewrap{display:grid;grid-template-columns:126px minmax(0,1fr);gap:14px;align-items:start;margin-bottom:14px}
-.sharewrap img{width:126px;aspect-ratio:9/16;height:auto;border-radius:6px;box-shadow:0 6px 18px rgba(4,20,64,.25);background:var(--navy)}
-.shares{display:flex;flex-direction:column;gap:8px;min-width:0}
-.sh{display:flex;align-items:center;gap:10px;min-height:44px;padding:0 12px;border:1.5px solid var(--field);border-radius:3px;background:var(--paper);
-  color:var(--ink);font-weight:600;font-size:14px;cursor:pointer;text-align:left}
-.sh svg{width:19px;height:19px;flex:0 0 19px}
-.sh.wa{background:#25d366;border-color:#25d366;color:#06361a}
-@media(max-width:350px){.sharewrap{grid-template-columns:1fr}}
 
 .funds{display:flex;flex-wrap:wrap;gap:6px 16px;margin:0 0 16px;padding:0;list-style:none;font-size:13.5px}
 .funds li{display:flex;align-items:center;gap:7px}
@@ -306,7 +298,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   <nav class="nav-links">
     <a href="/petition/" class="active" aria-current="page">Petition</a>
     <a href="/poabamendments">Amendments</a>
-    <a href="/hol-briefing" title="House of Lords briefing">HOL Briefing</a>
+    <a href="/poabbriefing" title="Public Office (Accountability) Bill briefing">POAB Briefing</a>
     <a href="/lying-in-politics">Lying in Politics</a>
     <a href="/news">News</a>
     <a href="/testimonials">Testimonials</a>
@@ -330,7 +322,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       <p class="m-sub" id="meterSub"></p>
       <p class="deadline"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/></svg><span id="deadlineTxt"></span></p>
     </div>
-    <div class="stephead"><ol class="steps" id="dots" aria-hidden="true"><li class="on"></li><li></li><li></li><li></li><li></li></ol><span id="stepLbl">Step 1 of 5</span></div>
+    <div class="stephead"><ol class="steps" id="dots" aria-hidden="true"><li class="on"></li><li></li><li></li><li></li></ol><span id="stepLbl">Step 1 of 4</span></div>
 
     <!-- 1: sign -->
     <form class="panel" id="p1" novalidate>
@@ -388,29 +380,12 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       <p class="alt"><button class="link" type="button" id="mpOwn">Open it in my email app</button> · <button class="link" type="button" id="mpSkip">Skip</button></p>
     </div>
 
-    <!-- 4: share -->
-    <div class="panel" id="p4" hidden>
+    <!-- 4: fund -->
+    <form class="panel" id="p4" novalidate hidden>
       <div class="notice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 6L2 7"/></svg><span id="confirmTxt"></span></div>
-      <h2>Now share it.</h2>
-      <p class="sub" id="shareS"></p>
-      <div class="sharewrap">
-        <img id="shareImg" alt="Your picture to share" width="126" height="224">
-        <div class="shares">
-          <button class="sh wa" type="button" data-share="wa"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5z"/></svg>WhatsApp</button>
-          <button class="sh" type="button" data-share="ig"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.4A4 4 0 1 1 12.6 8 4 4 0 0 1 16 11.4z"/><path d="M17.5 6.5h.01"/></svg>Instagram</button>
-          <button class="sh" type="button" data-share="fb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>Facebook</button>
-          <button class="sh" type="button" data-share="x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4l16 16M20 4L4 20"/></svg>X</button>
-          <button class="sh" type="button" data-share="copy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.8 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg>Copy link</button>
-        </div>
-      </div>
-      <button class="btn navy" type="button" id="toFund">Next: pay for the adverts</button>
-    </div>
-
-    <!-- 5: fund -->
-    <form class="panel" id="p5" novalidate hidden>
       <h2>Make sure Parliament knows we're watching.</h2>
-      <p class="sub">A petition is easy to ignore. Adverts in the papers, on the Tube and on the radio are not.</p>
-      <ul class="funds"><li>Newspaper adverts</li><li>Tube adverts</li><li>Radio adverts</li><li>A protest on the day of the vote</li></ul>
+      <p class="sub">A petition is easy to ignore. Full-page adverts in the papers, billboards, and vans driving round Westminster are not.</p>
+      <ul class="funds"><li>Newspaper adverts and open letters</li><li>Billboards and posters</li><li>Ad vans around Westminster</li><li>Facebook and Instagram adverts</li><li>A protest on the day of the vote</li></ul>
       <fieldset>
         <legend>Back the campaign every month</legend>
         <div class="amts">
@@ -426,11 +401,11 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       <button class="link skip" type="button" id="skipFund">Not now</button>
     </form>
 
-    <!-- 6: done -->
-    <div class="panel" id="p6" hidden>
+    <!-- 5: done -->
+    <div class="panel" id="p5" hidden>
       <h2>Thank you, <span class="me-first"></span>.</h2>
       <p class="sub" id="doneS"></p>
-      <button class="btn navy" type="button" id="shareAgain">Share the petition again</button>
+      <a class="btn navy" href="https://www.instagram.com/marcusjball/" target="_blank" rel="noopener">Follow Marcus J Ball on Instagram</a>
     </div>
   </div>
  </div>
@@ -711,10 +686,10 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   var STATEMENTS = [
     { id: 's1', t: 'MPs and peers who vote to put civil servants, police officers, soldiers, ministers and even spies under the Hillsborough Law, but not themselves, are hypocrites: a law for thee, but not for me.' },
     { id: 's2', t: 'Lawmakers should be held to at least the same standard of honesty as civil servants and police officers.' },
-    { id: 's3', t: 'If MPs and peers vote to exempt themselves, I will trust Parliament much less.' },
-    { id: 's4', t: 'Recklessly or intentionally lying to the public to justify going to war should be a crime.' },
+    { id: 's3', t: 'If legislators vote to exempt themselves, I will trust the Parliaments of the UK much less.' },
+    { id: 's4', t: 'Recklessly or intentionally lying to the public to justify starting a war should be a crime (this would exclude justifiable national security matters).' },
     { id: 's5', t: 'Recklessly or intentionally lying to the public to manipulate a referendum result should be a crime.' },
-    { id: 's6', t: 'If the misleading the public offence applies to Government ministers but not to the opposition or backbenchers, democracy will be destabilised.' },
+    { id: 's6', t: 'If the misleading the public offence applies to Government ministers but not to the opposition or backbenchers, democracy will be dangerously destabilised.' },
     { id: 's7', t: 'Elections and criminal courts do different jobs: being elected should not put a lawmaker above the criminal law.' }
   ];
   // Everyone is asked about every statement, in a shuffled order so no statement always gets the
@@ -871,10 +846,10 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   });
 
   function go(n, quiet) {
-    for (var i = 1; i <= 6; i++) $('p' + i).hidden = i !== n;
+    for (var i = 1; i <= 5; i++) $('p' + i).hidden = i !== n;
     var dots = $('dots').children;
     for (var j = 0; j < dots.length; j++) dots[j].classList.toggle('on', j < n);
-    $('stepLbl').textContent = n <= 5 ? 'Step ' + n + ' of 5' : 'Done';
+    $('stepLbl').textContent = n <= 4 ? 'Step ' + n + ' of 4' : 'Done';
     $('card').classList.toggle('first', n === 1);   // the step bar appears once they have signed
     pinCard();
     if (quiet) return;
@@ -1027,11 +1002,14 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     var mp = S.mp, me = S.me;
     return 'Dear ' + (mp ? mp.name + ' MP' : '[your MP]') + ',\n\n' +
       'I am your constituent' + (me.pc ? ' (' + me.pc + ')' : '') + ' and I have signed the petition to include all lawmakers under the Hillsborough Law.\n\n' +
-      'Please support ending the carve-out for lawmakers (MPs, peers, MSPs, MSs and MLAs) from the duty of candour and the offence of misleading the public in the Public Office (Accountability) Bill, for reckless or intentionally deceitful acts outside the proceedings of their parliaments.\n\n' +
+      'The Public Office (Accountability) Bill will make it a crime for police officers, civil servants, soldiers, ministers and even the intelligence services to deliberately or recklessly mislead the public. Yet MPs and peers have left themselves out.\n\n' +
+      'If Parliament votes to exempt its own members, I will feel angry and betrayed, and I will trust Parliament far less. A law for everyone else but not for the people who make it is a law for thee, but not for me.\n\n' +
+      'I urge you to support ending the carve-out for lawmakers (MPs, peers, MSPs, MSs and MLAs) from the duty of candour and the offence of misleading the public, for reckless or intentionally deceitful acts outside the proceedings of their parliaments. Please tell me how you will vote.\n\n' +
+      'Detailed briefing: https://execprosec.org/poabbriefing\n\n' +
       'Yours sincerely,\n' + me.first + ' ' + me.last + (me.pc ? '\n' + me.pc : '');
   }
   function toMp() {
-    if (S.abroad) { toShare(); return; }
+    if (S.abroad) { toFund(); return; }
     var mp = S.mp;
     $('mpName').textContent = mp ? mp.name + ' MP' : 'Your MP';
     $('mpSeat').textContent = mp ? mp.party + ' · ' + mp.seat : 'Found from your postcode on the live page';
@@ -1065,113 +1043,17 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     if (PROTO) { toast('On the live page this opens your own email app with the email to ' + (to || 'your MP') + ' ready to send.'); return; }
     location.href = 'mailto:' + to + '?subject=' + encodeURIComponent(MP_SUBJECT) + '&body=' + encodeURIComponent(mpLetter());
   });
-  $('mpDone').addEventListener('click', toShare);
-  $('mpSkip').addEventListener('click', toShare);
+  $('mpDone').addEventListener('click', toFund);
+  $('mpSkip').addEventListener('click', toFund);
 
-  // ---------------------------------------------------------------- 4: share
-  function toShare() {
+  // ---------------------------------------------------------------- 4: fund
+  // Their videos travel further than any graphic would, so after the MP email it is straight to
+  // funding, and the thank-you points to Marcus's Instagram.
+  function toFund() {
     $('confirmTxt').innerHTML = '<b>One last tap.</b> We\'ve emailed you a link at ' + esc(S.me.email) + '. Tap it to confirm your signature.';
-    var t = targetFor(S.count);
-    $('shareS').textContent = fmt(t - S.count) + ' more signatures to reach ' + fmt(t) + '. Send it to three people who would sign.';
-    $('shareImg').removeAttribute('src');
     go(4);
-    buildCard();
   }
-  function shareLink() { return 'https://execprosec.org/petition?r=' + S.code; }
-  var SHARE_SAYS = {
-    wa: 'opens WhatsApp with your link ready to send', fb: 'opens Facebook with your link ready to post',
-    x: 'opens X with your link ready to post', copy: 'copies your personal link',
-    ig: 'saves this picture to your phone for your Instagram story'
-  };
-  document.querySelectorAll('[data-share]').forEach(function (b) {
-    b.addEventListener('click', function () {
-      var k = b.getAttribute('data-share');
-      // The prototype never sends anyone to the petition address: it isn't live yet.
-      if (PROTO) {
-        toast(k === 'ig' ? 'On the live page this saves the picture for your Instagram story.'
-          : 'On the live page this ' + SHARE_SAYS[k] + ': ' + shareLink().replace('https://', ''));
-        return;
-      }
-      share(k);
-    });
-  });
-  function share(k) {
-    var text = "I've signed the petition to include all lawmakers under the Hillsborough Law. Sign it here:", url = shareLink();
-    if (k === 'wa') window.open('https://wa.me/?text=' + encodeURIComponent(text + ' ' + url), '_blank', 'noopener');
-    if (k === 'fb') window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url), '_blank', 'noopener');
-    if (k === 'x') window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(text) + '&url=' + encodeURIComponent(url), '_blank', 'noopener');
-    if (k === 'copy') navigator.clipboard.writeText(url).then(function () { toast('Link copied.'); }, function () { toast(url); });
-    if (k === 'ig' && cardCanvas) cardCanvas.toBlob(function (b) {
-      var file = new File([b], 'hillsborough-law-petition.png', { type: 'image/png' });
-      if (navigator.canShare && navigator.canShare({ files: [file] })) navigator.share({ files: [file] }).catch(function () {});
-    }, 'image/png');
-  }
-  $('toFund').addEventListener('click', function () { go(5); });
-
-  // The 1080 x 1920 picture for Instagram stories and WhatsApp status. Instagram lays its own bar
-  // over the top 250px and the reply box over the bottom 340px, so everything sits between them.
-  var cardCanvas;
-  function wrap(x, text, maxW) {
-    var out = [], line = '';
-    text.split(/\s+/).forEach(function (w) {
-      var test = line ? line + ' ' + w : w;
-      if (line && x.measureText(test).width > maxW) { out.push(line); line = w; } else line = test;
-    });
-    if (line) out.push(line);
-    return out;
-  }
-  function spacing(x, v) { if ('letterSpacing' in x) x.letterSpacing = v; }
-  function buildCard() {
-    var fonts = document.fonts && document.fonts.load
-      ? Promise.all([document.fonts.load('400 80px "DM Serif Display"'), document.fonts.load('700 40px "DM Sans"')]).catch(function () {})
-      : Promise.resolve();
-    return fonts.then(function () {
-      var cv = document.createElement('canvas'); cv.width = 1080; cv.height = 1920;
-      var x = cv.getContext('2d'), SERIF = '"DM Serif Display", Georgia, serif', SANS = '"DM Sans", Arial, sans-serif';
-      x.fillStyle = '#041440'; x.fillRect(0, 0, 1080, 1920);
-      var g = x.createRadialGradient(920, 160, 40, 920, 160, 1000);
-      g.addColorStop(0, 'rgba(221,188,102,.20)'); g.addColorStop(1, 'rgba(221,188,102,0)');
-      x.fillStyle = g; x.fillRect(0, 0, 1080, 1920);
-      x.strokeStyle = 'rgba(221,188,102,.5)'; x.lineWidth = 3; x.strokeRect(48, 48, 984, 1824);
-      spacing(x, '8px'); x.fillStyle = '#ddbc66'; x.font = '700 34px ' + SANS; x.fillText('EXECPROSEC', 104, 316);
-      var live = S.quote && !S.quote.held;
-      spacing(x, '5px'); x.fillStyle = 'rgba(255,255,255,.72)'; x.fillText(live ? 'I SIGNED THE PETITION' : 'I SIGNED. WILL YOU?', 104, 380);
-      spacing(x, '0px');
-      var lines, size;
-      if (live) {
-        x.fillStyle = '#ddbc66'; x.font = '400 260px ' + SERIF; x.fillText('\u201C', 88, 640);
-        for (size = 84; size >= 48; size -= 4) {
-          x.font = '400 ' + size + 'px ' + SERIF;
-          lines = wrap(x, S.quote.t, 872);
-          if (lines.length * size * 1.2 <= 560) break;
-        }
-        x.fillStyle = '#ffffff';
-        lines.forEach(function (l, i) { x.fillText(l, 104, 680 + i * size * 1.2); });
-        x.fillStyle = '#ddbc66'; x.font = '600 48px ' + SANS;
-        x.fillText(S.me.first + ', ' + S.me.town, 104, 680 + (lines.length - 1) * size * 1.2 + 100);
-        x.fillStyle = 'rgba(221,188,102,.7)'; x.fillRect(104, 1290, 120, 4);
-        x.fillStyle = '#ffffff'; x.font = '400 56px ' + SERIF;
-        wrap(x, 'Include all lawmakers under the Hillsborough Law', 872).forEach(function (l, i) { x.fillText(l, 104, 1372 + i * 66); });
-      } else {
-        x.fillStyle = '#ffffff'; x.font = '400 108px ' + SERIF;
-        lines = wrap(x, 'Include all lawmakers under the Hillsborough Law', 872);
-        lines.forEach(function (l, i) { x.fillText(l, 104, 620 + i * 120); });
-        x.fillStyle = 'rgba(255,255,255,.8)'; x.font = '400 46px ' + SANS;
-        wrap(x, 'MPs and peers are left out of the new law against misleading the public.', 872)
-          .forEach(function (l, i) { x.fillText(l, 104, 620 + lines.length * 120 + 50 + i * 64); });
-      }
-      x.fillStyle = '#d64045';
-      if (x.roundRect) { x.beginPath(); x.roundRect(104, 1490, 872, 104, 10); x.fill(); } else x.fillRect(104, 1490, 872, 104);
-      x.fillStyle = '#ffffff'; x.font = '700 38px ' + SANS; spacing(x, '2px'); x.textAlign = 'center';
-      x.fillText('SIGN AT EXECPROSEC.ORG/PETITION', 540, 1555);
-      x.textAlign = 'left'; spacing(x, '0px');
-      cardCanvas = cv;
-      $('shareImg').src = cv.toDataURL('image/png');
-    });
-  }
-
-  // ---------------------------------------------------------------- 5: fund
-  $('p5').addEventListener('change', function (e) {
+  $('p4').addEventListener('change', function (e) {
     if (e.target.name !== 'amt') return;
     var other = e.target.value === 'other';
     $('otherWrap').hidden = !other;
@@ -1180,14 +1062,14 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   });
   $('otherAmt').addEventListener('input', function () { if (fundAmount() >= 10) setErr('otherAmt'); fundLabel(); });
   function fundAmount() {
-    var v = $('p5').querySelector('input[name=amt]:checked').value;
+    var v = $('p4').querySelector('input[name=amt]:checked').value;
     return v === 'other' ? Math.floor(+$('otherAmt').value || 0) : +v;
   }
   function fundLabel() {
     var a = fundAmount();
     $('fundBtn').textContent = a >= 10 ? 'Back it with £' + fmt(a) + ' a month' : 'Back it monthly';
   }
-  $('p5').addEventListener('submit', function (e) {
+  $('p4').addEventListener('submit', function (e) {
     e.preventDefault();
     var a = fundAmount();
     if (a < 10) { setErr('otherAmt', 'The minimum is £10 a month.'); $('otherAmt').focus(); return; }
@@ -1197,14 +1079,13 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   });
   $('skipFund').addEventListener('click', finish);
 
-  // ---------------------------------------------------------------- 6: done
+  // ---------------------------------------------------------------- 5: done
   function finish() {
     var s = "You're signature number " + fmt(S.myNumber) + '. We will take every signature to Parliament before the vote.';
     if (S.me.emailOk) s += " We'll email you when the vote is coming.";
     $('doneS').textContent = s;
-    go(6);
+    go(5);
   }
-  $('shareAgain').addEventListener('click', function () { go(4); });
 
   // ---------------------------------------------------------------- objections
   function closeObj() { if ($('objDlg').open) $('objDlg').close(); }
@@ -1224,7 +1105,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   // ---------------------------------------------------------------- start
   function start() {
     fresh();
-    ['p1', 'p2', 'p5'].forEach(function (id) { $(id).reset(); });
+    ['p1', 'p2', 'p4'].forEach(function (id) { $(id).reset(); });
     ['first', 'last', 'email', 'pc', 'cty', 'otherAmt', 'mpMsg', 'quote'].forEach(function (id) { setErr(id); });
     $('quoteHint').textContent = ''; $('qCount').textContent = '200';
     $('consentErr').textContent = ''; $('emailFix').hidden = true;
