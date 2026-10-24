@@ -95,8 +95,8 @@ a{color:inherit}
 /* ---- the Bill link, reference numbers, press, the phone Sign bar ---- */
 .bill-link{color:var(--paper);font-weight:600;text-decoration:underline;text-decoration-color:var(--gold);text-underline-offset:3px}
 .bill-link:hover{color:var(--gold)}
-.ref{font-size:.68em;line-height:0;vertical-align:super;margin-left:1px}
-.ref a{display:inline-block;min-width:16px;padding:0 3px;border-radius:2px;color:var(--gold);font-weight:700;text-decoration:none;text-align:center}
+.ref{font-size:.68em;line-height:0;vertical-align:super}
+.ref a{padding:0 1px;border-radius:2px;color:var(--gold);font-weight:700;text-decoration:none}
 .ref a:hover,.ref a:focus-visible{background:rgba(221,188,102,.18)}
 .press{padding-top:22px;border-top:1px solid rgba(255,255,255,.08)}
 .press-label{font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:rgba(255,255,255,.7);margin:0 0 14px;text-align:center}
@@ -294,7 +294,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     <div class="card-head">
       <p class="kicker">Petition to Press &amp; Parliament</p>
       <h1>Include all lawmakers under the <em>Hillsborough&nbsp;Law</em></h1>
-      <p class="explain">End the carve-out for lawmakers (MPs, peers, MSPs, MSs and MLAs) from the duty of candour and the offence of misleading the public in the <a class="bill-link" href="https://bills.parliament.uk/bills/4019" target="_blank" rel="noopener">Public Office (Accountability) Bill</a>,<sup class="ref"><a href="https://bills.parliament.uk/publications/68275/documents/8957#sched_2__para_2__subpara_4__intro" target="_blank" rel="noopener" title="Source 1">1</a></sup> for reckless or intentionally deceitful acts outside the proceedings of their parliaments<sup class="ref"><a href="https://www.legislation.gov.uk/aep/WillandMarSess2/1/2/introduction" target="_blank" rel="noopener" title="Source 2">2</a></sup>: on TV and radio, on social media and at events.</p>
+      <p class="explain">End the carve-out for lawmakers (MPs, peers, MSPs, MSs and MLAs) from the duty of candour and the offence of misleading the public in the <a class="bill-link" href="https://bills.parliament.uk/bills/4019" target="_blank" rel="noopener">Public Office (Accountability) Bill</a>,<sup class="ref"><a href="https://bills.parliament.uk/publications/68275/documents/8957#sched_2__para_2__subpara_4__intro" target="_blank" rel="noopener" title="Source 1">1</a></sup> for reckless or intentionally deceitful acts outside the proceedings of their parliaments:<sup class="ref"><a href="https://www.legislation.gov.uk/aep/WillandMarSess2/1/2/introduction" target="_blank" rel="noopener" title="Source 2">2</a></sup> on TV and radio, on social media, at events, etc.</p>
     </div>
     <div class="meter">
       <div class="live" aria-live="off"><span class="dot" aria-hidden="true"></span><span id="tickTxt"></span></div>
@@ -350,7 +350,6 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
         <textarea id="quote" class="short" maxlength="200" rows="3" placeholder="Say it the way you'd say it to your MP."></textarea>
         <div class="qfoot"><span><span class="err" id="quoteErr" aria-live="polite"></span><span class="hint" id="quoteHint" aria-live="polite"></span></span><span class="counter" id="qCount">200</span></div>
       </div>
-      <label class="check"><input type="checkbox" id="press"><span>A journalist can contact me about this. We'll ask you first.</span></label>
       <p class="fine">No swearing, abuse or threats. We may share your words with your first name and town, including with journalists.</p>
       <button class="btn navy" type="submit">Next</button>
       <button class="link skip" type="button" id="skipQs">No thanks, skip</button>
@@ -697,7 +696,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   // fresh headline ("10,000 members of the public agree that..."), with three running at once.
   // Random rather than in turn, so a result is not skewed by who happened to sign that week.
   var STATEMENTS = [
-    { id: 's1', t: 'MPs and peers who exempt themselves from the Hillsborough Law are hypocrites: a law for thee, but not for me.' },
+    { id: 's1', t: 'MPs and peers who vote to put civil servants, police officers, soldiers, ministers and even spies under the Hillsborough Law, but not themselves, are hypocrites: a law for thee, but not for me.' },
     { id: 's2', t: 'Lawmakers should be held to at least the same standard of honesty as civil servants and police officers.' },
     { id: 's3', t: 'If MPs and peers vote to exempt themselves, I will trust Parliament much less.' },
     { id: 's4', t: 'Recklessly or intentionally lying to the public to justify going to war should be a crime.' },
@@ -966,7 +965,6 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     var a = $('p2').querySelector('input[name=agree]:checked');
     S.answers.statement = S.stmt.id;
     S.answers.agree = a ? a.value : null;
-    S.answers.press = $('press').checked;
     S.quote = null;
     var t = withQuote ? $('quote').value.trim().replace(/\s+/g, ' ') : '';
     if (!t) return true;
