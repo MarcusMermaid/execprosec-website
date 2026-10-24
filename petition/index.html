@@ -329,7 +329,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     </div>
     <div class="meter">
       <div class="live" id="live" aria-live="off" hidden><span class="dot" aria-hidden="true"></span><span id="tickTxt"></span></div>
-      <div class="m-top"><span class="m-n" id="countN">&hellip;</span><span class="m-l">signatures</span><span class="m-goal">Target <b id="goalN">10,000</b></span></div>
+      <div class="m-top"><span class="m-n" id="countN">&hellip;</span><span class="m-l" id="countL">signatures</span><span class="m-goal">Target <b id="goalN">10,000</b></span></div>
       <div class="bar" role="progressbar" aria-label="Signatures towards the target" aria-valuemin="0" id="bar"><i id="countBar"></i></div>
       <p class="m-sub" id="meterSub"></p>
       <p class="deadline"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/></svg><span id="deadlineTxt"></span></p>
@@ -715,6 +715,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   function renderMeter(animate) {
     var c = S.count, t = targetFor(c), passed = previousTarget(c);
     $('goalN').textContent = fmt(t);
+    $('countL').textContent = c === 1 ? 'signature' : 'signatures';
     $('countBar').style.width = (c / t * 100).toFixed(2) + '%';
     $('bar').setAttribute('aria-valuemax', t);
     $('bar').setAttribute('aria-valuenow', c);
@@ -1081,7 +1082,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     if (document.hidden) { waitTimer = setTimeout(checkConfirmed, 4000); return; }
     getJson('petition/status?sig=' + S.sig).then(function (d) {
       if ($('pw').hidden) return;
-      if (d && d.confirmed) { confirmed({ number: d.number, count: S.count + 1 }); return; }
+      if (d && d.confirmed) { confirmed({ number: d.number, count: d.number }); return; }
       waitTimer = setTimeout(checkConfirmed, 4000);
     }, function () { waitTimer = setTimeout(checkConfirmed, 8000); });
   }
@@ -1302,6 +1303,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       $('fundAsk').hidden = true;
       $('payWrap').hidden = false;
       checkout.mount('#payBox');
+      $('payWrap').scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
       btn.disabled = false;
       fundLabel();
     }).catch(function () {
