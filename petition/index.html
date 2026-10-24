@@ -46,41 +46,35 @@ a{color:inherit}
 .top{max-width:1160px;margin:0 auto;padding-block:16px 4px;padding-left:var(--gl);padding-right:var(--gr)}
 .top img{height:40px;width:auto}
 
-/* Phones: the case, the press, then the petition. Laptops: the case and the press on the left, the
-   petition pinned on the right, so everything that matters is in the first screen. */
-.page{max-width:1160px;margin:0 auto;padding-block:20px 48px;padding-left:var(--gl);padding-right:var(--gr);
-  display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:"pitch" "press" "side";row-gap:24px}
-.pitch{grid-area:pitch;min-width:0}
-.press{grid-area:press;min-width:0}
-.side{grid-area:side;min-width:0}
-@media(min-width:960px){
-  .page{grid-template-columns:minmax(0,1fr) 410px;grid-template-rows:auto 1fr;column-gap:56px;row-gap:28px;align-items:start;padding-top:18px;
-    grid-template-areas:"pitch side" "press side"}
-  /* a tighter card, so the whole form fits a laptop screen */
-  .side .meter{padding:12px 20px}
-  .side .live{margin-bottom:6px}
-  .side .m-n{font-size:34px}
-  .side .bar{margin:8px 0 6px}
-  .side .deadline{margin-top:8px;padding-top:8px}
-  .side .card.first .panel{padding-top:14px}
-  .side .panel{padding-bottom:18px}
-  .side .panel h2{font-size:24px;margin-bottom:10px}
-  .side .f{margin-bottom:8px;gap:3px}
-  .side .f input{height:42px}
-  .side .opt span{min-height:40px}
-  .side fieldset{margin-bottom:10px}
-  .side legend{margin-bottom:6px}
-  .side .fine{font-size:11.5px;line-height:1.45;margin-bottom:10px}
-  .side .btn{min-height:52px}
-  .side.stick{position:sticky;top:16px}   /* the script lowers top when the card is taller than the screen */
-  .pitch h1{font-size:clamp(36px,3.6vw,48px)}
-  .pitch .lede{font-size:16px}
-  .sticky{display:none!important}
-}
-h1{font:400 clamp(34px,7vw,54px)/1.05 var(--f-display);letter-spacing:-.01em;margin:0 0 16px;text-wrap:balance}
-h1 em{font-style:normal;color:var(--gold)}
-.lede{font-size:17px;line-height:1.6;color:var(--on-navy);margin:0 0 26px}
-
+/* One column at every size: the petition first, the press and links under it. */
+.page{max-width:580px;margin:0 auto;padding-block:16px 48px;padding-left:var(--gl);padding-right:var(--gr);display:flex;flex-direction:column;gap:22px}
+.side,.press{min-width:0}
+.card-head{padding:20px 20px 16px}
+.card-head .kicker{color:var(--gold-ink);margin:0 0 8px}
+.card-head h1{font:400 clamp(28px,6.4vw,36px)/1.08 var(--f-display);letter-spacing:-.01em;color:var(--navy);margin:0 0 10px;text-wrap:balance}
+.card-head h1 em{font-style:normal;color:var(--gold-ink)}
+.explain{margin:0;font-size:15px;line-height:1.55;color:var(--ink)}
+.explain .bill-link{color:var(--navy)}
+.explain .ref a{color:var(--gold-ink)}
+.more-links{margin:-6px 0 0;text-align:center;font-size:14px;color:var(--on-navy-2)}
+/* on a phone the site menu would push the petition down, so this page shows just the logo */
+@media(max-width:700px){ header#nav .nav-links{display:none!important} }
+/* on a laptop a wider box needs fewer lines, so the whole form fits the first screen */
+@media(min-width:900px){ .page{max-width:680px;padding-top:12px} .card-head{padding:18px 24px 14px} .side .meter{padding:12px 24px} .panel{padding-left:24px;padding-right:24px} .stephead{padding-left:24px;padding-right:24px} }
+.side .meter{padding:12px 20px}
+.side .live{margin-bottom:6px}
+.side .m-n{font-size:34px}
+.side .bar{margin:8px 0 6px}
+.side .deadline{margin-top:8px;padding-top:8px}
+.side .card.first .panel{padding-top:14px}
+.side .panel{padding-bottom:18px}
+.side .panel h2{font-size:24px;margin-bottom:10px}
+.side .f{margin-bottom:8px;gap:3px}
+.side .opt span{min-height:40px}
+.side fieldset{margin-bottom:10px}
+.side legend{margin-bottom:6px}
+.side .fine{font-size:11.5px;line-height:1.45;margin-bottom:10px}
+.side .btn{min-height:52px}
 /* ---- the card ---- */
 .card{background:var(--paper);color:var(--ink);border-top:4px solid var(--gold);border-radius:4px;box-shadow:0 24px 60px rgba(0,0,0,.38);overflow:hidden;scroll-margin-top:16px}
 .meter{padding:14px 20px 16px;background:var(--paper-2);border-bottom:1px solid var(--rule)}
@@ -95,8 +89,6 @@ h1 em{font-style:normal;color:var(--gold)}
 .deadline{display:flex;align-items:center;gap:8px;margin:12px 0 0;padding-top:10px;border-top:1px dashed var(--rule);font-size:13.5px;color:var(--red-dk);font-weight:600}
 .deadline svg{flex:0 0 16px;width:16px;height:16px}
 .kicker{font:700 12px/1.4 var(--f-body);letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin:0 0 10px}
-.lede + .lede{margin-top:-12px}
-.cta-line{color:var(--paper);font-weight:700}
 .inline-link{background:none;border:0;padding:0;font:inherit;color:var(--gold);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
 .inline-link:hover{color:var(--paper)}
 
@@ -145,9 +137,10 @@ h1 em{font-style:normal;color:var(--gold)}
 .obj blockquote cite{display:block;margin-top:4px;font-style:normal;font-size:12px;font-weight:700;color:var(--gold-ink);letter-spacing:.02em}
 .obj-foot{padding-block:14px;padding-left:max(20px, env(safe-area-inset-left, 0px));padding-right:max(20px, env(safe-area-inset-right, 0px));
   padding-bottom:calc(14px + env(safe-area-inset-bottom, 0px));border-top:1px solid var(--rule);background:var(--paper)}
-.deadline{align-items:flex-start;flex-wrap:wrap}
+.deadline{align-items:flex-start;flex-wrap:nowrap}
+.deadline > span{flex:1;min-width:0}
 .deadline svg{margin-top:2px}
-.deadline small{display:block;font-weight:400;color:var(--muted);font-size:12.5px;margin-top:2px}
+.deadline small{font-weight:400;color:var(--muted);font-size:12.5px}
 .m-top{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
 .m-n{font:400 40px/1 var(--f-display);color:var(--navy);font-variant-numeric:tabular-nums}
 .m-l{font-size:14px;color:var(--muted)}
@@ -255,7 +248,6 @@ legend{padding:0;margin:0 0 8px;font-size:14px;font-weight:600;line-height:1.4;c
   width:max-content;max-width:min(440px, calc(100vw - 32px));background:var(--paper);color:var(--ink);padding:12px 16px;border-radius:4px;border-left:4px solid var(--gold);
   box-shadow:0 10px 30px rgba(0,0,0,.4);font-size:14px;line-height:1.45;transition:opacity .2s,transform .2s}
 .toast.on{opacity:1;transform:translate(-50%,0)}
-@media(max-width:600px){ .page{padding-top:18px} .lede{font-size:16px;margin-bottom:20px} }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
 </style>
 <style>
@@ -297,25 +289,13 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
 </header>
 
 <main class="page">
- <div class="pitch">
-  <p class="kicker">Petition to Press &amp; Parliament</p>
-  <h1>Include all lawmakers under the <em>Hillsborough&nbsp;Law</em></h1>
-  <p class="lede"><a class="bill-link" href="https://bills.parliament.uk/bills/4019" target="_blank" rel="noopener">The Public Office (Accountability) Bill</a> will, for the first time, make it a crime for public officials to intentionally or recklessly mislead the public.<sup class="ref"><a href="https://bills.parliament.uk/publications/68275/documents/8957#sec_12" target="_blank" rel="noopener" title="Source 1">1</a></sup> This &ldquo;Hillsborough Law&rdquo; will cover police officers, civil servants, the armed forces, NHS doctors and nurses, Government ministers, the Prime Minister<sup class="ref"><a href="https://bills.parliament.uk/publications/68275/documents/8957#sched_2__pt_2" target="_blank" rel="noopener" title="Source 2">2</a></sup> and even the intelligence services (outside of national security matters).<sup class="ref"><a href="https://bills.parliament.uk/publications/68275/documents/8957#sec_12__subsec_6" target="_blank" rel="noopener" title="Source 3">3</a></sup> But the lawmakers writing it have left themselves out.<sup class="ref"><a href="https://bills.parliament.uk/publications/68275/documents/8957#sched_2__para_2__subpara_4__intro" target="_blank" rel="noopener" title="Source 4">4</a></sup> They will be almost the only ones permitted to continue to lie to the public (<a class="inline-link" href="https://execprosec.org/lying-in-politics" target="_blank" rel="noopener">examples</a>).</p>
-  <p class="lede">This petition, which we will present to Parliament and the press, calls on every lawmaker in the UK, including members of the House of Commons, the House of Lords, the Scottish Parliament, the Senedd and the Northern Ireland Assembly, to lead by example and include themselves (only for acts outside proceedings in Parliament, which are protected by Article 9 of the Bill of Rights<sup class="ref"><a href="https://www.legislation.gov.uk/aep/WillandMarSess2/1/2/introduction" target="_blank" rel="noopener" title="Source 5">5</a></sup>; <button type="button" class="inline-link" id="objLink" aria-haspopup="dialog">read other objections here</button>). Anything less would be hypocritical, a betrayal of the values behind this Bill, an affront to equality under the law, and potentially the most damaging blow to public trust in our democracy that the UK has ever seen.</p>
-  <p class="lede cta-line">Don't want lawmakers to have the right to lie to you? Sign this petition.</p>
- </div>
-
- <div class="press">
-  <div class="press-label">This campaign has been covered by</div>
-  <div class="press-grid">
-    <a class="press-item" href="https://news.sky.com/story/hillsborough-law-will-criminalise-lying-by-senior-ministers-say-campaigners-13509580" target="_blank" rel="noopener noreferrer" aria-label="Sky News"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNjAgNDQiIGhlaWdodD0iMzIiPjx0ZXh0IHg9IjgwIiB5PSIzMiIgZm9udC1mYW1pbHk9IkFyaWFsIEJsYWNrIiBmb250LXdlaWdodD0iOTAwIiBmb250LXNpemU9IjI0IiBmaWxsPSIjZjdmNmYyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBsZXR0ZXItc3BhY2luZz0iMSI+U0tZIE5FV1M8L3RleHQ+PC9zdmc+" alt="Sky News"></a>
-    <a class="press-item" href="https://www.telegraph.co.uk/news/2026/10/17/burnham-accused-of-hypocrisy-over-hillsborough-law/" target="_blank" rel="noopener noreferrer" aria-label="The Telegraph"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMTUgNDQiIGhlaWdodD0iMzIiPjx0ZXh0IHg9IjEwNy41IiB5PSIzMiIgZm9udC1mYW1pbHk9IlRpbWVzIE5ldyBSb21hbixzZXJpZiIgZm9udC13ZWlnaHQ9IjcwMCIgZm9udC1zaXplPSIyMSIgZmlsbD0iI2Y3ZjZmMiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgbGV0dGVyLXNwYWNpbmc9IjIiPlRIRSBURUxFR1JBUEg8L3RleHQ+PC9zdmc+" alt="The Telegraph"></a>
-    <a class="press-item" href="https://www.express.co.uk/news/politics/2257971/comment-marcus-ball-hillsborough-law-lawmakers" target="_blank" rel="noopener noreferrer" aria-label="Daily Express"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNDQiIGhlaWdodD0iMzIiPjx0ZXh0IHg9IjEwMC4wIiB5PSIzMiIgZm9udC1mYW1pbHk9Ikdlb3JnaWEsc2VyaWYiIGZvbnQtd2VpZ2h0PSI3MDAiIGZvbnQtc2l6ZT0iMjIiIGZpbGw9IiNmN2Y2ZjIiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkRhaWx5IEV4cHJlc3M8L3RleHQ+PC9zdmc+" alt="Daily Express"></a>
-  </div>
- </div>
-
- <div class="side stick" id="side">
+ <div class="side" id="side">
   <div class="card" id="card">
+    <div class="card-head">
+      <p class="kicker">Petition to Press &amp; Parliament</p>
+      <h1>Include all lawmakers under the <em>Hillsborough&nbsp;Law</em></h1>
+      <p class="explain">End the carve-out for lawmakers (MPs, peers, MSPs, MSs and MLAs) from the duty of candour and the offence of misleading the public in the <a class="bill-link" href="https://bills.parliament.uk/bills/4019" target="_blank" rel="noopener">Public Office (Accountability) Bill</a>,<sup class="ref"><a href="https://bills.parliament.uk/publications/68275/documents/8957#sched_2__para_2__subpara_4__intro" target="_blank" rel="noopener" title="Source 1">1</a></sup> for reckless or intentionally deceitful acts outside the proceedings of their parliaments<sup class="ref"><a href="https://www.legislation.gov.uk/aep/WillandMarSess2/1/2/introduction" target="_blank" rel="noopener" title="Source 2">2</a></sup>: on TV and radio, on social media and at events.</p>
+    </div>
     <div class="meter">
       <div class="live" aria-live="off"><span class="dot" aria-hidden="true"></span><span id="tickTxt"></span></div>
       <div class="m-top"><span class="m-n" id="countN">0</span><span class="m-l">signatures</span><span class="m-goal">Target <b id="goalN">10,000</b></span></div>
@@ -327,7 +307,6 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
 
     <!-- 1: sign -->
     <form class="panel" id="p1" novalidate>
-      <h2>Sign the petition</h2>
       <div class="row">
         <div class="f"><label for="first">First name</label><input id="first" name="first" autocomplete="given-name" autocapitalize="words" maxlength="50"><span class="err" id="firstErr" aria-live="polite"></span></div>
         <div class="f"><label for="last">Last name</label><input id="last" name="last" autocomplete="family-name" autocapitalize="words" maxlength="50"><span class="err" id="lastErr" aria-live="polite"></span></div>
@@ -374,7 +353,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       <label class="check"><input type="checkbox" id="press"><span>A journalist can contact me about this. We'll ask you first.</span></label>
       <p class="fine">No swearing, abuse or threats. We may share your words with your first name and town, including with journalists.</p>
       <button class="btn navy" type="submit">Next</button>
-      <button class="link skip" type="button" id="skipQs">Skip</button>
+      <button class="link skip" type="button" id="skipQs">No thanks, skip</button>
     </form>
 
     <!-- 3: your MP -->
@@ -444,6 +423,16 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   </div>
  </div>
 
+ <div class="press">
+  <div class="press-label">This campaign has been covered by</div>
+  <div class="press-grid">
+    <a class="press-item" href="https://news.sky.com/story/hillsborough-law-will-criminalise-lying-by-senior-ministers-say-campaigners-13509580" target="_blank" rel="noopener noreferrer" aria-label="Sky News"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNjAgNDQiIGhlaWdodD0iMzIiPjx0ZXh0IHg9IjgwIiB5PSIzMiIgZm9udC1mYW1pbHk9IkFyaWFsIEJsYWNrIiBmb250LXdlaWdodD0iOTAwIiBmb250LXNpemU9IjI0IiBmaWxsPSIjZjdmNmYyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBsZXR0ZXItc3BhY2luZz0iMSI+U0tZIE5FV1M8L3RleHQ+PC9zdmc+" alt="Sky News"></a>
+    <a class="press-item" href="https://www.telegraph.co.uk/news/2026/10/17/burnham-accused-of-hypocrisy-over-hillsborough-law/" target="_blank" rel="noopener noreferrer" aria-label="The Telegraph"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMTUgNDQiIGhlaWdodD0iMzIiPjx0ZXh0IHg9IjEwNy41IiB5PSIzMiIgZm9udC1mYW1pbHk9IlRpbWVzIE5ldyBSb21hbixzZXJpZiIgZm9udC13ZWlnaHQ9IjcwMCIgZm9udC1zaXplPSIyMSIgZmlsbD0iI2Y3ZjZmMiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgbGV0dGVyLXNwYWNpbmc9IjIiPlRIRSBURUxFR1JBUEg8L3RleHQ+PC9zdmc+" alt="The Telegraph"></a>
+    <a class="press-item" href="https://www.express.co.uk/news/politics/2257971/comment-marcus-ball-hillsborough-law-lawmakers" target="_blank" rel="noopener noreferrer" aria-label="Daily Express"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNDQiIGhlaWdodD0iMzIiPjx0ZXh0IHg9IjEwMC4wIiB5PSIzMiIgZm9udC1mYW1pbHk9Ikdlb3JnaWEsc2VyaWYiIGZvbnQtd2VpZ2h0PSI3MDAiIGZvbnQtc2l6ZT0iMjIiIGZpbGw9IiNmN2Y2ZjIiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkRhaWx5IEV4cHJlc3M8L3RleHQ+PC9zdmc+" alt="Daily Express"></a>
+  </div>
+ </div>
+
+ <p class="more-links"><button type="button" class="inline-link" id="objLink" aria-haspopup="dialog">Objections answered</button> · <a class="inline-link" href="https://execprosec.org/lying-in-politics" target="_blank" rel="noopener">Examples of lying in politics</a></p>
 </main>
 <div class="sticky" id="sticky" hidden><button class="btn" type="button" id="stickyBtn">Sign the petition</button></div>
 
@@ -709,11 +698,12 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   // Random rather than in turn, so a result is not skewed by who happened to sign that week.
   var STATEMENTS = [
     { id: 's1', t: 'MPs and peers who exempt themselves from the Hillsborough Law are hypocrites: a law for thee, but not for me.' },
-    { id: 's2', t: 'Lawmakers should be held to at least the same standard of honesty as nurses, police officers and soldiers.' },
-    { id: 's3', t: 'If MPs and peers vote to exempt themselves, I will trust Parliament less.' },
-    { id: 's4', t: 'Knowingly lying to the public to win an election should be a crime.' },
-    { id: 's5', t: 'The Prime Minister should be covered by this law whether speaking as Prime Minister or as an MP.' },
-    { id: 's6', t: 'Peers who vote to exempt themselves should have to explain why, in public.' }
+    { id: 's2', t: 'Lawmakers should be held to at least the same standard of honesty as civil servants and police officers.' },
+    { id: 's3', t: 'If MPs and peers vote to exempt themselves, I will trust Parliament much less.' },
+    { id: 's4', t: 'Recklessly or intentionally lying to the public to justify going to war should be a crime.' },
+    { id: 's5', t: 'Recklessly or intentionally lying to the public to manipulate a referendum result should be a crime.' },
+    { id: 's6', t: 'If the misleading the public offence applies to Government ministers but not to the opposition or backbenchers, democracy will be destabilised.' },
+    { id: 's7', t: 'Elections and criminal courts do different jobs: being elected should not put a lawmaker above the criminal law.' }
   ];
   var RUNNING = 3;                                  // the first three not yet at 10,000 answers (the live page asks the server)
   function pickStatement() { return STATEMENTS[Math.floor(Math.random() * RUNNING)]; }
@@ -741,9 +731,9 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     var when = d.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' });
     var head = days > 1 ? days + ' days left to sign.' : days === 1 ? 'Last day to sign.' : 'Parliament votes today.';
     var line = VOTE_ESTIMATED
-      ? 'Vote expected ' + when + ' (our estimate: the Government has not announced the date yet).'
+      ? 'Vote expected ' + when + ' (estimate: date not yet announced).'
       : 'Parliament votes on ' + when + '.';
-    $('deadlineTxt').innerHTML = '<b>' + head + '</b><small>' + esc(line) + '</small>';
+    $('deadlineTxt').innerHTML = '<b>' + head + '</b> <small>' + esc(line) + '</small>';
   }
 
   // ---------------------------------------------------------------- MPs
@@ -840,7 +830,6 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   // On a laptop the card is pinned beside the case. When it is taller than the screen it pins by its
   // bottom edge instead, so the button is always in reach.
   function pinCard() {
-    $('side').style.top = Math.min(16, window.innerHeight - $('side').offsetHeight - 16) + 'px';
   }
   window.addEventListener('resize', pinCard);
   // On a phone the card comes after the case, so a Sign button stays at the bottom of the screen
@@ -950,11 +939,11 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     document.querySelectorAll('.me-first').forEach(function (el) { el.textContent = S.me.first; });
     // The signer sees exactly what their signature did: the number they are, and how close we now are.
     if (S.count >= before) {
-      $('thanksH').textContent = 'You took us to ' + fmt(before) + '!';
-      $('thanksS').textContent = 'New target: ' + fmt(targetFor(S.count)) + '. One quick question, and your own words if you like: they go to journalists and MPs.';
+      $('thanksH').textContent = 'Done. You took us to ' + fmt(before) + '!';
+      $('thanksS').textContent = 'Your signature is in. New target: ' + fmt(targetFor(S.count)) + '. Want to help more? Answer one question and we will quote the result to journalists and parliamentarians.';
     } else {
-      $('thanksH').textContent = "You're signature number " + fmt(S.myNumber) + '.';
-      $('thanksS').textContent = 'Only ' + fmt(before - S.myNumber) + ' more to reach ' + fmt(before) + '. One quick question, and your own words if you like: they go to journalists and MPs.';
+      $('thanksH').textContent = "Done. You're signature number " + fmt(S.myNumber) + '.';
+      $('thanksS').textContent = 'Your signature is in. Want to help more? Answer one question and we will quote the result to journalists and parliamentarians.';
     }
     go(2);
   });
