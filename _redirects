@@ -14,3 +14,6 @@
 /c/* https://central-2-mcp-production.up.railway.app/public/press/c/:splat 302
 /p/* https://central-2-mcp-production.up.railway.app/public/press/p/:splat 302
 /press/* /press/ 200
+# The briefing moved from /hol-briefing to /poabbriefing on 24 Oct 2026: it is for everyone now, not just peers.
+/hol-briefing /poabbriefing/ 301
+/hol-briefing/* /poabbriefing/:splat 301
