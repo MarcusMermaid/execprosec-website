@@ -275,6 +275,13 @@ legend{padding:0;margin:0 0 8px;font-size:14px;font-weight:600;line-height:1.4;c
 .funds{display:flex;flex-wrap:wrap;gap:6px 16px;margin:0 0 16px;padding:0;list-style:none;font-size:13.5px}
 .funds li{display:flex;align-items:center;gap:7px}
 .funds li::before{content:'';width:7px;height:7px;background:var(--gold);transform:rotate(45deg)}
+.way{display:block;width:100%;margin:0 0 12px;padding:16px 18px;text-align:left;border:1.5px solid var(--rule);border-left:5px solid var(--navy);
+  border-radius:4px;background:var(--paper);color:var(--ink);cursor:pointer;font:inherit;transition:border-color .15s,box-shadow .15s}
+.way:hover,.way:focus-visible{border-color:var(--navy);box-shadow:0 4px 14px rgba(4,20,64,.12);outline:none}
+.way b{display:block;font:400 22px/1.2 var(--f-display);color:var(--navy);margin:0 0 4px}
+.way span{display:block;font-size:14px;line-height:1.45;color:var(--muted)}
+.way-fund{border-left-color:var(--red)}
+#doneMp{margin:0 0 10px}
 .freq{margin:0 0 10px}
 .freq .opt span{min-height:40px}
 .amts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
@@ -413,7 +420,16 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       <button class="link skip" type="button" id="skipQs">No thanks, skip</button>
     </form>
 
-    <!-- 3: your MP -->
+    <!-- 3: two ways to help: fund, or email your MP, or both -->
+    <div class="panel" id="pchoice" hidden>
+      <h2>Two ways to help win the vote.</h2>
+      <p class="sub">Choose either one, or do both. Each makes a real difference.</p>
+      <button class="way way-fund" type="button" id="wayFund"><b>Fund the campaign</b><span>Newspaper adverts, billboards and a rally on the day of the vote. Monthly or one-off, from £10.</span></button>
+      <button class="way" type="button" id="wayMp"><b>Email your MP</b><span>About two minutes, from your own email address. We've written it for you.</span></button>
+      <button class="link skip" type="button" id="wayNone">Not now</button>
+    </div>
+
+    <!-- 3a: your MP -->
     <div class="panel" id="p3" hidden>
       <h2>Now email your MP.</h2>
       <p class="mp-from" id="mpFrom"></p>
@@ -432,6 +448,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     <!-- 4: fund -->
     <form class="panel" id="p4" novalidate hidden>
      <div id="fundAsk">
+      <p class="notice" id="fundThanks" hidden>Thank you for emailing your MP. If you can, back the campaign as well.</p>
       <p class="notice bad" id="fundNote" hidden>That payment did not go through, and nothing has been taken. Try again, or use a card instead of a wallet.</p>
       <h2>Make sure Parliament knows we're watching.</h2>
       <p class="sub">This petition is just the start. We need this to be a full national campaign.</p>
@@ -466,6 +483,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       <div class="donebig" id="doneTick" aria-hidden="true" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
       <h2 id="doneH">Thank you, <span class="me-first"></span>.</h2>
       <p class="sub" id="doneS"></p>
+      <button class="btn" type="button" id="doneMp" hidden>Email your MP as well</button>
       <a class="btn navy" href="https://www.instagram.com/marcusjball/" target="_blank" rel="noopener">Follow Marcus J Ball on Instagram</a>
     </div>
   </div>
@@ -976,17 +994,21 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
 
   function go(n, quiet) {
     var w = n === 'w';                                  // the "confirm it in your inbox" screen
+    var c = n === 'c';                                  // the "fund, or email your MP, or both" screen
     $('pw').hidden = !w;
+    $('pchoice').hidden = !c;
     if (w) waitStart(); else waitStop();
     for (var i = 1; i <= 5; i++) $('p' + i).hidden = i !== n;
+    // four steps: sign, statements, the choice, then the MP email or the fund (both are step 4)
+    var at = c ? 3 : (n === 3 || n === 4) ? 4 : n;
     var dots = $('dots').children;
-    for (var j = 0; j < dots.length; j++) dots[j].classList.toggle('on', j < n);
-    $('stepLbl').textContent = n <= 4 ? 'Step ' + n + ' of 4' : 'Done';
+    for (var j = 0; j < dots.length; j++) dots[j].classList.toggle('on', j < at);
+    $('stepLbl').textContent = at <= 4 ? 'Step ' + at + ' of 4' : 'Done';
     $('card').classList.toggle('first', n === 1 || w);   // the step bar appears once they have confirmed
-    $('card').classList.toggle('after', !w && n >= 2);   // and the title, explainer and meter go
+    $('card').classList.toggle('after', c || (!w && n >= 2));   // and the title, explainer and meter go
     pinCard();
     if (quiet) return;
-    var h = $(w ? 'pw' : 'p' + n).querySelector('h2');
+    var h = $(w ? 'pw' : c ? 'pchoice' : 'p' + n).querySelector('h2');
     if (h) { h.setAttribute('tabindex', '-1'); h.focus({ preventScroll: true }); }
     var top = $('card').getBoundingClientRect().top;
     if (top < 0 || top > window.innerHeight * 0.5) $('card').scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
@@ -1216,8 +1238,30 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     if (S.key) post('petition/quote', { sig: S.sig, key: S.key, text: t }, true).catch(function () {});
     return true;
   }
-  $('p2').addEventListener('submit', function (e) { e.preventDefault(); if (saveAnswers(true)) { sendAnswers(true, 0); toMp(); } });
-  $('skipQs').addEventListener('click', function () { saveAnswers(false); sendAnswers(true, 0); toMp(); });
+  $('p2').addEventListener('submit', function (e) { e.preventDefault(); if (saveAnswers(true)) { sendAnswers(true, 0); track('statements_done'); toChoice(); } });
+  $('skipQs').addEventListener('click', function () { saveAnswers(false); sendAnswers(true, 0); track('statements_done', 'skipped'); toChoice(); });
+
+  // ---------------------------------------------------------------- 3: fund, or email your MP, or both
+  // One clear choice rather than one ask after another: people who would do neither of two asks in
+  // a row will often do one when they can pick. Whichever they choose, the other is offered after.
+  function toChoice() {
+    if (S.abroad) { toFund(); return; }                 // no MP to write to: straight to funding
+    track('choice_seen');
+    go('c');
+  }
+  $('wayFund').addEventListener('click', function () { track('chose_fund'); toFund(); });
+  $('wayMp').addEventListener('click', function () { track('chose_mp'); toMp(); });
+  $('wayNone').addEventListener('click', function () { track('chose_none'); finish(); });
+
+  // How far each signer gets, for the funnel in the morning report. Sent in the background, never waited for.
+  function track(step, detail) {
+    if (!S.sig || !S.key) return;
+    try {
+      var b = JSON.stringify({ sig: S.sig, key: S.key, step: step, detail: detail || '' });
+      if (navigator.sendBeacon) navigator.sendBeacon(API + 'petition/step', new Blob([b], { type: 'text/plain' }));
+      else fetch(API + 'petition/step', { method: 'POST', body: b, keepalive: true, headers: { 'Content-Type': 'text/plain' } });
+    } catch (e) {}
+  }
 
   // ---------------------------------------------------------------- 3: your MP
   // Parliament's petition site shows you your MP's page and leaves the rest to you. We find the MP
@@ -1268,12 +1312,14 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     $('mpSubj').textContent = MP_SUBJECT;
     $('mpMsg').textContent = mpLetter();
     document.querySelectorAll('.cp-b').forEach(function (b) { b.classList.remove('done'); b.textContent = 'Copy'; });
+    S.mpSeen = true;
+    track('mp_seen');
     go(3);
   }
   document.querySelectorAll('.cp-b').forEach(function (b) {
     b.addEventListener('click', function () {
       var text = $(b.getAttribute('data-copy')).textContent;
-      var shown = function () { b.classList.add('done'); b.textContent = 'Copied'; S.mpCopied = true; };
+      var shown = function () { b.classList.add('done'); b.textContent = 'Copied'; S.mpCopied = true; track('mp_copied', b.getAttribute('data-copy')); };
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(text).then(shown, function () { selectText($(b.getAttribute('data-copy'))); });
       } else selectText($(b.getAttribute('data-copy')));
@@ -1287,16 +1333,21 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   $('mpOwn').addEventListener('click', function () {
     var to = S.mp && S.mp.email ? S.mp.email : '';
     S.mpCopied = true;
+    track('mp_app');
     location.href = 'mailto:' + to + '?subject=' + encodeURIComponent(MP_SUBJECT) + '&body=' + encodeURIComponent(mpLetter());
   });
-  $('mpDone').addEventListener('click', toFund);
-  $('mpSkip').addEventListener('click', toFund);
+  // after the MP email, funding is offered once (unless they have already been through it)
+  $('mpDone').addEventListener('click', function () { track('mp_done'); S.fundSeen ? finish() : toFund(true); });
+  $('mpSkip').addEventListener('click', function () { track('mp_skip'); S.fundSeen ? finish() : toFund(); });
 
   // ---------------------------------------------------------------- 4: fund
   // Their videos travel further than any graphic would, so after the MP email it is straight to
   // funding, and the thank-you points to Marcus's Instagram.
-  function toFund() {
+  function toFund(afterMp) {
     showAsk();
+    $('fundThanks').hidden = !afterMp;
+    S.fundSeen = true;
+    track('fund_seen');
     go(4);
   }
   function showAsk() {
@@ -1306,7 +1357,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     $('fundAsk').hidden = false;
   }
   $('p4').addEventListener('change', function (e) {
-    if (e.target.name === 'freq') { fundLabel(); return; }
+    if (e.target.name === 'freq') { fundLabel(); if (fundOnce()) track('fund_once'); return; }
     if (e.target.name !== 'amt') return;
     var other = e.target.value === 'other';
     $('otherWrap').hidden = !other;
@@ -1348,6 +1399,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       $('fundAsk').hidden = true;
       $('payWrap').hidden = false;
       checkout.mount('#payBox');
+      track('card_opened', (fundOnce() ? 'once ' : 'monthly ') + a);
       $('payWrap').scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
       btn.disabled = false;
       fundLabel();
@@ -1384,6 +1436,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     if (S.checkout) { try { S.checkout.destroy(); } catch (e) {} S.checkout = null; }
     document.querySelectorAll('.me-first').forEach(function (el) { el.textContent = S.me.first; });
     $('doneTick').hidden = true;
+    $('doneMp').hidden = true;
     $('doneH').textContent = 'Checking your payment\u2026';
     $('doneS').textContent = 'One moment while Stripe confirms it.';
     go(5);
@@ -1402,6 +1455,8 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
           (pending ? (once ? 'Your Direct Debit payment leaves your account in a few working days. '
             : 'Your Direct Debit is set up: the first payment leaves your account in a few working days, then every month. ') : '') +
           (once ? 'Stripe has emailed your receipt.' : 'Stripe has emailed your receipt, with a link to change or stop it any time.');
+        track('paid', (once ? 'once ' : 'monthly ') + (d.amount_total || ''));
+        offerMp();
         return;
       }
       toFund();
@@ -1412,7 +1467,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       $('doneS').textContent = 'Stripe will email you a receipt for your monthly backing.';
     });
   }
-  $('skipFund').addEventListener('click', finish);
+  $('skipFund').addEventListener('click', function () { track('fund_skip'); finish(); });
 
   // ---------------------------------------------------------------- 5: done
   function finish() {
@@ -1421,8 +1476,12 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     $('doneTick').hidden = true;
     $('doneH').innerHTML = 'Thank you, <span class="me-first">' + esc(S.me.first) + '</span>.';
     $('doneS').textContent = s;
+    track('done');
+    offerMp();
     go(5);
   }
+  function offerMp() { $('doneMp').hidden = !!(S.mpSeen || S.abroad || !S.me || !S.me.pc); }
+  $('doneMp').addEventListener('click', function () { track('chose_mp', 'after'); toMp(); });
 
   // ---------------------------------------------------------------- the Daily Express: one name, three op-eds
   function expressShow(open) {
