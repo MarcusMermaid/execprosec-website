@@ -1252,6 +1252,9 @@ html:has(body.story-mode){overflow:hidden}
 .st-backnow-btn:hover{filter:brightness(1.06);transform:translateY(-1px)}
 /* the short story: Marcus's letter, full size, scrolling inside the box */
 .fin-bodywrap.st-letter-wrap{overflow-y:auto;-webkit-overflow-scrolling:touch}
+/* no picture: the letter takes the whole width, and the empty picture column folds away */
+.st-fit.st-letter-fit{grid-template-columns:1fr !important}
+.st-fit.st-letter-fit .fin-stage{height:0 !important;min-height:0 !important;overflow:visible}
 .st-letter{max-width:620px;margin:0 auto;padding:6px 4px 10px}
 .st-letter p{font-size:16px;line-height:1.6;margin:0 0 14px}
 .st-letter .st-sig{margin-top:18px;line-height:1.5}
@@ -5980,6 +5983,7 @@ function stFitText(){
   /* Marcus's letter is read at full size and scrolls, like a letter */
   var letter=!!body.querySelector('.st-letter');
   wrap.classList.toggle('st-letter-wrap', letter);
+  if(wrap.parentNode && wrap.parentNode.classList) wrap.parentNode.classList.toggle('st-letter-fit', letter);
   if(letter||phone||document.body.classList.contains('story-modal')){ body.style.removeProperty('--stfs'); return; }
   var steps=[16,15,14,13,12.5,12,11.5], i;
   for(i=0;i<steps.length;i++){
