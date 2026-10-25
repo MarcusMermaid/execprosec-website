@@ -264,6 +264,8 @@ legend{padding:0;margin:0 0 8px;font-size:14px;font-weight:600;line-height:1.4;c
 .funds{display:flex;flex-wrap:wrap;gap:6px 16px;margin:0 0 16px;padding:0;list-style:none;font-size:13.5px}
 .funds li{display:flex;align-items:center;gap:7px}
 .funds li::before{content:'';width:7px;height:7px;background:var(--gold);transform:rotate(45deg)}
+.freq{margin:0 0 10px}
+.freq .opt span{min-height:40px}
 .amts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
 .amts .opt span{min-height:52px;font-size:18px}
 .amts + .f{margin-top:12px}
@@ -424,17 +426,21 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       <p class="sub">This petition is just the start. We need this to be a full national campaign.</p>
       <ul class="funds"><li>Newspaper adverts and open letters</li><li>Billboards and posters</li><li>Social media adverts</li><li>A rally on the day of the vote</li></ul>
       <fieldset>
-        <legend>Back the campaign every month</legend>
+        <legend id="fundLegend">Back the campaign every month</legend>
+        <div class="opts freq" role="radiogroup" aria-label="How often">
+          <label class="opt"><input type="radio" name="freq" value="monthly" checked><span>Monthly</span></label>
+          <label class="opt"><input type="radio" name="freq" value="once"><span>One-off</span></label>
+        </div>
         <div class="amts">
           <label class="opt"><input type="radio" name="amt" value="10"><span>£10</span></label>
           <label class="opt"><input type="radio" name="amt" value="20" checked><span>£20</span></label>
           <label class="opt"><input type="radio" name="amt" value="50"><span>£50</span></label>
           <label class="opt"><input type="radio" name="amt" value="other"><span>Other</span></label>
         </div>
-        <div class="f" id="otherWrap" hidden><label for="otherAmt">Your amount each month (£10 or more)</label><input id="otherAmt" type="number" inputmode="numeric" min="10" step="1"><span class="err" id="otherAmtErr" aria-live="polite"></span></div>
+        <div class="f" id="otherWrap" hidden><label for="otherAmt" id="otherLbl">Your amount each month (£10 or more)</label><input id="otherAmt" type="number" inputmode="numeric" min="10" step="1"><span class="err" id="otherAmtErr" aria-live="polite"></span></div>
       </fieldset>
       <button class="btn" type="submit" id="fundBtn">Back it with £20 a month</button>
-      <p class="fine below">Cancel any time. Secure payment by Stripe.</p>
+      <p class="fine below" id="fundFine">Cancel any time. Secure payment by Stripe.</p>
       <button class="link skip" type="button" id="skipFund">Not now</button>
      </div>
      <div id="payWrap" hidden>
@@ -1241,10 +1247,10 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     if (S.abroad) { toFund(); return; }
     var mp = S.mp;
     $('mpFrom').innerHTML = mp
-      ? 'You gave us the postcode <b>' + esc(S.me.pc) + '</b>, which is in <b>' + esc(mp.seat) + '</b>. So your MP is:'
+      ? 'You gave us the postcode <b>' + esc(S.me.pc) + '</b>, so your MP is:'
       : 'We couldn\'t look up the MP for your postcode, <b>' + esc(S.me.pc) + '</b>, just now.';
     $('mpName').textContent = mp ? mp.name + ' MP' : 'Your MP';
-    $('mpSeat').textContent = mp ? mp.party + ' · ' + mp.seat : 'We couldn\'t look up your MP just now. Find their email at members.parliament.uk';
+    $('mpSeat').textContent = mp ? mp.party : 'We couldn\'t look up your MP just now. Find their email at members.parliament.uk';
     $('mpDot').textContent = mp ? mp.name.replace(/^(Dame|Sir|Dr) /, '').split(' ').map(function (w) { return w.charAt(0); }).join('').slice(0, 2) : 'MP';
     $('mpDot').style.background = (mp && PARTY_COLOUR[mp.party]) || '';
     $('mpDot').style.color = mp && mp.party === 'Scottish National Party' ? '#041440' : '';
@@ -1291,6 +1297,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     $('fundAsk').hidden = false;
   }
   $('p4').addEventListener('change', function (e) {
+    if (e.target.name === 'freq') { fundLabel(); return; }
     if (e.target.name !== 'amt') return;
     var other = e.target.value === 'other';
     $('otherWrap').hidden = !other;
@@ -1302,14 +1309,19 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     var v = $('p4').querySelector('input[name=amt]:checked').value;
     return v === 'other' ? Math.floor(+$('otherAmt').value || 0) : +v;
   }
+  // Monthly comes first and is chosen for them; one-off is there for anyone who would rather give once.
+  function fundOnce() { var f = $('p4').querySelector('input[name=freq]:checked'); return !!f && f.value === 'once'; }
   function fundLabel() {
-    var a = fundAmount();
-    $('fundBtn').textContent = a >= 10 ? 'Back it with £' + fmt(a) + ' a month' : 'Back it monthly';
+    var a = fundAmount(), once = fundOnce();
+    $('fundBtn').textContent = a >= 10 ? (once ? 'Give £' + fmt(a) + ' once' : 'Back it with £' + fmt(a) + ' a month') : (once ? 'Give once' : 'Back it monthly');
+    $('fundLegend').textContent = once ? 'Give to the campaign once' : 'Back the campaign every month';
+    $('otherLbl').textContent = once ? 'Your amount (£10 or more)' : 'Your amount each month (£10 or more)';
+    $('fundFine').textContent = once ? 'A single payment. Secure payment by Stripe.' : 'Cancel any time. Secure payment by Stripe.';
   }
   $('p4').addEventListener('submit', function (e) {
     e.preventDefault();
     var a = fundAmount();
-    if (a < 10) { setErr('otherAmt', 'The minimum is £10 a month.'); $('otherAmt').focus(); return; }
+    if (a < 10) { setErr('otherAmt', fundOnce() ? 'The minimum is £10.' : 'The minimum is £10 a month.'); $('otherAmt').focus(); return; }
     setErr('otherAmt');
     var btn = $('fundBtn');
     btn.disabled = true;
@@ -1317,7 +1329,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     $('fundNote').hidden = true;
     // Stripe sends them back to this page when they have paid; this is what it needs to say thank you.
     try { sessionStorage.setItem('ep_petition_me', JSON.stringify({ first: S.me.first, number: S.myNumber, emailOk: S.me.emailOk })); } catch (e) {}
-    post('donate/session', { tier: 'monthly_custom', amount: a, return_url: location.origin + location.pathname, in_place: true }).then(function (d) {
+    post('donate/session', { tier: fundOnce() ? 'one_off_custom' : 'monthly_custom', amount: a, return_url: location.origin + location.pathname, in_place: true }).then(function (d) {
       if (!d || !d.ok || !d.client_secret) throw new Error('no checkout');
       return stripeJs().then(function () {
         return Stripe(d.publishable_key).initEmbeddedCheckout({ clientSecret: d.client_secret, onComplete: function () { showPaid(d.session_id); } });
@@ -1372,12 +1384,15 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       var pending = !paid && !!(d && d.ok && d.pending === true);
       if (paid || pending) {
         var amt = d.amount_total ? '£' + Number(d.amount_total).toFixed(0) : '';
+        var once = d.tier === 'one_off_custom';
         $('doneTick').hidden = false;
-        $('doneH').textContent = 'Congratulations' + (S.me.first ? ', ' + S.me.first : '') + '. You\'re now funding us monthly.';
-        $('doneS').textContent = 'You\'re part of this fight now. ' + (amt ? 'Your ' + amt + ' a month' : 'Your monthly backing') +
+        $('doneH').textContent = once ? 'Thank you' + (S.me.first ? ', ' + S.me.first : '') + '. Your contribution is with us.'
+          : 'Congratulations' + (S.me.first ? ', ' + S.me.first : '') + '. You\'re now funding us monthly.';
+        $('doneS').textContent = 'You\'re part of this fight now. ' + (once ? (amt ? 'Your ' + amt : 'Your contribution') : (amt ? 'Your ' + amt + ' a month' : 'Your monthly backing')) +
           ' pays for the newspaper adverts, the billboards and the rally that make sure Parliament knows we\'re watching. ' +
-          (pending ? 'Your Direct Debit is set up: the first payment leaves your account in a few working days, then every month. ' : '') +
-          'Stripe has emailed your receipt, with a link to change or stop it any time.';
+          (pending ? (once ? 'Your Direct Debit payment leaves your account in a few working days. '
+            : 'Your Direct Debit is set up: the first payment leaves your account in a few working days, then every month. ') : '') +
+          (once ? 'Stripe has emailed your receipt.' : 'Stripe has emailed your receipt, with a link to change or stop it any time.');
         return;
       }
       toFund();
