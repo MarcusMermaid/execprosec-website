@@ -3348,6 +3348,12 @@ window.addEventListener('popstate', function(){ routeFromHash(); });
 /* routeFromHash is only ever called for an address the browser is already showing:
    first load, a change of hash, or Back and Forward. So it never pushes. */
 function routeFromHash(){
+  /* /story, /story/N, /donate and /donate/N belong to the box, not to the pages. The home
+     page shows behind it, and the address must be left exactly as it is. */
+  if(!(window.location.hash||'') && /^\/(story|donate)(\/|$)/i.test(window.location.pathname||'')){
+    try{ showScreen('screen-intro'); setNavActive('Home'); }catch(e){}
+    return;
+  }
   var key = (window.location.hash || '').replace(/^#/, '').toLowerCase();
   if(!key){ key = (window.location.pathname || '').replace(/^\/+|\/+$/g, '').toLowerCase(); }
   /* /poabamendments/<name>: the page, then that one amendment */
@@ -5335,6 +5341,18 @@ function epStoryReveal(box, f){
   f.addEventListener('load', show, {once:true});
   EP_SB_REVEAL=setTimeout(show, 4000);
 }
+/* Every box, and every slide inside it, has its own address, so a link can be sent to any one
+   of them: /story for the choice of which story to read, /story/1 to /story/28 for the full
+   story, /donate for Marcus's letter and the payment slide, /donate/1 to /donate/3.
+   A personal link or a return from Stripe keeps the address it arrived on. */
+function epStoryUrl(mode, n){
+  try{
+    var q=new URLSearchParams(location.search||'');
+    if(q.get('link') || q.get('bk') || q.get('session_id')) return;
+    var p=(mode==='short' ? '/donate' : '/story') + (n>=1 ? ('/'+n) : '');
+    if((location.pathname+location.search) !== p) history.replaceState(null, '', p);
+  }catch(e){}
+}
 function epStory(slide, extra){
   var box=document.getElementById('storybox'), f=document.getElementById('sb-frame');
   if(!box||!f) return false;
@@ -5354,6 +5372,7 @@ function epStory(slide, extra){
     box.classList.add('sb-ready');   /* already the right deck, so show it at once */
   }
   epStoryKeep({open:1, mode:mode});
+  epStoryUrl(mode, slide>1 ? slide : 1);
   box.classList.add('open');
   box.setAttribute('aria-hidden','false');
   document.body.classList.add('sb-open');
@@ -5361,7 +5380,7 @@ function epStory(slide, extra){
   return false;
 }
 /* Donate opens the short story: Marcus's letter, then the payment slide, no gate */
-function epStoryShort(){ return epStory(1, '&short=1'); }
+function epStoryShort(slide){ return epStory(slide>1?slide:1, '&short=1'); }
 /* Our Story asks which: the short version, or the full story behind the email gate */
 function epStoryChoose(){
   var box=document.getElementById('storybox'), c=document.getElementById('sb-choose');
@@ -5369,6 +5388,7 @@ function epStoryChoose(){
   c.hidden=false;
   box.classList.add('sb-choosing');
   epStoryKeep({open:1, mode:'choose'});
+  epStoryUrl('choose', 0);          /* /story, the choice of which story to read */
   box.classList.add('open');
   box.setAttribute('aria-hidden','false');
   document.body.classList.add('sb-open');
@@ -5389,7 +5409,7 @@ function epStoryClose(){
   if(!box) return false;
   epStoryKeep({open:0});
   /* the address bar goes back to the page itself */
-  try{ if(/^\/story\//i.test(location.pathname||'')) history.replaceState(null,'','/'); }catch(e){}
+  try{ if(/^\/(story|donate)(\/|$)/i.test(location.pathname||'')) history.replaceState(null,'','/'); }catch(e){}
   box.classList.remove('open');
   box.setAttribute('aria-hidden','true');
   document.body.classList.remove('sb-open');
@@ -5400,8 +5420,9 @@ window.addEventListener('message', function(e){
   if(!e || !e.data) return;
   if(e.data.ep==='story-slide'){
     epStoryKeep({slide:e.data.n});
-    /* every slide has its own address, shown while it is on screen */
-    try{ var n=parseInt(e.data.n,10); if(n>=1) history.replaceState(null,'','/story/'+n); }catch(x){}
+    /* every slide has its own address, shown while it is on screen, in whichever deck it is in */
+    var n=parseInt(e.data.n,10);
+    if(n>=1) epStoryUrl(e.data.short ? 'short' : 'full', n);
   }
   if(e.data.ep==='story-close') epStoryClose();
   /* while a photograph, quote or film is open inside the story, our close button steps
@@ -5422,18 +5443,27 @@ document.addEventListener('keydown', function(e){
    build hands over to this page when it is opened on its own. */
 (function(){
   var q; try{ q=new URLSearchParams(location.search||''); }catch(e){ return; }
-  var m=/^\/story\/(\d+)/i.exec(location.pathname||'');
-  var slide=parseInt(q.get('slide')||(m?m[1]:'0'),10)||0;
+  var path=(location.pathname||'').toLowerCase();
+  /* the addresses anyone can share: /story, /story/N, /donate, /donate/N */
+  var ms=/^\/story(?:\/(\d+))?\/?$/.exec(path);
+  var md=/^\/donate(?:\/(\d+))?\/?$/.exec(path);
+  var slide=parseInt(q.get('slide')||(ms&&ms[1])||(md&&md[1])||'0',10)||0;
   var extra='';
   if(q.get('link')) extra+='&link='+encodeURIComponent(q.get('link'));
   if(q.get('bk')){ extra+='&bk='+encodeURIComponent(q.get('bk')); if(!slide) slide=2; }
   /* straight to the payment slide, for somebody who has already decided */
   var pay=q.get('pay')==='1';
   if(pay) extra+='&pay=1';
-  /* the Donate button on our other pages: the short story, no gate */
-  var short=q.get('short')==='1' && !extra && !slide;
-  if(!extra && !slide && !pay && !short && q.get('story')!=='1') return;
-  var open=function(){ if(short) epStoryShort(); else epStory(slide>1?slide:1, extra); };
+  /* the Donate button, here and on every other page: the short story, no gate */
+  var short=!!md || (q.get('short')==='1' && !extra && !slide);
+  /* /story on its own asks which story to read, exactly as the Our Story button does */
+  var choose=!!(ms && !ms[1]) && !extra && !pay && !q.get('short');
+  if(!extra && !slide && !pay && !short && !choose && q.get('story')!=='1') return;
+  var open=function(){
+    if(choose) epStoryChoose();
+    else if(short) epStoryShort(slide);
+    else epStory(slide>1?slide:1, extra);
+  };
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', open);
   else open();
 })();
@@ -5442,9 +5472,17 @@ document.addEventListener('keydown', function(e){
 (function(){
   var kept=epStoryKept();
   if(!kept || !kept.open) return;
+  /* An address that names a box or a slide has already been obeyed above, and it wins: somebody
+     arriving at /story/12 must get slide 12, not whatever this tab was last reading. */
+  try{
+    var q2=new URLSearchParams(location.search||'');
+    if(/^\/(story|donate)(\/|$)/i.test(location.pathname||'')
+       || q2.get('slide') || q2.get('short') || q2.get('story') || q2.get('pay')
+       || q2.get('link') || q2.get('bk')) return;
+  }catch(e){}
   var how='navigate';
   try{ var nav=performance.getEntriesByType('navigation')[0]; if(nav && nav.type) how=nav.type; }catch(e){}
-  if(how!=='reload' && how!=='back_forward' && !/^\/story\//i.test(location.pathname||'')) return;
+  if(how!=='reload' && how!=='back_forward') return;
   var open=function(){
     if(kept.mode==='short') epStoryShort();
     else if(kept.mode==='choose') epStoryChoose();

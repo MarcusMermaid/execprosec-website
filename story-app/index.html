@@ -7555,10 +7555,11 @@ function stGuardThanks(){
 function stRender(){
   stGuardThanks();
   try{ if(window.__bkChecked && !ST_SHORT) stKeepWrite({slide:stIdx}); }catch(e){}
-  /* only report a slide the reader actually reached: a clamp back to the gate must not
-     overwrite the place they were reading. The short story's numbers are not the report's. */
+  /* Tell the page that owns the box which slide is on screen, so the address bar shows it and
+     the reader can copy a link to this one slide. Which deck it is goes with it, because the
+     short story's numbers are not the report's: /donate/2 is not /story/2. */
   try{
-    if(window.parent!==window && window.__bkChecked && !ST_SHORT) parent.postMessage({ep:'story-slide', n:stIdx+1}, '*');
+    if(window.parent!==window) parent.postMessage({ep:'story-slide', n:stIdx+1, short:!!ST_SHORT}, '*');
   }catch(e){}
   var body=document.getElementById('st-body');
   if(!body) return;
