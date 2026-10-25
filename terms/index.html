@@ -6,52 +6,97 @@
 <title>Terms and privacy policy | ExecProsec</title>
 <meta name="description" content="ExecProsec's terms and conditions, including the terms for our petitions, and our privacy policy, all on one page.">
 <link rel="canonical" href="https://execprosec.org/terms/">
+<link rel="icon" href="/_web/brand/favicon.ico">
+<link rel="apple-touch-icon" href="/_web/brand/icon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--navy:#041440;--gold:#ddbc66;--cream:#f7f6f2}
-*{box-sizing:border-box}
+:root{--navy:#041440;--gold:#DDBC66;--salmon:#d64045;--white:#fff}
+*,*::before,*::after{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;background:var(--navy);color:var(--cream);font:400 17px/1.75 Georgia,'Times New Roman',serif;padding:0 20px 80px}
-main{max-width:760px;margin:0 auto}
-header{padding:46px 0 10px}
-.brand{display:block;font:700 13px/1 Arial,Helvetica,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);text-decoration:none}
-h1{font:400 34px/1.25 Georgia,serif;margin:18px 0 8px}
-.part{font:400 28px/1.3 Georgia,serif;margin:64px 0 6px;padding-top:28px;border-top:1px solid rgba(221,188,102,.35);scroll-margin-top:16px}
-h2{font:700 13px/1.6 Arial,Helvetica,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin:38px 0 8px;scroll-margin-top:16px}
-.lead{color:rgba(247,246,242,.72);font-size:16px;margin:0 0 30px}
+body{margin:0;background:var(--navy);color:var(--white);font:400 16px/1.7 'DM Sans',sans-serif;-webkit-font-smoothing:antialiased}
+img{max-width:100%}
+/* ---- the standard site header, as on every other page ---- */
+#nav .logo{line-height:0}
+#nav .logo img{height:45px;width:auto;display:block}
+.nav-links{display:flex;align-items:center;flex-wrap:wrap;gap:1px;line-height:1.2}
+.nav-links a{position:relative;overflow:hidden;font-size:12px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;
+  color:#fff;padding:5px 8px;border-radius:2px;text-decoration:none;white-space:nowrap;transition:color .2s,background .2s}
+.nav-links a:hover{background:rgba(255,255,255,.07)}
+.nav-links a::after{content:'';position:absolute;bottom:0;left:50%;width:0;height:1px;background:var(--gold);transition:width .25s ease,left .25s ease}
+.nav-links a:hover::after{width:100%;left:0}
+.nav-links a.nav-donate{display:inline-flex;align-items:center;margin-left:18px;background:var(--salmon);color:#fff;font-size:12px;font-weight:700;
+  letter-spacing:.08em;padding:7px 16px;transition:background .2s,transform .15s}
+.nav-links a.nav-donate:hover{background:#bf3238;transform:translateY(-1px)}
+.nav-links a.nav-donate::after{display:none}
+header#nav{width:100%;max-width:1180px;margin:0 auto;padding:16px 28px 12px;display:flex;align-items:center;justify-content:flex-start;gap:22px}
+header#nav .logo{margin:0;flex:0 0 auto}
+header#nav .nav-links{flex:1 1 auto;flex-wrap:nowrap}
+@media(max-width:1080px){ header#nav{padding:14px 18px 10px;gap:14px} header#nav .nav-links a{font-size:11px;padding:5px 6px;letter-spacing:.02em} }
+@media(max-width:880px){ header#nav{flex-wrap:wrap} header#nav .nav-links{flex-wrap:wrap} }
+/* ---- the page ---- */
+main{max-width:780px;margin:0 auto;padding:0 24px}
+.hero{padding:40px 0 6px}
+.kicker{font:700 11.5px/1.6 'DM Sans',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin:0 0 14px}
+h1{font:400 40px/1.15 'DM Serif Display',serif;margin:0 0 12px}
+.lead{color:rgba(255,255,255,.72);font-size:16px;margin:0 0 28px}
+.part{font:400 30px/1.25 'DM Serif Display',serif;margin:64px 0 8px;padding-top:28px;border-top:1px solid rgba(221,188,102,.35);scroll-margin-top:16px}
+h2{font:700 12.5px/1.6 'DM Sans',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin:38px 0 8px;scroll-margin-top:16px}
+p,li{color:rgba(255,255,255,.85)}
 ul{padding-left:22px}li{margin:4px 0}
 a{color:var(--gold)}
-.toc{border:1px solid rgba(221,188,102,.3);border-radius:4px;padding:18px 20px;margin:0 0 10px;font:400 15px/1.5 Arial,Helvetica,sans-serif}
+.toc{border:1px solid rgba(221,188,102,.3);border-radius:4px;padding:18px 20px;margin:0 0 10px;font-size:14.5px;line-height:1.5}
 .toc-h{margin:0 0 8px;font-weight:700}
 .toc-h a{text-decoration:none}
 .toc ol{list-style:none;margin:0 0 16px;padding:0;columns:2;column-gap:28px}
 .toc ol:last-child{margin-bottom:0}
 .toc li{margin:0 0 6px;break-inside:avoid}
-.toc li a{color:rgba(247,246,242,.85);text-decoration:none}
+.toc li a{color:rgba(255,255,255,.85);text-decoration:none}
 .toc li a:hover{color:var(--gold)}
 .toc .n{color:var(--gold);font-weight:700;margin-right:6px}
-@media(max-width:600px){.toc ol{columns:1} h1{font-size:29px} .part{font-size:24px}}
-.legal .tc-eff{font:700 12px/1.6 Arial,Helvetica,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);margin:0 0 20px}
-.legal .tc-h{font:700 13px/1.6 Arial,Helvetica,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin:38px 0 8px;scroll-margin-top:16px}
+.legal .tc-eff{font:700 11.5px/1.6 'DM Sans',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin:0 0 20px}
+.legal .tc-h{font:700 12.5px/1.6 'DM Sans',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin:38px 0 8px;scroll-margin-top:16px}
 .legal p{margin:0 0 13px}
 .legal .tc-clause{color:var(--gold);font-weight:700;margin-right:6px}
 .legal .tc-list{margin:0 0 14px;padding:0 0 0 18px;list-style:none}
 .legal .tc-list li{margin:0 0 8px}
 .legal .tc-mark{color:var(--gold);font-weight:700;margin-right:6px}
 #petitions{position:relative;top:-16px}
-footer{margin:46px 0 0;font-size:13px;color:rgba(247,246,242,.5)}
+@media(max-width:600px){ .toc ol{columns:1} h1{font-size:32px} .part{font-size:25px} main{padding:0 20px} }
+/* ---- the standard footer, with Terms at the bottom ---- */
+.site-foot{max-width:780px;margin:60px auto 0;padding:26px 24px 40px;border-top:1px solid rgba(255,255,255,.1);
+  display:flex;flex-direction:column;gap:4px;font-size:12.5px;color:rgba(255,255,255,.4)}
+.sf-num{letter-spacing:.08em}
+.site-foot a{color:rgba(255,255,255,.6)}
 </style>
 </head>
 <body>
+
+<header id="nav">
+  <a class="logo" href="/" aria-label="ExecProsec home"><img src="/_web/brand/logo-nav.png" alt="ExecProsec" width="82" height="45"></a>
+  <nav class="nav-links">
+    <a href="/petition/">Petition</a>
+    <a href="/poabamendments">Amendments</a>
+    <a href="/poabbriefing" title="Public Office (Accountability) Bill briefing">POAB Briefing</a>
+    <a href="/lying-in-politics">Lying in Politics</a>
+    <a href="/news">News</a>
+    <a href="/testimonials">Testimonials</a>
+    <a href="/contact">Contact</a>
+    <a class="nav-donate" href="/?short=1">Donate</a>
+  </nav>
+</header>
+
 <main>
-<header>
-<a class="brand" href="/">ExecProsec</a>
+<div class="hero">
+<p class="kicker">Terms and privacy</p>
 <h1>Terms and privacy policy</h1>
 <p class="lead">Everything that applies when you use our websites, back our work or sign one of our petitions, in one place:
 Part 1 is our terms and conditions (clause 23 covers petitions), and Part 2 is our privacy policy. Last updated 25 October 2026.</p>
-</header>
+</div>
 <nav class="toc" aria-label="Contents"><p class="toc-h"><a href="#terms">Part 1. Terms and conditions</a></p><ol><li><a href="#tc-s1"><span class="n">1.</span>About ExecProsec and contacting us</a></li><li><a href="#tc-s2"><span class="n">2.</span>Purpose of this agreement</a></li><li><a href="#tc-s3"><span class="n">3.</span>Acceptance and application</a></li><li><a href="#tc-s4"><span class="n">4.</span>Nature of support</a></li><li><a href="#tc-s5"><span class="n">5.</span>Organisational purposes and decisions</a></li><li><a href="#tc-s6"><span class="n">6.</span>Use of contributions</a></li><li><a href="#tc-s7"><span class="n">7.</span>Professional remuneration and past service</a></li><li><a href="#tc-s8"><span class="n">8.</span>Personnel support and benefits</a></li><li><a href="#tc-s9"><span class="n">9.</span>Work-related liabilities and expenses</a></li><li><a href="#tc-s10"><span class="n">10.</span>Documentary and production arrangements</a></li><li><a href="#tc-s11"><span class="n">11.</span>Contributions and payment processing</a></li><li><a href="#tc-s12"><span class="n">12.</span>Managing and ending recurring support</a></li><li><a href="#tc-s13"><span class="n">13.</span>Completed contributions</a></li><li><a href="#tc-s14"><span class="n">14.</span>Outcomes and changes in circumstances</a></li><li><a href="#tc-s15"><span class="n">15.</span>Updates and information</a></li><li><a href="#tc-s16"><span class="n">16.</span>Privacy Notice</a></li><li><a href="#tc-s17"><span class="n">17.</span>Responsibility and legal protections</a></li><li><a href="#tc-s18"><span class="n">18.</span>Organisational continuity</a></li><li><a href="#tc-s19"><span class="n">19.</span>Changes to this agreement</a></li><li><a href="#tc-s20"><span class="n">20.</span>Enquiries and resolution of concerns</a></li><li><a href="#tc-s21"><span class="n">21.</span>General provisions</a></li><li><a href="#tc-s22"><span class="n">22.</span>Confidentiality and non-disclosure</a></li><li><a href="#tc-s23"><span class="n">23.</span>Petitions, quotes and campaign actions</a></li></ol><p class="toc-h"><a href="#privacy">Part 2. Privacy policy</a></p><ol><li><a href="#p1"><span class="n">1.</span>Who we are</a></li><li><a href="#p2"><span class="n">2.</span>Who this covers</a></li><li><a href="#p3"><span class="n">3.</span>What we collect</a></li><li><a href="#p4"><span class="n">4.</span>How we use it</a></li><li><a href="#p5"><span class="n">5.</span>Software and artificial intelligence</a></li><li><a href="#p6"><span class="n">6.</span>Our legal grounds</a></li><li><a href="#p7"><span class="n">7.</span>Who we share it with</a></li><li><a href="#p8"><span class="n">8.</span>How long we keep it</a></li><li><a href="#p9"><span class="n">9.</span>Emails</a></li><li><a href="#p10"><span class="n">10.</span>Cookies and similar technology</a></li><li><a href="#p11"><span class="n">11.</span>Social media</a></li><li><a href="#p12"><span class="n">12.</span>Having your data deleted</a></li><li><a href="#p13"><span class="n">13.</span>Your rights</a></li><li><a href="#p14"><span class="n">14.</span>Children</a></li><li><a href="#p15"><span class="n">15.</span>Security, other websites and changes</a></li><li><a href="#p16"><span class="n">16.</span>Petitions</a></li></ol></nav>
 
-<h2 class="part" id="terms" style="font:400 28px/1.3 Georgia,serif;letter-spacing:0;text-transform:none;color:var(--cream)">Part 1. Terms and conditions</h2>
+<h2 class="part" id="terms" style="letter-spacing:0;text-transform:none;color:#fff;font:400 30px/1.25 'DM Serif Display',serif">Part 1. Terms and conditions</h2>
 
 <div class="legal"><p class="tc-eff">Effective 19 September 2026. Clause 23 (Petitions) added 25 October 2026.</p>
 
@@ -241,7 +286,7 @@ Part 1 is our terms and conditions (clause 23 covers petitions), and Part 2 is o
 </div>
 
 
-<h2 class="part" id="privacy" style="font:400 28px/1.3 Georgia,serif;letter-spacing:0;text-transform:none;color:var(--cream)">Part 2. Privacy policy</h2>
+<h2 class="part" id="privacy" style="letter-spacing:0;text-transform:none;color:#fff;font:400 30px/1.25 'DM Serif Display',serif">Part 2. Privacy policy</h2>
 <p class="lead">This policy explains how ExecProsec Limited collects, uses, shares and protects personal data across our campaign: our websites, donations, emails, events, social media accounts and the tools we use to run them.</p>
 <h2 id="p1">1. Who we are</h2>
 <p>ExecProsec Limited (company number 10520032, registered in England and Wales; registered office
@@ -380,8 +425,14 @@ this page, with the date it was last updated. Nothing in this policy limits any 
 <p>We use your postcode to find your parliamentary constituency, your MP and your area, using UK Parliament's published Members data, so that we can report totals by constituency, show your first name and town among recent signers and next to your quote, and show you your MP's published email address and a suggested message, which you can send yourself from your own email. We check quotes automatically before they are published, and any that name a person are checked by a person first.</p>
 <p>Our legal grounds are: your explicit consent to record your support for the petition (UK GDPR Articles 6(1)(a) and 9(2)(a)); your consent to campaign and fundraising emails, if you answer Yes; your consent to publish your quote; and our legitimate interests in checking signatures and preventing fraud and abuse.</p>
 <p>We keep signatures and answers until two years after the campaign for the law the petition is about has ended, then delete them or keep only anonymous totals. If you agreed to emails, we keep your email details until you unsubscribe. A published quote stays up until you ask us to remove it or we decide to take it down.</p>
-
-<footer>ExecProsec Limited &middot; <a href="/">execprosec.org</a></footer>
 </main>
+
+<footer class="site-foot">
+  <span class="sf-line">ExecProsec Ltd &middot; Not-for-profit &middot; Funded entirely by the public</span>
+  <span class="sf-line">Registered in England and Wales</span>
+  <span class="sf-line sf-num">10520032</span>
+  <span class="sf-line">&copy; 2026 ExecProsec Ltd. All rights reserved.</span>
+  <span class="sf-line"><a href="/terms/">Terms and privacy policy</a></span>
+</footer>
 </body>
 </html>
