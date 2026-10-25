@@ -5273,8 +5273,8 @@ setTimeout(function(){
       <div class="sb-opts">
         <button type="button" class="sb-opt sb-short" onclick="epStoryPick('short');return false;">
           <b>The short version</b>
-          <span class="sb-len">3 slides &middot; about 2 minutes</span>
-          <span class="sb-need">Read it straight away. No email address needed.</span>
+          <span class="sb-len">2 slides &middot; about 2 minutes</span>
+          <span class="sb-need">Read it straight away.</span>
           <span class="sb-go">Read the short version &rarr;</span>
         </button>
         <button type="button" class="sb-opt sb-full" onclick="epStoryPick('full');return false;">
@@ -5325,7 +5325,7 @@ function epStory(slide, extra){
   try{ f.contentWindow.focus(); }catch(e){}
   return false;
 }
-/* Donate opens the short story: three slides, no gate, ending on the payment slide */
+/* Donate opens the short story: Marcus's letter, then the payment slide, no gate */
 function epStoryShort(){ return epStory(1, '&short=1'); }
 /* Our Story asks which: the short version, or the full story behind the email gate */
 function epStoryChoose(){
