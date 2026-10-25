@@ -1254,11 +1254,22 @@ html:has(body.story-mode){overflow:hidden}
 .fin-bodywrap.st-letter-wrap{overflow-y:auto;-webkit-overflow-scrolling:touch}
 /* no picture: the letter takes the whole width, and the empty picture column folds away */
 .st-fit.st-letter-fit{grid-template-columns:1fr !important}
-.st-fit.st-letter-fit .fin-stage{height:0 !important;min-height:0 !important;overflow:visible}
-.st-letter{max-width:620px;margin:0 auto;padding:6px 4px 10px}
-.st-letter p{font-size:16px;line-height:1.6;margin:0 0 14px}
-.st-letter .st-sig{margin-top:18px;line-height:1.5}
-.st-letter .st-backnow{margin:24px 0 6px}
+.st-fit.st-letter-fit .fin-stage{height:0 !important;min-height:0 !important;overflow:visible;grid-column:1 / -1}
+/* the letter uses the whole box: full width, and the type is sized (stFitText) so it fits without scrolling */
+.st-fit.st-letter-fit .fin-bodywrap{grid-column:1 / -1 !important;max-width:none !important;width:100%}
+.st-fit.st-letter-fit .fin-copy{max-width:none !important;margin-top:4px !important}
+.st-letter{--ltfs:16px;max-width:860px;margin:0 auto;padding:0 6px 4px;font-size:var(--ltfs)}
+.st-letter p{font-size:var(--ltfs);line-height:1.5;margin:0 0 .6em}
+.st-letter .st-sig{margin:.9em 0 .5em;line-height:1.4}
+.st-letter .st-sig-logo{margin:0 0 .4em}
+.st-letter .st-sig-logo img{height:34px;width:auto;display:block}
+.st-letter .st-lt-link{color:var(--gold);text-decoration:underline;text-underline-offset:2px}
+.st-letter .st-lt-fund{margin:0 0 .8em}
+.st-letter .st-lt-fund:last-child{margin:.9em 0 0}
+.st-lt-btn{background:var(--gold);color:#041440;border:0;border-radius:6px;padding:6px 14px;
+  font:inherit;font-size:13.5px;font-weight:700;letter-spacing:.01em;cursor:pointer;
+  transition:filter .15s ease,transform .15s ease}
+.st-lt-btn:hover{filter:brightness(1.06);transform:translateY(-1px)}
 .gate-warn{display:none;color:#D64045;font-size:14px;margin:10px 0 0}
 .gate-note{font-size:13px;line-height:1.6;color:rgba(247,246,242,.55);margin:14px 0 0}
 .gate-done{display:none;color:var(--gold);font-size:16px;margin:0}
@@ -5984,7 +5995,18 @@ function stFitText(){
   var letter=!!body.querySelector('.st-letter');
   wrap.classList.toggle('st-letter-wrap', letter);
   if(wrap.parentNode && wrap.parentNode.classList) wrap.parentNode.classList.toggle('st-letter-fit', letter);
-  if(letter||phone||document.body.classList.contains('story-modal')){ body.style.removeProperty('--stfs'); return; }
+  if(letter){
+    /* the whole letter on one screen: the type steps down until it fits; on a phone it scrolls */
+    body.style.removeProperty('--stfs');
+    var lt=body.querySelector('.st-letter'), sizes=[16,15.5,15,14.5,14,13.5,13], j;
+    if(phone){ lt.style.removeProperty('--ltfs'); return; }
+    for(j=0;j<sizes.length;j++){
+      lt.style.setProperty('--ltfs', sizes[j]+'px');
+      if(wrap.scrollHeight<=wrap.clientHeight+1) break;
+    }
+    return;
+  }
+  if(phone||document.body.classList.contains('story-modal')){ body.style.removeProperty('--stfs'); return; }
   var steps=[16,15,14,13,12.5,12,11.5], i;
   for(i=0;i<steps.length;i++){
     body.style.setProperty('--stfs', steps[i]+'px');
@@ -7360,11 +7382,12 @@ var ST_DATA={
   27:{title:'You have chosen not to support us.',custom:'rj',h:90,noprog:1,nonext:1,body:'<p>You&rsquo;ve decided not to support Marcus and ExecProsec.</p><p>Marcus has proven over ten years that he will not give up, no matter what. You don&rsquo;t feel the same way.</p><p>You can change your mind right now. Ten pounds a month is two pounds thirty a week. It is very little to you. It is everything to this.</p><span class="rjbtns"><button type="button" class="rjfin" onclick="rjFinish(this)">Confirm and finish</button><button type="button" class="gate-btn" onclick="stStep(-1)">Back</button></span>'}
 };
 /* The short story (Marcus, 25 Oct 2026): his letter to the reader, then the payment slide and its
-   thank-you, taken from the full deck so there is one of each. No picture on the letter. */
+   thank-you, taken from the full deck so there is one of each. No picture on the letter; a small
+   Fund us monthly button at the top and the foot lets a reader skip straight to paying. */
 if(ST_SHORT){
   (function(){
     ST_DATA={
-      0:{title:'',body:"<div class=\"st-letter\"><p>Dear reader,</p><p>Our Parliament is creating a new criminal offence called Misleading the Public. It would mean up to two years in prison for public officials proven in evidence to have intentionally or recklessly deceived the public. It\u2019s in the Public Office (Accountability) Bill, known as the Hillsborough Law.</p><p>Guess who it covers? The Prime Minister, government ministers, civil servants, police, NHS doctors and nurses, armed forces and nearly all other public officials.</p><p>Guess who it leaves out? The lawmakers themselves: Members of Parliament, the Lords, the Welsh Parliament, the Scottish Parliament and the Northern Ireland Assembly.</p><p>We want legislators held accountable for serious deception on tv, radio, social media, at public events, and etc. What they say and do in parliamentary proceedings would remain privileged under the Bill of Rights 1689.</p><p>Political opinions, honest mistakes or broken promises would also remain protected.</p><p>This is about the lies that can do the greatest damage: deceiving us into war, manipulating a referendum result, lying to obscure profits from huge government contracts, and more.</p><p>This historic new law must include the lawmakers. They should answer for the harm their lies can cause, just as other public officials would.</p><p>Sign our petition and fund us to give us the resources we need to win this fight. We need to pay for PR support, legal fees, advertisement posters, and other costs for this work.</p><p>Join this fight against hypocrisy and for equality under the law in defence of our democracy.</p><p>Thank you,</p><p class=\"st-sig\"><b>Marcus J Ball</b><br>Private prosecutor<br>10+ years campaigning to criminalise lying in politics<br>ExecProsec<br>Founder of ExecProsec</p><p class=\"st-backnow\"><button type=\"button\" class=\"st-backnow-btn\" onclick=\"stStepTo(ST_FUND)\">Fund us monthly &rarr;</button></p></div>"},
+      0:{title:'',body:"<div class=\"st-letter\"><p class=\"st-lt-fund\"><button type=\"button\" class=\"st-lt-btn\" onclick=\"stStepTo(ST_FUND)\">Fund us monthly &rarr;</button></p><p>Dear reader,</p><p>Our Parliament is creating a new criminal offence called Misleading the Public. It would mean up to two years in prison for public officials proven in evidence to have intentionally or recklessly deceived the public. It\u2019s in the Public Office (Accountability) Bill, known as the Hillsborough Law.</p><p>Guess who it covers? The Prime Minister, government ministers, civil servants, police, NHS doctors and nurses, armed forces and nearly all other public officials.</p><p>Guess who it leaves out? The lawmakers themselves: Members of Parliament, the Lords, the Welsh Parliament, the Scottish Parliament and the Northern Ireland Assembly.</p><p>We want legislators held accountable for serious deception on tv, radio, social media, at public events, and etc. What they say and do in parliamentary proceedings would remain privileged under the Bill of Rights 1689.</p><p>Political opinions, honest mistakes or broken promises would also remain protected.</p><p>This is about the lies that can do the greatest damage: deceiving us into war, manipulating a referendum result, lying to obscure profits from huge government contracts, and more.</p><p>This historic new law must include the lawmakers. They should answer for the harm their lies can cause, just as other public officials would.</p><p><a class=\"st-lt-link\" href=\"/petition\" target=\"_top\">Sign our petition</a> and fund us to give us the resources we need to win this fight. We need to pay for PR support, legal fees, advertisement posters, and other costs for this work.</p><p>Join this fight against hypocrisy and for equality under the law in defence of our democracy.</p><p>Thank you,</p><p class=\"st-sig\"><b>Marcus J Ball</b><br>Private prosecutor<br>10+ years campaigning to criminalise lying in politics<br>Founder of ExecProsec</p><p class=\"st-sig-logo\"><img src=\"/_web/brand/logo-nav.png\" alt=\"ExecProsec\"></p><p class=\"st-lt-fund\"><button type=\"button\" class=\"st-lt-btn\" onclick=\"stStepTo(ST_FUND)\">Fund us monthly &rarr;</button></p></div>"},
       1:ST_DATA[25],
       2:ST_DATA[26]
     };
