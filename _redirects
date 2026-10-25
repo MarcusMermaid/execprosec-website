@@ -6,17 +6,25 @@
 # The backer update page was at /video-updates for its first day.
 /video-updates /backer-updates/ 301
 /video-updates/* /backer-updates/ 301
-# The page was briefly at /examples.
-/examples /lying-in-politics 301
-/examples/* /lying-in-politics 301
+# 25 Oct 2026: Lying in Politics was renamed Examples of Lying. /examples was its first address.
+/lying-in-politics /examples-of-lying/ 301
+/lying-in-politics/* /examples-of-lying/:splat 301
+/examples /examples-of-lying/ 301
+/examples/* /examples-of-lying/ 301
 # Press emails: each journalist's tracked links (/c/), open image (/p/) and the release page (/press/<story>).
 # Central logs the event and sends the reader on; the release page loads its text from Central.
 /c/* https://central-2-mcp-production.up.railway.app/public/press/c/:splat 302
 /p/* https://central-2-mcp-production.up.railway.app/public/press/p/:splat 302
 /press/* /press/ 200
-# The briefing moved from /hol-briefing to /poabbriefing on 24 Oct 2026: it is for everyone now, not just peers.
-/hol-briefing /poabbriefing/ 301
-/hol-briefing/* /poabbriefing/:splat 301
+# 25 Oct 2026: the amendments page and the POAB briefing became one page, Amendments Briefing.
+# /hol-briefing was the briefing's first address, /poabbriefing its second.
+/poabamendments /amendments-briefing/ 301
+/poabamendments/* /amendments-briefing/ 301
+/amendments /amendments-briefing/ 301
+/poabbriefing /amendments-briefing/ 301
+/poabbriefing/* /amendments-briefing/ 301
+/hol-briefing /amendments-briefing/ 301
+/hol-briefing/* /amendments-briefing/ 301
 # 25 Oct 2026: the privacy policy is Part 2 of the one Terms page. Meta's app settings still name
 # /privacy/ and /privacy/#delete, so these must keep working.
 /privacy /terms/#privacy 301
