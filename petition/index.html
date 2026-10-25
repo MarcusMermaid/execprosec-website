@@ -442,7 +442,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       <div class="cp"><span class="cp-l">Subject</span><span class="cp-v" id="mpSubj"></span><button class="cp-b" type="button" data-copy="mpSubj">Copy</button></div>
       <div class="cp cp-msg"><span class="cp-l">Message</span><span class="cp-v" id="mpMsg"></span><button class="cp-b" type="button" data-copy="mpMsg">Copy</button></div>
       <button class="btn navy" type="button" id="mpDone">Done, next</button>
-      <p class="alt"><button class="link" type="button" id="mpOwn">Open it in my email app</button> · <button class="link" type="button" id="mpSkip">Skip</button></p>
+      <p class="alt"><button class="link" type="button" id="mpSkip">Skip</button></p>
     </div>
 
     <!-- 4: fund -->
@@ -1330,12 +1330,6 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r);
     toast('Selected. Copy it with your phone or keyboard.');
   }
-  $('mpOwn').addEventListener('click', function () {
-    var to = S.mp && S.mp.email ? S.mp.email : '';
-    S.mpCopied = true;
-    track('mp_app');
-    location.href = 'mailto:' + to + '?subject=' + encodeURIComponent(MP_SUBJECT) + '&body=' + encodeURIComponent(mpLetter());
-  });
   // after the MP email, funding is offered once (unless they have already been through it)
   $('mpDone').addEventListener('click', function () { track('mp_done'); S.fundSeen ? finish() : toFund(true); });
   $('mpSkip').addEventListener('click', function () { track('mp_skip'); S.fundSeen ? finish() : toFund(); });
