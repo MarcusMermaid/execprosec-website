@@ -17,3 +17,7 @@
 # The briefing moved from /hol-briefing to /poabbriefing on 24 Oct 2026: it is for everyone now, not just peers.
 /hol-briefing /poabbriefing/ 301
 /hol-briefing/* /poabbriefing/:splat 301
+# 25 Oct 2026: the privacy policy is Part 2 of the one Terms page. Meta's app settings still name
+# /privacy/ and /privacy/#delete, so these must keep working.
+/privacy /terms/#privacy 301
+/privacy/ /terms/#privacy 301
