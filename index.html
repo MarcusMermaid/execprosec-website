@@ -5305,6 +5305,27 @@ function epStoryKept(){
   try{ return JSON.parse(sessionStorage.getItem(EP_SB_KEY)||'null'); }catch(e){ return null; }
 }
 
+/* The deck is a big page. The moment somebody reaches for a button that opens it, fetch it
+   quietly so the box has something to show almost at once. A prefetch only warms the cache:
+   nothing in the deck runs, so it records no visit for somebody who never opens it. */
+(function(){
+  var warmed=false;
+  function warm(){
+    if(warmed) return;
+    warmed=true;
+    try{
+      var l=document.createElement('link');
+      l.rel='prefetch'; l.as='document'; l.href='/story-app/?embed=1&short=1';
+      document.head.appendChild(l);
+    }catch(e){}
+  }
+  ['pointerover','focusin','touchstart'].forEach(function(ev){
+    document.addEventListener(ev, function(e){
+      var t=e.target && e.target.closest ? e.target.closest('.nav-donate,.cta-home,.btn-start') : null;
+      if(t) warm();
+    }, {passive:true, capture:true});
+  });
+})();
 /* Show the frame once the deck that was asked for has loaded. If it never reports back, show
    it anyway after a few seconds rather than leave the reader looking at an empty box. */
 var EP_SB_REVEAL=0;
