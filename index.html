@@ -5578,7 +5578,8 @@ function epDonateChooser(){
     '<input id="db-other" class="db-input db-other-in" type="number" min="10" step="1" inputmode="decimal" placeholder="30" '+
     'value="'+(EP_PICKED==='monthly_custom'&&EP_OTHER?EP_OTHER:'')+'" oninput="epOther(this)"><span class="db-pm">'+(epOnce()?'once':'a month')+'</span></div>'+
     '<p class="db-note db-min" id="db-min">The minimum is &pound;10'+(epOnce()?'':' a month')+'.</p>'+
-    (epOnce() ? '' : '<p class="db-note db-avg">We need an average of &pound;20 a month per backer for ExecProsec to be financially viable.</p>')+
+    (epOnce() ? '<p class="db-note db-avg">We much prefer monthly contributions, because they let us plan our work, but we now accept one-off contributions for those who can\u2019t afford to give monthly.</p>'
+      : '<p class="db-note db-avg">We need an average of &pound;20 a month per backer for ExecProsec to be financially viable.</p>')+
     '<button class="db-go" id="db-go" type="button" onclick="epDonateStart()">'+epGoText()+'</button>'+
     '<p class="db-trust">Payments handled by Stripe &middot; ExecProsec Ltd, company number 10520032 &middot; '+
     'A voluntary contribution towards our work, not a purchase of goods or services.</p>';
@@ -5773,12 +5774,17 @@ function epDonateThanks(sessionId){
           'You have just joined the people who pay for this work: the investigations, the exposure, '+
           'the prosecutions and the campaign to change the law. Welcome.</p>'+
           (pending
-            ? '<p class="db-note">Your Direct Debit is set up. The first payment takes a few working '+
-              'days to reach us, and then it repeats every month. EXECPROSEC will appear on your '+
-              'statement, and your confirmation email carries a link to change or stop it whenever '+
-              'you want.</p>'
-            : '<p class="db-note">EXECPROSEC will appear on your statement. Stripe has emailed your '+
-              'receipt, and it carries a link to change or stop your backing whenever you want.</p>')+
+            ? (monthly
+              ? '<p class="db-note">Your Direct Debit is set up. The first payment takes a few working '+
+                'days to reach us, and then it repeats every month. EXECPROSEC will appear on your '+
+                'statement, and your confirmation email carries a link to change or stop it whenever '+
+                'you want.</p>'
+              : '<p class="db-note">Your Direct Debit payment takes a few working days to reach us. '+
+                'EXECPROSEC will appear on your statement.</p>')
+            : (monthly
+              ? '<p class="db-note">EXECPROSEC will appear on your statement. Stripe has emailed your '+
+                'receipt, and it carries a link to change or stop your backing whenever you want.</p>'
+              : '<p class="db-note">EXECPROSEC will appear on your statement. Stripe has emailed your receipt.</p>'))+
           '<button class="db-small" type="button" onclick="epDonateClose()">Close</button>';
         return;
       }
