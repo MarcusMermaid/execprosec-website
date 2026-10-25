@@ -1982,7 +1982,11 @@ body.sb-open{overflow:hidden}
 /* scale only: fading the panel would let the page behind show through if a browser ever
    replays the animation, and the box must always read as solid */
 @keyframes sbIn{from{transform:scale(.985)}to{transform:none}}
-#storybox iframe{width:100%;height:100%;border:0;display:block;background:transparent}
+#storybox iframe{width:100%;height:100%;border:0;display:block;background:transparent;
+  opacity:0;transition:opacity .18s ease}
+/* the frame is only shown once it holds the deck that was asked for, so switching between the
+   short story and the full one never flashes the one that was read before */
+#storybox.sb-ready:not(.sb-choosing) iframe{opacity:1}
 #storybox .sb-x{position:absolute;top:12px;right:12px;z-index:5;width:40px;height:40px;
   border-radius:50%;border:none;padding:0;background:#f7f6f2;color:#041440;cursor:pointer;
   display:flex;align-items:center;justify-content:center;box-shadow:0 3px 12px rgba(0,0,0,.35)}
@@ -5301,6 +5305,15 @@ function epStoryKept(){
   try{ return JSON.parse(sessionStorage.getItem(EP_SB_KEY)||'null'); }catch(e){ return null; }
 }
 
+/* Show the frame once the deck that was asked for has loaded. If it never reports back, show
+   it anyway after a few seconds rather than leave the reader looking at an empty box. */
+var EP_SB_REVEAL=0;
+function epStoryReveal(box, f){
+  clearTimeout(EP_SB_REVEAL);
+  var show=function(){ clearTimeout(EP_SB_REVEAL); box.classList.add('sb-ready'); };
+  f.addEventListener('load', show, {once:true});
+  EP_SB_REVEAL=setTimeout(show, 4000);
+}
 function epStory(slide, extra){
   var box=document.getElementById('storybox'), f=document.getElementById('sb-frame');
   if(!box||!f) return false;
@@ -5309,9 +5322,15 @@ function epStory(slide, extra){
      to the other loads it, and reopening the same one carries on where the reader was */
   var mode=/[?&]short=1/.test(extra||'') ? 'short' : 'full';
   if(!f.getAttribute('data-loaded') || f.getAttribute('data-mode')!==mode){
+    /* the frame still holds the deck that was read last. Hide it until the one that was
+       actually asked for has loaded, or the reader sees the wrong story for a moment. */
+    box.classList.remove('sb-ready');
+    epStoryReveal(box, f);
     f.src='/story-app/?embed=1' + (slide>1 ? ('&slide='+slide) : '') + (extra||'');
     f.setAttribute('data-loaded','1');
     f.setAttribute('data-mode', mode);
+  }else{
+    box.classList.add('sb-ready');   /* already the right deck, so show it at once */
   }
   epStoryKeep({open:1, mode:mode});
   box.classList.add('open');
@@ -5476,8 +5495,9 @@ function epDbResume(){
 function epDonate(){
   var box=document.getElementById('donatebox');
   if(!box) return false;
-  box.classList.add('open');
+  /* build the screen before the box is shown, or the first frame shows whatever was in it last */
   epDbResume();
+  box.classList.add('open');
   box.setAttribute('aria-hidden','false');
   document.body.classList.add('sb-open');
   try{ epTrack('donate_open','', 'donate'); }catch(e){}
@@ -5736,12 +5756,13 @@ function epManageOpen(){
 function epDonateThanks(sessionId){
   var box=document.getElementById('donatebox');
   if(!box) return;
-  box.classList.add('open');
-  box.setAttribute('aria-hidden','false');
-  document.body.classList.add('sb-open');
+  /* the words go in before the box is shown, so the first frame is already the right one */
   var wrap=document.getElementById('db-in');
   wrap.className='db-in db-thanks';
   wrap.innerHTML='<p class="db-kicker">Thank you</p><h2 class="db-h">Checking your payment\u2026</h2>';
+  box.classList.add('open');
+  box.setAttribute('aria-hidden','false');
+  document.body.classList.add('sb-open');
   fetch(EP_DONATE_API+'/public/donate/status?session_id='+encodeURIComponent(sessionId))
     .then(function(r){ return r.json(); }).then(function(d){
       /* a checkout can be 'complete' with a failed first payment, so only 'paid' counts as

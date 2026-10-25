@@ -339,9 +339,8 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   <a class="logo" href="/" aria-label="ExecProsec home"><img src="/_web/brand/logo-nav.png" alt="ExecProsec" width="82" height="45"></a>
   <nav class="nav-links">
     <a href="/petition/" class="active" aria-current="page">Petition</a>
-    <a href="/poabamendments">Amendments</a>
-    <a href="/poabbriefing" title="Public Office (Accountability) Bill briefing">POAB Briefing</a>
-    <a href="/lying-in-politics">Lying in Politics</a>
+    <a href="/amendments-briefing/">Amendments Briefing</a>
+    <a href="/examples-of-lying/">Examples of Lying</a>
     <a href="/news">News</a>
     <a href="/testimonials">Testimonials</a>
     <a href="/contact">Contact</a>
@@ -502,7 +501,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   </div>
  </div>
 
- <p class="more-links"><button type="button" class="inline-link" id="objLink" aria-haspopup="dialog">Objections answered</button> · <a class="inline-link" href="https://execprosec.org/lying-in-politics" target="_blank" rel="noopener">Examples of lying in politics</a></p>
+ <p class="more-links"><a class="inline-link" href="https://execprosec.org/amendments-briefing/" target="_blank" rel="noopener">Objections answered</a> · <a class="inline-link" href="https://execprosec.org/examples-of-lying/" target="_blank" rel="noopener">Examples of lying in politics</a></p>
 </main>
 <div class="sticky" id="sticky" hidden><button class="btn" type="button" id="stickyBtn">Sign the petition</button></div>
 
@@ -1293,7 +1292,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       'I am your constituent' + (me.pc ? ' (' + me.pc + ')' : '') + ' and I have signed the petition to include all lawmakers under the Hillsborough Law.\n\n' +
       'If Parliament votes to exempt its own members, I will feel angry and betrayed, and I will trust Parliament far less. A law for nearly everyone else but not for the people who make it is a law for thee, but not for me.\n\n' +
       'I urge you to support ending the carve-out for lawmakers (MPs, peers, MSPs, MSs and MLAs) from the duty of candour and the offence of misleading the public, for reckless or intentionally deceitful acts outside the proceedings of their parliaments. Please tell me how you will vote.\n\n' +
-      'Detailed briefing: https://execprosec.org/poabbriefing\n\n' +
+      'Detailed briefing: https://execprosec.org/amendments-briefing/\n\n' +
       'Yours sincerely,\n' + me.first + ' ' + me.last + (me.pc ? '\n' + me.pc : '');
   }
   function toMp() {
@@ -1494,11 +1493,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
 
   // ---------------------------------------------------------------- objections
   function closeObj() { if ($('objDlg').open) $('objDlg').close(); }
-  $('objLink').addEventListener('click', function () {
-    var d = $('objDlg');
-    if (d.showModal) d.showModal(); else d.setAttribute('open', '');
-    $('objList').scrollTop = 0;
-  });
+  // Objections answered is a link to the Amendments Briefing now, not a dialog
   $('objClose').addEventListener('click', closeObj);
   $('objDlg').addEventListener('click', function (e) { if (e.target === this) closeObj(); });   // a tap on the dimmed backdrop
   $('objSign').addEventListener('click', function () {
