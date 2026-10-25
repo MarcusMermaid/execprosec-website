@@ -1265,6 +1265,8 @@ html:has(body.story-mode){overflow:hidden}
 .st-fit .fin-copy .st-letter p.st-lt-foot{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin:0 !important}
 .st-letter .st-lt-foot img{height:34px;width:auto;display:block}
 .st-letter .st-lt-link{color:var(--gold);text-decoration:underline;text-underline-offset:2px}
+/* on a phone the top button keeps clear of the close button */
+@media(max-width:640px){.st-fit .fin-copy .st-letter p.st-lt-top{padding-right:40px}}
 .st-lt-btn{background:var(--gold);color:#041440;border:0;border-radius:6px;padding:6px 14px;
   font:inherit;font-size:13.5px;font-weight:700;letter-spacing:.01em;cursor:pointer;
   transition:filter .15s ease,transform .15s ease}
