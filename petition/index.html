@@ -278,6 +278,8 @@ legend{padding:0;margin:0 0 8px;font-size:14px;font-weight:600;line-height:1.4;c
 /* ---- confirm in your inbox ---- */
 .mailbig{width:56px;height:56px;margin:2px 0 12px;border-radius:50%;display:grid;place-items:center;background:#eef6f0;color:#174b30}
 .mailbig svg{width:28px;height:28px}
+.donebig{width:60px;height:60px;margin:2px 0 14px;border-radius:50%;display:grid;place-items:center;background:#2fa36b;color:#fff}
+.donebig svg{width:32px;height:32px}
 #wS b{color:var(--ink)}
 .waiting{display:flex;align-items:center;gap:10px;margin:14px 0 10px;font-size:14px;color:var(--muted)}
 .spin{flex:0 0 16px;width:16px;height:16px;border:2px solid var(--rule);border-top-color:var(--navy);border-radius:50%;animation:spin 1s linear infinite}
@@ -442,6 +444,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
 
     <!-- 5: done -->
     <div class="panel" id="p5" hidden>
+      <div class="donebig" id="doneTick" aria-hidden="true" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
       <h2 id="doneH">Thank you, <span class="me-first"></span>.</h2>
       <p class="sub" id="doneS"></p>
       <a class="btn navy" href="https://www.instagram.com/marcusjball/" target="_blank" rel="noopener">Follow Marcus J Ball on Instagram</a>
@@ -1309,9 +1312,11 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     $('fundNote').hidden = true;
     // Stripe sends them back to this page when they have paid; this is what it needs to say thank you.
     try { sessionStorage.setItem('ep_petition_me', JSON.stringify({ first: S.me.first, number: S.myNumber, emailOk: S.me.emailOk })); } catch (e) {}
-    post('donate/session', { tier: 'monthly_custom', amount: a, return_url: location.origin + location.pathname }).then(function (d) {
+    post('donate/session', { tier: 'monthly_custom', amount: a, return_url: location.origin + location.pathname, in_place: true }).then(function (d) {
       if (!d || !d.ok || !d.client_secret) throw new Error('no checkout');
-      return stripeJs().then(function () { return Stripe(d.publishable_key).initEmbeddedCheckout({ clientSecret: d.client_secret }); });
+      return stripeJs().then(function () {
+        return Stripe(d.publishable_key).initEmbeddedCheckout({ clientSecret: d.client_secret, onComplete: function () { showPaid(d.session_id); } });
+      });
     }).then(function (checkout) {
       S.checkout = checkout;
       $('fundAsk').hidden = true;
@@ -1346,23 +1351,37 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     S.myNumber = me.number || 0;
     S.signed = true;
     updateSticky();
+    showPaid(id);
+  }
+  // The card form says it is finished: check with Stripe that the money really moved, then say so.
+  function showPaid(id) {
+    if (S.checkout) { try { S.checkout.destroy(); } catch (e) {} S.checkout = null; }
     document.querySelectorAll('.me-first').forEach(function (el) { el.textContent = S.me.first; });
-    if (!S.me.first) $('doneH').textContent = 'Thank you.';
-    $('doneS').textContent = 'Checking your payment\u2026';
-    go(5, true);
+    $('doneTick').hidden = true;
+    $('doneH').textContent = 'Checking your payment\u2026';
+    $('doneS').textContent = 'One moment while Stripe confirms it.';
+    go(5);
     getJson('donate/status?session_id=' + encodeURIComponent(id)).then(function (d) {
       try { history.replaceState({}, '', location.pathname); } catch (e) {}
       var paid = !!(d && d.ok && (d.paid === true || d.payment_status === 'paid'));
       var pending = !paid && !!(d && d.ok && d.pending === true);
       if (paid || pending) {
-        var amt = d.amount_total ? '£' + Number(d.amount_total).toFixed(0) + ' a month' : 'monthly backing';
-        $('doneS').textContent = 'Your ' + amt + (pending ? ' is set up' : ' is with us') + '. It goes on the adverts, the billboards and the rally that make sure Parliament knows we\'re watching. ' +
-          (pending ? 'Your Direct Debit takes a few working days to start. ' : '') + 'Stripe has emailed your receipt, with a link to change or stop it any time.';
+        var amt = d.amount_total ? '£' + Number(d.amount_total).toFixed(0) : '';
+        $('doneTick').hidden = false;
+        $('doneH').textContent = 'Congratulations' + (S.me.first ? ', ' + S.me.first : '') + '. You\'re now funding us monthly.';
+        $('doneS').textContent = 'You\'re part of this fight now. ' + (amt ? 'Your ' + amt + ' a month' : 'Your monthly backing') +
+          ' pays for the newspaper adverts, the billboards and the rally that make sure Parliament knows we\'re watching. ' +
+          (pending ? 'Your Direct Debit is set up: the first payment leaves your account in a few working days, then every month. ' : '') +
+          'Stripe has emailed your receipt, with a link to change or stop it any time.';
         return;
       }
       toFund();
       $('fundNote').hidden = false;
-    }).catch(function () { $('doneS').textContent = 'Thank you. Stripe will email you a receipt.'; });
+    }).catch(function () {
+      $('doneTick').hidden = false;
+      $('doneH').textContent = 'Thank you' + (S.me.first ? ', ' + S.me.first : '') + '.';
+      $('doneS').textContent = 'Stripe will email you a receipt for your monthly backing.';
+    });
   }
   $('skipFund').addEventListener('click', finish);
 
@@ -1370,6 +1389,8 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   function finish() {
     var s = (S.myNumber ? "You're signature number " + fmt(S.myNumber) + '. ' : '') + 'We will take every signature to Parliament before the vote.';
     if (S.me.emailOk) s += " We'll email you when the vote is coming.";
+    $('doneTick').hidden = true;
+    $('doneH').innerHTML = 'Thank you, <span class="me-first">' + esc(S.me.first) + '</span>.';
     $('doneS').textContent = s;
     go(5);
   }
