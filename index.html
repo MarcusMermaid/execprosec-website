@@ -1995,6 +1995,34 @@ body.sb-open{overflow:hidden}
   #storybox .sb-x svg{width:14px;height:14px}}
 body.sb-open{overflow:hidden}
 #storybox.sb-ovl .sb-x{display:none}
+/* Our Story asks first: the short version, open to everyone, or the full story behind the gate */
+#storybox .sb-choose{position:absolute;inset:0;z-index:3;overflow:auto;box-sizing:border-box;
+  display:flex;flex-direction:column;justify-content:center;padding:48px clamp(20px,6vw,72px);
+  background:var(--navy2);color:#f7f6f2;font-family:'DM Sans',sans-serif}
+#storybox .sb-choose[hidden]{display:none}
+#storybox.sb-choosing iframe{visibility:hidden}
+#storybox .sb-choose h2{font-family:'DM Serif Display',serif;font-weight:400;
+  font-size:clamp(26px,3.4vw,38px);line-height:1.15;margin:0 0 26px}
+#storybox .sb-opts{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+#storybox .sb-opt{display:flex;flex-direction:column;gap:10px;text-align:left;cursor:pointer;
+  border:0;border-radius:6px;padding:24px 22px;font:inherit;background:#f7f6f2;color:#041440;
+  transition:transform .15s ease,background .15s ease}
+#storybox .sb-opt:hover{transform:translateY(-2px);background:#fff}
+#storybox .sb-opt.sb-short{background:var(--gold)}
+#storybox .sb-opt.sb-short:hover{background:#e6c879}
+#storybox .sb-opt b{font-family:'DM Serif Display',serif;font-weight:400;font-size:26px;line-height:1.1}
+#storybox .sb-len{font-size:15px;font-weight:700}
+#storybox .sb-need{font-size:15px;line-height:1.5}
+#storybox .sb-go{margin-top:auto;padding-top:6px;font-weight:700;font-size:15px}
+#storybox .sb-terms{margin:20px 0 0;font-size:14px;opacity:.85}
+#storybox .sb-terms a{color:#f7f6f2}
+@media(max-width:640px){
+  #storybox .sb-choose{position:relative;inset:auto;padding:54px 16px 20px}
+  #storybox.sb-choosing iframe{display:none}
+  #storybox .sb-opts{grid-template-columns:1fr;gap:12px}
+  #storybox .sb-opt{padding:18px 16px}
+  #storybox .sb-opt b{font-size:22px}
+}
 </style>
 <!-- standard site header -->
 <style>
@@ -2063,7 +2091,7 @@ header#nav > span:empty{ display:none; }
       <a href="/news" onclick="epNews();return false;">News</a>
       <a href="/testimonials" onclick="openPage('testimonials');setNavActive('Testimonials');return false;">Testimonials</a>
       <a href="/contact" onclick="openPage('contact');setNavActive('Contact');return false;">Contact</a>
-      <button class="nav-donate" type="button" onclick="epStory(1);return false;">Donate</button>
+      <button class="nav-donate" type="button" onclick="epStoryShort();return false;">Donate</button>
     </nav>
     <!-- Support and Donate hidden for the MVP -->
     <span style="margin-left:auto"></span>
@@ -2077,7 +2105,7 @@ header#nav > span:empty{ display:none; }
     <h1 class="intro-h1">No one should be above the <span style="color:var(--gold);font-style:normal">criminal law</span>.</h1>
     <div class="intro-rule"></div>
     <p class="intro-body">Our work began in 2016 with our ongoing campaign to criminalise lying in politics. We are currently campaigning to amend the Public Office (Accountability) Bill so that it achieves that legal change for the first time in modern democratic history.</p>
-    <button class="btn-start cta-home" id="home-cta" type="button" onclick="epStory();return false;">
+    <button class="btn-start cta-home" id="home-cta" type="button" onclick="epStoryChoose();return false;">
       Our Story
       <span class="arrow" style="-webkit-text-stroke:0.7px currentColor">→</span>
     </button>
@@ -2185,7 +2213,7 @@ header#nav > span:empty{ display:none; }
     </div>
     <div class="cta-again">
       <p class="cta-conflict">We will intervene where traditional law enforcement agencies and state prosecutors are too conflicted to act.</p>
-      <button class="btn-start cta-home" id="home-cta-2" type="button" onclick="epStory();return false;">
+      <button class="btn-start cta-home" id="home-cta-2" type="button" onclick="epStoryChoose();return false;">
         Our Story
         <span class="arrow" style="-webkit-text-stroke:0.7px currentColor">&#8594;</span>
       </button>
@@ -5239,6 +5267,24 @@ setTimeout(function(){
   <div class="sb-scrim"></div>
   <div class="sb-panel">
     <button class="sb-x" type="button" aria-label="Close the story" onclick="epStoryClose();return false;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg></button>
+    <div class="sb-choose" id="sb-choose" hidden>
+      <h2>How would you like to read our story?</h2>
+      <div class="sb-opts">
+        <button type="button" class="sb-opt sb-short" onclick="epStoryPick('short');return false;">
+          <b>The short version</b>
+          <span class="sb-len">3 slides &middot; about 2 minutes</span>
+          <span class="sb-need">Read it straight away. No email address needed.</span>
+          <span class="sb-go">Read the short version &rarr;</span>
+        </button>
+        <button type="button" class="sb-opt sb-full" onclick="epStoryPick('full');return false;">
+          <b>The full story</b>
+          <span class="sb-len">28 slides &middot; about 15 minutes</span>
+          <span class="sb-need">Everything, in full detail. To read it, you will need to enter your email address, confirm it with a code we send you, and agree to abide by our Terms and Conditions.</span>
+          <span class="sb-go">Read the full story &rarr;</span>
+        </button>
+      </div>
+      <p class="sb-terms"><a href="/terms" target="_blank" rel="noopener">Read our Terms and Conditions</a></p>
+    </div>
     <iframe id="sb-frame" title="Our story" src="about:blank" allow="autoplay; fullscreen; payment"></iframe>
   </div>
 </div>
@@ -5262,16 +5308,45 @@ function epStoryKept(){
 function epStory(slide, extra){
   var box=document.getElementById('storybox'), f=document.getElementById('sb-frame');
   if(!box||!f) return false;
-  if(!f.getAttribute('data-loaded')){
+  epChooseHide();
+  /* the short story and the full story are separate decks in the same frame: switching from one
+     to the other loads it, and reopening the same one carries on where the reader was */
+  var mode=/[?&]short=1/.test(extra||'') ? 'short' : 'full';
+  if(!f.getAttribute('data-loaded') || f.getAttribute('data-mode')!==mode){
     f.src='/story-app/?embed=1' + (slide>1 ? ('&slide='+slide) : '') + (extra||'');
     f.setAttribute('data-loaded','1');
+    f.setAttribute('data-mode', mode);
   }
-  epStoryKeep({open:1});
+  epStoryKeep({open:1, mode:mode});
   box.classList.add('open');
   box.setAttribute('aria-hidden','false');
   document.body.classList.add('sb-open');
   try{ f.contentWindow.focus(); }catch(e){}
   return false;
+}
+/* Donate opens the short story: three slides, no gate, ending on the payment slide */
+function epStoryShort(){ return epStory(1, '&short=1'); }
+/* Our Story asks which: the short version, or the full story behind the email gate */
+function epStoryChoose(){
+  var box=document.getElementById('storybox'), c=document.getElementById('sb-choose');
+  if(!box||!c) return epStory();
+  c.hidden=false;
+  box.classList.add('sb-choosing');
+  epStoryKeep({open:1, mode:'choose'});
+  box.classList.add('open');
+  box.setAttribute('aria-hidden','false');
+  document.body.classList.add('sb-open');
+  try{ var b=c.querySelector('.sb-opt'); if(b) b.focus({preventScroll:true}); }catch(e){}
+  return false;
+}
+function epChooseHide(){
+  var box=document.getElementById('storybox'), c=document.getElementById('sb-choose');
+  if(c) c.hidden=true;
+  if(box) box.classList.remove('sb-choosing');
+}
+function epStoryPick(which){
+  try{ epTrack('story_choice', which, 'home'); }catch(e){}
+  return which==='short' ? epStoryShort() : epStory();
 }
 function epStoryClose(){
   var box=document.getElementById('storybox');
@@ -5319,8 +5394,10 @@ document.addEventListener('keydown', function(e){
   /* straight to the payment slide, for somebody who has already decided */
   var pay=q.get('pay')==='1';
   if(pay) extra+='&pay=1';
-  if(!extra && !slide && !pay && q.get('story')!=='1') return;
-  var open=function(){ epStory(slide>1?slide:1, extra); };
+  /* the Donate button on our other pages: the short story, no gate */
+  var short=q.get('short')==='1' && !extra && !slide;
+  if(!extra && !slide && !pay && !short && q.get('story')!=='1') return;
+  var open=function(){ if(short) epStoryShort(); else epStory(slide>1?slide:1, extra); };
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', open);
   else open();
 })();
@@ -5332,7 +5409,11 @@ document.addEventListener('keydown', function(e){
   var how='navigate';
   try{ var nav=performance.getEntriesByType('navigation')[0]; if(nav && nav.type) how=nav.type; }catch(e){}
   if(how!=='reload' && how!=='back_forward' && !/^\/story\//i.test(location.pathname||'')) return;
-  var open=function(){ epStory(parseInt(kept.slide||1,10)||1); };
+  var open=function(){
+    if(kept.mode==='short') epStoryShort();
+    else if(kept.mode==='choose') epStoryChoose();
+    else epStory(parseInt(kept.slide||1,10)||1);
+  };
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', open);
   else open();
 })();

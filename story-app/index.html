@@ -13,6 +13,7 @@
     if(q.get('link')) out.set('link', q.get('link'));
     if(q.get('bk')) out.set('bk', q.get('bk'));
     if(q.get('pay')) out.set('pay', q.get('pay'));
+    if(q.get('short')==='1') out.set('short', '1');
     var m=/^\/story\/(\d+)/i.exec(location.pathname||'');
     var slide=parseInt(q.get('slide')||(m?m[1]:'0'),10)||0;
     if(slide>1) out.set('slide', String(slide));
@@ -1244,6 +1245,11 @@ html:has(body.story-mode){overflow:hidden}
   box-shadow:0 1px 0 rgba(120,92,26,.8),0 5px 10px rgba(0,0,0,.4),
     0 -5px 10px rgba(80,58,10,.2) inset}
 .gate-btn:disabled{opacity:.4;cursor:default;transform:none}
+/* trial: monthly backing offered on every slide of the full report */
+.st-backnow{margin:20px 0 4px}
+.st-backnow-btn{background:var(--gold);color:#041440;border:0;border-radius:8px;padding:10px 18px;
+  font:inherit;font-size:15px;font-weight:700;cursor:pointer;transition:filter .15s ease,transform .15s ease}
+.st-backnow-btn:hover{filter:brightness(1.06);transform:translateY(-1px)}
 .gate-warn{display:none;color:#D64045;font-size:14px;margin:10px 0 0}
 .gate-note{font-size:13px;line-height:1.6;color:rgba(247,246,242,.55);margin:14px 0 0}
 .gate-done{display:none;color:var(--gold);font-size:16px;margin:0}
@@ -4390,6 +4396,8 @@ try{
   else setTimeout(epDevice,200);
 }catch(e){}
 function epTrack(event, detail, page, meta){
+  /* the short story reports as its own page, so its slide numbers never mix with the full report's */
+  if(typeof ST_SHORT!=='undefined' && ST_SHORT && page==='story') page='short';
   try{
     var url = AMEND_TRACK_BASE + '/public/track';
     var body = JSON.stringify({event:event, detail:detail||'', page:page||'home',
@@ -6450,7 +6458,7 @@ function pbPortal(btn){
   try{ epTrack('report_change_amount', String(bkRec&&bkRec.monthly_gbp||''), 'story'); }catch(e){}
   fetch(PB_API+'/public/donate/portal',{method:'POST',headers:{'Content-Type':'application/json'},
     body:JSON.stringify({email:(bkEmail||window.__epEmail||''), pass:(window.__epPass||''),
-      return_url:location.origin+location.pathname+'?embed=1&slide='+(ST_THANKS+1)})})
+      return_url:location.origin+location.pathname+'?embed=1&slide='+(ST_THANKS+1)+(ST_SHORT?'&short=1':'')})})
     .then(function(r){ return r.json(); })
     .then(function(d){
       if(d && d.ok && d.url){ window.open(d.url,'_blank','noopener'); pbSay('Your billing page has opened in a new tab. Change the amount there and it applies from your next payment.'); }
@@ -6529,7 +6537,7 @@ function pbBoost(btn){
   if(btn){ btn.disabled=true; btn.textContent='One moment\u2026'; }
   say('');
   try{ epTrack('boost_start', String(v), 'story'); }catch(e){}
-  var back=location.origin+location.pathname+'?embed=1&slide='+(ST_THANKS+1);
+  var back=location.origin+location.pathname+'?embed=1&slide='+(ST_THANKS+1)+(ST_SHORT?'&short=1':'');
   fetch(PB_API+'/public/donate/session',{method:'POST',headers:{'Content-Type':'application/json'},
     body:JSON.stringify({tier:'one_off_boost', amount:v, return_url:back, email:(bkEmail||window.__epEmail||''), pass:(window.__epPass||'')})})
     .then(function(r){ return r.json(); })
@@ -6560,7 +6568,7 @@ function pbStart(){
   if(go){ go.disabled=true; go.textContent='One moment\u2026'; }
   pbSay('');
   try{ epTrack('report_donate_start', PB_PICKED, 'story'); }catch(e){}
-  var back=location.origin+location.pathname+'?embed=1&slide='+(ST_THANKS+1);
+  var back=location.origin+location.pathname+'?embed=1&slide='+(ST_THANKS+1)+(ST_SHORT?'&short=1':'');
   fetch(PB_API+'/public/donate/session',{method:'POST',
     headers:{'Content-Type':'application/json'},
     body:JSON.stringify({tier:PB_PICKED, amount:(PB_PICKED==='monthly_custom'?PB_OTHER:undefined), return_url:back,
@@ -7266,6 +7274,9 @@ var ST_PAYONLY=/[?&]pay=1\b/.test(location.search||'');
 function stPayAllowed(n){
   return ST_PAYONLY && (n===ST_FUND || n===ST_THANKS);
 }
+/* ?short=1 is the short story, opened by the Donate button (Marcus, 25 Oct 2026): three slides
+   anybody can read, no gate, ending on the payment slide. The full report stays behind the gate. */
+var ST_SHORT=/[?&]short=1\b/.test(location.search||'');
 var ST_SLIDES=0, stIdx=0;
 /* Art used by each scene, for preloading only. Stale entries cost nothing but a missed preload. */
 var ST_PRE={
@@ -7333,6 +7344,25 @@ var ST_DATA={
   26:{title:'Thank you very much for your monthly contribution!',custom:'fw',h:250,noprog:1,body:'<p class="fwsub">You will receive an email confirmation.</p><p class="shr">Copy and paste this link and send it to three friends who you think might care about this work as well. Marcus has been on quite the journey. He needs more backers.</p><button type="button" class="shrbtn" onclick="stCopyLink(this)" data-done="Link copied">Copy the link</button><br><button type="button" class="fwbtn" onclick="navTo(&#39;/&#39;)">View website</button><div class="boost"><p class="shr">Want to give the work a jump-start as well? A one-off boost sits on top of your monthly backing.</p><div class="pb-other"><label for="pb-boost">One-off boost</label><span class="pb-cur">&pound;</span><input id="pb-boost" class="pb-in" type="number" min="20" step="5" inputmode="decimal" placeholder="100"><span class="pb-pm">once</span></div><button class="pb-go" id="pb-boost-go" type="button" onclick="pbBoost(this)">Add a one-off boost</button><div id="pb-boost-pay" class="pb-pay"></div><p class="pb-err" id="pb-boost-err"></p></div>'},
   27:{title:'You have chosen not to support us.',custom:'rj',h:90,noprog:1,nonext:1,body:'<p>You&rsquo;ve decided not to support Marcus and ExecProsec.</p><p>Marcus has proven over ten years that he will not give up, no matter what. You don&rsquo;t feel the same way.</p><p>You can change your mind right now. Ten pounds a month is two pounds thirty a week. It is very little to you. It is everything to this.</p><span class="rjbtns"><button type="button" class="rjfin" onclick="rjFinish(this)">Confirm and finish</button><button type="button" class="gate-btn" onclick="stStep(-1)">Back</button></span>'}
 };
+/* The short story: what is happening, what we are fixing and that we are winning, then the
+   payment slide and its thank-you, taken from the full deck so there is one of each. */
+if(ST_SHORT){
+  (function(){
+    var fund=ST_DATA[25], thanks=ST_DATA[26], pay={}, k;
+    for(k in fund) if(Object.prototype.hasOwnProperty.call(fund,k)) pay[k]=fund[k];
+    pay.body=fund.body.replace(/<p class="pb-p">[\s\S]*?<\/p>/,
+      '<p class="pb-p">The amendments are ready. We need funding now to hire the press and communications consultants who will focus the nation’s media on them.</p>'
+      +'<p class="pb-p"><b>The goal: 4,200 monthly backers at an average of &pound;20 a month.</b> That is &pound;1 million a year, enough to run this organisation properly.</p>');
+    ST_DATA={
+      0:{title:'Parliament is criminalising lying in politics',custom:'hl',h:330,body:"<p>For the first time in modern democratic history, the UK Parliament is making it a crime for those in power to lie to the public.</p><p>It’s called the Misleading the Public offence. It’s in the Public Office (Accountability) Bill, known as the Hillsborough Law, and it applies to the Prime Minister and every Cabinet minister.</p><p>This is almost everything our campaign has fought for since 2016. In 2019 our private prosecution got Boris Johnson summonsed to court for misconduct in public office, the first time a British politician had been summonsed to a criminal trial for lying to the public.</p><p>More than 19,000 people have backed this work, contributing over &pound;1 million between them.</p>"},
+      1:{title:'But it lets MPs and peers off. We are fixing that.',img:'/story-app/_web/story/govmeeting.webp',imgh:300,h:300,body:"<p>As it stands, the offence covers ministers but not backbench MPs, members of the House of Lords, or members of the Scottish Parliament, the Senedd and the Northern Ireland Assembly. The people making this law haven’t applied it to themselves.</p><p>We are the only people to have tested these principles in court, in Ball v Johnson, and our amendments apply those lessons so the law works.</p><p><b>And we are winning.</b> Our campaign is live in the House of Lords right now, and many peers from across the House are on our side. We’ve met the Government and are in contact with all the major parties. We’ve been in the Sunday Telegraph and the Daily Express, and an attempt in the Lords to delete the offence altogether has failed.</p>"},
+      2:pay,
+      3:thanks
+    };
+    /* no monthly ask, rejection or backer screen in this deck */
+    ST_ASK=-1; ST_REJECT=-1; ST_NO=-1;
+  })();
+}
 /* The funnel used to point at hardcoded slide numbers, which silently broke every time a slide
    was added or removed. The pointers now find themselves from the scene keys. */
 (function(){
@@ -7453,11 +7483,11 @@ function stGuardThanks(){
 }
 function stRender(){
   stGuardThanks();
-  try{ if(window.__bkChecked) stKeepWrite({slide:stIdx}); }catch(e){}
+  try{ if(window.__bkChecked && !ST_SHORT) stKeepWrite({slide:stIdx}); }catch(e){}
   /* only report a slide the reader actually reached: a clamp back to the gate must not
-     overwrite the place they were reading */
+     overwrite the place they were reading. The short story's numbers are not the report's. */
   try{
-    if(window.parent!==window && window.__bkChecked) parent.postMessage({ep:'story-slide', n:stIdx+1}, '*');
+    if(window.parent!==window && window.__bkChecked && !ST_SHORT) parent.postMessage({ep:'story-slide', n:stIdx+1}, '*');
   }catch(e){}
   var body=document.getElementById('st-body');
   if(!body) return;
@@ -7602,6 +7632,10 @@ function stRender(){
   if(d.press) h+=stPressWall();
   if(d.quotes) h+='<div class="sq-wall sq-mini"></div>'
     +'<span class="sq-swipe">Swipe for more</span>';
+  /* TRIAL, Marcus 25 Oct 2026: every slide of the full report offers monthly backing, so a reader
+     convinced halfway through can back us there and then. back_now_click records from which slide. */
+  if(!ST_SHORT && !ST_PAYONLY && ST_FUND>0 && stIdx>=1 && stIdx<ST_ASK && stGateOpen())
+    h+='<p class="st-backnow"><button type="button" class="st-backnow-btn" onclick="stBackNow()">Back us monthly now &rarr;</button></p>';
   body.innerHTML=h;
   stCheck();
   try{ stFoot(); }catch(e){}
@@ -7627,6 +7661,10 @@ function stRender(){
   if(next) next.style.visibility=(shut||d.nonext||(stIdx===ST_SLIDES-1&&!done))?'hidden':'visible';
   var dots=document.getElementById('st-dotsbar');
   if(dots) dots.style.visibility=shut?'hidden':'visible';
+}
+function stBackNow(){
+  try{ epTrack('back_now_click', String(stIdx+1), 'story'); }catch(e){}
+  stStepTo(ST_FUND);
 }
 /* Which slide, for how long. The number leads the label so a retitled slide still counts as
    the same slide, and the time is sent when the reader leaves it, not when they arrive. */
@@ -7792,6 +7830,8 @@ function stKeepFresh(){
 }
 
 function stGateOpen(){
+  /* the short story has no gate */
+  if(ST_SHORT) return true;
   /* ?bk=over and the rest are for reading the wording on the preview site. They never open the
      gate anywhere else, so the live report still costs an address and a code. */
   if(BK_Q && bkPreviewAllowed()) return true;
@@ -8157,7 +8197,7 @@ body.ep-embed{overflow:hidden}
 
   /* open on the slide asked for, then let the deck route itself normally after that */
   var want=parseInt(q.get('slide')||'0',10);
-  if(!(want>=1)){
+  if(!(want>=1) && q.get('short')!=='1'){
     /* nobody asked for a slide: somebody who has already been through the gate in this tab
        returns to where they were, or to their own screen, not to the gate */
     try{
