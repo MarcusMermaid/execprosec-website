@@ -244,6 +244,7 @@ legend{padding:0;margin:0 0 8px;font-size:14px;font-weight:600;line-height:1.4;c
 .skip{display:block;margin:16px auto 0}
 .alt{margin:14px 0 0;text-align:center;font-size:13px;color:var(--muted)}
 
+.mp-from{margin:0 0 8px;font-size:15px;line-height:1.45;color:var(--ink)}
 .mp{display:flex;align-items:center;gap:12px;padding:12px 14px;margin:0 0 14px;border:1.5px solid var(--rule);border-radius:4px;background:var(--paper-2)}
 .mp-dot{flex:0 0 40px;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font:700 14px/1 var(--f-body);color:#fff;background:var(--muted)}
 .mp-who{display:flex;flex-direction:column;min-width:0;font-size:13.5px;color:var(--muted);line-height:1.35}
@@ -402,11 +403,12 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     <!-- 3: your MP -->
     <div class="panel" id="p3" hidden>
       <h2>Now email your MP.</h2>
-      <p class="sub">Copy these into an email from your own address. It takes a minute.</p>
+      <p class="mp-from" id="mpFrom"></p>
       <div class="mp">
         <span class="mp-dot" id="mpDot" aria-hidden="true"></span>
         <span class="mp-who"><b id="mpName">Your MP</b><span id="mpSeat"></span></span>
       </div>
+      <p class="sub">Copy these into an email from your own address. It takes a minute.</p>
       <div class="cp"><span class="cp-l">To</span><span class="cp-v" id="mpMail"></span><button class="cp-b" type="button" data-copy="mpMail">Copy</button></div>
       <div class="cp"><span class="cp-l">Subject</span><span class="cp-v" id="mpSubj"></span><button class="cp-b" type="button" data-copy="mpSubj">Copy</button></div>
       <div class="cp cp-msg"><span class="cp-l">Message</span><span class="cp-v" id="mpMsg"></span><button class="cp-b" type="button" data-copy="mpMsg">Copy</button></div>
@@ -1238,6 +1240,9 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   function toMp() {
     if (S.abroad) { toFund(); return; }
     var mp = S.mp;
+    $('mpFrom').innerHTML = mp
+      ? 'You gave us the postcode <b>' + esc(S.me.pc) + '</b>, which is in <b>' + esc(mp.seat) + '</b>. So your MP is:'
+      : 'We couldn\'t look up the MP for your postcode, <b>' + esc(S.me.pc) + '</b>, just now.';
     $('mpName').textContent = mp ? mp.name + ' MP' : 'Your MP';
     $('mpSeat').textContent = mp ? mp.party + ' · ' + mp.seat : 'We couldn\'t look up your MP just now. Find their email at members.parliament.uk';
     $('mpDot').textContent = mp ? mp.name.replace(/^(Dame|Sir|Dr) /, '').split(' ').map(function (w) { return w.charAt(0); }).join('').slice(0, 2) : 'MP';
