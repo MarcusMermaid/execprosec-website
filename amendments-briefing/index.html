@@ -57,15 +57,12 @@ h2.sec{font:400 27px/1.25 'DM Serif Display',serif;color:var(--navy);margin:54px
   scroll-margin-top:18px}
 h2.sec:first-child{margin-top:0}
 h2.sec b{font:inherit;color:var(--gold)}
-h2.sec.sub-sec{font-size:23px;margin-top:46px;padding-top:26px;border-top:1px solid var(--rule)}
-.sheet h3{font:600 17.5px/1.4 'DM Sans',sans-serif;color:var(--navy);margin:34px 0 10px;scroll-margin-top:18px}
-.sheet h3 b{color:var(--gold-ink);font-weight:600;margin-right:6px}
-.sheet ul{margin:0 0 18px;padding-left:22px}
-.sheet li{margin:0 0 6px}
-.sheet li::marker{color:var(--gold-ink)}
-figure.bill{margin:18px 0 24px}
+figure.bill{margin:18px 0 22px}
 figure.bill img{display:block;width:100%;height:auto;border:1px solid var(--rule)}
 figure.bill figcaption{font-size:13px;color:var(--muted);font-style:italic;margin-top:6px}
+.note{color:var(--muted);font-style:italic;font-size:14.5px}
+.dl{margin:22px 0 0}
+.dl a{font-size:14.5px;font-weight:600;letter-spacing:.02em;text-decoration:none;border-bottom:1px solid var(--gold);padding-bottom:2px}
 
 /* ---- the amendments, as legal text ---- */
 .amend{border-left:3px solid var(--gold);padding:6px 0 4px 22px;margin:18px 0 26px;font-size:15.5px;line-height:1.65;scroll-margin-top:18px}
@@ -74,20 +71,34 @@ figure.bill figcaption{font-size:13px;color:var(--muted);font-style:italic;margi
 .amend .ins{color:var(--navy);font-weight:600}
 .amend .amd-name{font-weight:600;letter-spacing:.06em;font-size:13px;color:var(--muted);margin-bottom:12px;text-transform:uppercase}
 .amend .es{margin-top:16px;color:var(--muted)}
-.note{color:var(--muted);font-style:italic;font-size:14.5px;margin-top:-6px}
 
-/* ---- contents ---- */
-.toc{border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:22px 0 18px;margin:0 0 10px}
-.toc ol{list-style:none;margin:0;padding:0;column-count:2;column-gap:40px}
-.toc li{margin:0 0 5px;break-inside:avoid}
-.toc a{display:block;text-decoration:none;color:var(--ink);font-size:14.5px;line-height:1.45}
-.toc a:hover{color:var(--gold-ink);text-decoration:underline;text-decoration-color:var(--gold)}
-.toc .c1{column-span:all;margin:14px 0 8px}
-.toc .c1:first-child{margin-top:0}
-.toc .c1 a{font:400 20px/1.3 'DM Serif Display',serif;color:var(--navy)}
-.toc .c2{column-span:all;margin:10px 0 8px}
-.toc .c2 a{font-weight:600;color:var(--navy);font-size:15px}
-.toc .c3 b{color:var(--gold-ink);font-weight:600;margin-right:4px}
+/* ---- the objections, which open and close ---- */
+.acc{border-top:1px solid var(--rule);margin:22px 0 0}
+.ob{border-bottom:1px solid var(--rule);scroll-margin-top:14px}
+.ob-q{display:flex;align-items:flex-start;gap:14px;width:100%;margin:0;padding:17px 2px 16px;border:0;background:none;cursor:pointer;
+  text-align:left;font:inherit;color:var(--ink);-webkit-tap-highlight-color:transparent}
+.ob-q:hover .ob-t{color:var(--gold-ink)}
+.ob-q:focus-visible{outline:2px solid var(--gold);outline-offset:-2px}
+.ob-n{flex:0 0 auto;min-width:24px;font:600 15px/1.5 'DM Sans',sans-serif;color:var(--gold-ink);font-variant-numeric:tabular-nums}
+.ob-t{flex:1 1 auto;font:600 17px/1.5 'DM Sans',sans-serif;color:var(--navy);transition:color .18s ease}
+.ob-mark{flex:0 0 auto;position:relative;width:13px;height:13px;margin-top:7px;transition:transform .34s cubic-bezier(.4,0,.2,1)}
+.ob-mark::before,.ob-mark::after{content:'';position:absolute;left:0;top:6px;width:13px;height:1.6px;background:var(--gold-ink);border-radius:1px;
+  transition:opacity .2s ease}
+.ob-mark::after{transform:rotate(90deg)}
+.ob.open .ob-mark{transform:rotate(135deg)}
+.ob.open .ob-mark::before{opacity:0}
+.ob.open .ob-t{color:var(--gold-ink)}
+/* the open and close itself: the row's own height is what moves, so it never jumps */
+.ob-a{display:grid;grid-template-rows:0fr;transition:grid-template-rows .34s cubic-bezier(.4,0,.2,1)}
+.ob.open .ob-a{grid-template-rows:1fr}
+.ob-in{overflow:hidden;min-height:0;opacity:0;transition:opacity .22s ease .04s}
+.ob.open .ob-in{opacity:1}
+.ob-in > :first-child{margin-top:0}
+.ob-in > p{padding-left:38px}
+.ob-in > p:last-child{margin-bottom:20px}
+.ob-in > figure.bill{margin-left:38px}
+h3.ob-sec{font:400 21px/1.3 'DM Serif Display',serif;color:var(--navy);margin:0;padding:30px 2px 14px;border-bottom:1px solid var(--rule);
+  scroll-margin-top:14px}
 
 /* ---- footer: the same as the live site ---- */
 .site-foot{display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;font-size:12px;letter-spacing:.05em;
@@ -103,9 +114,21 @@ figure.bill figcaption{font-size:13px;color:var(--muted);font-style:italic;margi
   .nav-links a{font-size:11px;padding:5px 6px;letter-spacing:.02em}
   .nav-links a.nav-donate{font-size:11px;padding:7px 12px;margin-left:4px}
   h2.sec{font-size:24px;margin-top:42px}
-  .toc ol{column-count:1}
+  .ob-q{gap:10px}
+  .ob-t{font-size:16px}
+  .ob-in > p,.ob-in > figure.bill{padding-left:0;margin-left:0}
 }
-@media print{body{background:#fff}#nav,.site-foot,.hero .kicker,.toc{display:none}.hero{color:#000}.page-h1,.page-h1 span{color:#041440}.sheet{margin:0;padding:0;border:0}}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .ob-a,.ob-in,.ob-mark{transition:none}
+}
+@media print{
+  body{background:#fff}
+  #nav,.site-foot,.hero .kicker,.ob-mark,.dl{display:none}
+  .hero{color:#000}.page-h1,.page-h1 span{color:#041440}
+  .sheet{margin:0;padding:0;border:0}
+  .ob-a{grid-template-rows:1fr}.ob-in{opacity:1}
+}
 </style>
 <!-- standard site header -->
 <style>
@@ -161,15 +184,13 @@ header#nav > span:empty{ display:none; }
 </div>
 
 <main class="sheet">
-<nav class="toc" aria-label="Contents"><ol><li class="c1"><a href="#the-problem">The problem</a></li><li class="c1"><a href="#the-solution">The solution</a></li><li class="c2"><a href="#amendment-one-of-two">Amendment one of two</a></li><li class="c2"><a href="#amendment-two-of-two">Amendment two of two</a></li><li class="c1"><a href="#every-objection-answered">Every objection answered</a></li><li class="c3"><a href="#q1"><b>1.</b> MPs and peers cannot be prosecuted for what they say in Parliament</a></li><li class="c3"><a href="#q2"><b>2.</b> Parliament should regulate its own members and its existing sanctions are enough</a></li><li class="c3"><a href="#q3"><b>3.</b> Ministers are already covered so why is an amendment needed</a></li><li class="c3"><a href="#q4"><b>4.</b> Are lawmakers really excluded and might peers already be covered</a></li><li class="c3"><a href="#q5"><b>5.</b> Backbenchers do not take decisions on behalf of the state</a></li><li class="c3"><a href="#q6"><b>6.</b> Legislators do not have the information Ministers have</a></li><li class="c3"><a href="#q7"><b>7.</b> Peers are not elected so why does their inclusion matter</a></li><li class="c2"><a href="#political-speech-and-the-criminal-threshold">Political speech and the criminal threshold</a></li><li class="c3"><a href="#q8"><b>8.</b> Who decides what counts as a lie</a></li><li class="c3"><a href="#q9"><b>9.</b> This is the wrong vehicle for regulating political speech</a></li><li class="c3"><a href="#q10"><b>10.</b> It would criminalise opinions and honest mistakes</a></li><li class="c3"><a href="#q11"><b>11.</b> It would criminalise broken promises</a></li><li class="c3"><a href="#q12"><b>12.</b> The offence is meant for Hillsborough style cover ups rather than politics</a></li><li class="c3"><a href="#q13"><b>13.</b> The offence is too vague</a></li><li class="c3"><a href="#q14"><b>14.</b> The law should distinguish political claims from claims about personal character</a></li><li class="c3"><a href="#q15"><b>15.</b> It would chill debate and scrutiny or deter good candidates</a></li><li class="c3"><a href="#q18"><b>18.</b> Opponents would bring politically motivated prosecutions</a></li><li class="c3"><a href="#q19"><b>19.</b> The Attorney General should also have to approve prosecutions</a></li><li class="c3"><a href="#q20"><b>20.</b> Complaints to the police would become routine</a></li><li class="c3"><a href="#q21"><b>21.</b> Consent to prosecute is not enough because investigation is itself a punishment</a></li><li class="c3"><a href="#q22"><b>22.</b> An authoritarian majority could use the offence to silence opponents</a></li><li class="c3"><a href="#q23"><b>23.</b> Voters should judge politicians at the ballot box</a></li><li class="c3"><a href="#q24"><b>24.</b> Judges should not decide political arguments or send legislators to prison</a></li><li class="c3"><a href="#q26"><b>26.</b> There would be nobody left in Parliament</a></li><li class="c3"><a href="#q27"><b>27.</b> The cure could be worse than the disease</a></li><li class="c3"><a href="#q28"><b>28.</b> Election periods would be especially dangerous</a></li><li class="c3"><a href="#q30"><b>30.</b> MPs can already be prosecuted for misconduct in public office</a></li><li class="c3"><a href="#q31"><b>31.</b> Codes of conduct and the Nolan principles already require honesty</a></li><li class="c3"><a href="#q32"><b>32.</b> Wales already does this</a></li><li class="c3"><a href="#q33"><b>33.</b> Can the offence be backdated to punish past lies</a></li><li class="c3"><a href="#q34"><b>34.</b> Spies undercover police and the armed forces sometimes need to deceive</a></li><li class="c3"><a href="#q35"><b>35.</b> Journalists can mislead too so why are they protected</a></li><li class="c3"><a href="#q36"><b>36.</b> Judges and coroners are excluded too</a></li><li class="c3"><a href="#q38"><b>38.</b> Officials must be able to act during emergencies on incomplete information</a></li><li class="c3"><a href="#q40"><b>40.</b> Why call the offence misleading the public when innocent mistakes can mislead</a></li><li class="c3"><a href="#q41"><b>41.</b> They will never vote to include themselves</a></li><li class="c3"><a href="#q42"><b>42.</b> Including legislators could put the whole Hillsborough Law at risk</a></li><li class="c3"><a href="#q43"><b>43.</b> This campaign is about one party or one politician</a></li><li class="c3"><a href="#q44"><b>44.</b> It will never be used and politicians will keep lying</a></li></ol></nav>
 <h2 class="sec" id="the-problem"><span>The problem</span></h2>
 <p>The Hillsborough Law is an excellent and vital proposal. We wholeheartedly support it, and it must become law. However, the Bill excludes legislators, and the offence of misleading the public, as currently worded, will not work in court.</p>
 <p>ExecProsec is uniquely placed to understand these problems. We are the only organisation to have prosecuted a politician for lying under the similar common law offence of misconduct in public office, having prosecuted Boris Johnson in 2019 in his capacities as a Member of Parliament and Mayor of London. That experience showed us how the requirements concerning official capacity and the exercise of functions can prevent an offence from working in court when they are not defined in statute. The same confusion and complexity marred the reception of our prosecution against Johnson.</p>
 <p>There is extensive case law on these issues, but requiring judges to work through so much of it is itself part of the problem. The statute must resolve these questions expressly. Legislators must also be included, with protection for parliamentary proceedings stated clearly on the face of the Bill, so that they know they cannot be prosecuted for what they say in those proceedings.</p>
 <figure class="bill"><img src="img/bill-1.png" alt="Clause 12(1) to (3), HL Bill 42, page 13." width="1134" height="621" loading="lazy"><figcaption>Clause 12(1) to (3), HL Bill 42, page 13.</figcaption></figure>
-
 <h2 class="sec" id="the-solution"><span>The solution</span></h2>
-<p>We must amend the Public Office (Accountability) Bill to include all legislators for their acts in public outside of parliamentary proceedings and ensure that the offence of misleading the public works in court. Our proposed amendments apply the lessons of our 2019 Boris Johnson prosecution: they expressly include legislators, define the requirements concerning “capacity as such” and “functions”, and protect proceedings in all four UK of the UK’s Parliaments.</p>
+<p>We must amend the Public Office (Accountability) Bill to include all legislators for their acts in public outside of parliamentary proceedings and ensure that the offence of misleading the public works in court. Our proposed amendments apply the lessons of our 2019 Boris Johnson prosecution: they expressly include legislators, define the requirements concerning “capacity as such” and “functions”, and protect proceedings in all four of the UK’s Parliaments.</p>
 <div class="amend" id="amendment-one-of-two"><p class="amd-name">Amendment one of two</p>
 <p class="ins">Schedule 2, paragraph 3, after sub-paragraph (13), insert—</p>
 <p>(14) Subject to sub-paragraph (2), “public official” also includes a member of either House of Parliament, the Scottish Parliament, Senedd Cymru or the Northern Ireland Assembly; but this sub-paragraph causes section 12 (misleading the public) to apply to such a member only as provided by section 12(7A) to (7E).</p>
@@ -196,150 +217,188 @@ header#nav > span:empty{ display:none; }
 <p class="sub">(b) if, when sentenced, they are no longer a legislator, the court may impose any sentence available under subsection (5).</p>
 <p class="es">Member’s explanatory statement: This amendment works with the amendment to Schedule 2 which expressly includes legislators as public officials. It limits liability arising from that status to five specified purposes, protects proceedings, and provides a fine-only sentence while the person remains a legislator. Existing liability as a Minister is preserved.</p>
 </div>
+<p class="dl"><a href="/execprosec-democratic-voice-amendment.pdf" download>Download both amendments as a PDF</a></p>
 <h2 class="sec" id="every-objection-answered"><span>Every objection answered</span></h2>
-<h3 id="q1"><b>1.</b> MPs and peers cannot be prosecuted for what they say in Parliament</h3>
-<p>Protected parliamentary proceedings remain protected. Article 9 of the Bill of Rights protects Westminster proceedings, while our proposed amendment expressly excludes proceedings in all four UK legislatures from the new extension of clause 12. The proposal concerns conduct outside those proceedings, including acts on television, the radio, social media, at public events, and etc.</p>
+<div class="acc">
+<div class="ob" id="q1"><button class="ob-q" type="button" aria-expanded="false" aria-controls="a-q1"><span class="ob-n">1</span><span class="ob-t">MPs and peers cannot be prosecuted for what they say in Parliament</span><span class="ob-mark" aria-hidden="true"></span></button><div class="ob-a" id="a-q1"><div class="ob-in">
+<p>Protected parliamentary proceedings remain protected. Article 9 of the Bill of Rights protects Westminster proceedings, while our proposed amendment expressly excludes proceedings in all four UK legislatures from the new extension of clause 12. The proposal concerns conduct outside those proceedings, including acts on television, the radio, social media and at public events.</p>
 <p>The amendment also extends a specific form of immunity from these offences to proceedings in the devolved legislatures in Wales, Scotland and Northern Ireland. Those legislatures do not have parliamentary privilege; they have limited protection against claims of slander. We are therefore extending protection for the purposes of these offences to those Parliaments, rather than limiting or damaging parliamentary privilege, so that legislators remain free to debate.</p>
 <p class="note">Basis: Bill of Rights Article 9; our proposed amendment; Chaytor.</p>
-<h3 id="q2"><b>2.</b> Parliament should regulate its own members and its existing sanctions are enough</h3>
+</div></div></div>
+<div class="ob" id="q2"><button class="ob-q" type="button" aria-expanded="false" aria-controls="a-q2"><span class="ob-n">2</span><span class="ob-t">Parliament should regulate its own members and its existing sanctions are enough</span><span class="ob-mark" aria-hidden="true"></span></button><div class="ob-a" id="a-q2"><div class="ob-in">
 <p>Parliament does not regulate lying outside its proceedings. It should continue to regulate its own proceedings and discipline its members, but that does not settle criminal responsibility for serious dishonesty directed at the public outside those proceedings. Standards rules and criminal law can overlap.</p>
 <p class="note">Basis: Bill Schedule 4 paragraphs 6 to 9; Chaytor.</p>
-<h3 id="q3"><b>3.</b> Ministers are already covered so why is an amendment needed</h3>
+</div></div></div>
+<div class="ob" id="q3"><button class="ob-q" type="button" aria-expanded="false" aria-controls="a-q3"><span class="ob-n">3</span><span class="ob-t">Ministers are already covered so why is an amendment needed</span><span class="ob-mark" aria-hidden="true"></span></button><div class="ob-a" id="a-q3"><div class="ob-in">
 <p>Ministers are covered through their ministerial functions. Legislative membership is a separate basis of responsibility, and the Bill does not expressly include legislators in Schedule 2. Covering Ministers while excluding backbenchers and the opposition would create a system in which the government of the day is held accountable under these offences for its conduct outside Parliament, while those opposing and scrutinising it are not.</p>
 <p>Such a system would unbalance our democracy. It would encourage the public to believe the government and distrust the opposition, damaging the parliamentary relationship between government and opposition that our country has long valued. The public would have a statutory reason to trust the government, but no equivalent reason to trust the opposition. This could be seriously abused: Ministers could appear on television and tell the public to listen only to them because they alone have a legal obligation to tell the truth.</p>
 <p class="note">Basis: Bill Schedule 2 paragraphs 2 and 3; our proposed amendment.</p>
-<h3 id="q4"><b>4.</b> Are lawmakers really excluded and might peers already be covered</h3>
+</div></div></div>
+<div class="ob" id="q4"><button class="ob-q" type="button" aria-expanded="false" aria-controls="a-q4"><span class="ob-n">4</span><span class="ob-t">Are lawmakers really excluded and might peers already be covered</span><span class="ob-mark" aria-hidden="true"></span></button><div class="ob-a" id="a-q4"><div class="ob-in">
 <p>The Government's position is that legislative membership alone does not bring a person within these Part 2 provisions. Schedule 2 excludes the legislatures as public authorities, but separately covers holders of a relevant public office. There is an arguable interpretation that this definition already includes members of the House of Lords unintentionally, because of a drafting mistake. Peers should be included expressly and deliberately, rather than by accident. Express inclusion would resolve the uncertainty without leaving a central question of accountability to litigation.</p>
 <figure class="bill"><img src="img/bill-3.png" alt="Schedule 2, paragraph 2(4), HL Bill 42, page 51." width="1134" height="209" loading="lazy"><figcaption>Schedule 2, paragraph 2(4), HL Bill 42, page 51.</figcaption></figure>
-
 <p class="note">Basis: Bill Schedule 2 paragraphs 2(4), 3(1)(c) and 3(3) to (6); Lords Library briefing on exclusion.</p>
-<h3 id="q5"><b>5.</b> Backbenchers do not take decisions on behalf of the state</h3>
+</div></div></div>
+<div class="ob" id="q5"><button class="ob-q" type="button" aria-expanded="false" aria-controls="a-q5"><span class="ob-n">5</span><span class="ob-t">Backbenchers do not take decisions on behalf of the state</span><span class="ob-mark" aria-hidden="true"></span></button><div class="ob-a" id="a-q5"><div class="ob-in">
 <p>Backbenchers scrutinise government, vote on laws and public spending budgets, and influence decisions of national importance. Their roles give them access to information, people, powers and resources that the public do not have. When they speak about those resources and relationships, the public must be able to trust them to tell the truth. Most are elected by the public and entrusted to report back on what the government is doing. They should not be permitted to lie to the public when doing so.</p>
 <p>Under the UK's system of government, executive power is nothing without scrutiny from the opposition and backbenches. The system depends on that balance. Holding only one side accountable under criminal law would be profoundly unjust and would undermine it.</p>
 <p class="note">Basis: Bill clauses 2 and 12; proposed amendments.</p>
-<h3 id="q6"><b>6.</b> Legislators do not have the information Ministers have</h3>
+</div></div></div>
+<div class="ob" id="q6"><button class="ob-q" type="button" aria-expanded="false" aria-controls="a-q6"><span class="ob-n">6</span><span class="ob-t">Legislators do not have the information Ministers have</span><span class="ob-mark" aria-hidden="true"></span></button><div class="ob-a" id="a-q6"><div class="ob-in">
 <p>The Government and the Cabinet Office repeatedly advance this argument, but it is deeply flawed. Access to secret information is not necessary to make a knowingly dishonest public claim. A person needs no privileged information to deceive intentionally or recklessly: lying can consist simply of inventing information with no basis in reality. Someone who lacks moral character and faces no criminal penalty may feel free to fabricate a claim and present it to the public. That is precisely why lying is so easy and so destructive. On top of this, legislators speak to the public via television, radio, social media, and at events nearly every week of the year. They may not have the information that ministers have, but they certainly communicate with the public.</p>
 <p class="note">Basis: Bill clause 12 and our proposed amendment.</p>
-<h3 id="q7"><b>7.</b> Peers are not elected so why does their inclusion matter</h3>
+</div></div></div>
+<div class="ob" id="q7"><button class="ob-q" type="button" aria-expanded="false" aria-controls="a-q7"><span class="ob-n">7</span><span class="ob-t">Peers are not elected so why does their inclusion matter</span><span class="ob-mark" aria-hidden="true"></span></button><div class="ob-a" id="a-q7"><div class="ob-in">
 <p>Peers make and scrutinise laws, hold Ministers to account, and frequently speak and campaign outside Parliament, including on television, radio and in the press. They are regarded as leaders and elders of our society and carry immense power and prestige within our democracy. When they speak, people listen. They should therefore be held accountable like every other legislator covered by this amendment. Being unelected by the public should not give them the freedom to lie to the public.</p>
 <p class="note">Basis: Our proposed amendment.</p>
-<h2 class="sec sub-sec" id="political-speech-and-the-criminal-threshold"><span>Political speech and the criminal threshold</span></h2>
-<h3 id="q8"><b>8.</b> Who decides what counts as a lie</h3>
+</div></div></div>
+<h3 class="ob-sec" id="political-speech-and-the-criminal-threshold">Political speech and the criminal threshold</h3>
+<div class="ob" id="q8"><button class="ob-q" type="button" aria-expanded="false" aria-controls="a-q8"><span class="ob-n">8</span><span class="ob-t">Who decides what counts as a lie</span><span class="ob-mark" aria-hidden="true"></span></button><div class="ob-a" id="a-q8"><div class="ob-in">
 <p>The courts, judges and juries that have determined questions of dishonesty for centuries would continue to do so. The Director of Public Prosecutions would also be required to consent to a prosecution under this offence. Courts determine criminal liability on the evidence, applying the criminal standard of proof. Political disagreement is insufficient. The prosecution must establish intentional or reckless deceit, significant or repeated dishonesty on a matter of significant public concern, and serious impropriety.</p>
 <p class="note">Basis: Bill clause 12 and our proposed amendment.</p>
-<h3 id="q9"><b>9.</b> This is the wrong vehicle for regulating political speech</h3>
+</div></div></div>
+<div class="ob" id="q9"><button class="ob-q" type="button" aria-expanded="false" aria-controls="a-q9"><span class="ob-n">9</span><span class="ob-t">This is the wrong vehicle for regulating political speech</span><span class="ob-mark" aria-hidden="true"></span></button><div class="ob-a" id="a-q9"><div class="ob-in">
 <p>We urge everyone considering this legislation to be precise about what they mean by “political speech”. This proposal seeks to criminalise intentional or reckless deceit on matters of significant public importance. The Bill already recognises, and parliamentary debate has made clear, that lying to cover up a disaster or the causes of deaths, or lying about police crime levels, can warrant criminal prosecution. Our argument is that lying to justify an aggressive war, manipulate a referendum result or secure profitable government contracts during a national disaster belongs in the same category of false and deceitful communication.</p>
 <p>Ordinary political speech is entirely different and would not be prosecutable under these offences. Honestly held opinions, debate, mistakes and broken promises are normal features of political communication. They are distinct from intentional or reckless deceit designed to cause, or recklessly risk causing, damage to the country on the greatest possible scale. However controversial or unpopular an opinion may be, it would enter the realm of criminal prosecution only if it were intentionally or recklessly deceitful on a matter of significant public concern.</p>
-<h3 id="q10"><b>10.</b> It would criminalise opinions and honest mistakes</h3>
+</div></div></div>
+<div class="ob" id="q10"><button class="ob-q" type="button" aria-expanded="false" aria-controls="a-q10"><span class="ob-n">10</span><span class="ob-t">It would criminalise opinions and honest mistakes</span><span class="ob-mark" aria-hidden="true"></span></button><div class="ob-a" id="a-q10"><div class="ob-in">
 <p>This objection is regularly raised by people who have not read the Bill. The Bill and our proposed amendments make clear that an opinion is not dishonest merely because it is mistaken, unpopular or disputed. A genuine error is not criminal and is not prosecutable.</p>
 <p class="note">Basis: Bill clause 12 and our proposed amendment.</p>
-<h3 id="q11"><b>11.</b> It would criminalise broken promises</h3>
+</div></div></div>
+<div class="ob" id="q11"><button class="ob-q" type="button" aria-expanded="false" aria-controls="a-q11"><span class="ob-n">11</span><span class="ob-t">It would criminalise broken promises</span><span class="ob-mark" aria-hidden="true"></span></button><div class="ob-a" id="a-q11"><div class="ob-in">
 <p>No. A broken promise that was honestly intended to be kept is not the same thing as a lie. A promise honestly made and later broken is not prosecutable. Evidence that a promise was knowingly false when made could support a prosecution if it were strong enough to establish an intentional or reckless attempt to deceive the public. Every element of the offence would still have to be proved.</p>
 <p class="note">Basis: Bill clause 12 and our proposed amendment.</p>
-<h3 id="q12"><b>12.</b> The offence is meant for Hillsborough style cover ups rather than politics</h3>
+</div></div></div>
+<div class="ob" id="q12"><button class="ob-q" type="button" aria-expanded="false" aria-controls="a-q12"><span class="ob-n">12</span><span class="ob-t">The offence is meant for Hillsborough style cover ups rather than politics</span><span class="ob-mark" aria-hidden="true"></span></button><div class="ob-a" id="a-q12"><div class="ob-in">
 <p>This is incorrect, as the wording of the Bill makes clear. Clause 12 is not confined to disasters or cover-ups. Nothing in the Bill states that the offence applies only to Hillsborough-style events. Its wording can cover other seriously improper public deception by the authorities and officials within its scope.</p>
 <p class="note">Basis: Bill clause 12 and our proposed amendment.</p>
-<h3 id="q13"><b>13.</b> The offence is too vague</h3>
+</div></div></div>
+<div class="ob" id="q13"><button class="ob-q" type="button" aria-expanded="false" aria-controls="a-q13"><span class="ob-n">13</span><span class="ob-t">The offence is too vague</span><span class="ob-mark" aria-hidden="true"></span></button><div class="ob-a" id="a-q13"><div class="ob-in">
 <p>We agree that the requirements concerning “capacity as such” and “functions” are undefined in the offence of misleading the public. This is a major problem, which our amendment seeks to resolve. The new offences also contain several evaluative tests that juries would rightly determine. Given that a central purpose of the Bill is to criminalise harm to the public by public officials and authorities, it is right that juries should represent the public interest in making those decisions.</p>
 <figure class="bill"><img src="img/bill-4.png" alt="Clause 13(2)(a), HL Bill 42, page 14." width="1134" height="133" loading="lazy"><figcaption>Clause 13(2)(a), HL Bill 42, page 14.</figcaption></figure>
-
 <p class="note">Basis: Bill clause 12 and our proposed amendment.</p>
-<h3 id="q14"><b>14.</b> The law should distinguish political claims from claims about personal character</h3>
+</div></div></div>
+<div class="ob" id="q14"><button class="ob-q" type="button" aria-expanded="false" aria-controls="a-q14"><span class="ob-n">14</span><span class="ob-t">The law should distinguish political claims from claims about personal character</span><span class="ob-mark" aria-hidden="true"></span></button><div class="ob-a" id="a-q14"><div class="ob-in">
 <p>Section 106 of the Representation of the People Act 1983 already addresses certain false factual statements about a candidate's personal character or conduct. The new offence of misleading the public serves a more important and long-awaited purpose. It criminalises intentional or reckless deceit on far more serious matters, including dishonest claims about public spending, concealment of the causes of deaths, the justification for war, manipulation of a referendum, and other issues of national importance.</p>
 <p class="note">Basis: Representation of the People Act 1983 section 106; proposed amendments.</p>
-<h3 id="q15"><b>15.</b> It would chill debate and scrutiny or deter good candidates</h3>
+</div></div></div>
+<div class="ob" id="q15"><button class="ob-q" type="button" aria-expanded="false" aria-controls="a-q15"><span class="ob-n">15</span><span class="ob-t">It would chill debate and scrutiny or deter good candidates</span><span class="ob-mark" aria-hidden="true"></span></button><div class="ob-a" id="a-q15"><div class="ob-in">
 <p>The Government, through Baroness Anderson in the House of Lords, has already acknowledged that these offences cannot be used against anything said or done in parliamentary proceedings.</p>
 <p>The offences do not apply to ordinary political debate. They apply only to intentionally or recklessly deceitful statements on matters of significant public concern.</p>
 <p>A prosecution cannot proceed or obtain the DPP's consent without evidence establishing that the accused intentionally or recklessly deceived the public.</p>
 <p>Good candidates would be encouraged rather than deterred, because our democracy would become an environment in which honesty is welcomed and rewarded, while deceit is not. Over time, we expect politicians' conduct and public trust in them to improve considerably. This would make a career in democratic politics more appealing to candidates of a higher calibre.</p>
 <p class="note">Basis: Bill clause 12 and our proposed amendment.</p>
-<h3 id="q18"><b>18.</b> Opponents would bring politically motivated prosecutions</h3>
+</div></div></div>
+<div class="ob" id="q16"><button class="ob-q" type="button" aria-expanded="false" aria-controls="a-q16"><span class="ob-n">16</span><span class="ob-t">Opponents would bring politically motivated prosecutions</span><span class="ob-mark" aria-hidden="true"></span></button><div class="ob-a" id="a-q16"><div class="ob-in">
 <p>We must be precise about what we mean by “politically motivated prosecutions”. A prosecution requires the consent of the Director of Public Prosecutions and evidence that the accused intentionally or recklessly deceived the public on a matter of significant public concern. If those requirements are met, the case can and should proceed to trial.</p>
 <p>Whatever the accused's political party, their supporters will inevitably claim that the prosecution is politically motivated. It is an easy and inexpensive way to distract attention from the merits of the case. The credibility of the evidence matters far more than the motivation attributed to the prosecution and this is recognised in precedent. The debate should concern whether that evidence stands up and whether the elements of the offence are met. The accused's political party or affiliation should be legally and evidentially irrelevant: everyone must be treated equally under criminal law.</p>
 <p>The Bill requires proceedings in England and Wales to be brought by, or with the consent of, the Director of Public Prosecutions, and proceedings in Northern Ireland by, or with the consent of, its Director. Scotland has a separate prosecution system. These controls provide substantial safeguards, including for private prosecutions.</p>
 <figure class="bill"><img src="img/bill-2.png" alt="Schedule 3, paragraph 2, HL Bill 42, page 55." width="1134" height="191" loading="lazy"><figcaption>Schedule 3, paragraph 2, HL Bill 42, page 55.</figcaption></figure>
-
 <p class="note">Basis: Bill Schedule 3 paragraph 2.</p>
-<h3 id="q19"><b>19.</b> The Attorney General should also have to approve prosecutions</h3>
+</div></div></div>
+<div class="ob" id="q17"><button class="ob-q" type="button" aria-expanded="false" aria-controls="a-q17"><span class="ob-n">17</span><span class="ob-t">The Attorney General should also have to approve prosecutions</span><span class="ob-mark" aria-hidden="true"></span></button><div class="ob-a" id="a-q17"><div class="ob-in">
 <p>The Attorney General is appointed by the Prime Minister. Giving the Attorney General a veto would therefore allow the Prime Minister and their party to prevent prosecutions of themselves and their colleagues. It would unbalance the offence by enabling the government to protect its own members while allowing prosecutions of the opposition. Such an amendment would be extremely dangerous: it would undermine equality under the law and allow the government to weaponise it.</p>
 <p>The Director of Public Prosecutions, who leads the Crown Prosecution Service, faces some similar pressures, but the post is not a political appointment. The DPP is not required to be a member of the accused's party and has a very different legal status. We acknowledge that the DPP is not wholly independent of the government: a DPP could be removed if the government disliked a decision. The position is therefore imperfect, but it is vastly preferable to giving this power to a politically appointed, party-political Attorney General.</p>
 <p class="note">Basis: Bill Schedule 3 paragraph 2; campaign position.</p>
-<h3 id="q20"><b>20.</b> Complaints to the police would become routine</h3>
+</div></div></div>
+<div class="ob" id="q18"><button class="ob-q" type="button" aria-expanded="false" aria-controls="a-q18"><span class="ob-n">18</span><span class="ob-t">Complaints to the police would become routine</span><span class="ob-mark" aria-hidden="true"></span></button><div class="ob-a" id="a-q18"><div class="ob-in">
 <p>Some complaints may be unfounded or politically motivated. Police and prosecutors would need to assess the evidence against the actual offence, rather than treat every disputed claim as criminal. Clear scope, published guidance and prompt screening are important. We cannot reliably predict complaint numbers or promise that the law will eliminate dishonest campaigning. We can, however, amend the Bill as proposed to make clear to everyone what falls within its scope and what does not.</p>
 <p class="note">Basis: Bill clause 12 and our proposed amendment.</p>
-<h3 id="q21"><b>21.</b> Consent to prosecute is not enough because investigation is itself a punishment</h3>
+</div></div></div>
+<div class="ob" id="q19"><button class="ob-q" type="button" aria-expanded="false" aria-controls="a-q19"><span class="ob-n">19</span><span class="ob-t">Consent to prosecute is not enough because investigation is itself a punishment</span><span class="ob-mark" aria-hidden="true"></span></button><div class="ob-a" id="a-q19"><div class="ob-in">
 <p>Being subject to police investigation is a reality that everyone else must accept, and under this Bill nearly every public official would face it too. Legislative status should not exempt someone from the ordinary procedures of justice. The answer is proportionate investigation, clear legal thresholds and the safeguards in our proposed amendment. Concern about investigation does not justify automatically exempting legislators from accountability that applies to other public officials.</p>
 <p>The best way for politicians to avoid investigation is to ensure that their public statements reflect what they believe and that they have evidence to support their arguments. This is already a professional reality for the vast majority of other professionals, who would face the Fraud Act if they acted otherwise. The days when politicians could appear on television and say whatever they liked simply to provoke a public reaction are over. A new standard of professionalism, accuracy and honesty is coming into force as part of the modernisation our democracy requires.</p>
 <p class="note">Basis: Bill Schedule 3 paragraph 2; proposed safeguards.</p>
-<h3 id="q22"><b>22.</b> An authoritarian majority could use the offence to silence opponents</h3>
+</div></div></div>
+<div class="ob" id="q20"><button class="ob-q" type="button" aria-expanded="false" aria-controls="a-q20"><span class="ob-n">20</span><span class="ob-t">An authoritarian majority could use the offence to silence opponents</span><span class="ob-mark" aria-hidden="true"></span></button><div class="ob-a" id="a-q20"><div class="ob-in">
 <p>That danger would arise if the Attorney General were given the power to approve or block prosecutions, as other amendments have proposed. As explained above, we are wholly opposed to that suggestion. No criminal law is immune from abuse, but the separation of powers exists for a reason. The judiciary, legislature and executive are separate, and judges are not required to follow the government's instructions in court. The Bill is sufficiently defined to require cases to meet the criminal standard of evidence before they can proceed.</p>
 <p class="note">Basis: Proposed amendments; Bill Schedule 3 paragraph 2; campaign position.</p>
-<h3 id="q23"><b>23.</b> Voters should judge politicians at the ballot box</h3>
+</div></div></div>
+<div class="ob" id="q21"><button class="ob-q" type="button" aria-expanded="false" aria-controls="a-q21"><span class="ob-n">21</span><span class="ob-t">Voters should judge politicians at the ballot box</span><span class="ob-mark" aria-hidden="true"></span></button><div class="ob-a" id="a-q21"><div class="ob-in">
 <p>Elections and criminal prosecutions determine different things. Elections decide who holds office and can reflect the popularity of a party, its leader or its policies. A criminal prosecution determines whether an individual has abused their office or the public while holding power. Establishing guilt requires a jury and a court to examine the evidence carefully at trial. Elections cannot provide that level of detailed analysis or sustained scrutiny.</p>
 <p>Election to public office should not place anyone above criminal law. Legislators are proposing to criminalise misleading the public for nearly all other public officials while excluding themselves. To place the lawmakers above their own law would be deeply hypocritical, contrary to equality under the law and an abuse of the justice system.</p>
 <p>The parliamentary expenses scandal illustrates the point. Elected politicians went to prison for false expense claims. Their status as elected representatives did not exempt conduct contrary to the public interest from investigation, prosecution and trial. They faced justice, as everyone should. Peers do not face the ballot box at all. That cannot mean they should be above criminal law either.</p>
 <p>We nevertheless recognise concerns that these offences could be used to remove serving politicians from power. For that reason, we have explored an amendment under which a legislator holding office at the time of conviction would not automatically lose that office. They would still face a criminal fine.</p>
 <p class="note">Basis: Chaytor; our proposed amendment.</p>
-<h3 id="q24"><b>24.</b> Judges should not decide political arguments or send legislators to prison</h3>
+</div></div></div>
+<div class="ob" id="q22"><button class="ob-q" type="button" aria-expanded="false" aria-controls="a-q22"><span class="ob-n">22</span><span class="ob-t">Judges should not decide political arguments or send legislators to prison</span><span class="ob-mark" aria-hidden="true"></span></button><div class="ob-a" id="a-q22"><div class="ob-in">
 <p>Judges do not determine guilt; juries do. Juries consist of members of the public who represent the public interest in these cases. Courts would apply a criminal test to intentionally or recklessly deceitful acts that caused significant public harm. They would not decide which policies were desirable or undesirable.</p>
-<h3 id="q26"><b>26.</b> There would be nobody left in Parliament</h3>
+</div></div></div>
+<div class="ob" id="q23"><button class="ob-q" type="button" aria-expanded="false" aria-controls="a-q23"><span class="ob-n">23</span><span class="ob-t">There would be nobody left in Parliament</span><span class="ob-mark" aria-hidden="true"></span></button><div class="ob-a" id="a-q23"><div class="ob-in">
 <p>This is not a credible concern. The number of politicians who intentionally or recklessly deceive the public on matters involving sufficiently serious public harm is minuscule compared with the number who perform their roles largely honestly and directly.</p>
 <p>Even in our 2019 prosecution of Boris Johnson, where there was abundant video evidence, it took more than two years to assemble and analyse that evidence and recruit the legal team needed to bring the case to court. Proving that a politician intentionally lied to the public on a sufficiently important matter is extremely difficult, even in a rare case with extensive evidence.</p>
 <p>We do not expect many cases against politicians to reach court. Indeed, we consider it possible that, once the Bill becomes law, dishonest conduct will fall so sharply that politicians will no longer be so readily associated with the word “liars”.</p>
 <p class="note">Basis: Bill clause 12 and our proposed amendment.</p>
-<h3 id="q27"><b>27.</b> The cure could be worse than the disease</h3>
+</div></div></div>
+<div class="ob" id="q24"><button class="ob-q" type="button" aria-expanded="false" aria-controls="a-q24"><span class="ob-n">24</span><span class="ob-t">The cure could be worse than the disease</span><span class="ob-mark" aria-hidden="true"></span></button><div class="ob-a" id="a-q24"><div class="ob-in">
 <p>The “disease” has already produced a war justified by dishonest claims, at least one referendum whose outcome was changed by a deceitful claim, and numerous other disasters that harmed the public, cost lives and destroyed trust in Parliament and democracy.</p>
 <p>The proposed “cure” is to criminalise this conduct with the aim of reducing it substantially. Having read the Bill carefully, we do not see how that could be worse than the dishonesty democracy has faced as long as it has existed.</p>
 <p class="note">Basis: Proposed amendments; campaign position.</p>
-<h3 id="q28"><b>28.</b> Election periods would be especially dangerous</h3>
+</div></div></div>
+<div class="ob" id="q25"><button class="ob-q" type="button" aria-expanded="false" aria-controls="a-q25"><span class="ob-n">25</span><span class="ob-t">Election periods would be especially dangerous</span><span class="ob-mark" aria-hidden="true"></span></button><div class="ob-a" id="a-q25"><div class="ob-in">
 <p>If those covered by the offence of misleading the public, including Ministers, repeatedly lie during an election, and the evidence establishes intentional or reckless deceit meeting the elements of the offence, it is right that they should face a jury.</p>
 <p>However, when Parliament is dissolved for a general election, elected MPs lose their status as legislators. Those who seek re-election become candidates. Ministers retain their ministerial status during elections. As the Bill stands, Ministers could therefore be prosecuted for their election-period statements, while other candidates would not qualify as public officials, even if legislators were added to the Bill.</p>
 <p>We believe all public officials should be liable to prosecution for lying during election periods. Election lies are extremely dangerous to trust in democracy and can bring governments to power that would not have won office had they told the truth. We therefore propose that general election candidates should also have the status of public officials. They perform a public function by participating in the voting process and the democratic route to power.</p>
 <p>Without that inclusion, among these candidates only serving Ministers, and therefore the government of the day, would be liable to prosecution for lying during an election. This question of balance and equality under the law has not been properly addressed. We hope Parliament will vote to include candidates within these offences as well.</p>
 <p class="note">Basis: Bill Schedule 2 paragraph 3(13); our proposed amendment; earlier campaign candidate draft.</p>
-<h3 id="q30"><b>30.</b> MPs can already be prosecuted for misconduct in public office</h3>
+</div></div></div>
+<div class="ob" id="q26"><button class="ob-q" type="button" aria-expanded="false" aria-controls="a-q26"><span class="ob-n">26</span><span class="ob-t">MPs can already be prosecuted for misconduct in public office</span><span class="ob-mark" aria-hidden="true"></span></button><div class="ob-a" id="a-q26"><div class="ob-in">
 <p>We agree that MPs can be prosecuted for lying under the common law offence of misconduct in public office. That was the basis of our 2019 prosecution of Boris Johnson. However, that offence is being abolished and will no longer be available once the Public Office (Accountability) Bill becomes law.</p>
 <p>The Bill would replace the common law offences in England and Wales and Northern Ireland with statutory offences that expressly include legislators. Clause 12 separately addresses seriously improper misleading of the public. There may be overlap, but the misconduct provisions do not make the proposed extension of clause 12 redundant.</p>
 <p class="note">Basis: Bill clauses 12 to 18 and Schedule 4.</p>
-<h3 id="q31"><b>31.</b> Codes of conduct and the Nolan principles already require honesty</h3>
+</div></div></div>
+<div class="ob" id="q27"><button class="ob-q" type="button" aria-expanded="false" aria-controls="a-q27"><span class="ob-n">27</span><span class="ob-t">Codes of conduct and the Nolan principles already require honesty</span><span class="ob-mark" aria-hidden="true"></span></button><div class="ob-a" id="a-q27"><div class="ob-in">
 <p>Codes of conduct and the Nolan principles are valuable and informed our 2019 prosecution of Johnson. They can help establish the “acting as such” element and abuse of public trust under the common law offence of misconduct in public office, and could also be useful under the Bill's new offences. However, their role is supporting: they do not themselves create criminal offences. They should remain in place, but they do not serve the same purpose as criminal law.</p>
 <p class="note">Basis: Bill clauses 10 to 12; campaign position.</p>
-<h3 id="q32"><b>32.</b> Wales already does this</h3>
+</div></div></div>
+<div class="ob" id="q28"><button class="ob-q" type="button" aria-expanded="false" aria-controls="a-q28"><span class="ob-n">28</span><span class="ob-t">Wales already does this</span><span class="ob-mark" aria-hidden="true"></span></button><div class="ob-a" id="a-q28"><div class="ob-in">
 <p>This claim is false. Reports circulated widely on social media that Wales already had a law against lying to the public. The Senedd Cymru (Member Accountability and Elections) Act 2026 instead proposes that an offence of politicians lying to the public should be introduced in the future. Such an offence has not yet been created, and we are not aware of any deadline for its introduction.</p>
 <p>The offence of misleading the public will apply throughout the UK and will become law before the Welsh version is created. It is possible that plans for a separate Welsh offence will be abandoned because the offence of misleading the public will make it unnecessary.</p>
-<h3 id="q33"><b>33.</b> Can the offence be backdated to punish past lies</h3>
+</div></div></div>
+<div class="ob" id="q29"><button class="ob-q" type="button" aria-expanded="false" aria-controls="a-q29"><span class="ob-n">29</span><span class="ob-t">Can the offence be backdated to punish past lies</span><span class="ob-mark" aria-hidden="true"></span></button><div class="ob-a" id="a-q29"><div class="ob-in">
 <p>In the UK, it is generally considered unfair to criminalise conduct that was not criminal when it occurred. This proposal therefore does not seek retrospective criminal liability. The new offences would apply to events going forward in time only.</p>
 <p class="note">Basis: Bill clause 27 and clauses 17 to 18; European Convention on Human Rights Article 7.</p>
-<h3 id="q34"><b>34.</b> Spies undercover police and the armed forces sometimes need to deceive</h3>
+</div></div></div>
+<div class="ob" id="q30"><button class="ob-q" type="button" aria-expanded="false" aria-controls="a-q30"><span class="ob-n">30</span><span class="ob-t">Spies undercover police and the armed forces sometimes need to deceive</span><span class="ob-mark" aria-hidden="true"></span></button><div class="ob-a" id="a-q30"><div class="ob-in">
 <p>The Bill is carefully worded to allow intelligence officers, police and the armed forces to deceive where that is justified as part of their official functions. Clause 12 already provides a defence for necessary intelligence-service functions or the armed forces on active service, alongside a separate reasonable-excuse defence.</p>
 <p class="note">Basis: Bill clause 12(6) to (7); our proposed amendment.</p>
-<h3 id="q35"><b>35.</b> Journalists can mislead too so why are they protected</h3>
+</div></div></div>
+<div class="ob" id="q31"><button class="ob-q" type="button" aria-expanded="false" aria-controls="a-q31"><span class="ob-n">31</span><span class="ob-t">Journalists can mislead too so why are they protected</span><span class="ob-mark" aria-hidden="true"></span></button><div class="ob-a" id="a-q31"><div class="ob-in">
 <p>Clause 12 exempts qualifying journalistic acts by recognised news publishers and those working for them. Journalists are not public officials or public authorities. Although we believe they should face similar offences in the future, that is a separate campaign. Our immediate priority is to hold public officials and authorities in government accountable. Attempting to take on two such major parts of society at once would be doomed to fail.</p>
 <p>However, politicians frequently work as journalists on television, radio and in newspapers. Their journalistic role should not exempt them from prosecution for conduct undertaken while holding political office. Under our proposal, their political status would take precedence, so they could not avoid prosecution for lying on a news programme or in a newspaper article simply by claiming to be acting as journalists. Such an exemption would be unjust.</p>
 <p class="note">Basis: Bill clause 12(4); our proposed amendment.</p>
-<h3 id="q36"><b>36.</b> Judges and coroners are excluded too</h3>
+</div></div></div>
+<div class="ob" id="q32"><button class="ob-q" type="button" aria-expanded="false" aria-controls="a-q32"><span class="ob-n">32</span><span class="ob-t">Judges and coroners are excluded too</span><span class="ob-mark" aria-hidden="true"></span></button><div class="ob-a" id="a-q32"><div class="ob-in">
 <p>We believe all members of the judiciary should be covered by both the offence of misleading the public and the duty of candour. However, our campaign has shown that parliamentarians are already struggling with the inclusion of legislators. People are so afraid of judges that the prospect of holding them accountable is more daunting still. Although judges should be included, we believe concentrating on legislators is vastly more likely to succeed.</p>
-<h3 id="q38"><b>38.</b> Officials must be able to act during emergencies on incomplete information</h3>
+</div></div></div>
+<div class="ob" id="q33"><button class="ob-q" type="button" aria-expanded="false" aria-controls="a-q33"><span class="ob-n">33</span><span class="ob-t">Officials must be able to act during emergencies on incomplete information</span><span class="ob-mark" aria-hidden="true"></span></button><div class="ob-a" id="a-q33"><div class="ob-in">
 <p>The offence of misleading the public applies only to intentionally or recklessly deceitful acts. An official who makes a mistake during an emergency and says something they honestly believe to be correct cannot be prosecuted on that basis. An honestly made assessment does not become criminal because it turns out to be wrong. The prosecution must still establish every element of the offence, and the Bill provides a reasonable-excuse defence.</p>
 <p class="note">Basis: Bill clause 12(1) and (6) to (7); earlier campaign safeguards draft.</p>
-<h3 id="q40"><b>40.</b> Why call the offence misleading the public when innocent mistakes can mislead</h3>
+</div></div></div>
+<div class="ob" id="q34"><button class="ob-q" type="button" aria-expanded="false" aria-controls="a-q34"><span class="ob-n">34</span><span class="ob-t">Why call the offence misleading the public when innocent mistakes can mislead</span><span class="ob-mark" aria-hidden="true"></span></button><div class="ob-a" id="a-q34"><div class="ob-in">
 <p>We agree that the name “misleading the public” is itself misleading, because the offence does not criminalise misleading behaviour generally. It criminalises only intentionally or recklessly deceitful acts. We raised this concern when we met the Government and suggested names that would describe the prohibited conduct more accurately.</p>
 <p>Our priority, however, is to ensure that the offence works in court and applies to legislators. Renaming it is less valuable to the public than ensuring that it serves them effectively.</p>
 <p class="note">Basis: Bill clause 12; earlier campaign renaming proposals.</p>
-<h3 id="q41"><b>41.</b> They will never vote to include themselves</h3>
+</div></div></div>
+<div class="ob" id="q35"><button class="ob-q" type="button" aria-expanded="false" aria-controls="a-q35"><span class="ob-n">35</span><span class="ob-t">They will never vote to include themselves</span><span class="ob-mark" aria-hidden="true"></span></button><div class="ob-a" id="a-q35"><div class="ob-in">
 <p>We agree that legislators would not voluntarily vote to include themselves. That is why we are campaigning to humiliate them nationally and make clear that the press and public are watching the forthcoming votes closely.</p>
 <p>Legislators across the UK will face decades of public humiliation and hatred if they exempt themselves from their own law against lying to the public while requiring nearly everyone else in public life to obey it. Our strategy is to give them a foretaste, before they vote, of that humiliation and the damage to public trust they would face.</p>
 <p>Our campaign has already achieved a great deal and has substantial support within Parliament. We are confident that with enough funding we will be able to do everything possible to secure the right decision, but we cannot guarantee it. At the time of writing, we were not receiving enough funding at all to achieve our objectives, but we are at least starting to raise more. What we can do is make clear how deeply the public will despise them if they choose to exclude themselves.</p>
 <p class="note">Basis: Campaign record; campaign request.</p>
-<h3 id="q42"><b>42.</b> Including legislators could put the whole Hillsborough Law at risk</h3>
+</div></div></div>
+<div class="ob" id="q36"><button class="ob-q" type="button" aria-expanded="false" aria-controls="a-q36"><span class="ob-n">36</span><span class="ob-t">Including legislators could put the whole Hillsborough Law at risk</span><span class="ob-mark" aria-hidden="true"></span></button><div class="ob-a" id="a-q36"><div class="ob-in">
 <p>The amendment to include legislators is voted on separately from the Bill itself. If legislators reject their own inclusion, the amendment falls, but the Bill remains intact and can still be passed. Parliament can equally choose to include legislators and then pass the Bill. Nothing prevents it from doing both.</p>
 <p>The Hillsborough Law is one of the most beautiful and vital laws in the history of our democracy. It must become law, and we agree that it must be protected. However, if it passes while excluding legislators, the damage to public trust in Parliament and our legislators will be catastrophic. The UK deserves both victories.</p>
 <p class="note">Basis: Parliamentary Bill and amendment process; campaign position.</p>
-<h3 id="q43"><b>43.</b> This campaign is about one party or one politician</h3>
+</div></div></div>
+<div class="ob" id="q37"><button class="ob-q" type="button" aria-expanded="false" aria-controls="a-q37"><span class="ob-n">37</span><span class="ob-t">This campaign is about one party or one politician</span><span class="ob-mark" aria-hidden="true"></span></button><div class="ob-a" id="a-q37"><div class="ob-in">
 <p>These offences would apply to nearly all public officials and, if our amendments pass, all legislators, regardless of political party. Their application depends on office and conduct, not party affiliation. There must be equality under the law.</p>
-<h3 id="q44"><b>44.</b> It will never be used and politicians will keep lying</h3>
+</div></div></div>
+<div class="ob" id="q38"><button class="ob-q" type="button" aria-expanded="false" aria-controls="a-q38"><span class="ob-n">38</span><span class="ob-t">It will never be used and politicians will keep lying</span><span class="ob-mark" aria-hidden="true"></span></button><div class="ob-a" id="a-q38"><div class="ob-in">
 <p>We agree that the police and Crown Prosecution Service will use this offence very rarely. Doing so would mean investigating and potentially prosecuting politicians and Ministers who are their bosses, placing enormous pressure on individual officers and prosecutors. Nevertheless, we believe they would act in the most serious and best-evidenced cases.</p>
 <p>We expect very few cases, perhaps one or two every two or three years. In our view, the vast majority would have to be brought by private prosecutors funded through public crowdfunding. At ExecProsec, we are building the institution the country needs to undertake this work professionally. We will pursue criminal prosecutions of the most powerful people in society, funded by the public, in cases where the police and CPS are too conflicted to act.</p>
+</div></div></div>
+</div>
 </main>
 
 <footer class="site-foot">
@@ -349,6 +408,44 @@ header#nav > span:empty{ display:none; }
   <span class="sf-line">&copy; 2026 ExecProsec Ltd. All rights reserved.</span>
   <span class="sf-line"><a href="/terms/" style="color:rgba(255,255,255,.6)">Terms and privacy policy</a></span>
 </footer>
+
+<script>
+/* The objections open and close. Each one has its own address, #q13 and the like, so a
+   link can be sent to one answer and it opens on arrival. */
+(function(){
+  function setOpen(row, open){
+    row.classList.toggle('open', open);
+    var b = row.querySelector('.ob-q');
+    if(b) b.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+  document.addEventListener('click', function(e){
+    var b = e.target && e.target.closest ? e.target.closest('.ob-q') : null;
+    if(!b) return;
+    var row = b.parentNode;
+    var open = !row.classList.contains('open');
+    setOpen(row, open);
+    if(open){
+      try{ history.replaceState(null, '', location.pathname + '#' + row.id); }catch(err){}
+    }
+  });
+  function fromHash(){
+    var id = (location.hash || '').replace(/^#/, '');
+    if(!id) return;
+    var row = document.getElementById(id);
+    if(!row || !row.classList.contains('ob')) return;
+    setOpen(row, true);
+    /* the row has to finish opening before we know where it is */
+    setTimeout(function(){ row.scrollIntoView({block:'start'}); }, 380);
+  }
+  window.addEventListener('hashchange', fromHash);
+  if(document.readyState !== 'loading') fromHash();
+  else document.addEventListener('DOMContentLoaded', fromHash);
+  /* printing needs every answer visible, and Safari prints what it sees */
+  window.addEventListener('beforeprint', function(){
+    document.querySelectorAll('.ob').forEach(function(r){ setOpen(r, true); });
+  });
+})();
+</script>
 <!-- MJB unified analytics: page views, clicks, video plays -> Central wh_web_events -->
 <script>
 (function(){
