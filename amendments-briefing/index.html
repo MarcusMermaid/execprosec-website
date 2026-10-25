@@ -434,8 +434,12 @@ header#nav > span:empty{ display:none; }
     var row = document.getElementById(id);
     if(!row || !row.classList.contains('ob')) return;
     setOpen(row, true);
-    /* the row has to finish opening before we know where it is */
-    setTimeout(function(){ row.scrollIntoView({block:'start'}); }, 380);
+    /* straight there, not a long smooth glide past three dozen other answers, and again once
+       the row has finished opening, because that is when we know where it is */
+    var go=function(){ try{ row.scrollIntoView({block:'start', behavior:'auto'}); }catch(err){ row.scrollIntoView(true); } };
+    go();
+    setTimeout(go, 60);
+    setTimeout(go, 400);
   }
   window.addEventListener('hashchange', fromHash);
   if(document.readyState !== 'loading') fromHash();
