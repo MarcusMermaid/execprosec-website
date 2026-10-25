@@ -6182,7 +6182,8 @@ function stRailDraw(){
   thumb.style.top=at+'px'; thumb.style.height=len+'px';
 }
 function stDots(){
-  var n=ST_SLIDES, i=stIdx, W=7, half=(W-1)/2, from=Math.max(0,Math.min(i-half,n-W)), to=Math.min(n,from+W);
+  /* the short story is three slides; its thank-you page is not one of them */
+  var n=ST_SHORT?ST_SLIDES-1:ST_SLIDES, i=stIdx, W=7, half=(W-1)/2, from=Math.max(0,Math.min(i-half,n-W)), to=Math.min(n,from+W);
   var h='<div class="st-dots" aria-hidden="true">', k;
   for(k=from;k<to;k++){
     var cls=(k===i?'on':(k<i?'done':''));
