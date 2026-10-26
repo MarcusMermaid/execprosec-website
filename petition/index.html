@@ -3,19 +3,26 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Hillsborough Law Petition</title>
+<title>Petition: include all lawmakers under the Hillsborough Law</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="Petition to Press and Parliament: include every MP, peer and UK legislator under the Hillsborough Law's duty of candour and offence of misleading the public.">
 <link rel="canonical" href="https://execprosec.org/petition/">
 <link rel="icon" href="/_web/brand/favicon.ico">
 <link rel="icon" type="image/png" sizes="32x32" href="/_web/brand/icon-32.png">
 <link rel="apple-touch-icon" href="/_web/brand/icon-180.png">
-<meta property="og:title" content="Include all lawmakers under the Hillsborough Law">
-<meta property="og:description" content="MPs and peers are left out of the new law against misleading the public. Sign the petition.">
+<meta property="og:title" content="PETITION: Include all lawmakers under the Hillsborough Law">
+<meta property="og:description" content="MPs and peers have left themselves out of the new law against lying to the public. Sign the petition and tell Parliament: no exemptions.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://execprosec.org/petition/">
-<meta property="og:image" content="https://execprosec.org/_web/brand/share-og.png">
+<meta property="og:image" content="https://execprosec.org/_web/brand/petition-og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Petition: include all lawmakers under the Hillsborough Law">
+<meta property="og:site_name" content="ExecProsec">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="PETITION: Include all lawmakers under the Hillsborough Law">
+<meta name="twitter:description" content="MPs and peers have left themselves out of the new law against lying to the public. Sign the petition.">
+<meta name="twitter:image" content="https://execprosec.org/_web/brand/petition-og.png">
 <meta name="theme-color" content="#041440">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -286,6 +293,17 @@ legend{padding:0;margin:0 0 8px;font-size:14px;font-weight:600;line-height:1.4;c
 .way-fund{border-left-color:var(--red)}
 #doneMp{margin:0 0 10px}
 .freq{margin:0 0 10px}
+.m-quiet{margin:2px 0 0;font-size:14px;color:var(--ink)}
+.sq{margin:10px 0 0;padding:10px 12px;border-left:3px solid var(--gold);background:#fff;font-size:14px;line-height:1.45;color:var(--ink);min-height:44px;transition:opacity .3s}
+.sq.out{opacity:0}
+.sq b{display:block;margin-top:3px;font-size:12px;font-weight:600;color:var(--muted)}
+.hook{margin:0 0 12px;font-size:14px;font-weight:700;color:var(--navy)}
+.way-mp{display:flex;align-items:center;gap:12px}
+.way-mp img{flex:0 0 52px;width:52px;height:52px;border-radius:50%;object-fit:cover;background:var(--rule)}
+.way-share{border-left-color:var(--gold)}
+.share-link{display:block;margin:0 0 14px;padding:12px 14px;border:1.5px solid var(--rule);border-radius:4px;font-size:15px;color:var(--navy);word-break:break-all;background:var(--paper-2)}
+.mp-dot img{width:100%;height:100%;border-radius:50%;object-fit:cover}
+#doneMonthly,#doneShare{margin:0 0 10px}
 .freq .opt span{min-height:40px}
 .amts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
 .amts .opt span{min-height:52px;font-size:18px}
@@ -361,15 +379,18 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     </div>
     <div class="meter">
       <div class="live" id="live" aria-live="off" hidden><span class="dot" aria-hidden="true"></span><span id="tickTxt"></span></div>
-      <div class="m-top"><span class="m-n" id="countN">&hellip;</span><span class="m-l" id="countL">signatures</span><span class="m-goal">Target <b id="goalN">10,000</b></span></div>
-      <div class="bar" role="progressbar" aria-label="Signatures towards the target" aria-valuemin="0" id="bar"><i id="countBar"></i></div>
-      <p class="m-sub" id="meterSub"></p>
+      <div class="m-top" hidden><span class="m-n" id="countN">&hellip;</span><span class="m-l" id="countL">signatures</span><span class="m-goal">Target <b id="goalN">10,000</b></span></div>
+      <div class="bar" role="progressbar" aria-label="Signatures towards the target" aria-valuemin="0" id="bar" hidden><i id="countBar"></i></div>
+      <p class="m-sub" id="meterSub" hidden></p>
+      <p class="m-quiet" id="meterQuiet">Join people across the UK signing to include all lawmakers under the law.</p>
+      <p class="sq" id="sq" hidden></p>
       <p class="deadline"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/></svg><span id="deadlineTxt"></span></p>
     </div>
     <div class="stephead"><ol class="steps" id="dots" aria-hidden="true"><li class="on"></li><li></li><li></li><li></li></ol><span id="stepLbl">Step 1 of 4</span></div>
 
     <!-- 1: sign -->
     <form class="panel" id="p1" novalidate>
+      <p class="hook" id="hook" hidden>It takes 30 seconds. Your name, email and postcode, then one tap.</p>
       <div class="row">
         <div class="f"><label for="first">First name</label><input id="first" name="first" autocomplete="given-name" autocapitalize="words" maxlength="50"><span class="err" id="firstErr" aria-live="polite"></span></div>
         <div class="f"><label for="last">Last name</label><input id="last" name="last" autocomplete="family-name" autocapitalize="words" maxlength="50"><span class="err" id="lastErr" aria-live="polite"></span></div>
@@ -424,11 +445,21 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
 
     <!-- 3: two ways to help: fund, or email your MP, or both -->
     <div class="panel" id="pchoice" hidden>
-      <h2>Two ways to help win the vote.</h2>
-      <p class="sub">Choose either one, or do both. Each makes a real difference.</p>
+      <h2>Three ways to help win the vote.</h2>
+      <p class="sub">Choose any of them, or do all three. Each makes a real difference.</p>
       <button class="way way-fund" type="button" id="wayFund"><b>Fund the campaign</b><span>Newspaper adverts, billboards and a rally on the day of the vote. Monthly or one-off, from £10.</span></button>
-      <button class="way" type="button" id="wayMp"><b>Email your MP</b><span>About two minutes, from your own email address. We've written it for you.</span></button>
+      <button class="way way-mp" type="button" id="wayMp"><img id="wayMpPhoto" alt="" hidden><span><b id="wayMpTitle">Email your MP</b><span>About two minutes, from your own email address. We've written it for you.</span></span></button>
+      <button class="way way-share" type="button" id="wayShare"><b>Share the petition</b><span>Copy the link and paste it wherever you talk to people. Every share brings more signatures.</span></button>
       <button class="link skip" type="button" id="wayNone">Not now</button>
+    </div>
+
+    <!-- 3b: share the link -->
+    <div class="panel" id="pshare" hidden>
+      <h2>Share the petition.</h2>
+      <p class="sub">Paste the link wherever you talk to people: WhatsApp, Facebook, Instagram, X, email or a group chat.</p>
+      <span class="share-link" id="shareLink">https://execprosec.org/petition/?ref=share</span>
+      <button class="btn" type="button" id="shareCopy">Copy the petition link</button>
+      <button class="link skip" type="button" id="shareDone">Done, next</button>
     </div>
 
     <!-- 3a: your MP -->
@@ -458,8 +489,8 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       <fieldset>
         <legend id="fundLegend">Back the campaign every month</legend>
         <div class="opts freq" role="radiogroup" aria-label="How often">
-          <label class="opt"><input type="radio" name="freq" value="monthly" checked><span>Monthly</span></label>
-          <label class="opt"><input type="radio" name="freq" value="once"><span>One-off</span></label>
+          <label class="opt"><input type="radio" name="freq" value="once" checked><span>One-off</span></label>
+          <label class="opt"><input type="radio" name="freq" value="monthly"><span>Monthly</span></label>
         </div>
         <div class="amts">
           <label class="opt"><input type="radio" name="amt" value="10"><span>£10</span></label>
@@ -485,7 +516,9 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       <div class="donebig" id="doneTick" aria-hidden="true" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
       <h2 id="doneH">Thank you, <span class="me-first"></span>.</h2>
       <p class="sub" id="doneS"></p>
+      <button class="btn" type="button" id="doneMonthly" hidden>Back us monthly too: £10 a month</button>
       <button class="btn" type="button" id="doneMp" hidden>Email your MP as well</button>
+      <button class="btn navy" type="button" id="doneShare" hidden>Copy the petition link</button>
       <a class="btn navy" href="https://www.instagram.com/marcusjball/" target="_blank" rel="noopener">Follow Marcus J Ball on Instagram</a>
     </div>
   </div>
@@ -706,6 +739,9 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   var REF = ((location.search.match(/[?&](?:ref|utm_source)=([\w.\-]{1,40})/) || [])[1] ||
     (function () { try { return new URL(document.referrer).hostname; } catch (e) { return ''; } })()).slice(0, 40);
 
+  // Someone who reached us from one of our own pages came to read, not to sign: tell them how quick it is.
+  try { if (/(^|\.)execprosec\.org$/.test(new URL(document.referrer).hostname) && !/\/petition/.test(new URL(document.referrer).pathname)) document.getElementById('hook').hidden = false; } catch (e) {}
+
   // Posted as plain text, so the browser sends it at once without first asking permission.
   function post(path, body, keep) {
     return fetch(API + path, { method: 'POST', body: JSON.stringify(body), keepalive: !!keep, headers: { 'Content-Type': 'text/plain;charset=UTF-8' } })
@@ -764,7 +800,17 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       for (var i = 0; i < 3; i++) { if (steps[i] >= t) return before; before = steps[i]; }
     }
   }
+  // The count stays hidden until it is big enough to persuade: below 10,000 the feed of people
+  // signing shows the momentum instead (Marcus, 26 Oct 2026).
+  var SHOW_COUNT_FROM = 10000;
+  function countShown(n) { return (n || 0) >= SHOW_COUNT_FROM; }
   function renderMeter(animate) {
+    var quiet = !countShown(S.count);
+    document.querySelector('.m-top').hidden = quiet;
+    $('bar').hidden = quiet;
+    $('meterSub').hidden = quiet;
+    $('meterQuiet').hidden = !quiet;
+    if (quiet) return;
     var c = S.count, t = targetFor(c), passed = previousTarget(c);
     $('goalN').textContent = fmt(t);
     $('countL').textContent = c === 1 ? 'signature' : 'signatures';
@@ -834,6 +880,32 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       }
     }, function () { if (tries < 2) setTimeout(function () { sendAnswers(keep, tries + 1); }, 3000); });
   }
+
+  // ---------------------------------------------------------------- signers' own words
+  // Chosen by hand from what signers wrote, so nothing unchecked appears. Rotates above the form.
+  var SAY = [
+    ['No one should be above the law.', 'Peter, Norwich'],
+    ['Everyone else, nurses, doctors, lawyers, accountants, electricians, bankers, are accountable for professional standards. Leaving MPs out would be hypocrisy of the highest order.', 'Paul, Reading'],
+    ["It's time to remind those who take these positions of power that they are the servants of the public, and not the masters.", 'Mickey, London'],
+    ['A civil society requires the rule of law to be equally applied to all.', 'George, Kilmarnock'],
+    ['If you leave yourself out, what choice do I have but to assume that you want to be able to lie or mislead?', 'Teresa, Edinburgh'],
+    ['The Hillsborough Law is about truth, accountability and public trust.', 'Angelo, Harrow'],
+    ["You can't have a system of law for everyone except the lawmakers.", 'Paul, Stockport'],
+    ['To not include themselves in the Hillsborough Law would be a black day for democracy in our country!', 'Simon, London'],
+    ['In a democracy everyone should be accountable equally under the law.', 'Amparo, Swindon'],
+    ['We have to drive out the culture of lying to the public.', 'Tim, Coventry'],
+    ['Lawmakers should never exempt themselves from the laws they make.', 'Fiona, Bristol'],
+    ['Why do you feel you should be exempt? Is it because you would like the ability to deceive?', 'Peter, York']
+  ];
+  var sayN = Math.floor(Math.random() * SAY.length);
+  function showSay() {
+    var el = $('sq'), q = SAY[sayN++ % SAY.length];
+    el.classList.add('out');
+    setTimeout(function () { el.innerHTML = '\u201c' + esc(q[0]) + '\u201d<b>' + esc(q[1]) + '</b>'; el.classList.remove('out'); }, reduced ? 0 : 300);
+  }
+  $('sq').hidden = false;
+  showSay();
+  setInterval(function () { if (!document.hidden && !$('p1').hidden) showSay(); }, 7000);
 
   // ---------------------------------------------------------------- live count, feed and deadline
   // The count and the most recent signers come from Central, which serves them from memory, so a
@@ -996,21 +1068,23 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
 
   function go(n, quiet) {
     var w = n === 'w';                                  // the "confirm it in your inbox" screen
-    var c = n === 'c';                                  // the "fund, or email your MP, or both" screen
+    var c = n === 'c';                                  // the "three ways to help" screen
+    var sh = n === 's';                                 // the share-the-link screen
     $('pw').hidden = !w;
     $('pchoice').hidden = !c;
+    $('pshare').hidden = !sh;
     if (w) waitStart(); else waitStop();
     for (var i = 1; i <= 5; i++) $('p' + i).hidden = i !== n;
     // four steps: sign, statements, the choice, then the MP email or the fund (both are step 4)
-    var at = c ? 3 : (n === 3 || n === 4) ? 4 : n;
+    var at = c ? 3 : (n === 3 || n === 4 || sh) ? 4 : n;
     var dots = $('dots').children;
     for (var j = 0; j < dots.length; j++) dots[j].classList.toggle('on', j < at);
     $('stepLbl').textContent = at <= 4 ? 'Step ' + at + ' of 4' : 'Done';
     $('card').classList.toggle('first', n === 1 || w);   // the step bar appears once they have confirmed
-    $('card').classList.toggle('after', c || (!w && n >= 2));   // and the title, explainer and meter go
+    $('card').classList.toggle('after', c || sh || (!w && n >= 2));   // and the title, explainer and meter go
     pinCard();
     if (quiet) return;
-    var h = $(w ? 'pw' : c ? 'pchoice' : 'p' + n).querySelector('h2');
+    var h = $(w ? 'pw' : c ? 'pchoice' : sh ? 'pshare' : 'p' + n).querySelector('h2');
     if (h) { h.setAttribute('tabindex', '-1'); h.focus({ preventScroll: true }); }
     var top = $('card').getBoundingClientRect().top;
     if (top < 0 || top > window.innerHeight * 0.5) $('card').scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
@@ -1234,7 +1308,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       showSigner('<b>' + esc(S.me.first) + ' from ' + esc(S.me.town) + '</b> has just signed. That\'s you.');
     }
     document.querySelectorAll('.me-first').forEach(function (el) { el.textContent = S.me.first; });
-    var reached = number && number >= targetFor(number - 1) ? targetFor(number - 1) : 0;
+    var reached = number && number >= targetFor(number - 1) && countShown(number) ? targetFor(number - 1) : 0;
     var more = 'Want to help more? Tell us how far you agree with these. Each answer is recorded as soon as you tap it, and we quote the results to journalists and parliamentarians.';
     if (d.already) {
       $('thanksH').textContent = "You've already signed, " + S.me.first + '. Thank you.';
@@ -1243,7 +1317,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       $('thanksH').textContent = 'Done. You took us to ' + fmt(reached) + '!';
       $('thanksS').textContent = 'Your signature is confirmed. New target: ' + fmt(targetFor(number)) + '. ' + more;
     } else {
-      $('thanksH').textContent = number ? "Done. You're signature number " + fmt(number) + '.' : 'Done. Your signature is confirmed.';
+      $('thanksH').textContent = countShown(number) ? "Done. You're signature number " + fmt(number) + '.' : 'Done. Your signature is confirmed.';
       $('thanksS').textContent = 'Your signature is confirmed. ' + more;
     }
     if (!S.key) { toMp(); return; }       // signed from another browser: their answers can't be kept here
@@ -1282,13 +1356,33 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   // One clear choice rather than one ask after another: people who would do neither of two asks in
   // a row will often do one when they can pick. Whichever they choose, the other is offered after.
   function toChoice() {
-    if (S.abroad) { toFund(); return; }                 // no MP to write to: straight to funding
+    var mp = S.mp;
+    $('wayMp').hidden = !!S.abroad;                     // no MP to write to from abroad
+    $('wayMpTitle').textContent = mp ? 'Email ' + mp.name + ' MP' : 'Email your MP';
+    if (mp && mp.photo) { $('wayMpPhoto').src = mp.photo; $('wayMpPhoto').hidden = false; } else $('wayMpPhoto').hidden = true;
     track('choice_seen');
     go('c');
   }
   $('wayFund').addEventListener('click', function () { track('chose_fund'); toFund(); });
   $('wayMp').addEventListener('click', function () { track('chose_mp'); toMp(); });
   $('wayNone').addEventListener('click', function () { track('chose_none'); finish(); });
+  $('wayShare').addEventListener('click', function () { track('chose_share'); toShare(); });
+
+  // ---------------------------------------------------------------- sharing: just the link to copy
+  function toShare() {
+    S.shareSeen = true;
+    track('share_seen');
+    go('s');
+  }
+  function copyLink(btn) {
+    var link = $('shareLink').textContent;
+    var shown = function () { btn.textContent = 'Copied. Now paste it anywhere'; track('share_copied'); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(link).then(shown, function () { selectText($('shareLink')); });
+    else selectText($('shareLink'));
+  }
+  $('shareCopy').addEventListener('click', function () { copyLink(this); });
+  $('doneShare').addEventListener('click', function () { copyLink(this); });
+  $('shareDone').addEventListener('click', function () { S.fundSeen ? finish() : toFund(); });
 
   // How far each signer gets, for the funnel in the morning report. Sent in the background, never waited for.
   function track(step, detail) {
@@ -1307,12 +1401,12 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     S.mp = null;
     if (S.abroad || !pc) return;
     var m = MPS[pc];
-    if (m) { S.mp = { seat: m[0], name: m[1], party: m[2], email: m[3] }; return; }
+    if (m) S.mp = { seat: m[0], name: m[1], party: m[2], email: m[3] };   // until Parliament answers
     var api = 'https://members-api.parliament.uk/api/';
     fetch(api + 'Location/Constituency/Search?searchText=' + encodeURIComponent(pc) + '&skip=0&take=1').then(function (r) { return r.json(); })
       .then(function (r) {
         var v = r.items[0].value, mem = v.currentRepresentation.member.value;
-        S.mp = { seat: v.name, name: mem.nameDisplayAs, party: mem.latestParty.name, email: '' };
+        S.mp = { seat: v.name, name: mem.nameDisplayAs, party: mem.latestParty.name, email: (S.mp && S.mp.email) || '', photo: mem.thumbnailUrl || '' };
         return fetch(api + 'Members/' + mem.id + '/Contact').then(function (c) { return c.json(); });
       })
       .then(function (c) {
@@ -1343,6 +1437,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     $('mpSeat').textContent = mp ? mp.party : 'We couldn\'t look up your MP just now. Find their email at members.parliament.uk';
     $('mpDot').textContent = mp ? mp.name.replace(/^(Dame|Sir|Dr) /, '').split(' ').map(function (w) { return w.charAt(0); }).join('').slice(0, 2) : 'MP';
     $('mpDot').style.background = (mp && PARTY_COLOUR[mp.party]) || '';
+    if (mp && mp.photo) $('mpDot').innerHTML = '<img src="' + esc(mp.photo) + '" alt="">';
     $('mpDot').style.color = mp && mp.party === 'Scottish National Party' ? '#041440' : '';
     $('mpMail').textContent = mp && mp.email ? mp.email : "Your MP's email address appears here";
     document.querySelector('[data-copy="mpMail"]').disabled = !(mp && mp.email);
@@ -1468,6 +1563,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     document.querySelectorAll('.me-first').forEach(function (el) { el.textContent = S.me.first; });
     $('doneTick').hidden = true;
     $('doneMp').hidden = true;
+    $('doneMonthly').hidden = true;
     $('doneH').textContent = 'Checking your payment\u2026';
     $('doneS').textContent = 'One moment while Stripe confirms it.';
     go(5);
@@ -1488,6 +1584,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
           (once ? 'Stripe has emailed your receipt.' : 'Stripe has emailed your receipt, with a link to change or stop it any time.');
         track('paid', (once ? 'once ' : 'monthly ') + (d.amount_total || ''));
         offerMp();
+        $('doneMonthly').hidden = !once;
         return;
       }
       toFund();
@@ -1502,7 +1599,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
 
   // ---------------------------------------------------------------- 5: done
   function finish() {
-    var s = (S.myNumber ? "You're signature number " + fmt(S.myNumber) + '. ' : '') + 'We will take every signature to Parliament before the vote.';
+    var s = (countShown(S.myNumber) ? "You're signature number " + fmt(S.myNumber) + '. ' : '') + 'We will take every signature to Parliament before the vote.';
     if (S.me.emailOk) s += " We'll email you when the vote is coming.";
     $('doneTick').hidden = true;
     $('doneH').innerHTML = 'Thank you, <span class="me-first">' + esc(S.me.first) + '</span>.';
@@ -1511,7 +1608,20 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     offerMp();
     go(5);
   }
-  function offerMp() { $('doneMp').hidden = !!(S.mpSeen || S.abroad || !S.me || !S.me.pc); }
+  function offerMp() {
+    $('doneMp').hidden = !!(S.mpSeen || S.abroad || !S.me || !S.me.pc);
+    $('doneShare').hidden = !!S.shareSeen;
+  }
+  // a one-off giver is offered monthly backing once, straight to the card form
+  $('doneMonthly').addEventListener('click', function () {
+    track('chose_monthly_after');
+    toFund();
+    $('p4').querySelector('input[name=freq][value=monthly]').checked = true;
+    $('p4').querySelector('input[name=amt][value="10"]').checked = true;
+    $('otherWrap').hidden = true;
+    fundLabel();
+    $('p4').requestSubmit();
+  });
   $('doneMp').addEventListener('click', function () { track('chose_mp', 'after'); toMp(); });
 
   // ---------------------------------------------------------------- the Daily Express: one name, three op-eds
