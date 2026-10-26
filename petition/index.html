@@ -301,6 +301,7 @@ legend{padding:0;margin:0 0 8px;font-size:14px;font-weight:600;line-height:1.4;c
 .way-mp{display:flex;align-items:center;gap:12px}
 .way-mp img{flex:0 0 52px;width:52px;height:52px;border-radius:50%;object-fit:cover;background:var(--rule)}
 .way-share{border-left-color:var(--gold)}
+.way .way-from{margin:0 0 3px;font-size:13px;font-weight:700;color:var(--navy)}
 .share-link{display:block;margin:0 0 14px;padding:12px 14px;border:1.5px solid var(--rule);border-radius:4px;font-size:15px;color:var(--navy);word-break:break-all;background:var(--paper-2)}
 .mp-dot img{width:100%;height:100%;border-radius:50%;object-fit:cover}
 #doneMonthly,#doneShare{margin:0 0 10px}
@@ -448,7 +449,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       <h2>Three ways to help win the vote.</h2>
       <p class="sub">Choose any of them, or do all three. Each makes a real difference.</p>
       <button class="way way-fund" type="button" id="wayFund"><b>Fund the campaign</b><span>Newspaper adverts, billboards and a rally on the day of the vote. Monthly or one-off, from £10.</span></button>
-      <button class="way way-mp" type="button" id="wayMp"><img id="wayMpPhoto" alt="" hidden><span><b id="wayMpTitle">Email your MP</b><span>About two minutes, from your own email address. We've written it for you.</span></span></button>
+      <button class="way way-mp" type="button" id="wayMp"><img id="wayMpPhoto" alt="" hidden><span><b id="wayMpTitle">Email your MP</b><span class="way-from" id="wayMpFrom" hidden></span><span>About two minutes, from your own email address. We've written it for you.</span></span></button>
       <button class="way way-share" type="button" id="wayShare"><b>Share the petition</b><span>Copy the link and paste it wherever you talk to people. Every share brings more signatures.</span></button>
       <button class="link skip" type="button" id="wayNone">Not now</button>
     </div>
@@ -1359,6 +1360,9 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     var mp = S.mp;
     $('wayMp').hidden = !!S.abroad;                     // no MP to write to from abroad
     $('wayMpTitle').textContent = mp ? 'Email ' + mp.name + ' MP' : 'Email your MP';
+    // most people don't know who their MP is: say where the name comes from
+    $('wayMpFrom').textContent = mp && S.me && S.me.pc ? '(Your MP, found from your postcode ' + S.me.pc + ')' : '';
+    $('wayMpFrom').hidden = !(mp && S.me && S.me.pc);
     if (mp && mp.photo) { $('wayMpPhoto').src = mp.photo; $('wayMpPhoto').hidden = false; } else $('wayMpPhoto').hidden = true;
     track('choice_seen');
     go('c');
