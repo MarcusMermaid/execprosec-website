@@ -1130,13 +1130,13 @@ footer{
 .pledge-btn:disabled{opacity:.6;cursor:default;transform:none}
 .pledge-thanks{display:none;color:var(--white);font-size:15.5px;line-height:1.6}
 /* the petition, first thing on the home page (26 Oct 2026) */
-.pet-banner{display:flex;align-items:center;flex-wrap:wrap;gap:8px 16px;max-width:860px;margin:0 auto 28px;padding:14px 18px;
+.pet-banner{display:flex;align-items:center;flex-wrap:wrap;gap:8px 16px;max-width:860px;margin:0;padding:14px 18px;
   border:1.5px solid var(--gold);border-radius:6px;background:rgba(221,188,102,.08);color:#fff;text-decoration:none;text-align:left}
 .pet-banner:hover{background:rgba(221,188,102,.16)}
 .pet-k{font:700 12px/1 'DM Sans',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
 .pet-t{flex:1 1 260px;font:400 20px/1.25 'DM Serif Display',serif;color:#fff}
 .pet-b{flex:0 0 auto;padding:10px 16px;border-radius:4px;background:#d64045;color:#fff;font:700 14px/1 'DM Sans',sans-serif;letter-spacing:.04em}
-@media(max-width:600px){.pet-banner{margin:0 0 22px}.pet-t{font-size:18px}.pet-b{width:100%;text-align:center}}
+@media(max-width:600px){.pet-t{font-size:18px}.pet-b{width:100%;text-align:center}}
 </style>
 <style>
 /* home screen, brought across from the next version */
@@ -2082,6 +2082,9 @@ header#nav > span:empty{ display:none; }
 @media(max-width:640px){
   #screen-intro .press-grid{grid-template-columns:repeat(3,minmax(0,1fr)) !important}
 }
+/* the banner sits under the menu on every screen */
+.pet-top{width:100%;max-width:728px;margin:0 auto;padding:6px 24px 0;box-sizing:border-box}
+@media(max-width:600px){.pet-top{padding:4px 16px 0}}
 </style>
 </head>
 <body>
@@ -2114,14 +2117,15 @@ header#nav > span:empty{ display:none; }
       <span></span><span></span><span></span>
     </button>
   </header>
+<div class="pet-top"><a class="pet-banner" href="/petition/?ref=home">
+  <span class="pet-k">Petition</span>
+  <span class="pet-t">Include all lawmakers under the Hillsborough Law</span>
+  <span class="pet-b">Sign in 30 seconds &rarr;</span>
+</a></div>
+
 
   <!-- == INTRO == -->
   <div class="screen active" id="screen-intro">
-    <a class="pet-banner" href="/petition/?ref=home">
-      <span class="pet-k">Petition</span>
-      <span class="pet-t">Include all lawmakers under the Hillsborough Law</span>
-      <span class="pet-b">Sign in 30 seconds &rarr;</span>
-    </a>
     <h1 class="intro-h1">No one should be above the <span style="color:var(--gold);font-style:normal">criminal law</span>.</h1>
     <div class="intro-rule"></div>
     <p class="intro-body">Our work began in 2016 with our ongoing campaign to criminalise lying in politics. We are currently campaigning to amend the Public Office (Accountability) Bill so that it achieves that legal change for the first time in modern democratic history.</p>

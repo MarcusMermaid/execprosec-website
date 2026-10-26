@@ -50,6 +50,17 @@ footer a{color:rgba(255,255,255,.5);text-decoration:none}
   header{margin-bottom:40px}
   body{font-size:16px}
 }
+/* the petition, at the top of every page (26 Oct 2026) */
+.pet-top{width:100%;max-width:728px;margin:0 auto;padding:6px 24px 0;box-sizing:border-box}
+@media(max-width:600px){.pet-top{padding:4px 16px 0}}
+.pet-banner{display:flex;align-items:center;flex-wrap:wrap;gap:8px 16px;margin:0 0 8px;padding:14px 18px;box-sizing:border-box;
+  border:1.5px solid var(--gold);border-radius:6px;background:rgba(221,188,102,.08);color:#fff;text-decoration:none;text-align:left}
+.pet-banner:hover{background:rgba(221,188,102,.16)}
+.pet-k{font:700 12px/1 'DM Sans',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
+.pet-t{flex:1 1 260px;font:400 20px/1.25 'DM Serif Display',serif;color:#fff}
+.pet-b{flex:0 0 auto;padding:10px 16px;border-radius:4px;background:#d64045;color:#fff;font:700 14px/1 'DM Sans',sans-serif;letter-spacing:.04em}
+@media(max-width:600px){.pet-t{font-size:18px}.pet-b{width:100%;text-align:center}}
+.pet-top{padding:0 0 28px;max-width:none}
 </style>
 </head>
 <body>
@@ -61,6 +72,12 @@ footer a{color:rgba(255,255,255,.5);text-decoration:none}
     </a>
     <span class="date">9 October 2026</span>
   </header>
+<div class="pet-top"><a class="pet-banner" href="/petition/?ref=updates">
+  <span class="pet-k">Petition</span>
+  <span class="pet-t">Include all lawmakers under the Hillsborough Law</span>
+  <span class="pet-b">Sign in 30 seconds &rarr;</span>
+</a></div>
+
 
   <h1>Major update: Lying in politics is being criminalised right now in Parliament</h1>
 
