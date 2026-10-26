@@ -210,14 +210,17 @@ button.press-item{background:none;border:0;cursor:pointer;position:relative}
 .lk-opt:hover .lk-dot{border-color:var(--navy)}
 .lk-opt input:checked + .lk-dot{background:var(--navy);border-color:var(--navy);box-shadow:inset 0 0 0 5px #fff}
 .lk-opt input:focus-visible + .lk-dot{box-shadow:0 0 0 3px rgba(221,188,102,.8)}
-.lk-l{font-size:11px;line-height:1.2;color:var(--muted)}
+.lk-l{font-size:11.5px;line-height:1.2;font-weight:700;color:var(--muted)}
+.lk-yes .lk-l{color:#1f7a4d}
+.lk-no .lk-l{color:#b3261e}
+.lk-yes input:checked + .lk-dot{background:#1f7a4d;border-color:#1f7a4d}
+.lk-no input:checked + .lk-dot{background:#b3261e;border-color:#b3261e}
 .lk-saved{margin:8px 0 0;font-size:12.5px;font-weight:600;color:var(--ok)}
 @media(min-width:600px){
-  .lk-head,.lk-row{display:grid;grid-template-columns:minmax(0,1fr) 290px;column-gap:16px;align-items:center}
+  .lk-row{display:grid;grid-template-columns:minmax(0,1fr) 320px;column-gap:16px;align-items:center}
   .lk-head{padding-bottom:6px}
   .lk-head .lk-scale span{font-size:11px;line-height:1.2;color:var(--muted);text-align:center}
   .lk-t{margin:0}
-  .lk-l{display:none}
   .lk-saved{grid-column:1 / -1}
 }
 .f textarea.short{min-height:88px;font-size:16px}
@@ -795,17 +798,17 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   ];
   // Everyone is asked about every statement, in a shuffled order so no statement always gets the
   // fresh first look. Each answer is kept the moment it is tapped, whether or not they finish.
-  var SCALE = ['Strongly disagree', 'Disagree', 'Not sure', 'Agree', 'Strongly agree'];
+  // Agree first: with disagree on the left, people who agreed tapped the wrong end (26 Oct 2026).
+  var SCALE = [['Strongly agree', 2], ['Agree', 1], ['Not sure', 0], ['Disagree', -1], ['Strongly disagree', -2]];
   function buildLikert() {
     var order = STATEMENTS.slice();
     for (var i = order.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = order[i]; order[i] = order[j]; order[j] = t; }
-    var head = '<div class="lk-head" aria-hidden="true"><span></span><span class="lk-scale">' +
-      SCALE.map(function (l) { return '<span>' + l + '</span>'; }).join('') + '</span></div>';
-    $('likert').innerHTML = head + order.map(function (st) {
+    $('likert').innerHTML = order.map(function (st) {
       return '<div class="lk-row" data-id="' + st.id + '"><p class="lk-t" id="lk_' + st.id + '">' + esc(st.t) + '</p>' +
         '<div class="lk-scale" role="radiogroup" aria-labelledby="lk_' + st.id + '">' +
-        SCALE.map(function (l, v) {
-          return '<label class="lk-opt"><input type="radio" name="lk_' + st.id + '" value="' + (v - 2) + '" aria-label="' + l + '"><span class="lk-dot"></span><span class="lk-l">' + l + '</span></label>';
+        SCALE.map(function (o) {
+          var side = o[1] > 0 ? ' lk-yes' : o[1] < 0 ? ' lk-no' : '';
+          return '<label class="lk-opt' + side + '"><input type="radio" name="lk_' + st.id + '" value="' + o[1] + '" aria-label="' + o[0] + '"><span class="lk-dot"></span><span class="lk-l">' + o[0] + '</span></label>';
         }).join('') + '</div><p class="lk-saved" hidden>&#10003; Answer recorded</p></div>';
     }).join('');
   }
