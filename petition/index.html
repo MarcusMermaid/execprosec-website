@@ -451,7 +451,6 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       <button class="way way-fund" type="button" id="wayFund"><b>Fund the campaign</b><span>Newspaper adverts, billboards and a rally on the day of the vote. Monthly or one-off, from £10.</span></button>
       <button class="way way-mp" type="button" id="wayMp"><img id="wayMpPhoto" alt="" hidden><span><b id="wayMpTitle">Email your MP</b><span class="way-from" id="wayMpFrom" hidden></span><span>About two minutes, from your own email address. We've written it for you.</span></span></button>
       <button class="way way-share" type="button" id="wayShare"><b>Share the petition</b><span>Copy the link and paste it wherever you talk to people. Every share brings more signatures.</span></button>
-      <button class="link skip" type="button" id="wayNone">Not now</button>
     </div>
 
     <!-- 3b: share the link -->
@@ -837,7 +836,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   var STATEMENTS = [
     { id: 's1', t: 'MPs and peers who vote to put civil servants, police officers, soldiers, ministers and even spies under the Hillsborough Law, but not themselves, are hypocrites: a law for thee, but not for me.' },
     { id: 's8', t: 'Candidates for elected office who are proven to have recklessly or intentionally deceived the public during a general election should also be treated as public officials under the offence of misleading the public.' },
-    { id: 's3', t: 'If legislators vote to exempt themselves, I will trust the Parliaments of the UK much less.' },
+    { id: 's9', t: 'If our parliaments in London, Edinburgh, Cardiff and Belfast exempt their own members from the Hillsborough Law’s duty of candour and misleading the public offence, they will humiliate themselves in the eyes of the public.' },
     { id: 's4', t: 'Proven reckless or intentional lying to the public to justify starting an aggressive war should be a crime.' },
     { id: 's5', t: 'Proven reckless or intentional lying to the public to manipulate a referendum result should be a crime.' },
     { id: 's6', t: 'If the misleading the public offence applies to Government ministers but not to the opposition or backbenchers, democracy will be dangerously destabilised.' },
@@ -1369,7 +1368,6 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   }
   $('wayFund').addEventListener('click', function () { track('chose_fund'); toFund(); });
   $('wayMp').addEventListener('click', function () { track('chose_mp'); toMp(); });
-  $('wayNone').addEventListener('click', function () { track('chose_none'); finish(); });
   $('wayShare').addEventListener('click', function () { track('chose_share'); toShare(); });
 
   // ---------------------------------------------------------------- sharing: just the link to copy
