@@ -933,7 +933,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     });
     return words.some(function (w) {
       var c = collapse(w);
-      if (MOD_E[w] || MOD_E[c]) return true;
+      if (MOD_E[w] || MOD_E[c] || /fuck|shit/.test(w)) return true;
       return MOD_P.some(function (p) { return c.indexOf(p) === 0 || w.indexOf(p) === 0; });
     });
   }
@@ -1020,7 +1020,38 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     if (f) f.classList.toggle('bad', !!msg);
     var e = $(id + 'Err');
     if (e) e.textContent = msg || '';
+    if (msg && FORM_FIELDS[id]) formEv('error', id, msg);
   }
+
+  // ---------------------------------------------------------------- where people stop on the signing form
+  // Anonymous: this browser's random key, the field's name and the error, never what was typed.
+  // Sent in the background, so the form never waits.
+  var FORM_FIELDS = { first: 1, last: 1, email: 1, pc: 1, cty: 1, consent: 1, abroad: 1 };
+  var form = { started: false, signed: false, last: '', left: false };
+  function formEv(e, f, d) {
+    try {
+      var b = JSON.stringify({ v: browserKey(), e: e, f: f || '', d: d || '', ref: REF });
+      if (navigator.sendBeacon) navigator.sendBeacon(API + 'petition/form', new Blob([b], { type: 'text/plain' }));
+    } catch (x) {}
+  }
+  function formField(f) {
+    if (!form.started) { form.started = true; formEv('start', f); }
+    if (f !== form.last) { form.last = f; formEv('field', f); }
+  }
+  $('p1').addEventListener('focusin', function (e) {
+    var t = e.target, f = t.name === 'consent' ? 'consent' : t.id === 'abroadBtn' ? 'abroad' : t.id;
+    if (FORM_FIELDS[f]) formField(f);
+  });
+  $('p1').addEventListener('input', function (e) {
+    var t = e.target, f = t.name === 'consent' ? 'consent' : t.id;
+    if (FORM_FIELDS[f]) formField(f);
+  });
+  // left the page having started but not signed: say where they were
+  function formLeave() {
+    if (form.started && !form.signed && !form.left) { form.left = true; formEv('leave', form.last); }
+  }
+  window.addEventListener('pagehide', formLeave);
+  document.addEventListener('visibilitychange', function () { if (document.hidden) formLeave(); else form.left = false; });
 
   // ---------------------------------------------------------------- 1: sign
   var EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
@@ -1065,6 +1096,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   $('p1').addEventListener('submit', function (e) {
     e.preventDefault();
     if ($('website').value) return;                     // a bot filled the hidden field
+    formEv('submit', form.last);
     var first = $('first').value.trim(), last = $('last').value.trim(), email = $('email').value.trim();
     var pc = $('pc').value.trim().toUpperCase().replace(/\s+/g, ''), cty = $('cty').value.trim();
     var consent = this.querySelector('input[name=consent]:checked');
@@ -1074,6 +1106,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     if (S.abroad) setErr('cty', cty.length >= 2 ? '' : 'Please enter your country.');
     else setErr('pc', /^[A-Z]{1,2}\d[A-Z\d]?\d[A-Z]{2}$/.test(pc) ? '' : 'Please enter your full postcode, like ME13 8GD.');
     $('consentErr').textContent = consent ? '' : 'Please choose yes or no.';
+    if (!consent) formEv('error', 'consent', 'Please choose yes or no.');
     if (this.querySelector('.f.bad') || !consent) {
       var bad = this.querySelector('.f.bad input') || this.querySelector('input[name=consent]');
       if (bad) bad.focus();
@@ -1089,11 +1122,13 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       done();
       if (!d.ok) {
         var field = d.field === 'pc' && S.abroad ? 'cty' : d.field;
-        if (field === 'consent') $('consentErr').textContent = d.reason;
+        if (field === 'consent') { $('consentErr').textContent = d.reason; formEv('error', 'consent', d.reason); }
         else if (field && $(field)) { setErr(field, d.reason); $(field).focus(); }
         else toast(d.reason || 'Something went wrong. Please try again.');
         return;
       }
+      form.signed = true;
+      formEv('signed', form.last);
       S.sig = d.sig;
       S.key = d.key || '';
       S.me = { first: cap(first), last: cap(last), email: email, emailOk: consent.value === 'yes', town: d.town || 'the UK',
