@@ -100,6 +100,14 @@ figure.bill figcaption{font-size:13px;color:var(--muted);font-style:italic;margi
 h3.ob-sec{font:400 21px/1.3 'DM Serif Display',serif;color:var(--navy);margin:0;padding:30px 2px 14px;border-bottom:1px solid var(--rule);
   scroll-margin-top:14px}
 
+/* ---- the Government's own words, set apart from ours ---- */
+.ob-in > .gov{margin:0 0 20px 38px;background:#eef1f6;border-left:3px solid var(--navy);padding:16px 22px 15px}
+.ob-in > .gov + .gov{margin-top:-8px}
+.gov-lbl{font:700 10.5px/1.6 'DM Sans',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:0 0 9px}
+.gov-q{margin:0 0 11px;font:400 16.5px/1.62 'DM Serif Display',serif;color:var(--navy)}
+.gov-src{margin:0;font:400 13px/1.5 'DM Sans',sans-serif;color:var(--muted)}
+.gov-src b{display:block;font-weight:600;color:#3b4258}
+
 /* ---- footer: the same as the live site ---- */
 .site-foot{display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;font-size:12px;letter-spacing:.05em;
   color:rgba(255,255,255,.38);padding:30px 18px 38px;border-top:1px solid rgba(255,255,255,.06)}
@@ -117,6 +125,8 @@ h3.ob-sec{font:400 21px/1.3 'DM Serif Display',serif;color:var(--navy);margin:0;
   .ob-q{gap:10px}
   .ob-t{font-size:16px}
   .ob-in > p,.ob-in > figure.bill{padding-left:0;margin-left:0}
+  .ob-in > .gov{margin-left:0;padding:14px 16px 13px}
+  .gov-q{font-size:15.5px}
 }
 @media(prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
@@ -161,16 +171,6 @@ header#nav > span:empty{ display:none; }
   header#nav{ flex-wrap:wrap; }
   header#nav .nav-links{ flex-wrap:wrap; }
 }
-/* the petition, at the top of every page (26 Oct 2026) */
-.pet-top{width:100%;max-width:728px;margin:0 auto;padding:6px 24px 0;box-sizing:border-box}
-@media(max-width:600px){.pet-top{padding:4px 16px 0}}
-.pet-banner{display:flex;align-items:center;flex-wrap:wrap;gap:8px 16px;margin:0 0 8px;padding:14px 18px;box-sizing:border-box;
-  border:1.5px solid var(--gold);border-radius:6px;background:rgba(221,188,102,.08);color:#fff;text-decoration:none;text-align:left}
-.pet-banner:hover{background:rgba(221,188,102,.16)}
-.pet-k{font:700 12px/1 'DM Sans',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
-.pet-t{flex:1 1 260px;font:400 20px/1.25 'DM Serif Display',serif;color:#fff}
-.pet-b{flex:0 0 auto;padding:10px 16px;border-radius:4px;background:#d64045;color:#fff;font:700 14px/1 'DM Sans',sans-serif;letter-spacing:.04em}
-@media(max-width:600px){.pet-t{font-size:18px}.pet-b{width:100%;text-align:center}}
 </style>
 </head>
 <body>
@@ -186,12 +186,6 @@ header#nav > span:empty{ display:none; }
     <a class="nav-donate" href="/donate">Donate</a>
   </nav>
 </header>
-<div class="pet-top"><a class="pet-banner" href="/petition/?ref=briefing">
-  <span class="pet-k">Petition</span>
-  <span class="pet-t">Include all lawmakers under the Hillsborough Law</span>
-  <span class="pet-b">Sign in 30 seconds &rarr;</span>
-</a></div>
-
 
 <div class="hero">
   <p class="kicker">ExecProsec &nbsp;&middot;&nbsp; Public Office (Accountability) Bill &nbsp;&middot;&nbsp; 25 October 2026</p>
@@ -237,30 +231,36 @@ header#nav > span:empty{ display:none; }
 <h2 class="sec" id="every-objection-answered"><span>Every objection answered</span></h2>
 <div class="acc">
 <div class="ob" id="q1"><button class="ob-q" type="button" aria-expanded="false" aria-controls="a-q1"><span class="ob-n">1</span><span class="ob-t">MPs and peers cannot be prosecuted for what they say in Parliament</span><span class="ob-mark" aria-hidden="true"></span></button><div class="ob-a" id="a-q1"><div class="ob-in">
+<div class="gov"><p class="gov-lbl">What the Government says</p><blockquote class="gov-q">&ldquo;Parliamentary privilege applies to what is said in the House and this is a long-standing constitutional principle to protect debate.&rdquo;</blockquote><p class="gov-src"><b>Rt Hon Nick Thomas-Symonds MP, Minister for the Cabinet Office</b><span>Letter, 20 January 2026 (reference MC2025/20352)</span></p></div>
 <p>Protected parliamentary proceedings remain protected. Article 9 of the Bill of Rights protects Westminster proceedings, while our proposed amendment expressly excludes proceedings in all four UK legislatures from the new extension of clause 12. The proposal concerns conduct outside those proceedings, including acts on television, the radio, social media and at public events.</p>
 <p>The amendment also extends a specific form of immunity from these offences to proceedings in the devolved legislatures in Wales, Scotland and Northern Ireland. Those legislatures do not have parliamentary privilege; they have limited protection against claims of slander. We are therefore extending protection for the purposes of these offences to those Parliaments, rather than limiting or damaging parliamentary privilege, so that legislators remain free to debate.</p>
 <p class="note">Basis: Bill of Rights Article 9; our proposed amendment; Chaytor.</p>
 </div></div></div>
 <div class="ob" id="q2"><button class="ob-q" type="button" aria-expanded="false" aria-controls="a-q2"><span class="ob-n">2</span><span class="ob-t">Parliament should regulate its own members and its existing sanctions are enough</span><span class="ob-mark" aria-hidden="true"></span></button><div class="ob-a" id="a-q2"><div class="ob-in">
+<div class="gov"><p class="gov-lbl">What the Government says</p><blockquote class="gov-q">&ldquo;Parliament has its own arrangements for ensuring accuracy and truthfulness in proceedings, including processes for determining whether MPs have misled the other place, and it is for the House of Lords Procedure and Privileges Committee to consider any instances where a Member of your Lordships’ House is alleged to have misled the House.&rdquo;</blockquote><p class="gov-src"><b>Baroness Levitt, Parliamentary Under-Secretary of State, Ministry of Justice</b><span>House of Lords, 26 February 2026</span></p></div><div class="gov"><p class="gov-lbl">What the Government says</p><blockquote class="gov-q">&ldquo;While Back-Bench MPs are not included in the new offence, as they are responsible for scrutinising the decisions of the Government of the day, Parliament does already have processes for determining whether Members have misled the House and has its own arrangements for ensuring truthfulness and accuracy from Members. However, I would be keen to work with my hon. Friend to look at how we strengthen matters in relation to his concerns.&rdquo;</blockquote><p class="gov-src"><b>Catherine Atkinson MP, Parliamentary Under-Secretary of State for Justice</b><span>House of Commons, Report stage, 14 July 2026</span></p></div>
 <p>Parliament does not regulate lying outside its proceedings. It should continue to regulate its own proceedings and discipline its members, but that does not settle criminal responsibility for serious dishonesty directed at the public outside those proceedings. Standards rules and criminal law can overlap.</p>
 <p class="note">Basis: Bill Schedule 4 paragraphs 6 to 9; Chaytor.</p>
 </div></div></div>
 <div class="ob" id="q3"><button class="ob-q" type="button" aria-expanded="false" aria-controls="a-q3"><span class="ob-n">3</span><span class="ob-t">Ministers are already covered so why is an amendment needed</span><span class="ob-mark" aria-hidden="true"></span></button><div class="ob-a" id="a-q3"><div class="ob-in">
+<div class="gov"><p class="gov-lbl">What the Government says</p><blockquote class="gov-q">&ldquo;It applies to public officials and public authorities, so it captures those working in government and the wider public sector who take decisions on behalf of the state. That includes Ministers and other politicians in executive roles, but not MPs and Peers.&rdquo;</blockquote><p class="gov-src"><b>Baroness Levitt, Parliamentary Under-Secretary of State, Ministry of Justice</b><span>House of Lords, 26 February 2026</span></p></div>
 <p>Ministers are covered through their ministerial functions. Legislative membership is a separate basis of responsibility, and the Bill does not expressly include legislators in Schedule 2. Covering Ministers while excluding backbenchers and the opposition would create a system in which the government of the day is held accountable under these offences for its conduct outside Parliament, while those opposing and scrutinising it are not.</p>
 <p>Such a system would unbalance our democracy. It would encourage the public to believe the government and distrust the opposition, damaging the parliamentary relationship between government and opposition that our country has long valued. The public would have a statutory reason to trust the government, but no equivalent reason to trust the opposition. This could be seriously abused: Ministers could appear on television and tell the public to listen only to them because they alone have a legal obligation to tell the truth.</p>
 <p class="note">Basis: Bill Schedule 2 paragraphs 2 and 3; our proposed amendment.</p>
 </div></div></div>
 <div class="ob" id="q4"><button class="ob-q" type="button" aria-expanded="false" aria-controls="a-q4"><span class="ob-n">4</span><span class="ob-t">Are lawmakers really excluded and might peers already be covered</span><span class="ob-mark" aria-hidden="true"></span></button><div class="ob-a" id="a-q4"><div class="ob-in">
+<div class="gov"><p class="gov-lbl">What the Government says</p><blockquote class="gov-q">&ldquo;Paragraph (2)(4) sets out that there are express reservations for the courts, Parliament and the devolved legislatures, reflecting long-standing constitutional conventions of self-regulation and independence.&rdquo;</blockquote><p class="gov-src"><b>Alex Davies-Jones MP, Parliamentary Under-Secretary of State for Justice</b><span>House of Commons, Public Bill Committee, 2 December 2025</span></p></div>
 <p>The Government's position is that legislative membership alone does not bring a person within these Part 2 provisions. Schedule 2 excludes the legislatures as public authorities, but separately covers holders of a relevant public office. There is an arguable interpretation that this definition already includes members of the House of Lords unintentionally, because of a drafting mistake. Peers should be included expressly and deliberately, rather than by accident. Express inclusion would resolve the uncertainty without leaving a central question of accountability to litigation.</p>
 <figure class="bill"><img src="img/bill-3.png" alt="Schedule 2, paragraph 2(4), HL Bill 42, page 51." width="1134" height="209" loading="lazy"><figcaption>Schedule 2, paragraph 2(4), HL Bill 42, page 51.</figcaption></figure>
 <p class="note">Basis: Bill Schedule 2 paragraphs 2(4), 3(1)(c) and 3(3) to (6); Lords Library briefing on exclusion.</p>
 </div></div></div>
 <div class="ob" id="q5"><button class="ob-q" type="button" aria-expanded="false" aria-controls="a-q5"><span class="ob-n">5</span><span class="ob-t">Backbenchers do not take decisions on behalf of the state</span><span class="ob-mark" aria-hidden="true"></span></button><div class="ob-a" id="a-q5"><div class="ob-in">
+<div class="gov"><p class="gov-lbl">What the Government says</p><blockquote class="gov-q">&ldquo;The Government thought very carefully about who the offence should apply to, but Parliament has a unique role in the system. Noble Lords and Members of Parliament are responsible for scrutinising and improving legislation and holding the Government accountable. Back-Benchers do not take decisions on behalf of the state, nor do they have access to the kind of information that would be available to Ministers. We therefore take the view that it is not appropriate to extend the offence to Back-Bench parliamentarians.&rdquo;</blockquote><p class="gov-src"><b>Lord Lemos, Parliamentary Under-Secretary of State, Ministry of Justice</b><span>House of Lords, Committee, 12 October 2026</span></p></div>
 <p>Backbenchers scrutinise government, vote on laws and public spending budgets, and influence decisions of national importance. Their roles give them access to information, people, powers and resources that the public do not have. When they speak about those resources and relationships, the public must be able to trust them to tell the truth. Most are elected by the public and entrusted to report back on what the government is doing. They should not be permitted to lie to the public when doing so.</p>
 <p>Under the UK's system of government, executive power is nothing without scrutiny from the opposition and backbenches. The system depends on that balance. Holding only one side accountable under criminal law would be profoundly unjust and would undermine it.</p>
 <p class="note">Basis: Bill clauses 2 and 12; proposed amendments.</p>
 </div></div></div>
 <div class="ob" id="q6"><button class="ob-q" type="button" aria-expanded="false" aria-controls="a-q6"><span class="ob-n">6</span><span class="ob-t">Legislators do not have the information Ministers have</span><span class="ob-mark" aria-hidden="true"></span></button><div class="ob-a" id="a-q6"><div class="ob-in">
+<div class="gov"><p class="gov-lbl">What the Government says</p><blockquote class="gov-q">&ldquo;This is because individual MPs do not directly take decisions on behalf of the state, nor do they have access to the kind of government information that will be available to Ministers.&rdquo;</blockquote><p class="gov-src"><b>Rt Hon Nick Thomas-Symonds MP, Minister for the Cabinet Office</b><span>Letter, January 2026 (reference MC2026/00453)</span></p></div>
 <p>The Government and the Cabinet Office repeatedly advance this argument, but it is deeply flawed. Access to secret information is not necessary to make a knowingly dishonest public claim. A person needs no privileged information to deceive intentionally or recklessly: lying can consist simply of inventing information with no basis in reality. Someone who lacks moral character and faces no criminal penalty may feel free to fabricate a claim and present it to the public. That is precisely why lying is so easy and so destructive. On top of this, legislators speak to the public via television, radio, social media, and at events nearly every week of the year. They may not have the information that ministers have, but they certainly communicate with the public.</p>
 <p class="note">Basis: Bill clause 12 and our proposed amendment.</p>
 </div></div></div>
@@ -273,6 +273,7 @@ header#nav > span:empty{ display:none; }
 <p class="note">Basis: Bill clause 12 and our proposed amendment.</p>
 </div></div></div>
 <div class="ob" id="q9"><button class="ob-q" type="button" aria-expanded="false" aria-controls="a-q9"><span class="ob-n">9</span><span class="ob-t">This is the wrong vehicle for regulating political speech</span><span class="ob-mark" aria-hidden="true"></span></button><div class="ob-a" id="a-q9"><div class="ob-in">
+<div class="gov"><p class="gov-lbl">What the Government says</p><blockquote class="gov-q">&ldquo;Of course, this government agrees that misleading the public in any capacity is not acceptable, and there should be consequences if they do so. But this offence is not the appropriate vehicle for regulating political speech.&rdquo;</blockquote><p class="gov-src"><b>Rt Hon Nick Thomas-Symonds MP, Minister for the Cabinet Office</b><span>Letter, January 2026 (reference MC2026/00453)</span></p></div>
 <p>We urge everyone considering this legislation to be precise about what they mean by “political speech”. This proposal seeks to criminalise intentional or reckless deceit on matters of significant public importance. The Bill already recognises, and parliamentary debate has made clear, that lying to cover up a disaster or the causes of deaths, or lying about police crime levels, can warrant criminal prosecution. Our argument is that lying to justify an aggressive war, manipulate a referendum result or secure profitable government contracts during a national disaster belongs in the same category of false and deceitful communication.</p>
 <p>Ordinary political speech is entirely different and would not be prosecutable under these offences. Honestly held opinions, debate, mistakes and broken promises are normal features of political communication. They are distinct from intentional or reckless deceit designed to cause, or recklessly risk causing, damage to the country on the greatest possible scale. However controversial or unpopular an opinion may be, it would enter the realm of criminal prosecution only if it were intentionally or recklessly deceitful on a matter of significant public concern.</p>
 </div></div></div>
@@ -285,6 +286,7 @@ header#nav > span:empty{ display:none; }
 <p class="note">Basis: Bill clause 12 and our proposed amendment.</p>
 </div></div></div>
 <div class="ob" id="q12"><button class="ob-q" type="button" aria-expanded="false" aria-controls="a-q12"><span class="ob-n">12</span><span class="ob-t">The offence is meant for Hillsborough style cover ups rather than politics</span><span class="ob-mark" aria-hidden="true"></span></button><div class="ob-a" id="a-q12"><div class="ob-in">
+<div class="gov"><p class="gov-lbl">What the Government says</p><blockquote class="gov-q">&ldquo;This offence is designed to capture the most serious incidents of misleading the public — behaviour like that seen after Hillsborough where officials and public servants intentionally spread a false narrative to protect their reputation, causing harm as a result. It is intended to deter and punish state cover-ups.&rdquo;</blockquote><p class="gov-src"><b>Rt Hon Nick Thomas-Symonds MP, Minister for the Cabinet Office</b><span>Letter, January 2026 (reference MC2026/00453)</span></p></div>
 <p>This is incorrect, as the wording of the Bill makes clear. Clause 12 is not confined to disasters or cover-ups. Nothing in the Bill states that the offence applies only to Hillsborough-style events. Its wording can cover other seriously improper public deception by the authorities and officials within its scope.</p>
 <p class="note">Basis: Bill clause 12 and our proposed amendment.</p>
 </div></div></div>
@@ -330,6 +332,7 @@ header#nav > span:empty{ display:none; }
 <p class="note">Basis: Proposed amendments; Bill Schedule 3 paragraph 2; campaign position.</p>
 </div></div></div>
 <div class="ob" id="q21"><button class="ob-q" type="button" aria-expanded="false" aria-controls="a-q21"><span class="ob-n">21</span><span class="ob-t">Voters should judge politicians at the ballot box</span><span class="ob-mark" aria-hidden="true"></span></button><div class="ob-a" id="a-q21"><div class="ob-in">
+<div class="gov"><p class="gov-lbl">What the Government says</p><blockquote class="gov-q">&ldquo;Ultimately, elected members are accountable to the public.&rdquo;</blockquote><p class="gov-src"><b>Rt Hon Nick Thomas-Symonds MP, Minister for the Cabinet Office</b><span>Letter, 20 January 2026 (reference MC2025/20352)</span></p></div>
 <p>Elections and criminal prosecutions determine different things. Elections decide who holds office and can reflect the popularity of a party, its leader or its policies. A criminal prosecution determines whether an individual has abused their office or the public while holding power. Establishing guilt requires a jury and a court to examine the evidence carefully at trial. Elections cannot provide that level of detailed analysis or sustained scrutiny.</p>
 <p>Election to public office should not place anyone above criminal law. Legislators are proposing to criminalise misleading the public for nearly all other public officials while excluding themselves. To place the lawmakers above their own law would be deeply hypocritical, contrary to equality under the law and an abuse of the justice system.</p>
 <p>The parliamentary expenses scandal illustrates the point. Elected politicians went to prison for false expense claims. Their status as elected representatives did not exempt conduct contrary to the public interest from investigation, prosecution and trial. They faced justice, as everyone should. Peers do not face the ballot box at all. That cannot mean they should be above criminal law either.</p>
@@ -358,11 +361,13 @@ header#nav > span:empty{ display:none; }
 <p class="note">Basis: Bill Schedule 2 paragraph 3(13); our proposed amendment; earlier campaign candidate draft.</p>
 </div></div></div>
 <div class="ob" id="q26"><button class="ob-q" type="button" aria-expanded="false" aria-controls="a-q26"><span class="ob-n">26</span><span class="ob-t">MPs can already be prosecuted for misconduct in public office</span><span class="ob-mark" aria-hidden="true"></span></button><div class="ob-a" id="a-q26"><div class="ob-in">
+<div class="gov"><p class="gov-lbl">What the Government says</p><blockquote class="gov-q">&ldquo;We are replacing the old common-law offence because there was a lack of certainty about it. One of the issues with it was the lack of a list of those to whom the law applied. To deal with that, those two new offences do have a list. Both those two very broad offences do apply to MPs and Peers, as well as to a number of other public office holders, including judges.&rdquo;</blockquote><p class="gov-src"><b>Baroness Levitt, Parliamentary Under-Secretary of State, Ministry of Justice</b><span>House of Lords, 26 February 2026</span></p></div>
 <p>We agree that MPs can be prosecuted for lying under the common law offence of misconduct in public office. That was the basis of our 2019 prosecution of Boris Johnson. However, that offence is being abolished and will no longer be available once the Public Office (Accountability) Bill becomes law.</p>
 <p>The Bill would replace the common law offences in England and Wales and Northern Ireland with statutory offences that expressly include legislators. Clause 12 separately addresses seriously improper misleading of the public. There may be overlap, but the misconduct provisions do not make the proposed extension of clause 12 redundant.</p>
 <p class="note">Basis: Bill clauses 12 to 18 and Schedule 4.</p>
 </div></div></div>
 <div class="ob" id="q27"><button class="ob-q" type="button" aria-expanded="false" aria-controls="a-q27"><span class="ob-n">27</span><span class="ob-t">Codes of conduct and the Nolan principles already require honesty</span><span class="ob-mark" aria-hidden="true"></span></button><div class="ob-a" id="a-q27"><div class="ob-in">
+<div class="gov"><p class="gov-lbl">What the Government says</p><blockquote class="gov-q">&ldquo;The Government are confident that the scope of the new offence, combined with the existing arrangements and the codes of conduct for parliamentarians, strike the right balance between capturing the most serious wrongdoing while not infringing the tried and tested procedures that govern all noble Lords and all those in the other place to ensure that we conduct ourselves to the highest standards.&rdquo;</blockquote><p class="gov-src"><b>Baroness Levitt, Parliamentary Under-Secretary of State, Ministry of Justice</b><span>House of Lords, 26 February 2026</span></p></div>
 <p>Codes of conduct and the Nolan principles are valuable and informed our 2019 prosecution of Johnson. They can help establish the “acting as such” element and abuse of public trust under the common law offence of misconduct in public office, and could also be useful under the Bill's new offences. However, their role is supporting: they do not themselves create criminal offences. They should remain in place, but they do not serve the same purpose as criminal law.</p>
 <p class="note">Basis: Bill clauses 10 to 12; campaign position.</p>
 </div></div></div>
@@ -384,6 +389,7 @@ header#nav > span:empty{ display:none; }
 <p class="note">Basis: Bill clause 12(4); our proposed amendment.</p>
 </div></div></div>
 <div class="ob" id="q32"><button class="ob-q" type="button" aria-expanded="false" aria-controls="a-q32"><span class="ob-n">32</span><span class="ob-t">Judges and coroners are excluded too</span><span class="ob-mark" aria-hidden="true"></span></button><div class="ob-a" id="a-q32"><div class="ob-in">
+<div class="gov"><p class="gov-lbl">What the Government says</p><blockquote class="gov-q">&ldquo;we have come to the conclusion that it would not be appropriate to extend the offences in the Bill to all MPs and Peers—and they are not extended to judges either.&rdquo;</blockquote><p class="gov-src"><b>Baroness Levitt, Parliamentary Under-Secretary of State, Ministry of Justice</b><span>House of Lords, 26 February 2026</span></p></div>
 <p>We believe all members of the judiciary should be covered by both the offence of misleading the public and the duty of candour. However, our campaign has shown that parliamentarians are already struggling with the inclusion of legislators. People are so afraid of judges that the prospect of holding them accountable is more daunting still. Although judges should be included, we believe concentrating on legislators is vastly more likely to succeed.</p>
 </div></div></div>
 <div class="ob" id="q33"><button class="ob-q" type="button" aria-expanded="false" aria-controls="a-q33"><span class="ob-n">33</span><span class="ob-t">Officials must be able to act during emergencies on incomplete information</span><span class="ob-mark" aria-hidden="true"></span></button><div class="ob-a" id="a-q33"><div class="ob-in">
