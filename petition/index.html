@@ -765,6 +765,20 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     }
     return k;
   }
+  // ---------------------------------------------------------------- the A/B test
+  // Marcus, 28 Oct 2026: does showing how many have signed, against a target still in reach, get
+  // more people to sign than showing no numbers at all? Half of visitors see the count, half see
+  // the page as it was. The side is worked out from this browser's own key, so it never changes
+  // under somebody who comes back, and it matches the key their form events are recorded under.
+  // ?ab=count or ?ab=quiet forces a side, for looking at both.
+  var AB = (function () {
+    var forced = (location.search.match(/[?&]ab=(count|quiet)\b/) || [])[1];
+    if (forced) return forced;
+    var k = browserKey(), h = 0;
+    for (var i = 0; i < k.length; i++) h = (h * 31 + k.charCodeAt(i)) >>> 0;
+    return (h % 2) ? 'count' : 'quiet';
+  })();
+
   // One page view to the site's own analytics, so the morning report can say how many visited and
   // did not sign. Clicks are not sent from this page: under a crowd they would be thousands a minute.
   (function () {
@@ -785,27 +799,33 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   var cap = function (s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : s; };
 
   // ---------------------------------------------------------------- the target
-  // Targets climb 10,000, 25,000, 50,000, 100,000, 250,000, 500,000, 1 million, 2.5 million,
-  // 5 million, 10 million and on, for ever. Each one is 2 or 2.5 times the last, so the moment a
+  // The target is always the next one up, and always close enough to be worth reaching for:
+  // 5,000, 10,000, 15,000, 20,000, 25,000, then 50,000, 100,000, 250,000, 500,000, 1 million and
+  // on, for ever. After the early rungs each one is 2 or 2.5 times the last, so the moment a
   // target is passed the bar is already 40-50% of the way to the next: it never drops back to
   // empty, and the next goal always looks within reach.
-  function targetFor(count) {
+  var EARLY_TARGETS = [5000, 10000, 15000, 20000, 25000];
+  function rungAfter(n) {
+    for (var i = 0; i < EARLY_TARGETS.length; i++) if (EARLY_TARGETS[i] > n) return EARLY_TARGETS[i];
     for (var p = 10000; ; p *= 10) {
       var steps = [p, p * 2.5, p * 5];
-      for (var i = 0; i < 3; i++) if (steps[i] > count) return steps[i];
+      for (var j = 0; j < 3; j++) if (steps[j] > n) return steps[j];
     }
   }
+  function targetFor(count) { return rungAfter(count); }
   function previousTarget(count) {
-    var t = targetFor(count), before = 0;
-    for (var p = 10000; ; p *= 10) {
-      var steps = [p, p * 2.5, p * 5];
-      for (var i = 0; i < 3; i++) { if (steps[i] >= t) return before; before = steps[i]; }
+    var t = targetFor(count), before = 0, at = 0;
+    while (true) {
+      var next = rungAfter(at);
+      if (next >= t) return before;
+      before = next;
+      at = next;
     }
   }
-  // The count stays hidden until it is big enough to persuade: below 10,000 the feed of people
-  // signing shows the momentum instead (Marcus, 26 Oct 2026).
-  var SHOW_COUNT_FROM = 10000;
-  function countShown(n) { return (n || 0) >= SHOW_COUNT_FROM; }
+  // Whether the number is shown at all is the thing being tested. Half of visitors see it from
+  // any count, against the next target up; the other half see no numbers, as before, with the
+  // feed of people signing carrying the momentum instead (Marcus, 26 and 28 Oct 2026).
+  function countShown(n) { return AB === 'count' && (n || 0) > 0; }
   function renderMeter(animate) {
     var quiet = !countShown(S.count);
     document.querySelector('.m-top').hidden = quiet;
@@ -1106,7 +1126,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   var form = { started: false, signed: false, last: '', left: false };
   function formEv(e, f, d) {
     try {
-      var b = JSON.stringify({ v: browserKey(), e: e, f: f || '', d: d || '', ref: REF });
+      var b = JSON.stringify({ v: browserKey(), e: e, f: f || '', d: d || '', ref: REF, ab: AB });
       if (navigator.sendBeacon) navigator.sendBeacon(API + 'petition/form', new Blob([b], { type: 'text/plain' }));
     } catch (x) {}
   }
@@ -1191,7 +1211,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     var btn = $('signBtn');
     btn.disabled = true;
     btn.textContent = 'Signing\u2026';
-    var body = { first: first, last: last, email: email, consent: consent.value, key: browserKey(), ref: REF, website: $('website').value };
+    var body = { first: first, last: last, email: email, consent: consent.value, key: browserKey(), ref: REF, ab: AB, website: $('website').value };
     if (S.abroad) body.country = cty; else body.pc = pc;
     var done = function () { btn.disabled = false; btn.textContent = 'Sign the petition'; };
     post('petition/sign', body).then(function (d) {
