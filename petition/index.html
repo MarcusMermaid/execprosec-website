@@ -1282,7 +1282,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     if (document.hidden) { waitTimer = setTimeout(checkConfirmed, 4000); return; }
     getJson('petition/status?sig=' + S.sig).then(function (d) {
       if ($('pw').hidden) return;
-      if (d && d.confirmed) { confirmed({ number: d.number, count: d.number }); return; }
+      if (d && d.confirmed) { S.backer = !!d.backer; confirmed({ number: d.number, count: d.number }); return; }
       waitTimer = setTimeout(checkConfirmed, 4000);
     }, function () { waitTimer = setTimeout(checkConfirmed, 8000); });
   }
@@ -1318,6 +1318,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       S.sig = d.sig;
       S.key = d.key || '';
       S.abroad = !!d.country;
+      S.backer = !!d.backer;
       S.me = { first: d.first, last: d.last, email: d.email, emailOk: !!d.email_ok, town: d.town || d.country || 'the UK', pc: d.pc || '' };
       findMp(S.abroad ? '' : (d.pc || '').replace(/\s+/g, ''));
       confirmed(d);
@@ -1382,8 +1383,16 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     if (S.key) post('petition/quote', { sig: S.sig, key: S.key, text: t }, true).catch(function () {});
     return true;
   }
-  $('p2').addEventListener('submit', function (e) { e.preventDefault(); if (saveAnswers(true)) { sendAnswers(true, 0); track('statements_done'); toChoice(); } });
-  $('skipQs').addEventListener('click', function () { saveAnswers(false); sendAnswers(true, 0); track('statements_done', 'skipped'); toChoice(); });
+  $('p2').addEventListener('submit', function (e) { e.preventDefault(); if (saveAnswers(true)) { sendAnswers(true, 0); track('statements_done'); afterStatements(); } });
+  $('skipQs').addEventListener('click', function () { saveAnswers(false); sendAnswers(true, 0); track('statements_done', 'skipped'); afterStatements(); });
+
+  // Marcus, 29 Oct 2026: people who have given us money before are asked to fund first. 17 in 100
+  // of them give when they see the ask, but most never reached it. After it they are offered the MP
+  // email and sharing on the thank-you screen. Everyone else chooses from the three ways as before.
+  function afterStatements() {
+    if (S.backer && !S.fundSeen) { track('fund_first', 'backer'); toFund(); return; }
+    toChoice();
+  }
 
   // ---------------------------------------------------------------- 3: fund, or email your MP, or both
   // One clear choice rather than one ask after another: people who would do neither of two asks in
