@@ -321,6 +321,7 @@ legend{padding:0;margin:0 0 8px;font-size:14px;font-weight:600;line-height:1.4;c
 /* ---- confirm in your inbox ---- */
 .mailbig{width:56px;height:56px;margin:2px 0 12px;border-radius:50%;display:grid;place-items:center;background:#eef6f0;color:#174b30}
 .mailbig svg{width:28px;height:28px}
+.inapp{margin:0 0 14px;padding:12px 14px;background:#eef2fb;border-left:4px solid var(--navy);border-radius:4px;font-size:15.5px;line-height:1.5;color:var(--navy)}
 .junk{margin:0 0 14px;padding:12px 14px;background:#fdeef4;border-left:4px solid var(--pink);border-radius:4px;font-size:15.5px;line-height:1.5;font-weight:700;color:var(--pink-dk)}
 .donebig{width:60px;height:60px;margin:2px 0 14px;border-radius:50%;display:grid;place-items:center;background:#2fa36b;color:#fff}
 .donebig svg{width:32px;height:32px}
@@ -422,6 +423,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       <div class="mailbig" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 6L2 7"/></svg></div>
       <h2 id="wH">Now confirm it in your email inbox.</h2>
       <p class="sub" id="wS">We've sent an email to <b id="wEmail"></b>. Open it and tap <b>Confirm my signature</b>. Your signature only counts once you've confirmed it.</p>
+      <p class="inapp" id="wApp" hidden></p>
       <p class="junk" id="wJunk" hidden></p>
       <a class="btn navy" id="wOpen" href="#" target="_blank" rel="noopener" hidden>Open Gmail</a>
       <p class="waiting"><span class="spin" aria-hidden="true"></span><span id="wWait">Waiting for you to confirm&hellip;</span></p>
@@ -1256,6 +1258,15 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     [/^(hotmail|outlook|live|msn)\.(com|co\.uk)$/, 'Hotmail and Outlook often put our email in Junk. Please check your Junk folder, and if it’s there, click “Not junk”.'],
     [/^(yahoo|ymail|aol)\.(com|co\.uk)$/, 'Yahoo and AOL sometimes put our email in Spam. Please check your Spam folder, and if it’s there, click “Not spam”.']
   ];
+  // Signers inside the Facebook or Instagram app have to leave it to find our email, and many never
+  // do: 72 and 79 in 100 of them confirm, against 89 on a computer (29 Oct 2026). So they are told plainly.
+  function inApp() {
+    var ua = navigator.userAgent || '';
+    if (/Instagram/.test(ua)) return 'Instagram';
+    if (/FBAN|FBAV|FB_IAB|FBIOS/.test(ua)) return 'Facebook';
+    if (/Barcelona/.test(ua)) return 'Threads';
+    return '';
+  }
   function showWait() {
     var dom = (S.me.email.split('@')[1] || '').toLowerCase();
     var box = MAILBOXES.filter(function (m) { return m[0].test(dom); })[0];
@@ -1264,6 +1275,9 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     $('wH').textContent = 'Now confirm it in your email inbox.';
     $('wEmail').textContent = S.me.email;
     $('wS').hidden = false;
+    var app = inApp();
+    $('wApp').hidden = !app;
+    $('wApp').innerHTML = app ? '<b>You’re in the ' + app + ' app.</b> To confirm, leave ' + app + ', open your email app and tap <b>Confirm my signature</b>.' : '';
     $('wJunk').hidden = !junk;
     $('wJunk').textContent = junk ? junk[1] : '';
     $('wOpen').hidden = !box;
@@ -1309,7 +1323,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   // opening the link, so an email scanner checking links can't confirm for somebody), then carries on.
   function confirmFromLink(t) {
     $('wH').textContent = 'Confirming your signature\u2026';
-    $('wS').hidden = true; $('wOpen').hidden = true; $('wMore').hidden = true; $('wJunk').hidden = true;
+    $('wS').hidden = true; $('wOpen').hidden = true; $('wMore').hidden = true; $('wJunk').hidden = true; $('wApp').hidden = true;
     $('wWait').textContent = 'One moment\u2026';
     go('w', true);
     post('petition/confirm', { t: t }).then(function (d) {
