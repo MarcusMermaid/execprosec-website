@@ -223,6 +223,20 @@ button.press-item{background:none;border:0;cursor:pointer;position:relative}
 .lk-yes input:checked + .lk-dot{background:#1f7a4d;border-color:#1f7a4d}
 .lk-no input:checked + .lk-dot{background:#b3261e;border-color:#b3261e}
 .lk-saved{margin:8px 0 0;font-size:12.5px;font-weight:600;color:var(--ok)}
+/* one statement at a time, straight after the confirmation link */
+#likert .lk-row{display:none}
+#likert .lk-row.cur{display:block;border-top:0;padding:4px 0 8px}
+#likert .lk-row.cur .lk-t{margin:0 0 18px;font:400 21px/1.35 var(--f-display);color:var(--navy)}
+#likert .lk-dot{width:36px;height:36px}
+#p2 .after-lk{display:none}
+#p2.lk-done .after-lk{display:block}
+.lk-top{display:flex;align-items:center;gap:10px;margin:2px 0 12px;font-size:13px;font-weight:700;color:var(--muted)}
+.lk-track{flex:1;height:5px;background:var(--rule);border-radius:3px;overflow:hidden}
+#lkBar{display:block;height:100%;width:0;background:var(--gold);transition:width .3s}
+.proof{margin:0 0 12px;padding:0;list-style:none;font-size:14.5px;line-height:1.4}
+.proof li{position:relative;padding:0 0 7px 27px;font-weight:600;color:var(--ink)}
+.proof li::before{content:'✓';position:absolute;left:0;top:1px;width:18px;height:18px;border-radius:50%;background:#1f7a4d;color:#fff;font-size:11px;line-height:18px;text-align:center}
+.notice.gold{background:#fbf5e4;border-color:#e8d49a;color:#5c4512}
 @media(min-width:600px){
   .lk-row{display:grid;grid-template-columns:minmax(0,1fr) 320px;column-gap:16px;align-items:center}
   .lk-head{padding-bottom:6px}
@@ -437,14 +451,16 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     <form class="panel" id="p2" novalidate hidden>
       <h2 id="thanksH">Thank you.</h2>
       <p class="sub" id="thanksS"></p>
+      <div class="lk-top"><span id="lkProg">1 of 7</span><span class="lk-track"><span id="lkBar"></span></span></div>
       <div class="lk" id="likert" role="group" aria-label="How far do you agree?"></div>
-      <div class="f">
+      <p class="alt"><button class="link" type="button" id="lkBack" hidden>Back</button></p>
+      <div class="f after-lk">
         <label for="quote">In a sentence or two, how do you feel about lawmakers leaving themselves out?</label>
         <textarea id="quote" class="short" maxlength="200" rows="3" placeholder="Say it the way you'd say it to your MP."></textarea>
         <div class="qfoot"><span><span class="err" id="quoteErr" aria-live="polite"></span><span class="hint" id="quoteHint" aria-live="polite"></span></span><span class="counter" id="qCount">200</span></div>
       </div>
-      <p class="fine">No swearing, abuse or threats. We may share your words with your first name and town, including with journalists.</p>
-      <button class="btn navy" type="submit">Next</button>
+      <p class="fine after-lk">No swearing, abuse or threats. We may share your words with your first name and town, including with journalists.</p>
+      <button class="btn navy after-lk" type="submit">Next</button>
       <button class="link skip" type="button" id="skipQs">No thanks, skip</button>
     </form>
 
@@ -487,9 +503,11 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
      <div id="fundAsk">
       <p class="notice" id="fundThanks" hidden>Thank you for emailing your MP. If you can, back the campaign as well.</p>
       <p class="notice bad" id="fundNote" hidden>That payment did not go through, and nothing has been taken. Try again, or use a card instead of a wallet.</p>
+      <p class="notice gold" id="fundBacker" hidden>You've backed this campaign before. Thank you: it's why we've got this far.</p>
       <h2>Make sure Parliament knows we're watching.</h2>
-      <p class="sub">This petition is just the start. We need this to be a full national campaign.</p>
-      <ul class="funds"><li>Newspaper adverts and open letters</li><li>Billboards and posters</li><li>Social media adverts</li><li>A rally on the day of the vote</li></ul>
+      <p class="sub">The vote is expected in early December. Your money puts this campaign in front of millions more people before then, so every MP and peer knows the public is watching.</p>
+      <ul class="proof"><li>Debated in both Houses of Parliament</li><li>Covered by the BBC, ITV, Sky, the Telegraph and the Express</li><li>Our videos are watched hundreds of thousands of times each week on our social media channels</li></ul>
+      <p class="sub">Next, we want to pay for newspaper, billboard, and other paid adverts but we need funding to take this to that level.</p>
       <fieldset>
         <legend id="fundLegend">Back the campaign every month</legend>
         <div class="opts freq" role="radiogroup" aria-label="How often">
@@ -881,11 +899,28 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
           return '<label class="lk-opt' + side + '"><input type="radio" name="lk_' + st.id + '" value="' + o[1] + '" aria-label="' + o[0] + '"><span class="lk-dot"></span><span class="lk-l">' + o[0] + '</span></label>';
         }).join('') + '</div><p class="lk-saved" hidden>&#10003; Answer recorded</p></div>';
     }).join('');
+    lkShow(0);
   }
+  // One at a time: the first statement is the first thing they see once confirmed, and each tap
+  // saves the answer and brings up the next. The quote box and Next appear after the last one.
+  var lkAt = 0;
+  function lkShow(i) {
+    var rows = $('likert').querySelectorAll('.lk-row');
+    lkAt = Math.max(0, Math.min(i, rows.length));
+    for (var j = 0; j < rows.length; j++) rows[j].classList.toggle('cur', j === lkAt);
+    var done = lkAt >= rows.length;
+    $('lkProg').textContent = done ? 'All ' + rows.length + ' answered. Thank you.' : (lkAt + 1) + ' of ' + rows.length;
+    $('lkBar').style.width = Math.round(100 * lkAt / rows.length) + '%';
+    $('lkBack').hidden = lkAt === 0 || done;
+    $('p2').classList.toggle('lk-done', done);
+  }
+  $('lkBack').addEventListener('click', function () { lkShow(lkAt - 1); });
   $('likert').addEventListener('change', function (e) {
     var row = e.target.closest('.lk-row');
     if (!row) return;
     S.answers[row.getAttribute('data-id')] = +e.target.value;
+    var at = Array.prototype.indexOf.call($('likert').querySelectorAll('.lk-row'), row);
+    setTimeout(function () { if (lkAt === at) lkShow(at + 1); }, 350);
     clearTimeout(ansTimer);
     ansTimer = setTimeout(function () { sendAnswers(false, 0); }, 250);
   });
@@ -1357,7 +1392,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     }
     document.querySelectorAll('.me-first').forEach(function (el) { el.textContent = S.me.first; });
     var reached = number && number >= targetFor(number - 1) && countShown(number) ? targetFor(number - 1) : 0;
-    var more = 'Want to help more? Tell us how far you agree with these. Each answer is recorded as soon as you tap it, and we quote the results to journalists and parliamentarians.';
+    var more = 'How far do you agree? Seven quick taps. We quote the results to journalists and parliamentarians.';
     if (d.already) {
       $('thanksH').textContent = "You've already signed, " + S.me.first + '. Thank you.';
       $('thanksS').textContent = 'Your signature is confirmed. ' + more;
@@ -1365,8 +1400,8 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       $('thanksH').textContent = 'Done. You took us to ' + fmt(reached) + '!';
       $('thanksS').textContent = 'Your signature is confirmed. New target: ' + fmt(targetFor(number)) + '. ' + more;
     } else {
-      $('thanksH').textContent = countShown(number) ? "Done. You're signature number " + fmt(number) + '.' : 'Done. Your signature is confirmed.';
-      $('thanksS').textContent = 'Your signature is confirmed. ' + more;
+      $('thanksH').textContent = countShown(number) ? "Confirmed. You're signature number " + fmt(number) + '.' : 'Confirmed. Thank you, ' + S.me.first + '.';
+      $('thanksS').textContent = more;
     }
     if (!S.key) { toMp(); return; }       // signed from another browser: their answers can't be kept here
     buildLikert();
@@ -1530,6 +1565,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   function toFund(afterMp) {
     showAsk();
     $('fundThanks').hidden = !afterMp;
+    $('fundBacker').hidden = !S.backer || !!afterMp;
     S.fundSeen = true;
     track('fund_seen');
     go(4);
