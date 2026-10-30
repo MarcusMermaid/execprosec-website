@@ -805,7 +805,9 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     var sid = '';
     try { sid = localStorage.getItem('mjb_sid') || ''; if (!sid) { sid = 's_' + Math.random().toString(36).slice(2) + Date.now().toString(36); localStorage.setItem('mjb_sid', sid); } } catch (e) {}
     try {
-      var b = JSON.stringify({ site: 'execprosec', event: 'pageview', page: location.pathname.slice(0, 300), session_id: sid, referrer: (document.referrer || '').slice(0, 300) });
+      // the side of the A/B test rides along, so the sign rate can be counted against everybody
+      // who saw the page, not only against the people who went as far as touching the form
+      var b = JSON.stringify({ site: 'execprosec', event: 'pageview', page: location.pathname.slice(0, 300), label: AB, session_id: sid, referrer: (document.referrer || '').slice(0, 300) });
       if (navigator.sendBeacon) navigator.sendBeacon(API + 'analytics', new Blob([b], { type: 'text/plain' }));
     } catch (e) {}
   })();
