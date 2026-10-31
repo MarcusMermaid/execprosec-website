@@ -255,7 +255,7 @@ button.press-item{background:none;border:0;cursor:pointer;position:relative}
 
 fieldset{border:0;margin:0 0 16px;padding:0;min-width:0}
 legend{padding:0;margin:0 0 8px;font-size:14px;font-weight:600;line-height:1.4;color:var(--ink)}
-.legend-sub{display:block;font-weight:400;color:var(--muted);font-size:13px;margin-top:2px}
+
 .opts{display:flex;flex-wrap:wrap;gap:8px}
 .opt{position:relative;flex:1 1 0;min-width:0}
 .opt input{position:absolute;inset:0;width:100%;height:100%;opacity:0;margin:0;cursor:pointer}
@@ -349,19 +349,20 @@ legend{padding:0;margin:0 0 8px;font-size:14px;font-weight:600;line-height:1.4;c
 #payBox{min-height:320px}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
 
-/* ---------------------------------------------------------------- the three ways to land
-   Marcus, 31 Oct 2026. 'fast' puts the form on the first screen with one plain sentence above
-   it and everything else below, because 56 of every 100 people who landed were leaving without
-   typing anything. 'code' is the same page with a different way to confirm. */
-.explain-fast{display:none}
-body.v-fast .explain-fast{display:block;margin:0;font-size:17px;line-height:1.55}
-body.v-fast .explain{display:none}
-body.v-fast .card{display:flex;flex-direction:column}
-body.v-fast .card-head{order:1}
-body.v-fast .stephead{order:2}
-body.v-fast .panel{order:3}
-body.v-fast .meter{order:4;margin-top:18px}
-body.v-fast .card-head h1{margin-bottom:10px}
+/* ---------------------------------------------------------------- how the page is laid out now
+   Marcus, 31 Oct 2026. The form is the first thing on the page, and the only things between it
+   and the Sign button are the email question, the December line and the statement itself. The
+   proof comes last, under the button, because what it should say is still being tested. */
+.card{display:flex;flex-direction:column}
+.card-head{order:1}
+.stephead{order:2}
+.panel{order:3}
+.meter{order:9;margin-top:18px;border-bottom:0;border-top:1px solid var(--rule)}
+.card-head h1{margin-bottom:10px}
+.explain-fast{margin:0;font-size:17px;line-height:1.55}
+body.l-bare .explain-fast{display:none}
+body.l-bare .card-head{padding-bottom:14px}
+.explain{margin:0 0 16px;padding-top:2px}
 
 /* six digits typed back here, for anyone reading this inside another app's browser */
 .codebox{margin:4px 0 14px}
@@ -375,19 +376,21 @@ body.v-fast .card-head h1{margin-bottom:10px}
 .code-row .btn{flex:0 0 auto;margin:0;padding:13px 22px}
 @media(max-width:420px){.code-row{flex-direction:column}.code-row input{flex:1 1 auto}.code-row .btn{width:100%}}
 
-/* the long explanation is its own block now, so a layout can put it under the form */
-.card-head{padding-bottom:0}
-.explain-wrap{padding:0 20px 16px}
+/* ---- the email question: two buttons, nothing to read (Marcus, 31 Oct 2026) ---- */
+.consent{display:grid;gap:8px;margin:0 0 4px}
+.cbtn{display:flex;align-items:center;justify-content:center;text-align:center;min-height:50px;
+  padding:10px 14px;border:1.5px solid var(--field);border-radius:7px;background:#fff;color:var(--ink);
+  font:600 15px/1.3 var(--f-body);cursor:pointer;-webkit-appearance:none;appearance:none}
+.cbtn[aria-checked="true"]{background:var(--navy);border-color:var(--navy);color:var(--paper)}
+.cbtn:focus-visible{outline:none;box-shadow:0 0 0 3px rgba(221,188,102,.8)}
+@media(min-width:520px){.consent{grid-template-columns:1fr 1fr}}
+.consent + .err{margin-bottom:10px}
 
-/* ---- 'bare': nothing above the form but the ask itself (Marcus, 31 Oct 2026) ---- */
-body.v-bare .card{display:flex;flex-direction:column}
-body.v-bare .card-head{order:1;padding-bottom:14px}
-body.v-bare .stephead{order:2}
-body.v-bare .panel{order:3}
-body.v-bare .explain-wrap{order:4;padding-top:16px;border-top:1px solid var(--rule)}
-body.v-bare .meter{order:5}
-body.v-bare .explain-fast{display:none}
-body.v-fast .explain-wrap{display:none}
+/* ---- the four kinds of proof under the button ---- */
+.grew,.keyfact{margin:0;font-size:15px;line-height:1.5;color:var(--ink)}
+.grew b,.keyfact b{color:var(--navy);font-size:17px}
+.keyfact small{display:block;margin-top:3px;font-size:12.5px;font-weight:400;color:var(--muted)}
+body.p-none .deadline{margin-top:0;padding-top:0;border-top:0}
 
 /* what happens to a signature, said once, on every version */
 .promise{margin:14px 0 0;padding:11px 13px;background:#fff8e8;border-left:3px solid var(--gold);
@@ -439,15 +442,14 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       <h1>Include all lawmakers under the <em>Hillsborough&nbsp;Law</em></h1>
       <p class="explain-fast">Parliament is about to make lying to the public a crime for ministers, police, nurses and civil servants, but not for MPs and peers themselves. Sign to put them under their own law.</p>
     </div>
-    <div class="explain-wrap">
-      <p class="explain">End the carve-out for lawmakers (MPs, peers, MSPs, MSs and MLAs) from the duty of candour and the offence of misleading the public in the <a class="bill-link" href="https://bills.parliament.uk/bills/4019" target="_blank" rel="noopener">Public Office (Accountability) Bill</a>,<sup class="ref"><a href="https://bills.parliament.uk/publications/68275/documents/8957#sched_2__para_2__subpara_4__intro" target="_blank" rel="noopener" title="Source 1">1</a></sup> for reckless or intentionally deceitful acts outside the proceedings of their parliaments:<sup class="ref"><a href="https://www.legislation.gov.uk/aep/WillandMarSess2/1/2/introduction" target="_blank" rel="noopener" title="Source 2">2</a></sup> on TV and radio, on social media, at events, etc.</p>
-    </div>
-    <div class="meter">
+    <div class="meter" id="proof">
       <div class="live" id="live" aria-live="off" hidden><span class="dot" aria-hidden="true"></span><span id="tickTxt"></span></div>
       <div class="m-top" hidden><span class="m-n" id="countN">&hellip;</span><span class="m-l" id="countL">signatures</span><span class="m-goal">Target <b id="goalN">10,000</b></span></div>
       <div class="bar" role="progressbar" aria-label="Signatures towards the target" aria-valuemin="0" id="bar" hidden><i id="countBar"></i></div>
       <p class="m-sub" id="meterSub" hidden></p>
-      <p class="m-quiet" id="meterQuiet">Join people across the UK signing to include all lawmakers under the law.</p>
+      <p class="m-quiet" id="meterQuiet" hidden></p>
+      <p class="grew" id="grew" hidden></p>
+      <p class="keyfact" id="keyfact" hidden></p>
       <p class="sq" id="sq" hidden></p>
       <p class="deadline"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/></svg><span id="deadlineTxt"></span></p>
     </div>
@@ -467,17 +469,15 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       <div class="f" id="ctyWrap" hidden><label for="cty">Country</label><input id="cty" name="cty" autocomplete="country-name" maxlength="60"><span class="err" id="ctyErr" aria-live="polite"></span></div>
       </div>
       <p style="margin:-4px 0 14px"><button type="button" class="link" id="abroadBtn">Not in the UK?</button></p>
-      <fieldset>
-        <legend>Can we email you about our campaign against lying in politics?<span class="legend-sub">We'll keep you posted and may ask for your help, for example by coming to an event, contacting politicians or journalists, or donating. Unsubscribe any time.</span></legend>
-        <div class="opts">
-          <label class="opt"><input type="radio" name="consent" value="yes"><span>Yes, email me</span></label>
-          <label class="opt"><input type="radio" name="consent" value="no"><span>No, just sign</span></label>
-        </div>
-        <span class="err" id="consentErr" aria-live="polite"></span>
-      </fieldset>
+      <div class="consent" id="consent" role="radiogroup" aria-label="Can we email you about this campaign?">
+        <button type="button" class="cbtn" role="radio" aria-checked="false" data-v="yes">Yes, email me about this campaign</button>
+        <button type="button" class="cbtn" role="radio" aria-checked="false" data-v="no">No, don't email me about this campaign</button>
+      </div>
+      <span class="err" id="consentErr" aria-live="polite"></span>
       <div class="hp" aria-hidden="true"><label>Leave this empty <input id="website" name="website" tabindex="-1" autocomplete="off"></label></div>
       <p class="fine">By signing, you agree to our <a href="https://execprosec.org/terms/#petitions" target="_blank" rel="noopener">Terms</a> and <a href="https://execprosec.org/terms/#privacy" target="_blank" rel="noopener">Privacy Policy</a>.</p>
-      <p class="promise"><b>Parliament votes in December.</b> We give MPs and peers the total, and journalists the words people write. This is evidence put in front of them before they decide, not a petition that sits on a website.</p>
+      <p class="promise"><b>Parliament votes on this in December.</b> Parliamentarians and journalists will be sent the data from this petition in advance of that showdown vote.</p>
+      <p class="explain">End the carve-out for lawmakers (MPs, peers, MSPs, MSs and MLAs) from the duty of candour and the offence of misleading the public in the <a class="bill-link" href="https://bills.parliament.uk/bills/4019" target="_blank" rel="noopener">Public Office (Accountability) Bill</a>,<sup class="ref"><a href="https://bills.parliament.uk/publications/68275/documents/8957#sched_2__para_2__subpara_4__intro" target="_blank" rel="noopener" title="Source 1">1</a></sup> for reckless or intentionally deceitful acts outside the proceedings of their parliaments:<sup class="ref"><a href="https://www.legislation.gov.uk/aep/WillandMarSess2/1/2/introduction" target="_blank" rel="noopener" title="Source 2">2</a></sup> on TV and radio, on social media, at events, etc.</p>
       <button class="btn" type="submit" id="signBtn">Sign the petition</button>
     </form>
 
@@ -848,30 +848,46 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   // the page as it was. The side is worked out from this browser's own key, so it never changes
   // under somebody who comes back, and it matches the key their form events are recorded under.
   // ?ab=count or ?ab=quiet forces a side, for looking at both.
-  // 28 Oct: count against no numbers. Ended 31 Oct, no numbers marginally ahead, so no page
-  // shows the running count any more.
-  // 31 Oct: three ways to land, to find out where the signatures are being lost.
-  //   control  the page as it is
-  //   fast     the form on the first screen, one plain sentence, everything else below it
-  //   bare     nothing above the form but the ask: name, name, email, then the statement
-  //   code     the same page, but confirming by six digits typed back here, not a link to hunt
-  // The side comes from this browser's own key, so it never changes under somebody who comes
-  // back, and it matches the key their form events are recorded under.
-  var AB_SIDES = ['control', 'fast', 'bare', 'code'];
-  var AB = (function () {
-    var forced = (location.search.match(/[?&]ab=(control|fast|bare|code)\b/) || [])[1];
-    if (forced) return forced;
-    var k = browserKey(), h = 0;
-    for (var i = 0; i < k.length; i++) h = (h * 31 + k.charCodeAt(i)) >>> 0;
-    return AB_SIDES[h % AB_SIDES.length];
+  // 28 Oct: the running count against no numbers at all. Ended 31 Oct, no numbers marginally
+  // ahead, so no page shows the count.
+  // 31 Oct: three things are drawn for independently, so each one can be read on its own against
+  // everybody else, and each visitor is in one cell of all three.
+  //   lay    how much there is to read above the form:  fast (one sentence) or bare (nothing)
+  //   proof  what sits under the Sign button:  grow, quotes, metric or none
+  //   conf   how a signature is confirmed:  link only, or a six digit code typed back here
+  // Each draw comes from this browser's own key, mixed a different way, so it never changes under
+  // somebody who comes back and it matches the key their form events are recorded under.
+  // ?lay= ?proof= ?conf= force one, for looking at them side by side.
+  var LAYS = ['fast', 'bare'], PROOFS = ['grow', 'quotes', 'metric', 'none'], CONFS = ['link', 'code'];
+  var DRAW = (function () {
+    var k = browserKey(), h = 0, i;
+    for (i = 0; i < k.length; i++) h = (h * 31 + k.charCodeAt(i)) >>> 0;
+    // fmix32: without it the three draws would differ by a constant and so never be independent
+    function mix(seed) {
+      var x = (h ^ seed) >>> 0;
+      x = Math.imul(x ^ (x >>> 16), 2246822507) >>> 0;
+      x = Math.imul(x ^ (x >>> 13), 3266489909) >>> 0;
+      return (x ^ (x >>> 16)) >>> 0;
+    }
+    function pick(name, list, n) {
+      var forced = (location.search.match(new RegExp('[?&]' + name + '=([a-z]+)\\b')) || [])[1];
+      return list.indexOf(forced) >= 0 ? forced : list[mix(n) % list.length];
+    }
+    return { lay: pick('lay', LAYS, 1), proof: pick('proof', PROOFS, 2), conf: pick('conf', CONFS, 3) };
   })();
-  try { document.body.classList.add('v-' + AB); } catch (e) {}
+  var LAY = DRAW.lay, PROOF = DRAW.proof, CONF = DRAW.conf;
+  // ?demo=1 is us looking at the versions next to each other: it records nothing at all, so the
+  // looking does not land in the numbers the test is read from.
+  var DEMO = /[?&]demo=1\b/.test(location.search);
+  var AB = LAY + '-' + PROOF + '-' + CONF;
+  try { document.body.classList.add('l-' + LAY, 'p-' + PROOF, 'c-' + CONF); } catch (e) {}
 
   // One page view to the site's own analytics, so the morning report can say how many visited and
   // did not sign. Clicks are not sent from this page: under a crowd they would be thousands a minute.
   (function () {
     var sid = '';
     try { sid = localStorage.getItem('mjb_sid') || ''; if (!sid) { sid = 's_' + Math.random().toString(36).slice(2) + Date.now().toString(36); localStorage.setItem('mjb_sid', sid); } } catch (e) {}
+    if (DEMO) return;
     try {
       // the side of the A/B test rides along, so the sign rate can be counted against everybody
       // who saw the page, not only against the people who went as far as touching the form
@@ -920,7 +936,6 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     document.querySelector('.m-top').hidden = quiet;
     $('bar').hidden = quiet;
     $('meterSub').hidden = quiet;
-    $('meterQuiet').hidden = !quiet;
     if (quiet) return;
     var c = S.count, t = targetFor(c), passed = previousTarget(c);
     $('goalN').textContent = fmt(t);
@@ -1031,9 +1046,11 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     el.classList.add('out');
     setTimeout(function () { el.innerHTML = '\u201c' + esc(q[0]) + '\u201d<b>' + esc(q[1]) + '</b>'; el.classList.remove('out'); }, reduced ? 0 : 300);
   }
-  $('sq').hidden = false;
-  showSay();
-  setInterval(function () { if (!document.hidden && !$('p1').hidden) showSay(); }, 7000);
+  if (PROOF === 'quotes') {
+    $('sq').hidden = false;
+    showSay();
+    setInterval(function () { if (!document.hidden && !$('p1').hidden) showSay(); }, 7000);
+  }
 
   // ---------------------------------------------------------------- live count, feed and deadline
   // The count and the most recent signers come from Central, which serves them from memory, so a
@@ -1054,7 +1071,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     setTimeout(function () { el.innerHTML = html; el.classList.remove('out'); }, reduced ? 0 : 300);
   }
   function playFeed() {
-    if (Date.now() < feedHold || document.hidden) return;
+    if (PROOF !== 'grow' || Date.now() < feedHold || document.hidden) return;
     if (!feed.length) { if (!S.signed) $('live').hidden = true; return; }
     $('live').hidden = false;
     var f = feed[feedN++ % feed.length], secs = f.ago + (Date.now() - statsAt) / 1000;
@@ -1066,6 +1083,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       statsAt = Date.now();
       feed = d.recent || [];
       feedN = 0;
+      showProof(d);
       var grew = d.count > S.count;
       S.count = Math.max(S.count, d.count);
       if (first || !statsLoaded) { statsLoaded = true; renderMeter(true); playFeed(); return; }
@@ -1076,6 +1094,21 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       }
     }).catch(function () { if (!statsLoaded) { statsLoaded = true; renderMeter(false); } });
   }
+  // The growth line and the key metric are only written once Central has sent the real numbers,
+  // so nothing on the page is ever a number we made up.
+  function showProof(d) {
+    if (PROOF === 'grow' && d.week > 0) {
+      $('grew').innerHTML = '<b>' + fmt(d.week) + ' people</b> have signed in the last seven days.';
+      $('grew').hidden = false;
+    }
+    if (PROOF === 'metric' && d.agree > 0 && d.asked > 0) {
+      $('keyfact').innerHTML = '<b>' + d.agree + '% of signers</b> say lawmakers who put everyone ' +
+        'else under this law, but not themselves, are hypocrites.' +
+        '<small>' + fmt(d.asked) + ' signers asked so far.</small>';
+      $('keyfact').hidden = false;
+    }
+  }
+
   // A fresh count every 30 seconds while the page is on screen, for the first 20 minutes.
   function nextStats() {
     setTimeout(function () {
@@ -1231,21 +1264,39 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   var FORM_FIELDS = { first: 1, last: 1, email: 1, pc: 1, cty: 1, consent: 1, abroad: 1 };
   var form = { started: false, signed: false, last: '', left: false };
   function formEv(e, f, d) {
+    if (DEMO) return;
     try {
       var b = JSON.stringify({ v: browserKey(), e: e, f: f || '', d: d || '', ref: REF, ab: AB });
       if (navigator.sendBeacon) navigator.sendBeacon(API + 'petition/form', new Blob([b], { type: 'text/plain' }));
     } catch (x) {}
   }
+  // The email question is two buttons, so the answer is held here rather than on a radio.
+  var consentVal = '';
+  function setConsent(v) {
+    consentVal = v;
+    var all = $('consent').querySelectorAll('.cbtn');
+    for (var i = 0; i < all.length; i++) {
+      all[i].setAttribute('aria-checked', all[i].getAttribute('data-v') === v ? 'true' : 'false');
+    }
+  }
+  $('consent').addEventListener('click', function (e) {
+    var b = e.target.closest ? e.target.closest('.cbtn') : null;
+    if (!b) return;
+    setConsent(b.getAttribute('data-v'));
+    $('consentErr').textContent = '';
+    formField('consent');
+  });
+
   function formField(f) {
     if (!form.started) { form.started = true; formEv('start', f); }
     if (f !== form.last) { form.last = f; formEv('field', f); }
   }
   $('p1').addEventListener('focusin', function (e) {
-    var t = e.target, f = t.name === 'consent' ? 'consent' : t.id === 'abroadBtn' ? 'abroad' : t.id;
+    var t = e.target, f = t.id === 'abroadBtn' ? 'abroad' : t.id;
     if (FORM_FIELDS[f]) formField(f);
   });
   $('p1').addEventListener('input', function (e) {
-    var t = e.target, f = t.name === 'consent' ? 'consent' : t.id;
+    var t = e.target, f = t.id;
     if (FORM_FIELDS[f]) formField(f);
   });
   // left the page having started but not signed: say where they were
@@ -1301,23 +1352,23 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     formEv('submit', form.last);
     var first = $('first').value.trim(), last = $('last').value.trim(), email = $('email').value.trim();
     var pc = $('pc').value.trim().toUpperCase().replace(/\s+/g, ''), cty = $('cty').value.trim();
-    var consent = this.querySelector('input[name=consent]:checked');
+    var consent = consentVal;
     setErr('first', NAME.test(first) ? '' : 'Please enter your first name.');
     setErr('last', NAME.test(last) ? '' : 'Please enter your last name.');
     setErr('email', EMAIL.test(email) ? '' : 'Please enter your email address, like name@example.com.');
     if (S.abroad) setErr('cty', cty.length >= 2 ? '' : 'Please enter your country.');
     else setErr('pc', /^[A-Z]{1,2}\d[A-Z\d]?\d[A-Z]{2}$/.test(pc) ? '' : 'Please enter your full postcode, like ME13 8GD.');
-    $('consentErr').textContent = consent ? '' : 'Please choose yes or no.';
-    if (!consent) formEv('error', 'consent', 'Please choose yes or no.');
+    $('consentErr').textContent = consent ? '' : 'Please choose one.';
+    if (!consent) formEv('error', 'consent', 'Please choose one.');
     if (this.querySelector('.f.bad') || !consent) {
-      var bad = this.querySelector('.f.bad input') || this.querySelector('input[name=consent]');
+      var bad = this.querySelector('.f.bad input') || $('consent').querySelector('.cbtn');
       if (bad) bad.focus();
       return;
     }
     var btn = $('signBtn');
     btn.disabled = true;
     btn.textContent = 'Signing\u2026';
-    var body = { first: first, last: last, email: email, consent: consent.value, key: browserKey(), ref: REF, ab: AB, website: $('website').value };
+    var body = { first: first, last: last, email: email, consent: consent, key: browserKey(), ref: REF, ab: AB, website: $('website').value };
     if (S.abroad) body.country = cty; else body.pc = pc;
     var done = function () { btn.disabled = false; btn.textContent = 'Sign the petition'; };
     post('petition/sign', body).then(function (d) {
@@ -1333,7 +1384,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       formEv('signed', form.last);
       S.sig = d.sig;
       S.key = d.key || '';
-      S.me = { first: cap(first), last: cap(last), email: email, emailOk: consent.value === 'yes', town: d.town || 'the UK',
+      S.me = { first: cap(first), last: cap(last), email: email, emailOk: consent === 'yes', town: d.town || 'the UK',
         pc: S.abroad ? '' : pc.replace(/^(.+)(\d[A-Z]{2})$/, '$1 $2') };
       findMp(S.abroad ? '' : pc);
       if (d.confirmed) { confirmed({ number: 0, already: true }); return; }
@@ -1390,7 +1441,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     $('wMore').hidden = false;
     $('wResend').hidden = !S.key;
     // the code side types six digits back here instead of leaving to find a link
-    var byCode = AB === 'code' && !!S.sig && !!S.key;
+    var byCode = CONF === 'code' && !!S.sig && !!S.key;
     $('wCode').hidden = !byCode;
     if (byCode) {
       $('wS').innerHTML = 'We\u2019ve sent a six digit code to <b>' + esc(S.me.email) + '</b>. '
@@ -1849,7 +1900,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     ['p1', 'p2', 'p4'].forEach(function (id) { $(id).reset(); });
     ['first', 'last', 'email', 'pc', 'cty', 'otherAmt', 'mpMsg', 'quote'].forEach(function (id) { setErr(id); });
     $('quoteHint').textContent = ''; $('qCount').textContent = '200';
-    $('consentErr').textContent = ''; $('emailFix').hidden = true;
+    $('consentErr').textContent = ''; $('emailFix').hidden = true; setConsent('');
     $('pcWrap').hidden = false; $('ctyWrap').hidden = true; $('otherWrap').hidden = true; $('abroadBtn').textContent = 'Not in the UK?';
     fundLabel();
     go(1, true);

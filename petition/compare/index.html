@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Petition page: the versions side by side</title>
+<style>
+:root{--navy:#041440;--gold:#ddbc66;--gold-ink:#8a6b1f;--paper:#fff;--ink:#141b33;--muted:#5a6075;--rule:#2a3663}
+*{box-sizing:border-box}
+body{margin:0;background:#06112e;color:#e8ecf7;font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+header{padding:26px 24px 18px;max-width:1500px;margin:0 auto}
+h1{font:700 26px/1.2 inherit;margin:0 0 6px}
+h2{font:700 17px/1.3 inherit;margin:0 0 4px;letter-spacing:.01em}
+.lede{margin:0;color:#aab4d4;font-size:15px;max-width:76ch}
+section{padding:0 24px 34px;max-width:1500px;margin:0 auto}
+.sechead{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin:22px 0 14px;padding-top:18px;border-top:1px solid var(--rule)}
+.sechead p{margin:0;color:#aab4d4;font-size:14px}
+.row{display:flex;gap:14px;overflow-x:auto;padding-bottom:10px}
+.col{flex:0 0 362px;background:#0b1a3f;border:1px solid var(--rule);border-radius:8px;overflow:hidden}
+.col.wide{flex:0 0 420px}
+.cap{padding:11px 13px 10px;border-bottom:1px solid var(--rule)}
+.tag{display:inline-block;font:700 11px/1 inherit;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin:0 0 5px}
+.cap b{display:block;font-size:15px;color:#fff;margin-bottom:3px}
+.cap span{display:block;font-size:13px;color:#9fa9c9;line-height:1.45}
+.cap a{display:inline-block;margin-top:7px;font-size:12.5px;color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(221,188,102,.45)}
+.shot{position:relative;background:#06112e;height:720px}
+.shot iframe{width:100%;height:100%;border:0;display:block;background:#06112e}
+footer{padding:0 24px 60px;max-width:1500px;margin:0 auto;color:#aab4d4;font-size:14px}
+footer b{color:#fff}
+footer ul{margin:8px 0 0;padding-left:20px}
+footer li{margin-bottom:5px}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Petition page: the versions side by side</h1>
+  <p class="lede">Nothing here is live. Every frame is the real page in demo mode, so looking at it
+  records nothing and none of this lands in the numbers the test is read from. Three things are
+  drawn for independently, so one visitor is in one cell of all three at once and each question is
+  answered on its own.</p>
+</header>
+
+<section>
+  <div class="sechead">
+    <h2>1. What sits under the Sign button</h2>
+    <p>Four ways, a quarter of visitors each. Everything above the button is identical.</p>
+  </div>
+  <div class="row" id="proofRow">
+    <div class="col">
+      <div class="cap"><span class="tag">A &middot; grow</span><b>How fast it is growing</b>
+        <span>A live number for the last seven days, and the feed of who has just signed.</span>
+        <a href="/petition/?proof=grow&amp;lay=fast&amp;demo=1" target="_blank" rel="noopener">Open it on its own</a></div>
+      <div class="shot"><iframe data-src="/petition/?proof=grow&amp;lay=fast&amp;demo=1" title="Version A, growth"></iframe></div>
+    </div>
+    <div class="col">
+      <div class="cap"><span class="tag">B &middot; quotes</span><b>What other people wrote</b>
+        <span>A signer's own words, changing every seven seconds. No numbers at all.</span>
+        <a href="/petition/?proof=quotes&amp;lay=fast&amp;demo=1" target="_blank" rel="noopener">Open it on its own</a></div>
+      <div class="shot"><iframe data-src="/petition/?proof=quotes&amp;lay=fast&amp;demo=1" title="Version B, quotes"></iframe></div>
+    </div>
+    <div class="col">
+      <div class="cap"><span class="tag">C &middot; metric</span><b>How strongly signers agree</b>
+        <span>The one number we will hand to parliamentarians, live from the answers already given.</span>
+        <a href="/petition/?proof=metric&amp;lay=fast&amp;demo=1" target="_blank" rel="noopener">Open it on its own</a></div>
+      <div class="shot"><iframe data-src="/petition/?proof=metric&amp;lay=fast&amp;demo=1" title="Version C, key metric"></iframe></div>
+    </div>
+    <div class="col">
+      <div class="cap"><span class="tag">D &middot; none</span><b>Nothing at all</b>
+        <span>No proof of any kind under the button. The control the other three are measured against.</span>
+        <a href="/petition/?proof=none&amp;lay=fast&amp;demo=1" target="_blank" rel="noopener">Open it on its own</a></div>
+      <div class="shot"><iframe data-src="/petition/?proof=none&amp;lay=fast&amp;demo=1" title="Version D, no social proof"></iframe></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="sechead">
+    <h2>2. How much there is to read above the form</h2>
+    <p>Two ways, half of visitors each, drawn separately from the proof. Top of the page.</p>
+  </div>
+  <div class="row" id="layRow">
+    <div class="col wide">
+      <div class="cap"><span class="tag">fast</span><b>One sentence, then the boxes</b>
+        <span>The headline, the sentence that explains the carve-out in plain words, then first name.</span>
+        <a href="/petition/?lay=fast&amp;proof=grow&amp;demo=1" target="_blank" rel="noopener">Open it on its own</a></div>
+      <div class="shot"><iframe data-src="/petition/?lay=fast&amp;proof=grow&amp;demo=1" data-top="1" title="Layout: one sentence above the form"></iframe></div>
+    </div>
+    <div class="col wide">
+      <div class="cap"><span class="tag">bare</span><b>Straight into the boxes</b>
+        <span>The headline, then first name. Nothing to read above the form at all.</span>
+        <a href="/petition/?lay=bare&amp;proof=grow&amp;demo=1" target="_blank" rel="noopener">Open it on its own</a></div>
+      <div class="shot"><iframe data-src="/petition/?lay=bare&amp;proof=grow&amp;demo=1" data-top="1" title="Layout: nothing above the form"></iframe></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <b>What changed on every version</b>
+  <ul>
+    <li>The email question is two buttons and nothing else: yes, email me about this campaign, or no, don't. One has to be chosen.</li>
+    <li>Above the Sign button: Parliament votes on this in December, and the data goes to parliamentarians and journalists before the vote.</li>
+    <li>Then the petition statement itself, directly above the button.</li>
+    <li>The proof moved under the button, because what it should say is the thing being tested.</li>
+  </ul>
+</footer>
+
+<script>
+// The frames are on this same site, so each one can be scrolled from here: the four proof
+// versions open at the Sign button, where they differ, and the two layouts at the top.
+(function () {
+  'use strict';
+  var frames = document.querySelectorAll('iframe[data-src]');
+  Array.prototype.forEach.call(frames, function (f) {
+    f.addEventListener('load', function () {
+      if (f.getAttribute('data-top')) return;
+      setTimeout(function () {
+        try {
+          var d = f.contentDocument, btn = d.getElementById('signBtn');
+          if (btn) { btn.scrollIntoView({ block: 'start' }); f.contentWindow.scrollBy(0, -300); }
+        } catch (e) {}
+      }, 500);
+    });
+    f.src = f.getAttribute('data-src');
+  });
+})();
+</script>
+</body>
+</html>
