@@ -853,16 +853,17 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   // 31 Oct: three ways to land, to find out where the signatures are being lost.
   //   control  the page as it is
   //   fast     the form on the first screen, one plain sentence, everything else below it
+  //   bare     nothing above the form but the ask: name, name, email, then the statement
   //   code     the same page, but confirming by six digits typed back here, not a link to hunt
   // The side comes from this browser's own key, so it never changes under somebody who comes
   // back, and it matches the key their form events are recorded under.
-  var AB_SIDES = ['control', 'fast', 'code'];
+  var AB_SIDES = ['control', 'fast', 'bare', 'code'];
   var AB = (function () {
     var forced = (location.search.match(/[?&]ab=(control|fast|bare|code)\b/) || [])[1];
     if (forced) return forced;
     var k = browserKey(), h = 0;
     for (var i = 0; i < k.length; i++) h = (h * 31 + k.charCodeAt(i)) >>> 0;
-    return AB_SIDES[h % 3];
+    return AB_SIDES[h % AB_SIDES.length];
   })();
   try { document.body.classList.add('v-' + AB); } catch (e) {}
 
