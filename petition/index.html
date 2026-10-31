@@ -348,6 +348,30 @@ legend{padding:0;margin:0 0 8px;font-size:14px;font-weight:600;line-height:1.4;c
 .pay-back{margin:0 0 12px}
 #payBox{min-height:320px}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
+
+/* ---------------------------------------------------------------- the three ways to land
+   Marcus, 31 Oct 2026. 'fast' puts the form on the first screen with one plain sentence above
+   it and everything else below, because 56 of every 100 people who landed were leaving without
+   typing anything. 'code' is the same page with a different way to confirm. */
+.explain-fast{display:none}
+body.v-fast .explain-fast{display:block;margin:0;font-size:17px;line-height:1.55}
+body.v-fast .explain{display:none}
+body.v-fast .card{display:flex;flex-direction:column}
+body.v-fast .card-head{order:1}
+body.v-fast .stephead{order:2}
+body.v-fast .panel{order:3}
+body.v-fast .meter{order:4;margin-top:18px}
+body.v-fast .card-head h1{margin-bottom:10px}
+
+/* six digits typed back here, for anyone reading this inside another app's browser */
+.codebox{margin:4px 0 14px}
+.codebox label{display:block;font-size:14px;font-weight:600;color:var(--ink);margin:0 0 7px}
+.code-row{display:flex;gap:10px;align-items:stretch}
+.code-row input{flex:0 1 190px;font:700 25px/1 Consolas,Menlo,monospace;letter-spacing:7px;
+  text-align:center;padding:13px 10px;border:1.5px solid #c8ccda;border-radius:7px;min-width:0}
+.code-row input:focus{outline:none;border-color:var(--navy);box-shadow:0 0 0 3px rgba(4,20,64,.12)}
+.code-row .btn{flex:0 0 auto;margin:0;padding:13px 22px}
+@media(max-width:420px){.code-row{flex-direction:column}.code-row input{flex:1 1 auto}.code-row .btn{width:100%}}
 </style>
 <style>
 #nav .logo{line-height:0}
@@ -392,6 +416,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     <div class="card-head">
       <p class="kicker">Petition to Press &amp; Parliament</p>
       <h1>Include all lawmakers under the <em>Hillsborough&nbsp;Law</em></h1>
+      <p class="explain-fast">Parliament is about to make lying to the public a crime for ministers, police, nurses and civil servants, but not for MPs and peers themselves. Sign to put them under their own law.</p>
       <p class="explain">End the carve-out for lawmakers (MPs, peers, MSPs, MSs and MLAs) from the duty of candour and the offence of misleading the public in the <a class="bill-link" href="https://bills.parliament.uk/bills/4019" target="_blank" rel="noopener">Public Office (Accountability) Bill</a>,<sup class="ref"><a href="https://bills.parliament.uk/publications/68275/documents/8957#sched_2__para_2__subpara_4__intro" target="_blank" rel="noopener" title="Source 1">1</a></sup> for reckless or intentionally deceitful acts outside the proceedings of their parliaments:<sup class="ref"><a href="https://www.legislation.gov.uk/aep/WillandMarSess2/1/2/introduction" target="_blank" rel="noopener" title="Source 2">2</a></sup> on TV and radio, on social media, at events, etc.</p>
     </div>
     <div class="meter">
@@ -440,6 +465,14 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       <p class="inapp" id="wApp" hidden></p>
       <p class="junk" id="wJunk" hidden></p>
       <a class="btn navy" id="wOpen" href="#" target="_blank" rel="noopener" hidden>Open Gmail</a>
+      <form class="codebox" id="wCode" hidden novalidate>
+        <label for="wCodeIn">Type the six digit code from the email</label>
+        <div class="code-row">
+          <input id="wCodeIn" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]*" maxlength="7" placeholder="000000" aria-describedby="wCodeErr">
+          <button class="btn navy" type="submit" id="wCodeGo">Confirm</button>
+        </div>
+        <span class="err" id="wCodeErr" aria-live="polite"></span>
+      </form>
       <p class="waiting"><span class="spin" aria-hidden="true"></span><span id="wWait">Waiting for you to confirm&hellip;</span></p>
       <div id="wMore">
         <p class="fine">Can't find it? Check your spam or junk folder.</p>
@@ -791,13 +824,23 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   // the page as it was. The side is worked out from this browser's own key, so it never changes
   // under somebody who comes back, and it matches the key their form events are recorded under.
   // ?ab=count or ?ab=quiet forces a side, for looking at both.
+  // 28 Oct: count against no numbers. Ended 31 Oct, no numbers marginally ahead, so no page
+  // shows the running count any more.
+  // 31 Oct: three ways to land, to find out where the signatures are being lost.
+  //   control  the page as it is
+  //   fast     the form on the first screen, one plain sentence, everything else below it
+  //   code     the same page, but confirming by six digits typed back here, not a link to hunt
+  // The side comes from this browser's own key, so it never changes under somebody who comes
+  // back, and it matches the key their form events are recorded under.
+  var AB_SIDES = ['control', 'fast', 'code'];
   var AB = (function () {
-    var forced = (location.search.match(/[?&]ab=(count|quiet)\b/) || [])[1];
+    var forced = (location.search.match(/[?&]ab=(control|fast|code)\b/) || [])[1];
     if (forced) return forced;
     var k = browserKey(), h = 0;
     for (var i = 0; i < k.length; i++) h = (h * 31 + k.charCodeAt(i)) >>> 0;
-    return (h % 2) ? 'count' : 'quiet';
+    return AB_SIDES[h % 3];
   })();
+  try { document.body.classList.add('v-' + AB); } catch (e) {}
 
   // One page view to the site's own analytics, so the morning report can say how many visited and
   // did not sign. Clicks are not sent from this page: under a crowd they would be thousands a minute.
@@ -844,10 +887,9 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       at = next;
     }
   }
-  // Whether the number is shown at all is the thing being tested. Half of visitors see it from
-  // any count, against the next target up; the other half see no numbers, as before, with the
-  // feed of people signing carrying the momentum instead (Marcus, 26 and 28 Oct 2026).
-  function countShown(n) { return AB === 'count' && (n || 0) > 0; }
+  // No page shows the running count. Tested 28 to 31 October against showing it: showing it was
+  // very slightly worse, so the feed of people signing carries the momentum instead.
+  function countShown(n) { return false; }
   function renderMeter(animate) {
     var quiet = !countShown(S.count);
     document.querySelector('.m-top').hidden = quiet;
@@ -1322,8 +1364,44 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     $('wWait').textContent = 'Waiting for you to confirm\u2026';
     $('wMore').hidden = false;
     $('wResend').hidden = !S.key;
+    // the code side types six digits back here instead of leaving to find a link
+    var byCode = AB === 'code' && !!S.sig && !!S.key;
+    $('wCode').hidden = !byCode;
+    if (byCode) {
+      $('wS').innerHTML = 'We\u2019ve sent a six digit code to <b>' + esc(S.me.email) + '</b>. '
+        + 'Type it below. Your signature only counts once you\u2019ve confirmed it.';
+      $('wApp').hidden = true;
+      $('wCodeIn').value = '';
+      $('wCodeErr').textContent = '';
+    }
     go('w');
   }
+  $('wCode').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var code = ($('wCodeIn').value || '').replace(/\D/g, '');
+    var go2 = $('wCodeGo');
+    if (code.length !== 6) { $('wCodeErr').textContent = 'That code is six digits.'; $('wCodeIn').focus(); return; }
+    $('wCodeErr').textContent = '';
+    go2.disabled = true;
+    go2.textContent = 'Checking…';
+    post('petition/confirm-code', { sig: S.sig, key: S.key, code: code }).then(function (d) {
+      go2.disabled = false;
+      go2.textContent = 'Confirm';
+      if (!d || !d.ok) { $('wCodeErr').textContent = (d && d.reason) || 'That code did not work.'; $('wCodeIn').select(); return; }
+      waitStop();
+      S.backer = !!d.backer;
+      confirmed({ number: d.number, count: d.count, already: d.already });
+    }).catch(function () {
+      go2.disabled = false;
+      go2.textContent = 'Confirm';
+      $('wCodeErr').textContent = 'Something went wrong. Try again in a moment.';
+    });
+  });
+  $('wCodeIn').addEventListener('input', function () {
+    this.value = this.value.replace(/\D/g, '').slice(0, 6);
+    if ($('wCodeErr').textContent) $('wCodeErr').textContent = '';
+  });
+
   var waitTimer = 0, waitUntil = 0;
   function waitStart() { waitStop(); waitUntil = Date.now() + 30 * 60000; waitTimer = setTimeout(checkConfirmed, 4000); }
   function waitStop() { clearTimeout(waitTimer); waitTimer = 0; }
