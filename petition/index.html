@@ -390,7 +390,9 @@ body.l-bare .card-head{padding-bottom:14px}
 .grew,.keyfact{margin:0;font-size:15px;line-height:1.5;color:var(--ink)}
 .grew b,.keyfact b{color:var(--navy);font-size:17px}
 .keyfact small{display:block;margin-top:3px;font-size:12.5px;font-weight:400;color:var(--muted)}
-body.p-none .meter{display:none}
+/* D is the empty control: the page stops at the Sign button. The press logos go too, because
+   'covered and debated by the BBC' is proof of a kind and D is meant to have none. */
+body.p-none .meter,body.p-none .press,body.p-none .more-links{display:none}
 
 /* ---- the December line: above the button, below it, or not there at all ---- */
 #p1{display:flex;flex-direction:column}
