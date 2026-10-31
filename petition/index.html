@@ -374,6 +374,25 @@ body.v-fast .card-head h1{margin-bottom:10px}
 .code-row input:focus{outline:none;border-color:var(--navy);box-shadow:0 0 0 3px rgba(4,20,64,.12)}
 .code-row .btn{flex:0 0 auto;margin:0;padding:13px 22px}
 @media(max-width:420px){.code-row{flex-direction:column}.code-row input{flex:1 1 auto}.code-row .btn{width:100%}}
+
+/* the long explanation is its own block now, so a layout can put it under the form */
+.card-head{padding-bottom:0}
+.explain-wrap{padding:0 20px 16px}
+
+/* ---- 'bare': nothing above the form but the ask itself (Marcus, 31 Oct 2026) ---- */
+body.v-bare .card{display:flex;flex-direction:column}
+body.v-bare .card-head{order:1;padding-bottom:14px}
+body.v-bare .stephead{order:2}
+body.v-bare .panel{order:3}
+body.v-bare .explain-wrap{order:4;padding-top:16px;border-top:1px solid var(--rule)}
+body.v-bare .meter{order:5}
+body.v-bare .explain-fast{display:none}
+body.v-fast .explain-wrap{display:none}
+
+/* what happens to a signature, said once, on every version */
+.promise{margin:14px 0 0;padding:11px 13px;background:#fff8e8;border-left:3px solid var(--gold);
+  border-radius:4px;font-size:14px;line-height:1.5;color:var(--ink)}
+.promise b{color:var(--navy)}
 </style>
 <style>
 #nav .logo{line-height:0}
@@ -419,6 +438,8 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       <p class="kicker">Petition to Press &amp; Parliament</p>
       <h1>Include all lawmakers under the <em>Hillsborough&nbsp;Law</em></h1>
       <p class="explain-fast">Parliament is about to make lying to the public a crime for ministers, police, nurses and civil servants, but not for MPs and peers themselves. Sign to put them under their own law.</p>
+    </div>
+    <div class="explain-wrap">
       <p class="explain">End the carve-out for lawmakers (MPs, peers, MSPs, MSs and MLAs) from the duty of candour and the offence of misleading the public in the <a class="bill-link" href="https://bills.parliament.uk/bills/4019" target="_blank" rel="noopener">Public Office (Accountability) Bill</a>,<sup class="ref"><a href="https://bills.parliament.uk/publications/68275/documents/8957#sched_2__para_2__subpara_4__intro" target="_blank" rel="noopener" title="Source 1">1</a></sup> for reckless or intentionally deceitful acts outside the proceedings of their parliaments:<sup class="ref"><a href="https://www.legislation.gov.uk/aep/WillandMarSess2/1/2/introduction" target="_blank" rel="noopener" title="Source 2">2</a></sup> on TV and radio, on social media, at events, etc.</p>
     </div>
     <div class="meter">
@@ -456,6 +477,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       </fieldset>
       <div class="hp" aria-hidden="true"><label>Leave this empty <input id="website" name="website" tabindex="-1" autocomplete="off"></label></div>
       <p class="fine">By signing, you agree to our <a href="https://execprosec.org/terms/#petitions" target="_blank" rel="noopener">Terms</a> and <a href="https://execprosec.org/terms/#privacy" target="_blank" rel="noopener">Privacy Policy</a>.</p>
+      <p class="promise"><b>Parliament votes in December.</b> We give MPs and peers the total, and journalists the words people write. This is evidence put in front of them before they decide, not a petition that sits on a website.</p>
       <button class="btn" type="submit" id="signBtn">Sign the petition</button>
     </form>
 
@@ -836,7 +858,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   // back, and it matches the key their form events are recorded under.
   var AB_SIDES = ['control', 'fast', 'code'];
   var AB = (function () {
-    var forced = (location.search.match(/[?&]ab=(control|fast|code)\b/) || [])[1];
+    var forced = (location.search.match(/[?&]ab=(control|fast|bare|code)\b/) || [])[1];
     if (forced) return forced;
     var k = browserKey(), h = 0;
     for (var i = 0; i < k.length; i++) h = (h * 31 + k.charCodeAt(i)) >>> 0;
