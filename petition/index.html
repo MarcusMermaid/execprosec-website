@@ -390,10 +390,16 @@ body.l-bare .card-head{padding-bottom:14px}
 .grew,.keyfact{margin:0;font-size:15px;line-height:1.5;color:var(--ink)}
 .grew b,.keyfact b{color:var(--navy);font-size:17px}
 .keyfact small{display:block;margin-top:3px;font-size:12.5px;font-weight:400;color:var(--muted)}
-body.p-none .deadline{margin-top:0;padding-top:0;border-top:0}
+body.p-none .meter{display:none}
+
+/* ---- the December line: above the button, below it, or not there at all ---- */
+#p1{display:flex;flex-direction:column}
+.promise{order:0}
+body.pr-below .promise{order:1;margin:16px 0 0}
+body.pr-off .promise{display:none}
 
 /* what happens to a signature, said once, on every version */
-.promise{margin:14px 0 0;padding:11px 13px;background:#fff8e8;border-left:3px solid var(--gold);
+.promise{margin:0 0 14px;padding:11px 13px;background:#fff8e8;border-left:3px solid var(--gold);
   border-radius:4px;font-size:14px;line-height:1.5;color:var(--ink)}
 .promise b{color:var(--navy)}
 </style>
@@ -852,13 +858,15 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   // ahead, so no page shows the count.
   // 31 Oct: three things are drawn for independently, so each one can be read on its own against
   // everybody else, and each visitor is in one cell of all three.
-  //   lay    how much there is to read above the form:  fast (one sentence) or bare (nothing)
-  //   proof  what sits under the Sign button:  grow, quotes, metric or none
-  //   conf   how a signature is confirmed:  link only, or a six digit code typed back here
+  //   lay      how much there is to read above the form:  fast (one sentence) or bare (nothing)
+  //   proof    what sits under the Sign button:  grow, quotes, metric or none
+  //   promise  the December line:  above the button, below it, or not shown
+  //   conf     how a signature is confirmed:  link only, or a six digit code typed back here
   // Each draw comes from this browser's own key, mixed a different way, so it never changes under
   // somebody who comes back and it matches the key their form events are recorded under.
-  // ?lay= ?proof= ?conf= force one, for looking at them side by side.
-  var LAYS = ['fast', 'bare'], PROOFS = ['grow', 'quotes', 'metric', 'none'], CONFS = ['link', 'code'];
+  // ?lay= ?proof= ?promise= ?conf= force one, for looking at them side by side.
+  var LAYS = ['fast', 'bare'], PROOFS = ['grow', 'quotes', 'metric', 'none'];
+  var PROMISES = ['above', 'below', 'off'], CONFS = ['link', 'code'];
   var DRAW = (function () {
     var k = browserKey(), h = 0, i;
     for (i = 0; i < k.length; i++) h = (h * 31 + k.charCodeAt(i)) >>> 0;
@@ -873,14 +881,15 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       var forced = (location.search.match(new RegExp('[?&]' + name + '=([a-z]+)\\b')) || [])[1];
       return list.indexOf(forced) >= 0 ? forced : list[mix(n) % list.length];
     }
-    return { lay: pick('lay', LAYS, 1), proof: pick('proof', PROOFS, 2), conf: pick('conf', CONFS, 3) };
+    return { lay: pick('lay', LAYS, 1), proof: pick('proof', PROOFS, 2),
+             promise: pick('promise', PROMISES, 4), conf: pick('conf', CONFS, 3) };
   })();
-  var LAY = DRAW.lay, PROOF = DRAW.proof, CONF = DRAW.conf;
+  var LAY = DRAW.lay, PROOF = DRAW.proof, PROMISE = DRAW.promise, CONF = DRAW.conf;
   // ?demo=1 is us looking at the versions next to each other: it records nothing at all, so the
   // looking does not land in the numbers the test is read from.
   var DEMO = /[?&]demo=1\b/.test(location.search);
-  var AB = LAY + '-' + PROOF + '-' + CONF;
-  try { document.body.classList.add('l-' + LAY, 'p-' + PROOF, 'c-' + CONF); } catch (e) {}
+  var AB = LAY + '-' + PROOF + '-' + PROMISE + '-' + CONF;
+  try { document.body.classList.add('l-' + LAY, 'p-' + PROOF, 'pr-' + PROMISE, 'c-' + CONF); } catch (e) {}
 
   // One page view to the site's own analytics, so the morning report can say how many visited and
   // did not sign. Clicks are not sent from this page: under a crowd they would be thousands a minute.
