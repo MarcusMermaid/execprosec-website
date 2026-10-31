@@ -118,10 +118,12 @@ footer li{margin-bottom:5px}
       if (f.getAttribute('data-top')) return;
       setTimeout(function () {
         try {
-          var d = f.contentDocument, btn = d.getElementById('signBtn');
-          if (btn) { btn.scrollIntoView({ block: 'start' }); f.contentWindow.scrollBy(0, -300); }
+          var w = f.contentWindow, btn = f.contentDocument.getElementById('signBtn');
+          // not scrollIntoView: that drags this page down with it, and the columns end up
+          // showing different parts of the page
+          if (btn) w.scrollTo(0, Math.max(0, btn.getBoundingClientRect().top + w.scrollY - 300));
         } catch (e) {}
-      }, 500);
+      }, 700);
     });
     f.src = f.getAttribute('data-src');
   });
