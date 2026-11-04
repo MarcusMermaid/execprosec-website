@@ -1003,14 +1003,14 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   var STATEMENTS = DRAW.qs === 'new' ? NEW_QS : OLD_QS;
   var PARTIES = [['Labour', 1], ['Conservative', 2], ['Reform UK', 3], ['Liberal Democrat', 4], ['Green', 5], ['SNP', 6],
     ['Plaid Cymru', 7], ['Another party', 8], ["Didn't vote", 9], ['Prefer not to say', 10]];
-  // Everyone is asked about every statement, the three arguments in a shuffled order so none always
-  // gets the fresh first look, then the demonstration, then the 2024 vote. Each answer is kept the moment it is tapped, whether or not they finish.
+  // Everyone is asked about every statement, the two short ones first (the demonstration, then the
+  // 2024 vote: 5 Nov, a long block first lost people), then the three arguments in a shuffled order so none always gets the fresh first look. Each answer is kept the moment it is tapped, whether or not they finish.
   // Agree first: with disagree on the left, people who agreed tapped the wrong end (26 Oct 2026).
   var SCALE = [['Strongly agree', 2], ['Agree', 1], ['Not sure', 0], ['Disagree', -1], ['Strongly disagree', -2]];
   function buildLikert() {
     var order = STATEMENTS.filter(function (st) { return !st.fixed; });
     for (var i = order.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = order[i]; order[i] = order[j]; order[j] = t; }
-    order = order.concat(STATEMENTS.filter(function (st) { return st.fixed; }));
+    order = STATEMENTS.filter(function (st) { return st.fixed; }).concat(order);
     track('questions', DRAW.qs);
     $('likert').innerHTML = order.map(function (st) {
       var head = '<div class="lk-row' + (st.t.length > 300 ? ' lk-long' : '') + '" data-id="' + st.id + '"><p class="lk-t" id="lk_' + st.id + '">' + esc(st.t) + '</p>';
