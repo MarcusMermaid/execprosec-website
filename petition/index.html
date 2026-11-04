@@ -524,7 +524,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     <form class="panel" id="p2" novalidate hidden>
       <h2 id="thanksH">Thank you.</h2>
       <p class="sub" id="thanksS"></p>
-      <div class="lk-top"><span id="lkProg">1 of 5</span><span class="lk-track"><span id="lkBar"></span></span></div>
+      <div class="lk-top"><span id="lkProg"></span><span class="lk-track"><span id="lkBar"></span></span></div>
       <div class="lk" id="likert" role="group" aria-label="How far do you agree?"></div>
       <p class="alt"><button class="link" type="button" id="lkBack" hidden>Back</button></p>
       <div class="f after-lk">
@@ -891,8 +891,11 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       var forced = (location.search.match(new RegExp('[?&]' + name + '=([a-z]+)\\b')) || [])[1];
       return list.indexOf(forced) >= 0 ? forced : list[mix(n) % list.length];
     }
+    // the questions trial (4 Nov 2026): 1 in 4 get the new questions; ?qs=new or ?qs=old forces one
+    var qsForced = (location.search.match(/[?&]qs=(new|old)(?![a-z])/) || [])[1];
     return { lay: pick('lay', LAYS, 1), proof: pick('proof', PROOFS, 2),
-             promise: pick('promise', PROMISES, 4), conf: pick('conf', CONFS, 3) };
+             promise: pick('promise', PROMISES, 4), conf: pick('conf', CONFS, 3),
+             qs: qsForced || (mix(5) % 4 === 0 ? 'new' : 'old') };
   })();
   var LAY = DRAW.lay, PROOF = DRAW.proof, PROMISE = DRAW.promise, CONF = DRAW.conf;
   // ?demo=1 is us looking at the versions next to each other: it records nothing at all, so the
@@ -974,11 +977,22 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   }
 
   // ---------------------------------------------------------------- statements
-  // Marcus, 4 Nov 2026, after 10,000 signatures: the first seven statements (s1, s4 to s9) had
-  // their answer, so these replaced them. s10 to s12 answer the objections the Government and peers
-  // keep raising, s13 asks who would come to Westminster on the day of the vote, and v24 asks how
-  // they voted in 2024 (to show it is cross-party; totals only, never with a name).
-  var STATEMENTS = [
+  // Marcus, 4 Nov 2026, after 10,000 signatures: new questions to replace the seven statements, which
+  // had their answer. s10 to s12 answer the objections the Government and peers keep raising, s13
+  // asks who would come to Westminster on the day of the vote, and v24 asks how they voted in 2024
+  // (to show it is cross-party; totals only, never with a name). A trial first: 1 in 4 confirmed
+  // signers get them (DRAW.qs), the rest the seven statements, to see whether engagement holds.
+  // Central reads the two sides in petition_ab_report, from the 'questions' step noted below.
+  var OLD_QS = [
+    { id: 's1', t: 'MPs and peers who vote to put civil servants, police officers, soldiers, ministers and even spies under the Hillsborough Law, but not themselves, are hypocrites: a law for thee, but not for me.' },
+    { id: 's8', t: 'Candidates for elected office who are proven to have recklessly or intentionally deceived the public during a general election should also be treated as public officials under the offence of misleading the public.' },
+    { id: 's9', t: 'If our parliaments in London, Edinburgh, Cardiff and Belfast exempt their own members from the Hillsborough Law’s duty of candour and misleading the public offence, they will humiliate themselves in the eyes of the public.' },
+    { id: 's4', t: 'Proven reckless or intentional lying to the public to justify starting an aggressive war should be a crime.' },
+    { id: 's5', t: 'Proven reckless or intentional lying to the public to manipulate a referendum result should be a crime.' },
+    { id: 's6', t: 'If the misleading the public offence applies to Government ministers but not to the opposition or backbenchers, democracy will be dangerously destabilised.' },
+    { id: 's7', t: 'Elections and criminal courts do different jobs: being elected should not put a lawmaker above the criminal law.' }
+  ];
+  var NEW_QS = [
     { id: 's10', t: 'The Government says Parliament should deal with MPs and peers who lie, through its own standards rules. But those rules only cover what is said inside Parliament, not lies told to the public on TV, radio, social media or at events. When an MP or peer is proven to have intentionally or recklessly lied to the public outside Parliament, a jury should decide whether it is a crime, just as it would for a police officer, civil servant or minister.' },
     { id: 's11', t: 'The Government says only ministers should be covered, because backbench MPs and peers don’t take decisions for the state or see secret government information. But Parliament works through three roles: the government, the opposition, and those who scrutinise both. Each keeps a check on the others, and none of them works on its own. That doesn’t stop at the doors of Parliament: all three speak to the public every day on TV, radio, social media and at events. If only the government can be prosecuted for lying to the public out there, while the opposition and the scrutinisers can lie freely, that system of checks and balances breaks down. And the Government’s argument rests on a fundamental misunderstanding: you don’t need access to secret information to make up lies about it. A politician can simply invent it. Every MP and peer should be covered for what they say to the public outside Parliament, not just ministers.' },
     { id: 's12', t: 'Some peers say including MPs and peers would stop them speaking freely. But the offence would only cover proven intentional or reckless lies about matters of serious public concern. It would never cover honest mistakes, opinions or anything said in Parliament, and every prosecution would need the consent of the Director of Public Prosecutions. Honest politicians would remain free to speak their minds.' },
@@ -986,6 +1000,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     { id: 'v24', fixed: true, party: true, t: 'Which party did you vote for in 2024?',
       sub: 'We’ll use this to show parliamentarians that voters of every party care about this.' }
   ];
+  var STATEMENTS = DRAW.qs === 'new' ? NEW_QS : OLD_QS;
   var PARTIES = [['Labour', 1], ['Conservative', 2], ['Reform UK', 3], ['Liberal Democrat', 4], ['Green', 5], ['SNP', 6],
     ['Plaid Cymru', 7], ['Another party', 8], ["Didn't vote", 9], ['Prefer not to say', 10]];
   // Everyone is asked about every statement, the three arguments in a shuffled order so none always
@@ -996,6 +1011,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     var order = STATEMENTS.filter(function (st) { return !st.fixed; });
     for (var i = order.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = order[i]; order[i] = order[j]; order[j] = t; }
     order = order.concat(STATEMENTS.filter(function (st) { return st.fixed; }));
+    track('questions', DRAW.qs);
     $('likert').innerHTML = order.map(function (st) {
       var head = '<div class="lk-row' + (st.t.length > 300 ? ' lk-long' : '') + '" data-id="' + st.id + '"><p class="lk-t" id="lk_' + st.id + '">' + esc(st.t) + '</p>';
       if (st.party) return head + '<p class="lk-sub">' + esc(st.sub) + '</p><div class="lk-party" role="radiogroup" aria-labelledby="lk_' + st.id + '">' +
@@ -1574,7 +1590,8 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     }
     document.querySelectorAll('.me-first').forEach(function (el) { el.textContent = S.me.first; });
     var reached = number && number >= targetFor(number - 1) && countShown(number) ? targetFor(number - 1) : 0;
-    var more = 'Five quick questions. We quote the results to journalists and parliamentarians.';
+    var more = DRAW.qs === 'new' ? 'Five quick questions. We quote the results to journalists and parliamentarians.'
+      : 'How far do you agree? Seven quick taps. We quote the results to journalists and parliamentarians.';
     if (d.already) {
       $('thanksH').textContent = "You've already signed, " + S.me.first + '. Thank you.';
       $('thanksS').textContent = 'Your signature is confirmed. ' + more;
