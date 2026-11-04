@@ -891,11 +891,11 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       var forced = (location.search.match(new RegExp('[?&]' + name + '=([a-z]+)\\b')) || [])[1];
       return list.indexOf(forced) >= 0 ? forced : list[mix(n) % list.length];
     }
-    // the questions trial (4 Nov 2026): 1 in 4 get the new questions; ?qs=new or ?qs=old forces one
+    // the questions trial (4 Nov 2026): 1 in 4 got the new questions, 1 in 2 from 5 Nov; ?qs=new or ?qs=old forces one
     var qsForced = (location.search.match(/[?&]qs=(new|old)(?![a-z])/) || [])[1];
     return { lay: pick('lay', LAYS, 1), proof: pick('proof', PROOFS, 2),
              promise: pick('promise', PROMISES, 4), conf: pick('conf', CONFS, 3),
-             qs: qsForced || (mix(5) % 4 === 0 ? 'new' : 'old') };
+             qs: qsForced || (mix(5) % 2 === 0 ? 'new' : 'old') };
   })();
   var LAY = DRAW.lay, PROOF = DRAW.proof, PROMISE = DRAW.promise, CONF = DRAW.conf;
   // ?demo=1 is us looking at the versions next to each other: it records nothing at all, so the
@@ -981,7 +981,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   // had their answer. s10 to s12 answer the objections the Government and peers keep raising, s13
   // asks who would come to Westminster on the day of the vote, and v24 asks how they voted in 2024
   // (to show it is cross-party; totals only, never with a name). A trial first: 1 in 4 confirmed
-  // signers get them (DRAW.qs), the rest the seven statements, to see whether engagement holds.
+  // signers got them (DRAW.qs), 1 in 2 from 5 Nov, the rest the seven statements, to see whether engagement holds.
   // Central reads the two sides in petition_ab_report, from the 'questions' step noted below.
   var OLD_QS = [
     { id: 's1', t: 'MPs and peers who vote to put civil servants, police officers, soldiers, ministers and even spies under the Hillsborough Law, but not themselves, are hypocrites: a law for thee, but not for me.' },
@@ -992,13 +992,16 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     { id: 's6', t: 'If the misleading the public offence applies to Government ministers but not to the opposition or backbenchers, democracy will be dangerously destabilised.' },
     { id: 's7', t: 'Elections and criminal courts do different jobs: being elected should not put a lawmaker above the criminal law.' }
   ];
+  // 5 Nov 2026: Marcus's shorter rewrites (s14 to s17, s11 split into s15 and s16) after the long
+  // blocks lost people; the two short questions come first. s10 to s12 are retired.
   var NEW_QS = [
-    { id: 's10', t: 'The Government says Parliament should deal with MPs and peers who lie, through its own standards rules. But those rules only cover what is said inside Parliament, not lies told to the public on TV, radio, social media or at events. When an MP or peer is proven to have intentionally or recklessly lied to the public outside Parliament, a jury should decide whether it is a crime, just as it would for a police officer, civil servant or minister.' },
-    { id: 's11', t: 'The Government says only ministers should be covered, because backbench MPs and peers don’t take decisions for the state or see secret government information. But Parliament works through three roles: the government, the opposition, and those who scrutinise both. Each keeps a check on the others, and none of them works on its own. That doesn’t stop at the doors of Parliament: all three speak to the public every day on TV, radio, social media and at events. If only the government can be prosecuted for lying to the public out there, while the opposition and the scrutinisers can lie freely, that system of checks and balances breaks down. And the Government’s argument rests on a fundamental misunderstanding: you don’t need access to secret information to make up lies about it. A politician can simply invent it. Every MP and peer should be covered for what they say to the public outside Parliament, not just ministers.' },
-    { id: 's12', t: 'Some peers say including MPs and peers would stop them speaking freely. But the offence would only cover proven intentional or reckless lies about matters of serious public concern. It would never cover honest mistakes, opinions or anything said in Parliament, and every prosecution would need the consent of the Director of Public Prosecutions. Honest politicians would remain free to speak their minds.' },
     { id: 's13', fixed: true, t: 'I would be interested in attending an organised, peaceful demonstration outside Parliament in Westminster on the day of the vote.' },
     { id: 'v24', fixed: true, party: true, t: 'Which party did you vote for in 2024?',
-      sub: 'We’ll use this to show parliamentarians that voters of every party care about this.' }
+      sub: 'We’ll use this to show parliamentarians that voters of every party care about this.' },
+    { id: 's14', t: 'Parliament’s own rules only deal with what is said inside Parliament. When an MP or peer is proven to have intentionally or recklessly lied to the public outside it, a jury should decide, just as it would for a police officer or civil servant.' },
+    { id: 's15', t: 'The Government’s reason for leaving backbench MPs and peers out is that, unlike ministers, they don’t have access to secret government information. That shows a complete misunderstanding of what lying is. A lie doesn’t depend on access to the truth; it is the opposite of the truth. All it takes is a willingness to make things up.' },
+    { id: 's16', t: 'Outside Parliament, the government, the opposition and the backbenchers who scrutinise them all speak to the public. If government ministers can be prosecuted for lying but shadow ministers and scrutinisers can’t, the system of checks and balances in Parliament is thrown completely off balance. Every MP and peer should be covered.' },
+    { id: 's17', t: 'Some politicians say being included would have a chilling effect on political debate. That concern is not credible: the offence only covers proven intentional or reckless lies on serious public matters, never honest mistakes, opinions or anything said in Parliament. The only thing it would chill is lying, and politicians who can’t debate without lying have no place in politics.' }
   ];
   var STATEMENTS = DRAW.qs === 'new' ? NEW_QS : OLD_QS;
   var PARTIES = [['Labour', 1], ['Conservative', 2], ['Reform UK', 3], ['Liberal Democrat', 4], ['Green', 5], ['SNP', 6],
@@ -1590,7 +1593,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     }
     document.querySelectorAll('.me-first').forEach(function (el) { el.textContent = S.me.first; });
     var reached = number && number >= targetFor(number - 1) && countShown(number) ? targetFor(number - 1) : 0;
-    var more = DRAW.qs === 'new' ? 'Five quick questions. We quote the results to journalists and parliamentarians.'
+    var more = DRAW.qs === 'new' ? 'Six quick questions. We quote the results to journalists and parliamentarians.'
       : 'How far do you agree? Seven quick taps. We quote the results to journalists and parliamentarians.';
     if (d.already) {
       $('thanksH').textContent = "You've already signed, " + S.me.first + '. Thank you.';
