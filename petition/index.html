@@ -245,6 +245,53 @@ button.press-item{background:none;border:0;cursor:pointer;position:relative}
 .proof li{position:relative;padding:0 0 7px 27px;font-weight:600;color:var(--ink)}
 .proof li::before{content:'✓';position:absolute;left:0;top:1px;width:18px;height:18px;border-radius:50%;background:#1f7a4d;color:#fff;font-size:11px;line-height:18px;text-align:center}
 .notice.gold{background:#fbf5e4;border-color:#e8d49a;color:#5c4512}
+/* The money pitch (Marcus, 6 Nov 2026): two slides between confirming and the fund screen, for half of signers. */
+#ppitch{padding-top:6px}
+.pt-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;border-radius:6px;margin:0 -4px;padding:0 4px;gap:8px;overscroll-behavior-x:contain}
+.pt-track::-webkit-scrollbar{display:none}
+.pt-slide{flex:0 0 100%;scroll-snap-align:center;scroll-snap-stop:always;background:var(--navy);color:#fff;border-radius:6px;overflow:hidden;position:relative;display:flex;flex-direction:column}
+.pt-photo{position:relative;height:clamp(120px,19vh,190px);background:#0b1a4a center 38%/cover no-repeat}
+.pt-photo::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(4,20,64,.05) 0%,rgba(4,20,64,.35) 55%,var(--navy) 100%)}
+.pt-body{padding:2px 18px 16px;position:relative}
+.pt-kick{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--gold);margin:0 0 10px}
+.pt-kick i{width:18px;height:18px;border-radius:50%;background:var(--gold);color:var(--navy);font-style:normal;font-size:11px;line-height:18px;text-align:center;letter-spacing:0}
+.pt-slide h2,.pt-slide h3{font:400 26px/1.1 var(--f-display);color:#fff;margin:0 0 10px;text-wrap:balance}
+.pt-slide h2 em,.pt-slide h3 em{font-style:normal;color:var(--gold)}
+.pt-slide p{font-size:14.5px;line-height:1.48;color:var(--on-navy);margin:0 0 13px}
+.pt-proof{list-style:none;margin:0;padding:12px 0 0;border-top:1px solid var(--line-navy)}
+.pt-proof li{position:relative;padding:0 0 9px 32px;font-size:14px;font-weight:600;line-height:1.38;color:#fff}
+.pt-proof li::before{content:'✓';position:absolute;left:0;top:0;width:21px;height:21px;border-radius:50%;background:var(--gold);color:var(--navy);font-size:12px;font-weight:800;line-height:21px;text-align:center}
+.pt-uses{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:0 0 16px}
+.pt-use{background:rgba(255,255,255,.06);border:1px solid var(--line-navy);border-radius:6px;padding:14px 8px 12px;text-align:center;font-size:13px;font-weight:700;line-height:1.3;color:#fff}
+.pt-use svg{display:block;width:30px;height:30px;margin:0 auto 9px;color:var(--gold)}
+.pt-give{font-size:13px;font-weight:700;color:var(--on-navy-2);text-transform:uppercase;letter-spacing:.08em;margin:0 0 8px}
+.pt-amts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:0 0 12px}
+.pt-amt{min-height:52px;border:1.5px solid rgba(255,255,255,.28);border-radius:4px;background:transparent;color:#fff;font:700 19px/1 var(--f-body);cursor:pointer;transition:background .15s,border-color .15s,color .15s,transform .1s}
+.pt-amt:active{transform:scale(.97)}
+.pt-amt[aria-pressed=true]{background:var(--gold);border-color:var(--gold);color:var(--navy)}
+.pt-slide .btn{margin:0}
+.pt-fine{font-size:12.5px!important;color:var(--on-navy-2)!important;text-align:center;margin:10px 0 0!important}
+.pt-nav{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:12px 0 0}
+.pt-dots{display:flex;gap:7px}
+.pt-dots span{width:8px;height:8px;border-radius:4px;background:var(--rule);transition:width .25s,background .25s}
+.pt-dots span.on{width:24px;background:var(--navy)}
+.pt-next{min-height:46px;padding:0 22px;border:0;border-radius:3px;background:var(--navy);color:#fff;font-weight:700;font-size:15px;cursor:pointer}
+.pt-next:hover{background:var(--navy-3)}
+/* things arrive one after another when a slide comes into view */
+@keyframes ptIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes ptTick{0%{transform:scale(0)}70%{transform:scale(1.2)}100%{transform:scale(1)}}
+.pt-slide.in .pt-a{animation:ptIn .5s cubic-bezier(.2,.7,.2,1) both}
+.pt-slide.in .pt-proof li{animation:ptIn .5s cubic-bezier(.2,.7,.2,1) both}
+.pt-slide.in .pt-proof li::before{animation:ptTick .45s cubic-bezier(.2,.7,.2,1) both}
+.pt-slide.in .pt-a:nth-child(2){animation-delay:.08s}.pt-slide.in .pt-a:nth-child(3){animation-delay:.16s}.pt-slide.in .pt-a:nth-child(4){animation-delay:.24s}
+.pt-slide.in .pt-proof li:nth-child(1),.pt-slide.in .pt-proof li:nth-child(1)::before{animation-delay:.35s}
+.pt-slide.in .pt-proof li:nth-child(2),.pt-slide.in .pt-proof li:nth-child(2)::before{animation-delay:.55s}
+.pt-slide.in .pt-proof li:nth-child(3),.pt-slide.in .pt-proof li:nth-child(3)::before{animation-delay:.75s}
+.pt-slide.in .pt-use{animation:ptIn .5s cubic-bezier(.2,.7,.2,1) both}
+.pt-slide.in .pt-use:nth-child(2){animation-delay:.12s}.pt-slide.in .pt-use:nth-child(3){animation-delay:.24s}
+#p4 .pitch-only{display:none}
+#p4.pitched .pitch-only{display:block}
+#p4.pitched .no-pitch{display:none}
 @media(min-width:600px){
   .lk-row{display:grid;grid-template-columns:minmax(0,1fr) 320px;column-gap:16px;align-items:center}
   .lk-head{padding-bottom:6px}
@@ -537,10 +584,50 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       <button class="link skip" type="button" id="skipQs">No thanks, skip</button>
     </form>
 
+    <!-- 2b: the money pitch, two slides (Marcus, 6 Nov 2026) -->
+    <div class="panel" id="ppitch" hidden>
+      <div class="pt-track" id="ptTrack" aria-roledescription="carousel" aria-label="Why we need your help">
+        <section class="pt-slide" id="ptS1" aria-roledescription="slide" aria-label="1 of 2">
+          <div class="pt-photo" style="background-image:url(/_web/photos/mjb-4.webp)" role="img" aria-label="Marcus J Ball speaking to a packed room about the Bill"></div>
+          <div class="pt-body">
+            <p class="pt-kick pt-a"><i aria-hidden="true">✓</i> Signature confirmed</p>
+            <h2 class="pt-a">Now let's make sure <em>Parliament</em> can't ignore it.</h2>
+            <p class="pt-a">The vote is expected in early December. Between now and then, every MP and peer needs to know the public is watching. Here's how far we've come:</p>
+            <ul class="pt-proof pt-a"><li>Debated in both Houses of Parliament</li><li>Covered by the BBC, ITV, Sky, the Telegraph and the Express</li><li>Our videos are watched hundreds of thousands of times each week on our social media channels</li></ul>
+          </div>
+        </section>
+        <section class="pt-slide" id="ptS2" aria-roledescription="slide" aria-label="2 of 2">
+          <div class="pt-body" style="padding-top:22px">
+            <p class="pt-kick pt-a">What comes next</p>
+            <h3 class="pt-a">Adverts they <em>can't miss</em>.</h3>
+            <p class="pt-a">Next, we want to pay for newspaper, billboard and other paid adverts, but we need funding to take this to that level.</p>
+            <div class="pt-uses pt-a">
+              <div class="pt-use"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M6 6h17v20H8a2 2 0 0 1-2-2z"/><path d="M23 11h3v13a2 2 0 0 1-2 2"/><path d="M10 10h9M10 14h9M10 18h5M10 22h7"/></svg>Newspaper adverts</div>
+              <div class="pt-use"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><rect x="4" y="5" width="24" height="14" rx="1.5"/><path d="M11 19v8M21 19v8M8 27h16"/><path d="M9 10h10M9 14h14"/></svg>Billboards</div>
+              <div class="pt-use"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M5 13v6h4l9 6V7l-9 6z"/><path d="M22 11a7 7 0 0 1 0 10M25.5 8a12 12 0 0 1 0 16"/></svg>A rally on vote day</div>
+            </div>
+            <p class="pt-give pt-a">Choose your contribution</p>
+            <div class="pt-amts pt-a" role="group" aria-label="Amount">
+              <button class="pt-amt" type="button" data-amt="10" aria-pressed="false">£10</button>
+              <button class="pt-amt" type="button" data-amt="20" aria-pressed="true">£20</button>
+              <button class="pt-amt" type="button" data-amt="50" aria-pressed="false">£50</button>
+            </div>
+            <button class="btn pt-a" type="button" id="ptGive">Back us with £20</button>
+            <p class="pt-fine">One-off or monthly: you choose on the next screen. Any amount from £10.</p>
+          </div>
+        </section>
+      </div>
+      <div class="pt-nav">
+        <div class="pt-dots" aria-hidden="true"><span class="on"></span><span></span></div>
+        <button class="pt-next" type="button" id="ptNext">Next</button>
+      </div>
+      <button class="link skip" type="button" id="ptSkip">Not now</button>
+    </div>
+
     <!-- 3: two ways to help: fund, or email your MP, or both -->
     <div class="panel" id="pchoice" hidden>
-      <h2>Three ways to help win the vote.</h2>
-      <p class="sub">Choose any of them, or do all three. Each makes a real difference.</p>
+      <h2 id="choiceH">Three ways to help win the vote.</h2>
+      <p class="sub" id="choiceS">Choose any of them, or do all three. Each makes a real difference.</p>
       <button class="way way-fund" type="button" id="wayFund"><b>Fund the campaign</b><span>Newspaper adverts, billboards and a rally on the day of the vote. Monthly or one-off, from £10.</span></button>
       <button class="way way-mp" type="button" id="wayMp"><img id="wayMpPhoto" alt="" hidden><span><b id="wayMpTitle">Email your MP</b><span class="way-from" id="wayMpFrom" hidden></span><span>About two minutes, from your own email address. We've written it for you.</span></span></button>
       <button class="way way-share" type="button" id="wayShare"><b>Share the petition</b><span>Copy the link and paste it wherever you talk to people. Every share brings more signatures.</span></button>
@@ -577,10 +664,11 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       <p class="notice" id="fundThanks" hidden>Thank you for emailing your MP. If you can, back the campaign as well.</p>
       <p class="notice bad" id="fundNote" hidden>That payment did not go through, and nothing has been taken. Try again, or use a card instead of a wallet.</p>
       <p class="notice gold" id="fundBacker" hidden>You've backed this campaign before. Thank you: it's why we've got this far.</p>
-      <h2>Make sure Parliament knows we're watching.</h2>
-      <p class="sub">The vote is expected in early December. Your money puts this campaign in front of millions more people before then, so every MP and peer knows the public is watching.</p>
-      <ul class="proof"><li>Debated in both Houses of Parliament</li><li>Covered by the BBC, ITV, Sky, the Telegraph and the Express</li><li>Our videos are watched hundreds of thousands of times each week on our social media channels</li></ul>
-      <p class="sub">Next, we want to pay for newspaper, billboard, and other paid adverts but we need funding to take this to that level.</p>
+      <h2 class="pitch-only">Thank you, <span class="me-first"></span>. How would you like to give?</h2>
+      <h2 class="no-pitch">Make sure Parliament knows we're watching.</h2>
+      <p class="sub no-pitch">The vote is expected in early December. Your money puts this campaign in front of millions more people before then, so every MP and peer knows the public is watching.</p>
+      <ul class="proof no-pitch"><li>Debated in both Houses of Parliament</li><li>Covered by the BBC, ITV, Sky, the Telegraph and the Express</li><li>Our videos are watched hundreds of thousands of times each week on our social media channels</li></ul>
+      <p class="sub no-pitch">Next, we want to pay for newspaper, billboard, and other paid adverts but we need funding to take this to that level.</p>
       <fieldset>
         <legend id="fundLegend">Back the campaign every month</legend>
         <div class="opts freq" role="radiogroup" aria-label="How often">
@@ -891,11 +979,12 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       var forced = (location.search.match(new RegExp('[?&]' + name + '=([a-z]+)\\b')) || [])[1];
       return list.indexOf(forced) >= 0 ? forced : list[mix(n) % list.length];
     }
-    // the questions trial (4 Nov 2026): 1 in 4 got the new questions, 1 in 2 from 5 Nov; ?qs=new or ?qs=old forces one
-    var qsForced = (location.search.match(/[?&]qs=(new|old)(?![a-z])/) || [])[1];
+    // the questions trial (4 Nov 2026): 1 in 4 got the new questions, 1 in 2 from 5 Nov.
+    // From 6 Nov the seven statements end: half get the new questions, half the money pitch. ?qs=new or ?qs=money forces one.
+    var qsForced = (location.search.match(/[?&]qs=(new|money)(?![a-z])/) || [])[1];
     return { lay: pick('lay', LAYS, 1), proof: pick('proof', PROOFS, 2),
              promise: pick('promise', PROMISES, 4), conf: pick('conf', CONFS, 3),
-             qs: qsForced || (mix(5) % 2 === 0 ? 'new' : 'old') };
+             qs: qsForced || (mix(5) % 2 === 0 ? 'new' : 'money') };
   })();
   var LAY = DRAW.lay, PROOF = DRAW.proof, PROMISE = DRAW.promise, CONF = DRAW.conf;
   // ?demo=1 is us looking at the versions next to each other: it records nothing at all, so the
@@ -1003,7 +1092,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     { id: 's16', t: 'Outside Parliament, the government, the opposition and the backbenchers who scrutinise them all speak to the public. If government ministers can be prosecuted for lying but shadow ministers and scrutinisers can’t, the system of checks and balances in Parliament is thrown completely off balance. Every MP and peer should be covered.' },
     { id: 's17', t: 'Some politicians say being included would have a chilling effect on political debate. That concern is not credible: the offence only covers proven intentional or reckless lies on serious public matters, never honest mistakes, opinions or anything said in Parliament. The only thing it would chill is lying, and politicians who can’t debate without lying have no place in politics.' }
   ];
-  var STATEMENTS = DRAW.qs === 'new' ? NEW_QS : OLD_QS;
+  var STATEMENTS = NEW_QS;
   var PARTIES = [['Labour', 1], ['Conservative', 2], ['Reform UK', 3], ['Liberal Democrat', 4], ['Green', 5], ['SNP', 6],
     ['Plaid Cymru', 7], ['Another party', 8], ["Didn't vote", 9], ['Prefer not to say', 10]];
   // Everyone is asked about every statement, the two short ones first (the demonstration, then the
@@ -1278,21 +1367,23 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     var w = n === 'w';                                  // the "confirm it in your inbox" screen
     var c = n === 'c';                                  // the "three ways to help" screen
     var sh = n === 's';                                 // the share-the-link screen
+    var pt = n === 'pitch';                             // the money pitch
+    $('ppitch').hidden = !pt;
     $('pw').hidden = !w;
     $('pchoice').hidden = !c;
     $('pshare').hidden = !sh;
     if (w) waitStart(); else waitStop();
     for (var i = 1; i <= 5; i++) $('p' + i).hidden = i !== n;
     // four steps: sign, statements, the choice, then the MP email or the fund (both are step 4)
-    var at = c ? 3 : (n === 3 || n === 4 || sh) ? 4 : n;
+    var at = pt ? 2 : c ? 3 : (n === 3 || n === 4 || sh) ? 4 : n;
     var dots = $('dots').children;
     for (var j = 0; j < dots.length; j++) dots[j].classList.toggle('on', j < at);
     $('stepLbl').textContent = at <= 4 ? 'Step ' + at + ' of 4' : 'Done';
     $('card').classList.toggle('first', n === 1 || w);   // the step bar appears once they have confirmed
-    $('card').classList.toggle('after', c || sh || (!w && n >= 2));   // and the title, explainer and meter go
+    $('card').classList.toggle('after', c || sh || pt || (!w && n >= 2));   // and the title, explainer and meter go
     pinCard();
     if (quiet) return;
-    var h = $(w ? 'pw' : c ? 'pchoice' : sh ? 'pshare' : 'p' + n).querySelector('h2');
+    var h = [].filter.call($(w ? 'pw' : c ? 'pchoice' : sh ? 'pshare' : pt ? 'ppitch' : 'p' + n).querySelectorAll('h2'), function (x) { return x.offsetParent; })[0];
     if (h) { h.setAttribute('tabindex', '-1'); h.focus({ preventScroll: true }); }
     var top = $('card').getBoundingClientRect().top;
     if (top < 0 || top > window.innerHeight * 0.5) $('card').scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
@@ -1608,6 +1699,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       $('thanksS').textContent = more;
     }
     if (!S.key) { toMp(); return; }       // signed from another browser: their answers can't be kept here
+    if (DRAW.qs === 'money') { track('questions', S.backer ? 'money_backer' : 'money'); toPitch(); return; }
     buildLikert();
     go(2);
   }
@@ -1658,12 +1750,72 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     $('wayMpFrom').textContent = mp && S.me && S.me.pc ? '(Your MP, found from your postcode ' + S.me.pc + ')' : '';
     $('wayMpFrom').hidden = !(mp && S.me && S.me.pc);
     if (mp && mp.photo) { $('wayMpPhoto').src = mp.photo; $('wayMpPhoto').hidden = false; } else $('wayMpPhoto').hidden = true;
+    $('wayFund').hidden = !!S.fundSeen;
+    var ways = (S.fundSeen ? 0 : 1) + (S.abroad ? 0 : 1) + 1;
+    $('choiceH').textContent = ways === 3 ? 'Three ways to help win the vote.' : ways === 2 ? 'Two more ways to help win the vote.' : 'One more way to help win the vote.';
+    $('choiceS').textContent = ways === 3 ? 'Choose any of them, or do all three. Each makes a real difference.' : ways === 2 ? 'Choose either, or do both. Each makes a real difference.' : 'It takes a few seconds and brings more signatures.';
     track('choice_seen');
     go('c');
   }
   $('wayFund').addEventListener('click', function () { track('chose_fund'); toFund(); });
   $('wayMp').addEventListener('click', function () { track('chose_mp'); toMp(); });
   $('wayShare').addEventListener('click', function () { track('chose_share'); toShare(); });
+
+  // ---------------------------------------------------------------- 2b: the money pitch (Marcus, 6 Nov 2026)
+  // Two slides, swiped or moved on with Next: what the campaign has done, then what the money pays
+  // for, with the amount chosen on the slide. Then the fund screen, without repeating the case.
+  var ptAt = 0, ptAmt = 20;
+  function toPitch() {
+    S.pitchSeen = true;
+    ptAt = 0;
+    $('ptTrack').scrollLeft = 0;
+    ptShow(0);
+    track('pitch_seen');
+    go('pitch');
+  }
+  function ptShow(i) {
+    ptAt = i;
+    var dots = document.querySelectorAll('.pt-dots span');
+    for (var j = 0; j < dots.length; j++) dots[j].classList.toggle('on', j === i);
+    $('ptNext').style.visibility = i === 0 ? 'visible' : 'hidden';
+    var sl = [$('ptS1'), $('ptS2')];
+    sl[i].classList.add('in');
+    sl[i].removeAttribute('inert'); sl[1 - i].setAttribute('inert', '');
+    if (i === 1 && !S.ptNexted) { S.ptNexted = true; track('pitch_next'); }
+  }
+  // a swipe is read once the track has settled, so a Next press is never undone halfway through its glide
+  var ptTimer;
+  $('ptTrack').addEventListener('scroll', function () {
+    clearTimeout(ptTimer);
+    ptTimer = setTimeout(function () {
+      var t = $('ptTrack'), i = Math.round(t.scrollLeft / Math.max(1, t.clientWidth));
+      if (i !== ptAt && (i === 0 || i === 1)) ptShow(i);
+    }, 120);
+  }, { passive: true });
+  $('ptNext').addEventListener('click', function () {
+    var t = $('ptTrack');
+    t.scrollTo({ left: t.scrollWidth, behavior: reduced ? 'auto' : 'smooth' });
+    ptShow(1);
+    var top = $('card').getBoundingClientRect().top;
+    if (top < 0) $('card').scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
+  });
+  document.querySelectorAll('.pt-amt').forEach(function (b) {
+    b.addEventListener('click', function () {
+      ptAmt = +b.getAttribute('data-amt');
+      document.querySelectorAll('.pt-amt').forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+      $('ptGive').textContent = 'Back us with £' + ptAmt;
+    });
+  });
+  $('ptGive').addEventListener('click', function () {
+    track('pitch_fund', String(ptAmt));
+    S.pitchGive = true;
+    var r = $('p4').querySelector('input[name=amt][value="' + ptAmt + '"]');
+    if (r) r.checked = true;
+    $('otherWrap').hidden = true;
+    fundLabel();
+    toFund();
+  });
+  $('ptSkip').addEventListener('click', function () { track('pitch_skip'); toChoice(); });
 
   // ---------------------------------------------------------------- sharing: just the link to copy
   function toShare() {
@@ -1770,6 +1922,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     showAsk();
     $('fundThanks').hidden = !afterMp;
     $('fundBacker').hidden = !S.backer || !!afterMp;
+    $('p4').classList.toggle('pitched', !!S.pitchGive && !afterMp);
     S.fundSeen = true;
     track('fund_seen');
     go(4);
@@ -1893,7 +2046,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       $('doneS').textContent = 'Stripe will email you a receipt for your monthly backing.';
     });
   }
-  $('skipFund').addEventListener('click', function () { track('fund_skip'); finish(); });
+  $('skipFund').addEventListener('click', function () { track('fund_skip'); S.pitchSeen && !S.mpSeen && !S.shareSeen ? toChoice() : finish(); });
 
   // ---------------------------------------------------------------- 5: done
   function finish() {
@@ -1958,6 +2111,12 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     var paid = (q.match(/[?&]session_id=(cs_[A-Za-z0-9_]+)/) || [])[1];
     if (token) confirmFromLink(token);
     else if (paid) backFromStripe(paid);
+    else if (DEMO && /[?&]pitch=1(?![0-9])/.test(q)) {
+      S.signed = true; S.me = { first: 'Sam', last: 'Taylor', email: '', emailOk: true, town: 'Norwich', pc: 'NR2 2PW' };
+      S.mp = { seat: 'Your constituency', name: 'Jane Smith', party: 'Labour', email: 'your.mp@parliament.uk' };
+      document.querySelectorAll('.me-first').forEach(function (el) { el.textContent = S.me.first; });
+      toPitch();
+    }
     loadStats(true);
   }
   start();
