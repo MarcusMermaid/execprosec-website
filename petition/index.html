@@ -995,10 +995,10 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   // 5 Nov 2026: Marcus's shorter rewrites (s14 to s17, s11 split into s15 and s16) after the long
   // blocks lost people; the two short questions come first. s10 to s12 are retired.
   var NEW_QS = [
-    { id: 's13', fixed: true, t: 'I would be interested in attending an organised, peaceful demonstration outside Parliament in Westminster on the day of the vote.' },
     { id: 'v24', fixed: true, party: true, t: 'Which party did you vote for in 2024?',
       sub: 'We’ll use this to show parliamentarians that voters of every party care about this.' },
-    { id: 's14', t: 'Parliament’s own rules only deal with what is said inside Parliament. When an MP or peer is proven to have intentionally or recklessly lied to the public outside it, a jury should decide, just as it would for a police officer or civil servant.' },
+    { id: 's13', fixed: true, t: 'I would be interested in attending an organised, peaceful demonstration outside Parliament in Westminster on the day of the vote.' },
+    { id: 's14', lead: true, t: 'Parliament’s own rules only deal with what is said inside Parliament. When an MP or peer is proven to have intentionally or recklessly lied to the public outside it, a jury should decide, just as it would for a police officer or civil servant.' },
     { id: 's15', t: 'The Government’s reason for leaving backbench MPs and peers out is that, unlike ministers, they don’t have access to secret government information. That shows a complete misunderstanding of what lying is. A lie doesn’t depend on access to the truth; it is the opposite of the truth. All it takes is a willingness to make things up.' },
     { id: 's16', t: 'Outside Parliament, the government, the opposition and the backbenchers who scrutinise them all speak to the public. If government ministers can be prosecuted for lying but shadow ministers and scrutinisers can’t, the system of checks and balances in Parliament is thrown completely off balance. Every MP and peer should be covered.' },
     { id: 's17', t: 'Some politicians say being included would have a chilling effect on political debate. That concern is not credible: the offence only covers proven intentional or reckless lies on serious public matters, never honest mistakes, opinions or anything said in Parliament. The only thing it would chill is lying, and politicians who can’t debate without lying have no place in politics.' }
@@ -1011,9 +1011,11 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   // Agree first: with disagree on the left, people who agreed tapped the wrong end (26 Oct 2026).
   var SCALE = [['Strongly agree', 2], ['Agree', 1], ['Not sure', 0], ['Disagree', -1], ['Strongly disagree', -2]];
   function buildLikert() {
-    var order = STATEMENTS.filter(function (st) { return !st.fixed; });
+    var order = STATEMENTS.filter(function (st) { return !st.fixed && !st.lead; });
     for (var i = order.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = order[i]; order[i] = order[j]; order[j] = t; }
-    order = STATEMENTS.filter(function (st) { return st.fixed; }).concat(order);
+    // 6 Nov 2026: opening with the demonstration lost half the new side, so A leads, the other
+    // three follow shuffled, then the 2024 vote, and the demonstration comes last.
+    order = STATEMENTS.filter(function (st) { return st.lead; }).concat(order, STATEMENTS.filter(function (st) { return st.fixed; }));
     track('questions', DRAW.qs);
     $('likert').innerHTML = order.map(function (st) {
       var head = '<div class="lk-row' + (st.t.length > 300 ? ' lk-long' : '') + '" data-id="' + st.id + '"><p class="lk-t" id="lk_' + st.id + '">' + esc(st.t) + '</p>';
