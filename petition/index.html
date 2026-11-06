@@ -1867,12 +1867,26 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   // The letter is short and says what the petition says. It goes from the signer's own email:
   // we never send it for them, so nothing about it can touch our own domain's standing.
   var MP_SUBJECT = 'Include all lawmakers under the Hillsborough Law';
+  // Marcus, 6 Nov 2026: written as a constituent who backs the campaign. It asks them to include
+  // themselves, then answers the Government's lines one by one, so they cannot be sent back to us.
   function mpLetter() {
     var mp = S.mp, me = S.me;
     return 'Dear ' + (mp ? mp.name + ' MP' : '[your MP]') + ',\n\n' +
-      'I am your constituent' + (me.pc ? ' (' + me.pc + ')' : '') + ' and I have signed the petition to include all lawmakers under the Hillsborough Law.\n\n' +
-      'If Parliament votes to exempt its own members, I will feel angry and betrayed, and I will trust Parliament far less. A law for nearly everyone else but not for the people who make it is a law for thee, but not for me.\n\n' +
-      'I urge you to support ending the carve-out for lawmakers (MPs, peers, MSPs, MSs and MLAs) from the duty of candour and the offence of misleading the public, for reckless or intentionally deceitful acts outside the proceedings of their parliaments. Please tell me how you will vote.\n\n' +
+      'I am your constituent' + (me.pc ? ' (' + me.pc + ')' : '') + '. I have signed the petition, and I back the campaign, to include all lawmakers under the Hillsborough Law.\n\n' +
+      'I am writing to ask you to include yourself. The Public Office (Accountability) Bill will make it a crime for police officers, civil servants, soldiers, ministers and even the intelligence services to intentionally or recklessly mislead the public. MPs and peers have written themselves out. Please vote to end that carve-out for lies told to the public outside Parliament: on TV and radio, on social media and at public events.\n\n' +
+      'I do not want a reply that repeats the lines the Cabinet Office has written for MPs. I have read them, and none of them stands up:\n\n' +
+      '1. The Government says parliamentary privilege protects what is said in Parliament.\n' +
+      'It still would. The amendment we are asking for only covers what MPs and peers say to the public outside Parliament.\n\n' +
+      '2. The Government says Parliament regulates its own affairs.\n' +
+      'Parliament\'s own rules only deal with what is said inside Parliament. Nothing deals with lies told to the public outside it. When a police officer or civil servant lies to the public, a jury decides. MPs and peers should be no different.\n\n' +
+      '3. The Government says backbench MPs and peers do not take decisions for the state or have access to the government information ministers have.\n' +
+      'That shows a complete misunderstanding of what lying is. A lie does not depend on access to the truth; it is the opposite of the truth. All it takes is a willingness to make things up. And if government ministers can be prosecuted for lying but shadow ministers and scrutinisers cannot, the checks and balances in Parliament are thrown completely off balance.\n\n' +
+      '4. The Government says elected members are accountable to the public at elections.\n' +
+      'Elections decide who holds office. Only a jury, under careful analysis of the evidence at trial, can decide whether someone deliberately deceived the public.\n\n' +
+      '5. The Government says this offence is not the right way to regulate political speech.\n' +
+      'Nothing written in the Bill limits it to Hillsborough-style cover-ups. The bar for a criminal conviction is high, but the range of situations it can cover is very broad. We have no interest in criminalising political speech. Our amendment makes sure opinions, honest mistakes and broken promises could never be prosecuted.\n\n' +
+      'If Parliament votes to exempt its own members, I will feel angry and betrayed. A law for everyone else but not for the people who make it is a law for thee, but not for me.\n\n' +
+      'So please tell me how you will vote. Please do not send me lines written by the Cabinet Office: as I have shown above, they are meaningless. Every other objection I have heard is answered in the campaign\'s briefing below. If your reply repeats one of them, I will take it that you have no real answer.\n\n' +
       'Detailed briefing: https://execprosec.org/amendments-briefing/\n\n' +
       'Yours sincerely,\n' + me.first + ' ' + me.last + (me.pc ? '\n' + me.pc : '');
   }
