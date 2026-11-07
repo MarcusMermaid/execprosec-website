@@ -1868,27 +1868,42 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   // we never send it for them, so nothing about it can touch our own domain's standing.
   var MP_SUBJECT = 'Include all lawmakers under the Hillsborough Law';
   // Marcus, 6 Nov 2026: written as a constituent who backs the campaign. It asks them to include
-  // themselves, then answers the Government's lines one by one, so they cannot be sent back to us.
-  function mpLetter() {
+  // themselves, then answers the Government's lines one by one under bold titles, so they cannot be
+  // sent back to us. 7 Nov: the number of other signers is the live confirmed count, rounded down to
+  // the thousand, so the MP knows this is not one person. html=true gives the bold version for the
+  // screen and for copying into an email; otherwise plain text.
+  function othersSigned() {
+    var n = Math.floor(((S.count || 0) - 1) / 1000) * 1000;
+    return n >= 1000 ? fmt(n) : '';
+  }
+  function mpLetter(html) {
     var mp = S.mp, me = S.me;
-    return 'Dear ' + (mp ? mp.name + ' MP' : '[your MP]') + ',\n\n' +
-      'I am your constituent' + (me.pc ? ' (' + me.pc + ')' : '') + '. I have signed the petition, and I back the campaign, to include all lawmakers under the Hillsborough Law.\n\n' +
+    var T = function (x) { return html ? esc(x) : x; };
+    var B = function (x) { return html ? '<b>' + esc(x) + '</b>' : x; };
+    var others = othersSigned();
+    return T('Dear ' + (mp ? mp.name + ' MP' : '[your MP]') + ',\n\n' +
+      'I am your constituent' + (me.pc ? ' (' + me.pc + ')' : '') + '. ' +
+      (others ? 'Along with ' + others + ' other people, I have signed the petition' : 'I have signed the petition') +
+      ' to include all lawmakers under the Hillsborough Law, and I back the campaign behind it.\n\n' +
       'I am writing to ask you to include yourself. The Public Office (Accountability) Bill will make it a crime for police officers, civil servants, soldiers, ministers and even the intelligence services to intentionally or recklessly mislead the public. MPs and peers have written themselves out. Please vote to end that carve-out for lies told to the public outside Parliament: on TV and radio, on social media and at public events.\n\n' +
-      'I do not want a reply that repeats the lines the Cabinet Office has written for MPs. I have read them, and none of them stands up:\n\n' +
-      '1. The Government says parliamentary privilege protects what is said in Parliament.\n' +
-      'It still would. The amendment we are asking for only covers what MPs and peers say to the public outside Parliament.\n\n' +
-      '2. The Government says Parliament regulates its own affairs.\n' +
-      'Parliament\'s own rules only deal with what is said inside Parliament. Nothing deals with lies told to the public outside it. When a police officer or civil servant lies to the public, a jury decides. MPs and peers should be no different.\n\n' +
-      '3. The Government says backbench MPs and peers do not take decisions for the state or have access to the government information ministers have.\n' +
-      'That shows a complete misunderstanding of what lying is. A lie does not depend on access to the truth; it is the opposite of the truth. All it takes is a willingness to make things up. And if government ministers can be prosecuted for lying but shadow ministers and scrutinisers cannot, the checks and balances in Parliament are thrown completely off balance.\n\n' +
-      '4. The Government says elected members are accountable to the public at elections.\n' +
-      'Elections decide who holds office. Only a jury, under careful analysis of the evidence at trial, can decide whether someone deliberately deceived the public.\n\n' +
-      '5. The Government says this offence is not the right way to regulate political speech.\n' +
-      'Nothing written in the Bill limits it to Hillsborough-style cover-ups. The bar for a criminal conviction is high, but the range of situations it can cover is very broad. We have no interest in criminalising political speech. Our amendment makes sure opinions, honest mistakes and broken promises could never be prosecuted.\n\n' +
-      'If Parliament votes to exempt its own members, I will feel angry and betrayed. A law for everyone else but not for the people who make it is a law for thee, but not for me.\n\n' +
-      'So please tell me how you will vote. Please do not send me lines written by the Cabinet Office: as I have shown above, they are meaningless. Every other objection I have heard is answered in the campaign\'s briefing below. If your reply repeats one of them, I will take it that you have no real answer.\n\n' +
+      'I do not want a reply that repeats the lines the Cabinet Office has written for MPs. The ExecProsec campaign, which is leading this petition, has read them all and concluded that none of them stands up.\n\n') +
+      B('1. Parliamentary privilege is not a barrier to including legislators') + T('\n' +
+      'The Government says parliamentary privilege protects what is said in Parliament. It still would. Our amendment does not threaten parliamentary privilege; it respects it completely. It only covers what MPs and peers say to the public outside Parliament, and it gives immunity from prosecution under these offences for everything that is a proceeding in any of the UK\'s parliaments.\n\n' +
+      'In fact, it goes further than the Government has. The Senedd, the Scottish Parliament and the Northern Ireland Assembly do not have parliamentary privilege; they only have limited protection against claims of slander. The Bill, as it is written, gives no immunity from prosecution for what is said in those parliaments. So at present, a government minister speaking in the Senedd, the Scottish Parliament or the Northern Ireland Assembly could be prosecuted for misleading the public if they chose to lie there. That is a major oversight in the Bill, and it could cause serious problems in those parliaments. Our amendment fixes it by applying a version of parliamentary privilege to all of the UK\'s other parliaments, which the Government and the Bill have not even thought to do.\n\n') +
+      B('2. Parliament\'s existing procedures are no barrier to including legislators either') + T('\n' +
+      'The Government says Parliament regulates its own affairs. But Parliament\'s own rules only deal with what is said inside Parliament. They do not deal with lies told to the public outside Parliament. When a police officer or civil servant lies to the public, a jury decides. MPs and peers should be no different.\n\n') +
+      B('3. Lying does not depend on access to government information') + T('\n' +
+      'The Government says backbench MPs and peers do not take decisions for the state or have access to the government information ministers have. That shows a complete misunderstanding of what lying is. A lie does not depend on access to the truth; it is the opposite of the truth. All it takes is a willingness to make things up. And if government ministers can be prosecuted for lying but shadow ministers and scrutinisers cannot, the checks and balances in Parliament are thrown completely off balance.\n\n') +
+      B('4. Elections and prosecutions do two completely different things') + T('\n' +
+      'The Government says elected members are accountable to the public at elections. But elections decide who holds office, and they reflect the popularity of a party, its leader or its policies. A prosecution decides something else entirely: whether one person deliberately deceived the public. Only a jury, under careful analysis of the evidence at trial, can decide that. No election can.\n\n' +
+      'The parliamentary expenses scandal proves the point. Elected politicians went to prison for false expense claims. Being elected did not put them above the law; they faced justice, as everyone should. And peers never face an election at all.\n\n') +
+      B('5. The Government says this offence is targeting Hillsborough-style cover-ups, and it is not the right way to regulate political speech') + T('\n' +
+      'Firstly, we are not attempting to regulate political speech. We have no interest in criminalising it. Our amendment makes sure opinions, honest mistakes and broken promises could never be prosecuted.\n\n' +
+      'Secondly, nothing written in the Bill limits it to Hillsborough-style cover-ups. It should rightly cover cover-ups like Hillsborough, but it should equally cover lying to start a war or lying to manipulate the result of a referendum. The bar for a criminal conviction is high, but the range of situations the offence can cover is very broad, as it should be.\n\n' +
+      'If Parliament votes to exempt its own members, I will feel angry and betrayed. A law for everyone else but not for the people who make it is a law for thee, but not for me. Such an act would destroy public trust in the UK\'s parliaments, as you would be telling us that you wanted the freedom to lie to us.\n\n' +
+      'So please tell me how you will vote. Please do not send me lines written by the Cabinet Office: as set out above, they are meaningless. Every other objection the campaign has heard is answered in its briefing below. If your reply repeats one of them, I will take it that you have no real answer.\n\n' +
       'Detailed briefing: https://execprosec.org/amendments-briefing/\n\n' +
-      'Yours sincerely,\n' + me.first + ' ' + me.last + (me.pc ? '\n' + me.pc : '');
+      'Yours sincerely,\n' + me.first + ' ' + me.last + (me.pc ? '\n' + me.pc : ''));
   }
   function toMp() {
     if (S.abroad) { toFund(); return; }
@@ -1905,7 +1920,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     $('mpMail').textContent = mp && mp.email ? mp.email : "Your MP's email address appears here";
     document.querySelector('[data-copy="mpMail"]').disabled = !(mp && mp.email);
     $('mpSubj').textContent = MP_SUBJECT;
-    $('mpMsg').textContent = mpLetter();
+    $('mpMsg').innerHTML = mpLetter(true);
     document.querySelectorAll('.cp-b').forEach(function (b) { b.classList.remove('done'); b.textContent = 'Copy'; });
     S.mpSeen = true;
     track('mp_seen');
@@ -1915,7 +1930,16 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     b.addEventListener('click', function () {
       var text = $(b.getAttribute('data-copy')).textContent;
       var shown = function () { b.classList.add('done'); b.textContent = 'Copied'; S.mpCopied = true; track('mp_copied', b.getAttribute('data-copy')); };
-      if (navigator.clipboard && navigator.clipboard.writeText) {
+      // the letter goes as rich text too, so its bold titles stay bold when pasted into an email
+      if (b.getAttribute('data-copy') === 'mpMsg' && window.ClipboardItem && navigator.clipboard && navigator.clipboard.write) {
+        var html = '<div>' + mpLetter(true).replace(/\n/g, '<br>') + '</div>';
+        navigator.clipboard.write([new ClipboardItem({
+          'text/html': new Blob([html], { type: 'text/html' }),
+          'text/plain': new Blob([mpLetter(false)], { type: 'text/plain' })
+        })]).then(shown, function () {
+          navigator.clipboard.writeText(text).then(shown, function () { selectText($('mpMsg')); });
+        });
+      } else if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(text).then(shown, function () { selectText($(b.getAttribute('data-copy'))); });
       } else selectText($(b.getAttribute('data-copy')));
     });
