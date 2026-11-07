@@ -1869,12 +1869,12 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   var MP_SUBJECT = 'Include all lawmakers under the Hillsborough Law';
   // Marcus, 6 Nov 2026: written as a constituent who backs the campaign. It asks them to include
   // themselves, then answers the Government's lines one by one under bold titles, so they cannot be
-  // sent back to us. 7 Nov: the number of other signers is the live confirmed count, rounded down to
-  // the thousand, so the MP knows this is not one person. html=true gives the bold version for the
+  // sent back to us. 7 Nov: the number of other signers is the live confirmed count, so the MP
+  // knows this is not one person. html=true gives the bold version for the
   // screen and for copying into an email; otherwise plain text.
   function othersSigned() {
-    var n = Math.floor(((S.count || 0) - 1) / 1000) * 1000;
-    return n >= 1000 ? fmt(n) : '';
+    var n = (S.count || 0) - 1;   // exact, and it goes up as people sign (Marcus, 7 Nov 2026)
+    return n >= 100 ? fmt(n) : '';
   }
   function mpLetter(html) {
     var mp = S.mp, me = S.me;
