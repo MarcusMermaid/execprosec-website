@@ -178,6 +178,20 @@ button.press-item{background:none;border:0;cursor:pointer;position:relative}
 .steps li{list-style:none;flex:1;height:4px;border-radius:2px;background:var(--rule)}
 .steps li.on{background:var(--navy)}
 #stepLbl{font-size:12px;font-weight:600;color:var(--muted);white-space:nowrap}
+/* 8 Nov 2026: four named steps, a thicker bar, and one plain line saying how near the end they are */
+.stephead{display:block;padding:18px 20px 0}
+.steps{gap:6px}
+.steps li{height:8px;border-radius:4px}
+.steps li.cur{background:var(--gold)}
+.stepnames{display:flex;gap:6px;margin:7px 0 0;padding:0}
+.stepnames li{list-style:none;flex:1;min-width:0;font-size:12.5px;font-weight:600;color:var(--muted)}
+.stepnames li.on{color:var(--navy)}
+.stepnames li.on::before{content:'\2713\00a0'}
+.stepnames li.cur{color:var(--ink);font-weight:800}
+#stepLbl{display:block;margin-top:12px;font-size:16px;font-weight:700;color:var(--navy);white-space:normal}
+#stepLbl b{color:var(--gold-ink)}
+/* the email question, in words above its two buttons */
+.consent-q{margin:2px 0 8px;font-size:15px;font-weight:700;color:var(--navy)}
 
 .panel{padding:14px 20px 22px}
 .panel h2{font:400 26px/1.15 var(--f-display);color:var(--navy);margin:0 0 6px;text-wrap:balance}
@@ -516,7 +530,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       <p class="sq" id="sq" hidden></p>
       <p class="deadline"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/></svg><span id="deadlineTxt"></span></p>
     </div>
-    <div class="stephead"><ol class="steps" id="dots" aria-hidden="true"><li class="on"></li><li></li><li></li><li></li></ol><span id="stepLbl">Step 1 of 4</span></div>
+    <div class="stephead"><ol class="steps" id="dots" aria-hidden="true"><li class="on"></li><li></li><li></li><li></li></ol><ol class="stepnames" id="stepNames" aria-hidden="true"><li>Sign</li><li>Confirm</li><li>Your view</li><li>Help</li></ol><span id="stepLbl" aria-live="polite">Step 1 of 4</span></div>
 
     <!-- 1: sign -->
     <form class="panel" id="p1" novalidate>
@@ -532,7 +546,8 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       <div class="f" id="ctyWrap" hidden><label for="cty">Country</label><input id="cty" name="cty" autocomplete="country-name" maxlength="60"><span class="err" id="ctyErr" aria-live="polite"></span></div>
       </div>
       <p style="margin:-4px 0 14px"><button type="button" class="link" id="abroadBtn">Not in the UK?</button></p>
-      <div class="consent" id="consent" role="radiogroup" aria-label="Can we email you about this campaign?">
+      <p class="consent-q" id="consentQ">Can we email you about this campaign?</p>
+      <div class="consent" id="consent" role="radiogroup" aria-labelledby="consentQ">
         <button type="button" class="cbtn" role="radio" aria-checked="false" data-v="yes">Yes, email me about this campaign</button>
         <button type="button" class="cbtn" role="radio" aria-checked="false" data-v="no">No, don't email me about this campaign</button>
       </div>
@@ -631,6 +646,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       <button class="way way-fund" type="button" id="wayFund"><b>Fund the campaign</b><span>Newspaper adverts, billboards and a rally on the day of the vote. Monthly or one-off, from £10.</span></button>
       <button class="way way-mp" type="button" id="wayMp"><img id="wayMpPhoto" alt="" hidden><span><b id="wayMpTitle">Email your MP</b><span class="way-from" id="wayMpFrom" hidden></span><span>About two minutes, from your own email address. We've written it for you.</span></span></button>
       <button class="way way-share" type="button" id="wayShare"><b>Share the petition</b><span>Copy the link and paste it wherever you talk to people. Every share brings more signatures.</span></button>
+      <button class="link skip" type="button" id="wayNone">I'm done for now</button>
     </div>
 
     <!-- 3b: share the link -->
@@ -927,6 +943,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
 
   // Posted as plain text, so the browser sends it at once without first asking permission.
   function post(path, body, keep) {
+    if (DEMO && S && S.key === 'demo') return Promise.resolve({ ok: true });
     return fetch(API + path, { method: 'POST', body: JSON.stringify(body), keepalive: !!keep, headers: { 'Content-Type': 'text/plain;charset=UTF-8' } })
       .then(function (r) { return r.json().catch(function () { return { ok: false }; }); });
   }
@@ -1376,12 +1393,22 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     $('pshare').hidden = !sh;
     if (w) waitStart(); else waitStop();
     for (var i = 1; i <= 5; i++) $('p' + i).hidden = i !== n;
-    // four steps: sign, statements, the choice, then the MP email or the fund (both are step 4)
-    var at = pt ? 2 : c ? 3 : (n === 3 || n === 4 || sh) ? 4 : n;
-    var dots = $('dots').children;
-    for (var j = 0; j < dots.length; j++) dots[j].classList.toggle('on', j < at);
-    $('stepLbl').textContent = at <= 4 ? 'Step ' + at + ' of 4' : 'Done';
-    $('card').classList.toggle('first', n === 1 || w);   // the step bar appears once they have confirmed
+    // 8 Nov 2026: four named steps: sign, confirm, your view (the questions, or the quote and the
+    // pitch), help (the choice, the MP email, the fund, sharing). The bar shows from the confirm
+    // screen with signing already ticked, and the line under it says how near the end they are.
+    var at = w ? 2 : (n === 2 || pt) ? 3 : (c || sh || n === 3 || n === 4) ? 4 : n === 5 ? 5 : 1;
+    var dots = $('dots').children, names = $('stepNames').children;
+    for (var j = 0; j < dots.length; j++) {
+      dots[j].classList.toggle('on', j < at - 1);
+      dots[j].classList.toggle('cur', j === at - 1);
+      names[j].classList.toggle('on', j < at - 1);
+      names[j].classList.toggle('cur', j === at - 1);
+    }
+    $('stepLbl').innerHTML = at === 2 ? 'Step 2 of 4 · <b>Almost there:</b> confirm in your email'
+      : at === 3 ? 'Step 3 of 4 · <b>Nearly done</b>'
+      : at === 4 ? '<b>Last step</b> · ' + (c ? 'choose how to help' : n === 3 ? 'email your MP' : n === 4 ? 'back the campaign' : 'share the petition')
+      : at === 5 ? '<b>All done.</b> Thank you.' : 'Step 1 of 4';
+    $('card').classList.toggle('first', n === 1);   // the step bar appears once they have signed
     $('card').classList.toggle('after', c || sh || pt || (!w && n >= 2));   // and the title, explainer and meter go
     pinCard();
     if (quiet) return;
@@ -1623,7 +1650,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   function waitStop() { clearTimeout(waitTimer); waitTimer = 0; }
   function checkConfirmed() {
     waitTimer = 0;
-    if ($('pw').hidden || !S.sig || Date.now() > waitUntil) return;
+    if ($('pw').hidden || !S.sig || Date.now() > waitUntil || S.key === 'demo') return;
     if (document.hidden) { waitTimer = setTimeout(checkConfirmed, 4000); return; }
     getJson('petition/status?sig=' + S.sig).then(function (d) {
       if ($('pw').hidden) return;
@@ -1688,7 +1715,8 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     }
     document.querySelectorAll('.me-first').forEach(function (el) { el.textContent = S.me.first; });
     var reached = number && number >= targetFor(number - 1) && countShown(number) ? targetFor(number - 1) : 0;
-    var more = DRAW.qs === 'new' ? 'Six quick questions. We quote the results to journalists and parliamentarians.'
+    var more = DRAW.qs === 'money' ? 'One quick question. We quote the answers to journalists and parliamentarians.'
+      : DRAW.qs === 'new' ? 'Six quick questions. We quote the results to journalists and parliamentarians.'
       : 'How far do you agree? Seven quick taps. We quote the results to journalists and parliamentarians.';
     if (d.already) {
       $('thanksH').textContent = "You've already signed, " + S.me.first + '. Thank you.';
@@ -1701,8 +1729,18 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       $('thanksS').textContent = more;
     }
     if (!S.key) { toMp(); return; }       // signed from another browser: their answers can't be kept here
-    if (DRAW.qs === 'money') { track('questions', S.backer ? 'money_backer' : 'money'); toPitch(); return; }
+    if (DRAW.qs === 'money') { track('questions', S.backer ? 'money_backer' : 'money'); quoteFirst(); return; }
     buildLikert();
+    go(2);
+  }
+
+  // 8 Nov 2026: the money side used to go straight to the pitch and never saw the quote box, so its
+  // quotes fell from 33 to 21 in 100. Now it is asked for its own words first, then sees the pitch.
+  function quoteFirst() {
+    S.quoteFirst = true;
+    $('likert').innerHTML = '';
+    document.querySelector('#p2 .lk-top').hidden = true;
+    $('p2').classList.add('lk-done');
     go(2);
   }
 
@@ -1730,13 +1768,14 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     if (S.key) post('petition/quote', { sig: S.sig, key: S.key, text: t }, true).catch(function () {});
     return true;
   }
-  $('p2').addEventListener('submit', function (e) { e.preventDefault(); if (saveAnswers(true)) { sendAnswers(true, 0); track('statements_done'); afterStatements(); } });
-  $('skipQs').addEventListener('click', function () { saveAnswers(false); sendAnswers(true, 0); track('statements_done', 'skipped'); afterStatements(); });
+  $('p2').addEventListener('submit', function (e) { e.preventDefault(); if (saveAnswers(true)) { sendAnswers(true, 0); track('statements_done', S.quoteFirst ? 'quote_only' : ''); afterStatements(); } });
+  $('skipQs').addEventListener('click', function () { saveAnswers(false); sendAnswers(true, 0); track('statements_done', S.quoteFirst ? 'quote_only skipped' : 'skipped'); afterStatements(); });
 
   // Marcus, 29 Oct 2026: people who have given us money before are asked to fund first. 17 in 100
   // of them give when they see the ask, but most never reached it. After it they are offered the MP
   // email and sharing on the thank-you screen. Everyone else chooses from the three ways as before.
   function afterStatements() {
+    if (S.quoteFirst && !S.pitchSeen) { toPitch(); return; }
     if (S.backer && !S.fundSeen) { track('fund_first', 'backer'); toFund(); return; }
     toChoice();
   }
@@ -1762,6 +1801,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   $('wayFund').addEventListener('click', function () { track('chose_fund'); toFund(); });
   $('wayMp').addEventListener('click', function () { track('chose_mp'); toMp(); });
   $('wayShare').addEventListener('click', function () { track('chose_share'); toShare(); });
+  $('wayNone').addEventListener('click', function () { track('chose_none'); finish(); });
 
   // ---------------------------------------------------------------- 2b: the money pitch (Marcus, 6 Nov 2026)
   // Two slides, swiped or moved on with Next: what the campaign has done, then what the money pays
@@ -1837,7 +1877,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
 
   // How far each signer gets, for the funnel in the morning report. Sent in the background, never waited for.
   function track(step, detail) {
-    if (!S.sig || !S.key) return;
+    if (DEMO || !S.sig || !S.key) return;
     try {
       var b = JSON.stringify({ sig: S.sig, key: S.key, step: step, detail: detail || '' });
       if (navigator.sendBeacon) navigator.sendBeacon(API + 'petition/step', new Blob([b], { type: 'text/plain' }));
@@ -2140,6 +2180,22 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     if (!S.signed) setTimeout(function () { $('first').focus({ preventScroll: true }); }, reduced ? 0 : 500);
   });
 
+  // ?demo=1&at=w|q|c|mp|fund|share|done opens that screen as a made-up signer, sending nothing
+  function demoAt(at) {
+    S.me = { first: 'Sam', last: 'Taylor', email: 'sam@example.com', emailOk: true, town: 'Norwich', pc: 'NR2 2PW' };
+    S.mp = { seat: 'Your constituency', name: 'Jane Smith', party: 'Labour', email: 'your.mp@parliament.uk' };
+    S.sig = 1; S.key = 'demo';
+    document.querySelectorAll('.me-first').forEach(function (el) { el.textContent = S.me.first; });
+    if (at === 'w') { showWait(); return; }
+    S.signed = true;
+    if (at === 'q') { confirmed({ number: 0, count: 0, already: true }); $('thanksH').textContent = 'Confirmed. Thank you, Sam.'; return; }
+    if (at === 'c') { toChoice(); return; }
+    if (at === 'mp') { toMp(); return; }
+    if (at === 'fund') { toFund(); return; }
+    if (at === 'share') { toShare(); return; }
+    finish();
+  }
+
   // ---------------------------------------------------------------- start
   function start() {
     fresh();
@@ -2156,6 +2212,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     var paid = (q.match(/[?&]session_id=(cs_[A-Za-z0-9_]+)/) || [])[1];
     if (token) confirmFromLink(token);
     else if (paid) backFromStripe(paid);
+    else if (DEMO && /[?&]at=(w|q|c|mp|fund|share|done)(?![a-z])/.test(q)) demoAt(q.match(/[?&]at=([a-z]+)/)[1]);
     else if (DEMO && /[?&]pitch=1(?![0-9])/.test(q)) {
       S.signed = true; S.me = { first: 'Sam', last: 'Taylor', email: '', emailOk: true, town: 'Norwich', pc: 'NR2 2PW' };
       S.mp = { seat: 'Your constituency', name: 'Jane Smith', party: 'Labour', email: 'your.mp@parliament.uk' };
