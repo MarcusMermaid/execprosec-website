@@ -983,7 +983,9 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     // From 6 Nov the seven statements end: half get the new questions, half the money pitch. ?qs=new or ?qs=money forces one.
     var qsForced = (location.search.match(/[?&]qs=(new|money)(?![a-z])/) || [])[1];
     return { lay: pick('lay', LAYS, 1), proof: pick('proof', PROOFS, 2),
-             promise: pick('promise', PROMISES, 4), conf: pick('conf', CONFS, 3),
+             // 8 Nov 2026 (Marcus): the code won its test (81 against 79 in 100 visitors confirmed), so
+             // everyone gets it now; ?conf=link still shows the old link-only screen for comparison.
+             promise: pick('promise', PROMISES, 4), conf: /[?&]conf=link(?![a-z])/.test(location.search) ? 'link' : 'code',
              qs: qsForced || (mix(5) % 2 === 0 ? 'new' : 'money') };
   })();
   var LAY = DRAW.lay, PROOF = DRAW.proof, PROMISE = DRAW.promise, CONF = DRAW.conf;
