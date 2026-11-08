@@ -289,6 +289,40 @@ button.press-item{background:none;border:0;cursor:pointer;position:relative}
 .pt-slide.in .pt-proof li:nth-child(3),.pt-slide.in .pt-proof li:nth-child(3)::before{animation-delay:.75s}
 .pt-slide.in .pt-use{animation:ptIn .5s cubic-bezier(.2,.7,.2,1) both}
 .pt-slide.in .pt-use:nth-child(2){animation-delay:.12s}.pt-slide.in .pt-use:nth-child(3){animation-delay:.24s}
+/* the pitch-first trial (Marcus, 8 Nov 2026): 1 in 4 visitors see the whole story as a carousel
+   before the form. The card's title, meter and form wait until they reach the end or skip. */
+#pstory{padding-top:4px}
+.card.storying .card-head,.card.storying .meter,.card.storying .stephead,.card.storying #p1{display:none}
+.st-slide .pt-body{padding:16px 18px 18px}
+.st-count{position:absolute;top:10px;right:10px;z-index:2;font:700 11px/1 var(--f-body);letter-spacing:.06em;color:#fff;background:rgba(4,20,64,.55);padding:5px 8px;border-radius:10px}
+.st-cover{flex:1 1 auto;height:auto;min-height:clamp(150px,26vh,230px);background-position:center 30%}
+.st-slide h2{font-size:31px}
+.st-big{font:400 21px/1.3 var(--f-display)!important;color:#fff!important}
+.st-cuts{display:grid;gap:8px;margin:2px 2px 4px}
+.st-cut{background:#fbf8ef;color:#141b33;padding:7px 11px 8px;border-radius:1px;box-shadow:0 8px 18px rgba(0,0,0,.4);transform:rotate(var(--r,0deg))}
+.st-cut .mh{display:block;font-size:12px;line-height:1.2;margin:0 0 4px;padding:0 0 4px;border-bottom:1px solid #d9d2bf;letter-spacing:.04em}
+.st-cut .mh-tel{font:700 13px/1.2 'Times New Roman',Times,serif;letter-spacing:.14em}
+.st-cut .mh-sky{font:900 13px/1.2 'Arial Black',Arial,sans-serif;color:#c0172f}
+.st-cut .mh-exp{font:700 14px/1.2 Georgia,serif;color:#c8102e;letter-spacing:0}
+.st-cut .mh-ind{font:800 13px/1.2 Arial,sans-serif;color:#b3261e}
+.st-cut b{display:block;font:400 14.5px/1.2 var(--f-display);color:#141b33}
+.st-cut small{display:block;margin-top:2px;font-size:10.5px;color:#6b6f80}
+.st-when{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:6px 0 16px;padding:0;text-align:center}
+.st-when li{background:rgba(255,255,255,.06);border:1px solid var(--line-navy);border-radius:6px;padding:12px 6px 10px;font-size:13px;font-weight:700;line-height:1.25;color:#fff}
+.st-when li i{display:block;width:30px;height:30px;margin:0 auto 8px;border-radius:50%;background:var(--gold);color:var(--navy);font:800 14px/30px var(--f-body);font-style:normal}
+.st-ad{position:relative;margin:2px 0 14px;border:3px solid #fff;border-radius:3px;box-shadow:0 10px 24px rgba(0,0,0,.45);background:#fff}
+.st-ad img{display:block;width:100%;height:auto}
+.st-ad span{position:absolute;top:-10px;left:10px;background:var(--gold);color:var(--navy);font:800 10.5px/1 var(--f-body);letter-spacing:.1em;text-transform:uppercase;padding:5px 8px;border-radius:2px}
+.st-steps{list-style:none;margin:6px 0 16px;padding:0}
+.st-steps li{position:relative;padding:3px 0 13px 44px;font-size:15.5px;font-weight:700;line-height:1.35;color:#fff}
+.st-steps li small{display:block;font-size:13px;font-weight:400;color:var(--on-navy-2)}
+.st-steps li i{position:absolute;left:0;top:0;width:32px;height:32px;border-radius:50%;background:var(--gold);color:var(--navy);font:800 15px/32px var(--f-body);font-style:normal;text-align:center}
+.st-sig{font-size:13px!important;color:var(--on-navy-2)!important;font-style:italic}
+.pt-slide.in .st-cut,.pt-slide.in .st-when li,.pt-slide.in .st-steps li{animation:ptIn .5s cubic-bezier(.2,.7,.2,1) both}
+.pt-slide.in .st-cut:nth-child(2),.pt-slide.in .st-when li:nth-child(2),.pt-slide.in .st-steps li:nth-child(2){animation-delay:.14s}
+.pt-slide.in .st-cut:nth-child(3),.pt-slide.in .st-when li:nth-child(3),.pt-slide.in .st-steps li:nth-child(3){animation-delay:.28s}
+.pt-slide.in .st-cut:nth-child(4){animation-delay:.42s}
+#stSkip{display:block;margin:10px auto 0}
 #p4 .pitch-only{display:none}
 #p4.pitched .pitch-only{display:block}
 #p4.pitched .no-pitch{display:none}
@@ -517,6 +551,86 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       <p class="deadline"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/></svg><span id="deadlineTxt"></span></p>
     </div>
     <div class="stephead"><ol class="steps" id="dots" aria-hidden="true"><li class="on"></li><li></li><li></li><li></li></ol><span id="stepLbl">Step 1 of 4</span></div>
+
+    <!-- 0: the pitch-first trial (Marcus, 8 Nov 2026). 1 in 4 visitors see this before the form. -->
+    <div class="panel" id="pstory" hidden>
+      <div class="pt-track" id="stTrack" aria-roledescription="carousel" aria-label="This is not just a petition">
+        <section class="pt-slide st-slide" aria-roledescription="slide" aria-label="1 of 6">
+          <span class="st-count" aria-hidden="true">1/6</span>
+          <div class="pt-photo st-cover" style="background-image:url(/_web/photos/mjb-2.webp)" role="img" aria-label="Marcus J Ball with the press outside Westminster Magistrates Court"></div>
+          <div class="pt-body">
+            <p class="pt-kick pt-a">Before you sign</p>
+            <h2 class="pt-a">This is <em>not</em> just a petition.</h2>
+            <p class="pt-a">It's a plan to win the vote in Parliament, and you're a big part of it. Swipe to see how it works.</p>
+          </div>
+        </section>
+        <section class="pt-slide st-slide" aria-roledescription="slide" aria-label="2 of 6">
+          <span class="st-count" aria-hidden="true">2/6</span>
+          <div class="pt-body" style="padding-top:22px">
+            <p class="pt-kick pt-a">The good news</p>
+            <h3 class="pt-a">The UK is about to make <em>history</em>.</h3>
+            <p class="st-big pt-a">Thanks to the Hillsborough Law Now campaign and the Government, the UK is set to become the first nation in over 2,500 years to make lying in politics a crime.</p>
+            <p class="pt-a">But the Bill must be amended to include all lawmakers. Right now it covers ministers, police and almost every other public official, but not the MPs and peers who make the law.</p>
+            <p class="pt-a">To win, we have to show politicians that the public really care about this, and that the public are backing this campaign.</p>
+          </div>
+        </section>
+        <section class="pt-slide st-slide" aria-roledescription="slide" aria-label="3 of 6">
+          <span class="st-count" aria-hidden="true">3/6</span>
+          <div class="pt-body" style="padding-top:18px">
+            <p class="pt-kick pt-a">Already in the news</p>
+            <h3 class="pt-a">The press is <em>watching</em>.</h3>
+            <div class="st-cuts">
+              <div class="st-cut" style="--r:-1.2deg"><span class="mh mh-tel">THE TELEGRAPH</span><b>Burnham accused of hypocrisy over Hillsborough Law</b><small>17 October 2026</small></div>
+              <div class="st-cut" style="--r:.9deg"><span class="mh mh-sky">SKY NEWS</span><b>Hillsborough Law will &lsquo;criminalise lying&rsquo; by senior ministers, say campaigners</b><small>19 February 2026</small></div>
+              <div class="st-cut" style="--r:-.6deg"><span class="mh mh-exp">Daily Express</span><b>Lords risk making same terrible mistake as MPs in excusing themselves from vital new law</b><small>By Marcus J Ball, 18 October 2026</small></div>
+              <div class="st-cut" style="--r:1.1deg"><span class="mh mh-ind">First India</span><b>How the UK is criminalising political deception for the first time</b><small>By Marcus J Ball, 19 April 2026</small></div>
+            </div>
+          </div>
+        </section>
+        <section class="pt-slide st-slide" aria-roledescription="slide" aria-label="4 of 6">
+          <span class="st-count" aria-hidden="true">4/6</span>
+          <div class="pt-body" style="padding-top:22px">
+            <p class="pt-kick pt-a">How it works</p>
+            <h3 class="pt-a">Your email, at <em>exactly</em> the right moment.</h3>
+            <p class="pt-a">We're not just asking for your name. We'll ask you to email your MP now, then again just before the vote, and on the day of the vote itself.</p>
+            <ol class="st-when" aria-label="When you email your MP">
+              <li><i aria-hidden="true">1</i>Now</li>
+              <li><i aria-hidden="true">2</i>Just before the vote</li>
+              <li><i aria-hidden="true">3</i>On vote day</li>
+            </ol>
+            <p class="pt-a">We speak to politicians and their teams, and we can tell you: this works. We want them to feel bombarded with emails from members of the public telling them how to vote, and what matters to them.</p>
+          </div>
+        </section>
+        <section class="pt-slide st-slide" aria-roledescription="slide" aria-label="5 of 6">
+          <span class="st-count" aria-hidden="true">5/6</span>
+          <div class="pt-body" style="padding-top:22px">
+            <p class="pt-kick pt-a">Right in front of them</p>
+            <h3 class="pt-a">A Tube advert at <em>Westminster</em>.</h3>
+            <div class="st-ad pt-a"><span>First draft</span><img data-src="/_web/photos/tube-advert-draft.webp" width="1400" height="700" alt="Our first draft of the Tube advert: Politicians are making lying to the public criminally illegal for nearly all public officials apart from themselves"></div>
+            <p class="pt-a">We're putting this on a platform at Westminster station, right in front of MPs, peers, their staff and journalists on their way into work.</p>
+            <p class="pt-a">This is what we need your money for: this advert, more adverts and PR, so we can make as much noise as possible before the vote.</p>
+          </div>
+        </section>
+        <section class="pt-slide st-slide" aria-roledescription="slide" aria-label="6 of 6">
+          <span class="st-count" aria-hidden="true">6/6</span>
+          <div class="pt-body" style="padding-top:22px">
+            <p class="pt-kick pt-a">Your part</p>
+            <h3 class="pt-a">Three steps. <em>Two minutes.</em></h3>
+            <ol class="st-steps">
+              <li><i aria-hidden="true">1</i>Sign the petition<small>Your name, email and postcode. 30 seconds.</small></li>
+              <li><i aria-hidden="true">2</i>Answer six quick questions<small>We quote the results to journalists and parliamentarians.</small></li>
+              <li><i aria-hidden="true">3</i>Help fund the adverts<small>Any amount from £10, one-off or monthly.</small></li>
+            </ol>
+            <button class="btn pt-a" type="button" id="stGo">Sign the petition</button>
+          </div>
+        </section>
+      </div>
+      <div class="pt-nav">
+        <div class="pt-dots" id="stDots" aria-hidden="true"><span class="on"></span><span></span><span></span><span></span><span></span><span></span></div>
+        <button class="pt-next" type="button" id="stNext">Next</button>
+      </div>
+      <button class="link skip" type="button" id="stSkip">Skip to the petition</button>
+    </div>
 
     <!-- 1: sign -->
     <form class="panel" id="p1" novalidate>
@@ -965,6 +1079,8 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   // ?lay= ?proof= ?promise= ?conf= force one, for looking at them side by side.
   var LAYS = ['fast', 'bare'], PROOFS = ['grow', 'quotes', 'metric', 'none'];
   var PROMISES = ['above', 'below', 'off'], CONFS = ['link', 'code'];
+  // 8 Nov 2026 (Marcus): a fifth draw, what a visitor sees first. 1 in 4 get the whole story as a
+  // carousel before the form (pitch); everyone else gets the form straight away (form). ?first= forces one.
   var DRAW = (function () {
     var k = browserKey(), h = 0, i;
     for (i = 0; i < k.length; i++) h = (h * 31 + k.charCodeAt(i)) >>> 0;
@@ -986,13 +1102,16 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
              // 8 Nov 2026 (Marcus): the code won its test (81 against 79 in 100 visitors confirmed), so
              // everyone gets it now; ?conf=link still shows the old link-only screen for comparison.
              promise: pick('promise', PROMISES, 4), conf: /[?&]conf=link(?![a-z])/.test(location.search) ? 'link' : 'code',
-             qs: qsForced || (mix(5) % 2 === 0 ? 'new' : 'money') };
+             qs: qsForced || (mix(5) % 2 === 0 ? 'new' : 'money'),
+             first: (location.search.match(/[?&]first=(pitch|form)(?![a-z])/) || [])[1] || (mix(6) % 4 === 0 ? 'pitch' : 'form') };
   })();
-  var LAY = DRAW.lay, PROOF = DRAW.proof, PROMISE = DRAW.promise, CONF = DRAW.conf;
+  // the pitch-first side has already heard the money pitch, so after signing it gets the questions and then the fund screen
+  if (DRAW.first === 'pitch') DRAW.qs = 'new';
+  var LAY = DRAW.lay, PROOF = DRAW.proof, PROMISE = DRAW.promise, CONF = DRAW.conf, FIRST = DRAW.first;
   // ?demo=1 is us looking at the versions next to each other: it records nothing at all, so the
   // looking does not land in the numbers the test is read from.
   var DEMO = /[?&]demo=1\b/.test(location.search);
-  var AB = LAY + '-' + PROOF + '-' + PROMISE + '-' + CONF;
+  var AB = LAY + '-' + PROOF + '-' + PROMISE + '-' + CONF + '-' + FIRST;
   try { document.body.classList.add('l-' + LAY, 'p-' + PROOF, 'pr-' + PROMISE, 'c-' + CONF); } catch (e) {}
 
   // One page view to the site's own analytics, so the morning report can say how many visited and
@@ -1107,7 +1226,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     // 6 Nov 2026: opening with the demonstration lost half the new side, so A leads, the other
     // three follow shuffled, then the 2024 vote, and the demonstration comes last.
     order = STATEMENTS.filter(function (st) { return st.lead; }).concat(order, STATEMENTS.filter(function (st) { return st.fixed; }));
-    track('questions', DRAW.qs);
+    track('questions', FIRST === 'pitch' ? 'story' : DRAW.qs);
     $('likert').innerHTML = order.map(function (st) {
       var head = '<div class="lk-row' + (st.t.length > 300 ? ' lk-long' : '') + '" data-id="' + st.id + '"><p class="lk-t" id="lk_' + st.id + '">' + esc(st.t) + '</p>';
       if (st.party) return head + '<p class="lk-sub">' + esc(st.sub) + '</p><div class="lk-party" role="radiogroup" aria-labelledby="lk_' + st.id + '">' +
@@ -1362,6 +1481,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   }
   $('stickyBtn').addEventListener('click', function () {
     $('card').scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
+    if ($('card').classList.contains('storying')) return;
     setTimeout(function () { $('first').focus({ preventScroll: true }); }, reduced ? 0 : 500);
   });
 
@@ -1738,6 +1858,8 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   // email and sharing on the thank-you screen. Everyone else chooses from the three ways as before.
   function afterStatements() {
     if (S.backer && !S.fundSeen) { track('fund_first', 'backer'); toFund(); return; }
+    // the pitch-first side was told up front what the money is for, so the fund screen comes next
+    if (FIRST === 'pitch' && !S.fundSeen) { S.pitchSeen = true; S.pitchGive = true; toFund(); return; }
     toChoice();
   }
 
@@ -1818,6 +1940,57 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     toFund();
   });
   $('ptSkip').addEventListener('click', function () { track('pitch_skip'); toChoice(); });
+  // ---------------------------------------------------------------- 0: the pitch-first story (Marcus, 8 Nov 2026)
+  // Six slides before the form, swiped or moved on with Next. Each slide, the end and a skip are
+  // recorded against this browser (never anything personal), so we can see where people stop.
+  // It is shown once per browser: someone coming back goes straight to the form.
+  var stAt = 0, stSeen = {}, stTimer;
+  function stSlides() { return document.querySelectorAll('#stTrack .st-slide'); }
+  function storyDone() { try { return localStorage.getItem('ep_story_seen') === '1'; } catch (e) { return false; } }
+  function toStory() {
+    $('card').classList.add('storying');
+    $('pstory').hidden = false;
+    // the advert image only loads for people who see the story, and loads straight away for them
+    document.querySelectorAll('#pstory img[data-src]').forEach(function (im) { im.src = im.getAttribute('data-src'); });
+    $('stTrack').scrollLeft = 0;
+    stShow(0);
+  }
+  function stShow(i) {
+    var sl = stSlides(), dots = $('stDots').children;
+    stAt = i;
+    for (var j = 0; j < sl.length; j++) {
+      dots[j].classList.toggle('on', j === i);
+      if (j === i) { sl[j].classList.add('in'); sl[j].removeAttribute('inert'); } else sl[j].setAttribute('inert', '');
+    }
+    $('stNext').style.visibility = i < sl.length - 1 ? 'visible' : 'hidden';
+    if (!stSeen[i]) { stSeen[i] = true; formEv('story', 's' + (i + 1)); }
+  }
+  $('stTrack').addEventListener('scroll', function () {
+    clearTimeout(stTimer);
+    stTimer = setTimeout(function () {
+      var sl = stSlides(), step = Math.max(1, sl[1].offsetLeft - sl[0].offsetLeft);
+      var i = Math.max(0, Math.min(sl.length - 1, Math.round($('stTrack').scrollLeft / step)));
+      if (i !== stAt) stShow(i);
+    }, 120);
+  }, { passive: true });
+  $('stNext').addEventListener('click', function () {
+    var sl = stSlides(), i = Math.min(stAt + 1, sl.length - 1);
+    $('stTrack').scrollTo({ left: sl[i].offsetLeft - sl[0].offsetLeft, behavior: reduced ? 'auto' : 'smooth' });
+    stShow(i);
+    var top = $('card').getBoundingClientRect().top;
+    if (top < 0) $('card').scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
+  });
+  function endStory(how) {
+    formEv('story', how);
+    try { localStorage.setItem('ep_story_seen', '1'); } catch (e) {}
+    $('card').classList.remove('storying');
+    $('pstory').hidden = true;
+    go(1);
+    setTimeout(function () { $('first').focus({ preventScroll: true }); }, reduced ? 0 : 450);
+  }
+  $('stGo').addEventListener('click', function () { endStory('done'); });
+  $('stSkip').addEventListener('click', function () { endStory('skip'); });
+
 
   // ---------------------------------------------------------------- sharing: just the link to copy
   function toShare() {
@@ -2162,6 +2335,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       document.querySelectorAll('.me-first').forEach(function (el) { el.textContent = S.me.first; });
       toPitch();
     }
+    else if (FIRST === 'pitch' && (DEMO || !storyDone())) toStory();
     loadStats(true);
   }
   start();
