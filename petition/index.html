@@ -733,8 +733,16 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   (function(){
     if (!document.documentElement.classList.contains('embed')) return;
     var last = 0;
-    function send(){ var h = Math.ceil(document.documentElement.scrollHeight); if (h !== last){ last = h; try { parent.postMessage({wtpt: 'h', h: h}, location.origin); } catch (e) {} } }
-    if (window.ResizeObserver) new ResizeObserver(send).observe(document.body);
+    var page = document.querySelector('main.page');
+    function send(){
+      var h = Math.ceil(page.getBoundingClientRect().bottom + (window.scrollY || 0)) + 4;
+      if (h !== last){ last = h; try { parent.postMessage({wtpt: 'h', h: h}, location.origin); } catch (e) {} }
+    }
+    if (window.ResizeObserver) new ResizeObserver(send).observe(page);
+    /* a new step: the results page scrolls back to the top of the box */
+    if (window.MutationObserver) [].forEach.call(document.querySelectorAll('#card .panel'), function(p){
+      new MutationObserver(function(){ if (!p.hidden){ send(); try { parent.postMessage({wtpt: 'top'}, location.origin); } catch (e) {} } }).observe(p, {attributes: true, attributeFilter: ['hidden']});
+    });
     window.addEventListener('load', send); setInterval(send, 700); send();
     document.addEventListener('click', function(e){
       var a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
