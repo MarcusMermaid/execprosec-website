@@ -78,7 +78,7 @@ h2{font:400 clamp(30px,5vw,44px)/1.08 var(--f-display);letter-spacing:-.01em;mar
 .hero::before{content:'';position:absolute;inset:-30% -10% auto auto;width:900px;height:900px;border-radius:50%;
   background:radial-gradient(closest-side,rgba(221,188,102,.16),rgba(221,188,102,0));pointer-events:none;animation:drift 18s ease-in-out infinite alternate}
 @keyframes drift{to{transform:translate(-120px,80px)}}
-.hero-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px 44px;align-items:center}
+.hero-grid{display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);gap:28px 44px;align-items:center}
 .hero-grid .counters{grid-column:1 / -1;margin-top:10px}
 @media(max-width:900px){.hero-grid{grid-template-columns:1fr}.stage{order:-1}}
 .hero h1{font:400 clamp(36px,5.2vw,64px)/1.03 var(--f-display);letter-spacing:-.015em;margin:0 0 18px;text-wrap:balance}
@@ -102,7 +102,8 @@ h2{font:400 clamp(30px,5vw,44px)/1.08 var(--f-display);letter-spacing:-.01em;mar
 .pill .av{position:relative;flex:0 0 32px;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font:700 14px/1 var(--f-body)}
 .pill .av::after{content:'';position:absolute;inset:0;border-radius:50%;border:2px solid currentColor;animation:ring .9s ease-out forwards}
 @keyframes ring{from{transform:scale(1);opacity:.7}to{transform:scale(2.3);opacity:0}}
-.pill .tx{overflow:hidden;text-overflow:ellipsis}
+.pill .tx{overflow:hidden;text-overflow:ellipsis;min-width:0}
+.pill .when{flex:0 0 auto;margin-left:-5px}
 .pill b{color:var(--navy)}
 .pill .when{color:var(--muted)}
 .pill.just .when{color:#1f7a4c;font-weight:600}
@@ -800,7 +801,7 @@ th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute
   function pillHTML(p, fromQueue){
     var c = AV[avi++ % AV.length], link = Math.random() < .5 ? ' in ' : ' from ';
     return '<span class="pop"><span class="av" style="background:' + c[0] + ';color:' + c[1] + '">' + esc(p.n.charAt(0)) + '</span>' +
-      '<span class="tx"><b>' + esc(p.n) + '</b>' + (p.t ? link + esc(p.t) : '') + ' <span class="when">' + when(p, fromQueue) + '</span></span></span>';
+      '<span class="tx"><b>' + esc(p.n) + '</b>' + (p.t ? link + esc(p.t) : '') + '</span><span class="when">' + when(p, fromQueue) + '</span></span>';
   }
   function next(){
     if (fresh.length) return [fresh.shift(), true];
