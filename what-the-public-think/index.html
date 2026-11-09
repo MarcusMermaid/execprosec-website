@@ -498,7 +498,7 @@ body.ticker-on .foot{padding-bottom:90px}
 @keyframes mpBelt{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 .mp-face{display:flex;flex-direction:column;align-items:center;gap:8px;width:112px;margin-right:14px;text-decoration:none;color:var(--on-navy)}
 .mp-face img{width:76px;height:76px;border-radius:50%;object-fit:cover;object-position:50% 20%;border:2px solid var(--gold);background:var(--navy-2)}
-.mp-face span{font-size:12.5px;line-height:1.25;text-align:center;color:var(--on-navy-2);max-height:2.5em;overflow:hidden}
+.mp-face span{font-size:12.5px;line-height:1.25;text-align:center;color:var(--on-navy-2);max-height:3.75em;overflow:hidden}
 .mp-face:hover span{color:var(--paper)}
 @media(max-width:560px){.mp-face{width:92px;margin-right:10px}.mp-face img{width:64px;height:64px}}
 @media(prefers-reduced-motion:reduce){.mp-belt{animation-duration:240s}}
@@ -2028,7 +2028,7 @@ body.ticker-on .foot{padding-bottom:90px}
     }
     var row = PARL.map(function(m){ return face(m, false); }).join(''), copy = PARL.map(function(m){ return face(m, true); }).join('');
     $('mpFaces').innerHTML = '<div class="mp-belt" style="--belt:' + Math.max(40, PARL.length * 2.6) + 's">' + row + copy + '</div>';
-    if (rest.length) $('mpFaces').insertAdjacentHTML('afterend', '<p class="fine" style="margin-top:12px">' + PARL.length + ' MPs and peers. ' + rest.length + ' of them signed Luke Myer’s amendments to bring MPs and peers under the law. Hover over a face to stop the row.</p>');
+    if (rest.length) $('mpFaces').insertAdjacentHTML('afterend', '<p class="fine" style="margin-top:12px">' + PARL.length + ' MPs and peers. ' + rest.length + ' of them signed Luke Myer’s amendments to bring MPs and peers under the law.</p>');
   })();
 
   /* ---- load: live figures, or the snapshot if Central does not answer in 5 seconds ---- */
