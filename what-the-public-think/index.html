@@ -133,6 +133,19 @@ h2{font:400 clamp(30px,5vw,44px)/1.08 var(--f-display);letter-spacing:-.01em;mar
   background:linear-gradient(120deg,var(--navy-3),var(--navy-2));border:1px solid var(--line-navy)}
 .signband p{margin:0;font:400 clamp(22px,3vw,30px)/1.2 var(--f-display);max-width:640px}
 .signband p em{font-style:normal;color:var(--gold)}
+/* sign and share bands between the sections (Marcus, 9 Nov 2026) */
+section.band{padding:8px 0}
+.shareband{background:linear-gradient(120deg,#0f2a6e,#0a1d55);border-color:rgba(221,188,102,.45)}
+.sb-sub{display:block;margin-top:8px;font-size:15px;color:var(--on-navy-2);max-width:620px}
+.sb-act{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
+.btn-share{gap:10px;background:var(--gold);color:var(--navy);box-shadow:0 10px 30px rgba(221,188,102,.25);border:0;cursor:pointer;font-family:inherit}
+.btn-share svg{width:20px;height:20px;flex:0 0 20px}
+.btn-share:hover{background:#e8c977}
+.btn-share.done{background:#2fa36b;color:#fff}
+.sb-done{font-size:14px;color:#7ad3a3;min-height:1.2em}
+.sb-done input{width:min(360px,80vw);padding:8px 10px;border-radius:4px;border:1px solid var(--line-navy);background:var(--navy);color:var(--paper);font:inherit}
+.cta-btns{display:flex;flex-wrap:wrap;justify-content:center;gap:14px}
+.cta .sb-done{display:block;margin-top:12px}
 .hero h1 em{font-style:normal;color:var(--gold)}
 .hero .lead{max-width:680px;font-size:clamp(17px,2.2vw,20px);color:var(--on-navy);margin:0 0 30px}
 .live{display:inline-flex;align-items:center;gap:8px;font-size:13.5px;color:var(--on-navy-2);margin:0 0 18px}
@@ -542,6 +555,8 @@ body.ticker-on .foot{padding-bottom:90px}
   <div class="vrow r2" data-speed="22" data-dir="1"><div class="vtrack"></div></div>
 </section>
 
+<section class="band"><div class="wrap"><div class="signband rv"><p>Agree with them? <em>Add your name.</em></p><a class="btn" href="/petition/?ref=results-voices">Sign the petition</a></div></div></section>
+
 <section class="pressbar" id="press">
   <div class="wrap">
     <p class="kicker">Coverage so far</p>
@@ -567,6 +582,8 @@ body.ticker-on .foot{padding-bottom:90px}
     <div class="mpfaces" id="mpFaces"></div>
   </div>
 </section>
+
+<section class="band"><div class="wrap"><div class="signband shareband rv"><div><p>Share the petition. <em>The more people see this, the harder it is to ignore.</em></p><span class="sb-sub">One link, with everything on this page. Send it on WhatsApp, by email or in a text, or post it anywhere.</span></div><div class="sb-act"><button class="btn btn-share" type="button" data-share="parliament"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg><span>Copy the link to share</span></button><span class="sb-done" aria-live="polite"></span></div></div></div></section>
 
 <section id="social">
   <div class="wrap">
@@ -605,6 +622,8 @@ body.ticker-on .foot{padding-bottom:90px}
     </div>
   </div>
 </section>
+
+<section class="band"><div class="wrap"><div class="signband rv"><p>Over a million views. <em>Now make yours count.</em></p><a class="btn" href="/petition/?ref=results-social">Add my name</a></div></div></section>
 
 <section style="padding-top:20px">
   <div class="wrap"><p class="kicker">What signers told us</p><h2>What the people who signed think</h2>
@@ -650,6 +669,8 @@ body.ticker-on .foot{padding-bottom:90px}
   </div>
 </section>
 
+<section class="band"><div class="wrap"><div class="signband shareband rv"><div><p>Know someone who would sign? <em>Send them this page.</em></p><span class="sb-sub">Copy the link and send it to friends, family and colleagues, or post it on social media.</span></div><div class="sb-act"><button class="btn btn-share" type="button" data-share="police"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg><span>Copy the link to share</span></button><span class="sb-done" aria-live="polite"></span></div></div></div></section>
+
 <section id="parties">
   <div class="wrap">
     <p class="kicker">Across the parties</p>
@@ -694,6 +715,8 @@ body.ticker-on .foot{padding-bottom:90px}
   </div>
 </section>
 
+<section class="band"><div class="wrap"><div class="signband rv"><p>Every one of the 650 constituencies has a signer. <em>Add yours.</em></p><a class="btn" href="/petition/?ref=results-map">Sign the petition</a></div></div></section>
+
 <section class="vfeat vf-rev" id="vPrivilege">
   <div class="wrap vf-grid">
       <figure class="so-video vf-video rv">
@@ -733,6 +756,8 @@ body.ticker-on .foot{padding-bottom:90px}
   </div>
 </section>
 
+<section class="band"><div class="wrap"><div class="signband shareband rv"><div><p>We’re forcing a vote in the House of Lords. <em>Help this reach as many people as possible before it.</em></p><span class="sb-sub">Share the link far and wide: WhatsApp groups, email, Facebook, X, anywhere people will see it.</span></div><div class="sb-act"><button class="btn btn-share" type="button" data-share="time"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg><span>Copy the link to share</span></button><span class="sb-done" aria-live="polite"></span></div></div></div></section>
+
 <section id="quotes">
   <div class="wrap">
     <p class="kicker">In their own words</p>
@@ -752,7 +777,8 @@ body.ticker-on .foot{padding-bottom:90px}
   <div class="wrap">
     <h2>Add your voice</h2>
     <p id="ctaText">Tell Parliament that no one who makes the law should be above it.</p>
-    <a class="btn" href="/petition/?ref=results">Sign the petition</a>
+    <div class="cta-btns"><a class="btn" href="/petition/?ref=results">Sign the petition</a><button class="btn btn-share" type="button" data-share="bottom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg><span>Copy the link to share</span></button></div>
+    <span class="sb-done" aria-live="polite"></span>
   </div>
 </section>
 
@@ -1326,7 +1352,7 @@ body.ticker-on .foot{padding-bottom:90px}
     if (!heard && audio.state === 'running'){ heard = true; track('sound_heard', {label: 'sound-' + soundKey}); }
     SOUNDS[soundKey].play(t + 0.01, bright);
   }
-  track('pageview', {label: 'sound-' + soundKey});
+  track('pageview', {label: 'sound-' + soundKey, href: location.href.slice(0, 300)});
   if (TRACK){ var es = document.createElement('script'); es.src = '/_web/engagement.js'; es.defer = true; document.body.appendChild(es); }
   /* on the preview only: a chooser to compare them */
   if (PREVIEW){
@@ -1854,6 +1880,33 @@ body.ticker-on .foot{padding-bottom:90px}
       track('video_restart', {label: vid.dataset.label || 'they-admit-it'});
     });
   });
+
+  /* -- share: copies the link to this page, so people can send it anywhere (Marcus, 9 Nov 2026) -- */
+  (function(){
+    var URL_ = 'https://execprosec.org/what-the-public-think/?ref=share';
+    function copied(btn){
+      var box = btn.closest('.sb-act, .wrap').querySelector('.sb-done'), label = btn.querySelector('span');
+      btn.classList.add('done'); label.textContent = 'Link copied';
+      if (box) box.textContent = 'Now paste it into WhatsApp, an email, a text or a post.';
+      setTimeout(function(){ btn.classList.remove('done'); label.textContent = 'Copy the link to share'; }, 4000);
+    }
+    function fallback(btn){
+      var box = btn.closest('.sb-act, .wrap').querySelector('.sb-done'); if (!box) return;
+      box.innerHTML = 'Copy this link: <input type="text" readonly value="' + URL_ + '">';
+      var i = box.querySelector('input'); i.focus(); i.select();
+    }
+    [].forEach.call(document.querySelectorAll('[data-share]'), function(btn){
+      btn.addEventListener('click', function(){
+        track('share_copy', {label: 'share-' + btn.dataset.share, href: URL_});
+        try {
+          if (navigator.clipboard && window.isSecureContext){ navigator.clipboard.writeText(URL_).then(function(){ copied(btn); }, function(){ fallback(btn); }); return; }
+          var t = document.createElement('textarea'); t.value = URL_; t.setAttribute('readonly', ''); t.style.position = 'fixed'; t.style.opacity = '0';
+          document.body.appendChild(t); t.select(); var ok = document.execCommand('copy'); t.remove();
+          ok ? copied(btn) : fallback(btn);
+        } catch (e) { fallback(btn); }
+      });
+    });
+  })();
 
   /* -- parliamentarians -- */
   (function(){
