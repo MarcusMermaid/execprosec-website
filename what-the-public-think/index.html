@@ -808,14 +808,16 @@ th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute
     return [people[idx++ % people.length], false];
   }
   function lanes(){ return stream.clientWidth >= 440 ? 2 : 1; }
-  function duration(){ var gap = lanes() === 2 ? TICK * 2 : TICK; return (stream.clientHeight + 10) / (56 / (gap / 1000)) * 1000; }
+  function duration(){ var gap = lanes() === 2 ? TICK * 2 : TICK; return (stream.clientHeight + 10) / (64 / (gap / 1000)) * 1000; }
   function spawn(at){
     var n = next(); if (!n) return;
     var el = document.createElement('div'); el.className = 'pill' + (when(n[0], n[1]) === 'just signed' ? ' just' : '');
     el.innerHTML = pillHTML(n[0], n[1]); el.style.visibility = 'hidden';
+    var W = stream.clientWidth, H = stream.clientHeight;
+    if (lanes() === 2) el.style.maxWidth = Math.floor(W / 2 - 10) + 'px';     // two columns never touch
     stream.appendChild(el);
-    var W = stream.clientWidth, H = stream.clientHeight, w = el.offsetWidth;
-    var x = lanes() === 1 ? (W - w) / 2 + (Math.random() * 30 - 15) : (lane++ % 2 ? W - w - 8 - Math.random() * 24 : 8 + Math.random() * 24);
+    var w = el.offsetWidth;
+    var x = lanes() === 1 ? (W - w) / 2 + (Math.random() * 30 - 15) : (lane++ % 2 ? W - w - 6 - Math.random() * 10 : 6 + Math.random() * 10);
     x = Math.max(4, Math.min(W - w - 4, x));
     var dur = duration();
     el.style.visibility = '';
