@@ -252,14 +252,17 @@ th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute
 .so-big b{display:block;font:400 clamp(60px,10vw,118px)/.92 var(--f-display);color:var(--gold);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
 .so-big span{display:block;margin-top:10px;font-size:17px;color:var(--on-navy)}
 .so-counts{margin-top:26px}
+.so-counts .counter b{font-size:clamp(28px,2.9vw,40px)}
+.so-follow{margin:26px 0 0;font-size:15px;color:var(--on-navy)}
+.so-follow b{color:var(--paper);font-variant-numeric:tabular-nums}
 .so-chart{margin-top:22px}
 #sochart{width:100%;display:block}
 #sochart text{font:500 12px var(--f-body);fill:var(--muted)}
 .so-today{display:inline-flex;align-items:center;gap:7px;font-size:14px;color:var(--muted)}
 .so-today b{font:700 15px/1 var(--f-body);color:#1f7a4d}
 .so-today .dot{width:8px;height:8px;border-radius:50%;background:#2fa36b;animation:pulse 1.6s infinite}
-.so-links{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
-.so-links a{display:flex;flex-direction:column;gap:3px;padding:12px 16px;border-radius:8px;border:1px solid var(--line-navy);background:var(--navy-2);color:var(--paper);text-decoration:none;min-width:120px;transition:border-color .2s,transform .2s}
+.so-links{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:10px;margin-top:12px}
+.so-links a{display:flex;flex-direction:column;gap:3px;padding:12px 16px;border-radius:8px;border:1px solid var(--line-navy);background:var(--navy-2);color:var(--paper);text-decoration:none;transition:border-color .2s,transform .2s}
 .so-links a:hover{border-color:var(--gold);transform:translateY(-2px)}
 .so-links a b{font-size:15px}
 .so-links a span{font-size:13px;color:var(--on-navy-2)}
@@ -554,15 +557,16 @@ body.ticker-on .foot{padding-bottom:90px}
       <div class="so-side">
         <div class="so-big rv"><b id="soViews">1,545,018</b><span>views across our pages</span></div>
         <div class="counters so-counts rv">
-          <div class="counter"><b id="soGained">18,098</b><span>new followers since 18 October</span></div>
-          <div class="counter"><b id="soLikes">151,087</b><span>likes</span></div>
-          <div class="counter"><b id="soComments">13,043</b><span>comments</span></div>
-          <div class="counter"><b id="soShares">32,164</b><span>shares</span></div>
+          <div class="counter"><b id="soGained">18,094</b><span>new followers since 18 October</span></div>
+          <div class="counter"><b id="soLikes">151,101</b><span>likes</span></div>
+          <div class="counter"><b id="soComments">13,046</b><span>comments</span></div>
+          <div class="counter"><b id="soShares">32,163</b><span>shares</span></div>
         </div>
         <div class="card timecard so-chart rv">
-          <div class="timehead"><div><b id="soGained2">18,098</b> <span>new followers since 18 October</span></div><span class="so-today"><i class="dot"></i><b id="soToday">+367</b>&nbsp;today</span></div>
+          <div class="timehead"><div><b id="soGained2">18,094</b> <span>new followers since 18 October</span></div><span class="so-today"><i class="dot"></i><b id="soToday">+366</b>&nbsp;today</span></div>
           <svg id="sochart" role="img" aria-label="New followers day by day, added up across our pages"></svg>
         </div>
+        <p class="so-follow"><b id="soNow">71,677</b> people follow our pages. Follow us too:</p>
         <div class="so-links" id="soLinks"></div>
       </div>
     </div>
@@ -1557,7 +1561,7 @@ body.ticker-on .foot{padding-bottom:90px}
       ['youtube', 'YouTube', 'https://www.youtube.com/@marcusjball'],
       ['threads', 'Threads', 'https://www.threads.com/@marcusjball']
     ];
-    var S = {views: 1545018, likes: 151087, comments: 13043, shares: 32164, gained: 18098, today: 367,
+    var S = {now: 71677, views: 1545018, likes: 151101, comments: 13046, shares: 32163, gained: 18094, today: 366,
              per: {instagram: 10194, facebook: 9399, x: 50487, youtube: 1340, threads: 257},
              days: [], v: {views: 317687, likes: 19147, comments: 1095, shares: 5368}};
     var shown = false;
@@ -1573,7 +1577,7 @@ body.ticker-on .foot{padding-bottom:90px}
     }
     var last = {};
     function show(){
-      var f = {soViews: S.views, soLikes: S.likes, soComments: S.comments, soShares: S.shares, soGained: S.gained, soGained2: S.gained,
+      var f = {soViews: S.views, soLikes: S.likes, soComments: S.comments, soShares: S.shares, soGained: S.gained, soGained2: S.gained, soNow: S.now,
                soVv: S.v.views, soVl: S.v.likes, soVc: S.v.comments, soVs: S.v.shares};
       Object.keys(f).forEach(function(id){ tween($(id), shown ? (last[id] || 0) : 0, f[id]); last[id] = f[id]; });
       tween($('soToday'), shown ? (last.today || 0) : 0, S.today, true); last.today = S.today;
@@ -1630,7 +1634,7 @@ body.ticker-on .foot{padding-bottom:90px}
       fetch('https://central-2-mcp-production.up.railway.app/public/social/summary').then(function(r){ return r.json(); }).then(function(d){
         if (!d || !d.posts) return;
         S.views = d.posts.views; S.likes = d.posts.likes; S.comments = d.posts.comments; S.shares = d.posts.shares;
-        S.gained = d.followers.gained; S.today = Math.max(0, d.followers.today); S.per = d.followers.per_platform || S.per; S.days = d.followers.days || [];
+        S.gained = d.followers.gained; S.now = d.followers.now || S.now; S.today = Math.max(0, d.followers.today); S.per = d.followers.per_platform || S.per; S.days = d.followers.days || [];
         (d.most_viewed || []).forEach(function(p){ if (p.permalink && p.permalink.indexOf(VIDEO) >= 0) S.v = p; });
         if (shown) show();
       }).catch(function(){});
