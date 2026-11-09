@@ -273,9 +273,9 @@ th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute
 .bt-stat{background:var(--navy-2);padding:20px 22px;display:flex;flex-direction:column;justify-content:center}
 .bt-stat b{font:400 clamp(34px,4.2vw,50px)/1 var(--f-display);color:var(--paper);font-variant-numeric:tabular-nums}
 .bt-stat span{margin-top:6px;font-size:14px;color:var(--on-navy-2);line-height:1.35}
-.counters.three{grid-template-columns:repeat(3,1fr);border-radius:0 0 6px 6px}
+.counters.four{grid-template-columns:repeat(4,1fr);border-radius:0 0 6px 6px}
 .counter b small{display:inline;font-size:.45em;color:var(--on-navy-2);margin:0 0 0 6px;padding:0;border:0;letter-spacing:0}
-@media(max-width:760px){.bigtotal{grid-template-columns:1fr}.bt-side{grid-template-rows:none;grid-template-columns:1fr 1fr}.bt-stat{padding:16px}.counters.three{grid-template-columns:1fr 1fr}.counters.three .counter:first-child{grid-column:1 / -1}}
+@media(max-width:760px){.bigtotal{grid-template-columns:1fr}.bt-side{grid-template-rows:none;grid-template-columns:1fr 1fr}.bt-stat{padding:16px}.counters.four{grid-template-columns:1fr 1fr}}
 .sndpick{position:fixed;top:60px;right:14px;z-index:70;display:flex;flex-direction:column;gap:6px;padding:10px;border-radius:10px;background:rgba(4,20,64,.92);border:1px solid var(--line-navy);font-size:12.5px;color:var(--on-navy-2)}
 .sndpick button{all:unset;cursor:pointer;padding:6px 10px;border-radius:999px;border:1px solid var(--line-navy);color:var(--paper);font-weight:600}
 .sndpick button.on{background:var(--gold);color:var(--navy);border-color:var(--gold)}
@@ -326,8 +326,14 @@ body.rails-on .rail{opacity:1}
 #quotes{overflow:hidden}
 #quotes .vrow{margin-top:6px}
 .top .tv.tick{animation:tick .4s ease}
-#hexmap path.ping{animation:hexping 1.4s ease-out}
-@keyframes hexping{0%{fill:#ffffff}25%{fill:#ddbc66}}
+#hexmap path.ping{animation:hexping 1.6s ease-out}
+@keyframes hexping{0%{fill:#ffffff}18%{fill:#f08a6c}55%{fill:#f08a6c}}
+#hexmap circle.splash{fill:none;stroke:#f08a6c;transform-box:fill-box;transform-origin:center;pointer-events:none}
+.lit{margin:10px 0 0;font-size:14px;color:var(--muted)}.lit b{color:#c8553d;font-weight:700}
+.poll{display:inline-flex;align-items:center;gap:7px;font-weight:600}.poll.shut{color:var(--on-navy-2)}.poll.open{color:#7fd6a5}
+.poll .dot{width:8px;height:8px;border-radius:50%;background:#2fa36b;animation:pulse 1.6s infinite}
+.pollnote{margin:-6px 0 16px;font-size:15px;color:var(--on-navy-2);max-width:760px}
+.hear{display:flex;align-items:center;gap:7px;margin-top:8px;font-size:13px;color:var(--gold)}.hear svg{width:16px;height:16px}.hear[hidden]{display:none}
 .ticker .btn{min-height:42px;padding:0 16px;font-size:14.5px;box-shadow:none;flex:0 0 auto}
 body.ticker-on .foot{padding-bottom:90px}
 
@@ -434,6 +440,7 @@ body.ticker-on .foot{padding-bottom:90px}
         <div class="k"><span class="dot"></span><span id="stageK">Signing today</span></div>
         <div class="today" id="todayLine"><b id="todayN">&nbsp;</b><span id="todayTxt">people have signed today</span></div>
         <div class="hour" id="hourN"></div>
+        <div class="hear" id="hearHint" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg><span>Tap anywhere to hear each signature</span></div>
       </div>
       <div class="stream" id="stream" aria-hidden="true"></div>
       <div class="squote" id="squote"></div>
@@ -447,10 +454,11 @@ body.ticker-on .foot{padding-bottom:90px}
           <div class="bt-stat"><b id="perDay">&nbsp;</b><span>signatures a day on average</span></div>
         </div>
       </div>
-      <div class="counters three" id="counters">
+      <div class="counters four" id="counters">
         <div class="counter"><b data-t="seats">650<small> of 650</small></b><span>constituencies have a signer: every one in the UK</span></div>
         <div class="counter"><b data-t="answers">&nbsp;</b><span>answers to our statements</span></div>
         <div class="counter"><b data-t="quotes">&nbsp;</b><span>wrote to us in their own words</span></div>
+        <div class="counter"><b data-t="emailed">&nbsp;</b><span>emails to MPs from signers (our estimate)</span></div>
       </div>
     </div>
   </div>
@@ -489,6 +497,8 @@ body.ticker-on .foot{padding-bottom:90px}
 </section>
 
 <section style="padding-top:20px">
+  <div class="wrap"><p class="kicker">What signers told us</p><h2>What the people who signed think</h2>
+    <p class="sec-lead">These are the answers of members of the public who signed the petition, not of MPs or peers.</p></div>
   <div class="wrap findings" id="findings"></div>
 </section>
 
@@ -522,6 +532,7 @@ body.ticker-on .foot{padding-bottom:90px}
       <div class="card mapcard rv">
         <svg id="hexmap" class="pre" role="img" aria-label="Hexagon map of the 650 UK constituencies, shaded by number of signers"></svg>
         <div class="maplegend" id="maplegend"></div>
+        <p class="lit" id="litToday">&nbsp;</p>
       </div>
       <div class="side">
         <div class="card panel rv">
@@ -584,7 +595,7 @@ body.ticker-on .foot{padding-bottom:90px}
   <h3>How these figures are made</h3>
   <p>Only people who signed and then confirmed by email are counted. Every figure is a total: we never publish anyone's email, postcode or individual answers, and any group of fewer than 10 people is shown as "fewer than 10".</p>
   <p>Constituencies are worked out inside our own systems from the first part of each signer's postcode (for example "NR2 2"), using the Office for National Statistics' lookup of every UK postcode to the July 2024 constituencies. Where that area crosses a boundary, its signers are shared between the constituencies in proportion. No postcode is sent to anyone else. Signers who live abroad are counted in the totals but not on the map.</p>
-  <p>Each statement is shown with the dates it was asked. The stream at the top shows the first name and town of people who signed today. Each count opens on the total at midnight and adds today’s signers one by one until it reaches today’s total, then rises only when someone new signs. The days since launch are counted from 26 October, when we first emailed our backers about the petition. Hexagon map layout by Open Innovations (CC BY-SA 4.0).</p>
+  <p>Each statement is shown with the dates it was asked. The stream at the top shows the first name and town of people who signed today. Each count opens on the total at midnight and adds today’s signers one by one until it reaches today’s total, then rises only when someone new signs. The days since launch are counted from 26 October, when we first emailed our backers about the petition. Every one of the 650 constituencies has at least one signer whose postcode area lies wholly or mostly inside it. Emails to MPs are our estimate: signers who copied their MP’s address, the subject and the letter (before 9 November, signers who copied the letter). We cannot see whether they pressed send. Once today has 100 signers, the stream goes round today’s signers again; the numbers only rise for new signatures. Hexagon map layout by Open Innovations (CC BY-SA 4.0).</p>
 </div>
 </main>
 
@@ -715,7 +726,9 @@ body.ticker-on .foot{padding-bottom:90px}
   function render(D){
     var at = new Date(D.at);
     $('updated').textContent = 'Today’s results · updated ' + at.toLocaleString('en-GB', {weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit', timeZone: 'Europe/London'});
-    cEl.seats.innerHTML = (D.constituencies_reached || 650).toLocaleString('en-GB') + '<small> of 650</small>';
+    cEl.seats.innerHTML = '650<small> of 650</small>';
+    LIVEQ.cur = D.statements || null; LIVEQ.mid = D.statements_midnight || null;
+    if (!R.before && D.mp_emailed != null) cEl.emailed.textContent = fmt(D.mp_emailed);
     if (!R.before) drawDays(D.signers);
     if (!R.before){ cEl.signers.textContent = fmt(D.signers); cEl.answers.textContent = fmt(D.answers); cEl.quotes.textContent = fmt(D.quotes); }
     initLV(D);
@@ -743,18 +756,23 @@ body.ticker-on .foot{padding-bottom:90px}
 
     /* statements */
     var gw = $('groups'); gw.innerHTML = '';
-    GROUPS.forEach(function(g){
+    GROUPS.forEach(function(g, gi){
       var ids = g.ids.filter(function(id){ return st[id] && st[id].answered >= 10; });
       if (!ids.length) return;
       var first = ids.map(function(id){ return st[id].first; }).sort()[0];
       var last = ids.map(function(id){ return st[id].last; }).sort().pop();
       var box = document.createElement(g.fold ? 'details' : 'div'); box.className = 'group' + (g.fold ? ' more' : '');
-      var head = '<div class="group-h"><h3>' + g.t + '</h3><span>' + (g.fold ? '' : 'Asked ' + day(first) + ' to ' + day(last)) + '</span></div>';
+      var head = gi === 0
+        ? '<div class="group-h"><h3>' + g.t + '</h3><span class="poll shut">Poll closed · asked ' + day(first) + ' to ' + day(last) + '</span></div>' +
+          '<p class="pollnote">This poll is now closed. Each statement passed 10,000 answers and the answer was already clear, so there was no point asking the same questions again and again.</p>'
+        : '<div class="group-h"><h3>' + g.t + '</h3><span class="poll open"><i class="dot"></i>Poll open · asked since ' + day(first) + '</span></div>' +
+          '<p class="pollnote">Still being asked. These numbers rise through the day as signers answer.</p>';
       box.innerHTML = g.fold ? '<summary>' + g.t + '</summary><div class="stmts" style="margin-top:14px"></div>' : head + '<div class="stmts"></div>';
       var list = box.querySelector('.stmts');
       ids.forEach(function(id){
         var s = st[id], c = s.counts, agree = pct(n0(c[0]) + n0(c[1]), s.answered);
-        var card = document.createElement('div'); card.className = 'card stmt rv';
+        var card = document.createElement('div'); card.className = 'card stmt rv'; card.dataset.id = id;
+        if (gi === 1) LIVEQ.cards[id] = card;
         card.innerHTML = '<div class="pct">' + whole(agree) + '%<small>agree, ' + whole(pct(n0(c[0]), s.answered)) + '% strongly</small></div>' +
           '<h4>' + esc(S[id][0]) + '</h4><q>' + esc(S[id][1]) + '</q>';
         var b = bar(c, s.answered, S[id][0]); card.appendChild(b);
@@ -762,7 +780,7 @@ body.ticker-on .foot{padding-bottom:90px}
         m.textContent = s.answered.toLocaleString('en-GB') + ' answered · asked ' + (s.first === s.last ? day(s.first) : day(s.first) + ' to ' + day(s.last));
         card.appendChild(m);
         list.appendChild(card);
-        onView(card, function(){ grow(card); });
+        onView(card, function(){ grow(card); setTimeout(function(){ card._grown = true; }, 900); });
       });
       if (!g.fold){
         var t = document.createElement('details'); t.className = 'more';
@@ -890,7 +908,7 @@ body.ticker-on .foot{padding-bottom:90px}
   }
 
   /* ---- the hex map ---- */
-  var RAMP = ['#efe6c9', '#e6d39b', '#d9b863', '#c09434', '#8a6b1f', '#56420f'];
+  var RAMP = ['#ead7a0', '#dfc27a', '#d1aa52', '#bb8f33', '#8a6b1f', '#56420f'];   // the lightest is 1 to 9 signers, never none
   function loadMap(D){
     fetch('/_web/data/uk-constituencies-hex.json').then(function(r){ return r.json(); }).then(function(H){ drawMap(D, H); })
       .catch(function(){ $('mapLead').textContent = 'The map could not load. Please refresh the page.'; });
@@ -987,10 +1005,22 @@ body.ticker-on .foot{padding-bottom:90px}
     onView(nw, function(){ grow(nw); setTimeout(function(){ nw._shown = true; }, 600); });
 
     /* each signer counted lights up their constituency */
+    LV.flash = function(c){                 // a salmon splash where they signed from
+      var el = byCode[c]; if (!el) return;
+      if (reduce || !mapSeen || !inView(svg)) return;
+      el.parentNode.appendChild(el);
+      el.classList.remove('ping'); void el.getBoundingClientRect(); el.classList.add('ping');
+      var p = pos(hexes[c]), ring = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      ring.setAttribute('cx', p[0].toFixed(1)); ring.setAttribute('cy', p[1].toFixed(1)); ring.setAttribute('r', '9');
+      ring.setAttribute('class', 'splash'); svg.appendChild(ring);
+      var a = ring.animate([{transform: 'scale(.3)', opacity: .95, strokeWidth: 4}, {transform: 'scale(3.4)', opacity: 0, strokeWidth: 1}],
+                           {duration: 1300, easing: 'cubic-bezier(.2,.7,.3,1)'});
+      a.onfinish = function(){ ring.remove(); };
+    };
     LV.onSeat = function(c){
       var el = byCode[c]; if (!el) return;
       el.setAttribute('fill', RAMP[bin(seats[c])]);
-      if (!reduce && mapSeen && inView(svg)){ el.classList.remove('ping'); void el.getBoundingClientRect(); el.classList.add('ping'); }
+      LV.flash(c);
       if (current === c) select(c);
     };
     LV.redrawLists = function(){ drawTop(); drawNations(); };
@@ -1026,9 +1056,28 @@ body.ticker-on .foot{padding-bottom:90px}
   var stage = $('stage'), stream = $('stream'), tk = $('tk'), ticker = $('ticker');
   var AV = [['#142a6b', '#fff'], ['#ddbc66', '#041440'], ['#8a6b1f', '#fff'], ['#d64045', '#fff']], avi = 0;
   var BEAT = 450, CALM = 1600, SPEED = 90;      // one signer every 0.45 s everywhere; names rise at 90 px a second
-  var R = {list: [], i: 0, fresh: [], gap: BEAT, names: [], ni: 0, before: null, day: '', feedAt: 0};
-  var C = {signers: 0, answers: 0, quotes: 0}, counted = 0;
-  var LV = {ins: null, seat: {}, nat: {}, daily: null, ready: false};
+  var R = {list: [], i: 0, li: 0, fresh: [], gap: BEAT, names: [], ni: 0, before: null, day: '', feedAt: 0};
+  var C = {signers: 0, answers: 0, quotes: 0, emailed: 0}, counted = 0;
+  var LV = {ins: null, seat: {}, nat: {}, daily: null, ready: false, lit: {}, litN: 0};
+  var LIVEQ = {cards: {}, cur: null, mid: null};
+
+  /* -- measuring (execprosec.org only): which sound, whether it was heard, and the sign links -- */
+  var TRACK = /(^|\.)execprosec\.org$/.test(location.hostname), SID = '';
+  try { SID = localStorage.getItem('mjb_sid') || ''; if (!SID){ SID = 's_' + Math.random().toString(36).slice(2) + Date.now().toString(36); localStorage.setItem('mjb_sid', SID); } } catch (e) {}
+  function track(ev, d){
+    if (!TRACK) return;
+    try {
+      var b = JSON.stringify(Object.assign({site: 'execprosec', event: ev, page: location.pathname.slice(0, 300), session_id: SID, referrer: (document.referrer || '').slice(0, 300)}, d || {}));
+      if (navigator.sendBeacon) navigator.sendBeacon('https://central-2-mcp-production.up.railway.app/public/analytics', new Blob([b], {type: 'text/plain'}));
+    } catch (e) {}
+  }
+  document.addEventListener('click', function(e){
+    var a = e.target && e.target.closest ? e.target.closest('a[href*="/petition/?ref=results"]') : null; if (!a) return;
+    var base = a.getAttribute('href').replace(/(ref=results[a-z-]*?)(-(chime|build|rising)(-unheard|-muted)?)?$/, '$1');
+    var tag = soundKey + (muted ? '-muted' : heard ? '' : '-unheard');
+    a.setAttribute('href', base + '-' + tag);
+    track('click', {label: 'sign ' + base.split('ref=')[1] + ' sound-' + tag, href: a.getAttribute('href')});
+  }, true);
 
   /* -- sound: on unless the visitor turns it off (browsers only allow it after their first tap or click) -- */
   var audio = null, master = null, unlocked = false, muted = false;
@@ -1039,6 +1088,7 @@ body.ticker-on .foot{padding-bottom:90px}
   function drawSound(){
     sb.innerHTML = (muted ? ICON_OFF : ICON_ON) + '<span>' + (muted ? 'Sound off' : 'Mute this page') + '</span>';
     sb.classList.toggle('off', muted); sb.setAttribute('aria-pressed', muted ? 'true' : 'false');
+    var hh = document.getElementById('hearHint'); if (hh) hh.hidden = muted || (unlocked && audio && audio.state === 'running');
   }
   function unlock(){
     if (unlocked) { if (audio && audio.state === 'suspended') audio.resume(); return; }
@@ -1047,13 +1097,15 @@ body.ticker-on .foot{padding-bottom:90px}
       audio = new AC(); master = audio.createGain(); master.gain.value = 0.5; master.connect(audio.destination);
       if (audio.state === 'suspended') audio.resume();
       unlocked = true;
+      audio.onstatechange = drawSound;
     } catch (e) {}
+    drawSound();
   }
   ['pointerdown', 'keydown', 'touchend', 'click'].forEach(function(ev){
     window.addEventListener(ev, function(e){ if (e.target && e.target.closest && e.target.closest('#soundBtn')) return; if (!muted) unlock(); }, {passive: true});
   });
   sb.addEventListener('click', function(){
-    muted = !muted;
+    muted = !muted; track(muted ? 'sound_off' : 'sound_on', {label: 'sound-' + soundKey});
     try { localStorage.setItem('wtpt-sound-off', muted ? '1' : '0'); } catch (e) {}
     if (!muted){ unlock(); pop(true); }
     drawSound();
@@ -1062,7 +1114,27 @@ body.ticker-on .foot{padding-bottom:90px}
   /* Three sounds to try (Marcus, 9 Nov 2026). Each is one recognisable sound with a small, controlled
      change from one signer to the next, so it never sounds like a machine repeating itself. Someone who
      signs while you are on the page gets a brighter version, so a real new signer stands out. */
-  var lastPop = 0, rising = 0, lastNote = -1;
+  var lastPop = 0, rising = 0, build = 0, lastNote = -1;
+  function synth(f, t, dur, vol, cutoff){       // a sawtooth through a low-pass filter: a bright, warm pluck
+    var o = audio.createOscillator(), fl = audio.createBiquadFilter(), g = audio.createGain();
+    o.type = 'sawtooth'; o.frequency.setValueAtTime(f, t);
+    fl.type = 'lowpass'; fl.Q.value = 6; fl.frequency.setValueAtTime(cutoff * 1.6, t); fl.frequency.exponentialRampToValueAtTime(Math.max(300, cutoff * 0.5), t + dur);
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol, t + 0.008); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(fl); fl.connect(g); g.connect(master); o.start(t); o.stop(t + dur + 0.02);
+  }
+  function sparkle(t, n){ for (var i = 0; i < n; i++){ var f = 2000 + Math.random() * 2600; osc('sine', f, f, t + i * 0.045, 0, 0.35, 0.035); } }
+  function burst(t, vol){                        // the payoff: a full chord that swells, a whoosh and a sparkle
+    [523.25, 659.25, 783.99, 1046.5].forEach(function(f){ synth(f, t, 1.3, vol * 0.7, 2600); osc('sine', f, f, t, 0, 1.2, vol * 0.25); });
+    try {
+      var len = Math.floor(audio.sampleRate * 0.6), buf = audio.createBuffer(1, len, audio.sampleRate), d = buf.getChannelData(0);
+      for (var i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / len);
+      var src = audio.createBufferSource(), bp = audio.createBiquadFilter(), g = audio.createGain();
+      src.buffer = buf; bp.type = 'bandpass'; bp.Q.value = 1.2; bp.frequency.setValueAtTime(600, t); bp.frequency.exponentialRampToValueAtTime(6000, t + 0.5);
+      g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol * 0.5, t + 0.12); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.6);
+      src.connect(bp); bp.connect(g); g.connect(master); src.start(t); src.stop(t + 0.62);
+    } catch (e) {}
+    sparkle(t + 0.15, 7);
+  }
   function osc(type, f0, f1, t, glide, dur, vol, at){
     var o = audio.createOscillator(), g = audio.createGain();
     o.type = type; o.frequency.setValueAtTime(f0, t); if (f1 !== f0) o.frequency.exponentialRampToValueAtTime(f1, t + glide);
@@ -1079,10 +1151,13 @@ body.ticker-on .foot{padding-bottom:90px}
       osc('sine', f, f, t, 0, 0.55, vary(0.12)); osc('sine', f * 2.76, f * 2.76, t, 0, 0.18, vary(0.03));
       if (bright){ osc('sine', f * 1.5, f * 1.5, t + 0.1, 0, 0.6, 0.1); osc('sine', f * 2, f * 2, t + 0.2, 0, 0.7, 0.08); }
     }},
-    bubble: {name: 'B · Bubble', play: function(t, bright){           // a short water-drop "bloop", nearly the same each time
-      var f = 620 * jitter(150);
-      osc('sine', f * 0.55, f * 1.6, t, 0.07, 0.11, vary(0.2), 0.004);
-      if (bright){ var g = f * 1.33; osc('sine', g * 0.55, g * 1.6, t + 0.12, 0.07, 0.12, 0.2, 0.004); osc('sine', g * 0.75, g * 2.1, t + 0.24, 0.07, 0.14, 0.18, 0.004); }
+    build: {name: 'B · Build', play: function(t, bright){             // a bright synth climbing a I-IV-V-I chord run, then a burst
+      var STEPS = [261.63, 329.63, 392, 523.25, 349.23, 440, 523.25, 698.46, 392, 493.88, 587.33, 783.99, 523.25, 659.25, 783.99, 1046.5];
+      var k = build % STEPS.length, f = STEPS[k] * jitter(6), lift = k / (STEPS.length - 1); build++;
+      synth(f, t, 0.24, vary(0.09 + 0.05 * lift), 900 + 3200 * lift);
+      osc('sine', f / 2, f / 2, t, 0, 0.2, 0.04 + 0.03 * lift);
+      if (k === STEPS.length - 1) burst(t + 0.14, 0.11);
+      if (bright){ [783.99, 987.77, 1174.66, 1567.98].forEach(function(n, i){ synth(n, t + 0.07 * (i + 1), 0.3, 0.09, 4200); }); sparkle(t + 0.3, 5); }
     }},
     rising: {name: 'C · Rising', play: function(t, bright){           // each signer is the next note up, so the crowd sounds like it is building
       var P = [392, 440, 493.88, 587.33, 659.25, 783.99, 880, 987.77, 1174.66, 1318.51, 1567.98, 1760];
@@ -1092,16 +1167,30 @@ body.ticker-on .foot{padding-bottom:90px}
       if (bright){ [1, 1.25, 1.5, 2].forEach(function(m, i){ osc('triangle', 783.99 * m, 783.99 * m, t + 0.08 * (i + 1), 0, 0.35, 0.09, 0.004); }); }
     }}
   };
-  var soundKey = 'chime';
-  try { soundKey = (location.search.match(/[?&]sound=(chime|bubble|rising)/) || [])[1] || localStorage.getItem('wtpt-sound') || 'chime'; } catch (e) {}
-  if (!SOUNDS[soundKey]) soundKey = 'chime';
+  /* which sound this visitor hears. On execprosec.org each visitor gets one of the three at random and
+     keeps it, so we can see whether the sound changes what people do. The preview lets you choose. */
+  var PREVIEW = /pages\.dev$/.test(location.hostname) || /[?&]sounds=1/.test(location.search);
+  var soundKey = '';
+  try {
+    soundKey = (location.search.match(/[?&]sound=(chime|build|rising)/) || [])[1] || '';
+    if (!soundKey && PREVIEW) soundKey = localStorage.getItem('wtpt-sound') || '';
+    if (!soundKey && !PREVIEW) soundKey = localStorage.getItem('wtpt-sound-test') || '';
+    if (!SOUNDS[soundKey]){
+      soundKey = PREVIEW ? 'rising' : Object.keys(SOUNDS)[Math.floor(Math.random() * 3)];
+      if (!PREVIEW) localStorage.setItem('wtpt-sound-test', soundKey);
+    }
+  } catch (e) { if (!SOUNDS[soundKey]) soundKey = 'rising'; }
+  var heard = false;
   function pop(bright){
     if (!unlocked || muted || !audio || document.hidden) return;
     var t = audio.currentTime; if (t - lastPop < 0.07) return; lastPop = t;
+    if (!heard && audio.state === 'running'){ heard = true; track('sound_heard', {label: 'sound-' + soundKey}); }
     SOUNDS[soundKey].play(t + 0.01, bright);
   }
   /* on the preview only: a chooser to compare the three */
-  if (/pages\.dev$/.test(location.hostname) || /[?&]sounds=1/.test(location.search)){
+  track('pageview', {label: 'sound-' + soundKey});
+  if (TRACK){ var es = document.createElement('script'); es.src = '/_web/engagement.js'; es.defer = true; document.body.appendChild(es); }
+  if (PREVIEW){
     var pick = document.createElement('div'); pick.className = 'sndpick'; pick.innerHTML = '<span>Try a sound (preview only)</span>';
     Object.keys(SOUNDS).forEach(function(k){
       var b = document.createElement('button'); b.type = 'button'; b.textContent = SOUNDS[k].name; b.dataset.k = k;
@@ -1109,7 +1198,7 @@ body.ticker-on .foot{padding-bottom:90px}
         soundKey = k; try { localStorage.setItem('wtpt-sound', k); } catch (e) {}
         muted = false; try { localStorage.setItem('wtpt-sound-off', '0'); } catch (e) {} drawSound(); unlock();
         pick.querySelectorAll('button').forEach(function(x){ x.classList.toggle('on', x.dataset.k === k); });
-        if (audio){ var t0 = audio.currentTime + 0.05; [0, 0.45, 0.9, 1.35].forEach(function(d, i){ SOUNDS[k].play(t0 + d, i === 3); }); }
+        if (audio){ var t0 = audio.currentTime + 0.05, n = k === 'chime' ? 4 : k === 'rising' ? 12 : 16; rising = 0; build = 0; for (var i = 0; i < n; i++) SOUNDS[k].play(t0 + i * 0.3, false); SOUNDS[k].play(t0 + n * 0.3 + 0.9, true); }
       });
       if (k === soundKey) b.className = 'on';
       pick.appendChild(b);
@@ -1118,8 +1207,8 @@ body.ticker-on .foot{padding-bottom:90px}
   }
 
   /* -- the counters: one number each -- */
-  var cEl = {}; ['signers', 'answers', 'quotes', 'seats'].forEach(function(k){ cEl[k] = document.querySelector('[data-t="' + k + '"]'); });
-  function drawCounts(){ ['signers', 'answers', 'quotes'].forEach(function(k){ cEl[k].textContent = C[k].toLocaleString('en-GB'); }); }
+  var cEl = {}; ['signers', 'answers', 'quotes', 'seats', 'emailed'].forEach(function(k){ cEl[k] = document.querySelector('[data-t="' + k + '"]'); });
+  function drawCounts(){ ['signers', 'answers', 'quotes', 'emailed'].forEach(function(k){ cEl[k].textContent = C[k].toLocaleString('en-GB'); }); }
   function bump(k, by){
     if (!by) return;
     C[k] += by; var el = cEl[k]; el.textContent = C[k].toLocaleString('en-GB');
@@ -1133,6 +1222,7 @@ body.ticker-on .foot{padding-bottom:90px}
     var n = $('tdNote'), left = R.list.length - R.i;
     n.classList.toggle('loop', left <= 0);
     n.textContent = left > 0 ? 'Counting from midnight: adding today’s ' + R.list.length.toLocaleString('en-GB') + ' signers one by one'
+                             : looping() ? 'Everyone who has signed today is counted. Today’s signers go round again; the numbers rise only when someone new signs.'
                              : 'Everyone who has signed today is counted. The numbers rise as new people sign.';
   }
 
@@ -1163,12 +1253,34 @@ body.ticker-on .foot{padding-bottom:90px}
     if (LV.redraw) LV.redraw();
     drawLive();
   }
+  function liveStatements(){
+    if (!LIVEQ.cur || !LIVEQ.mid) return;
+    var f = R.before && R.list.length ? Math.min(1, R.i / R.list.length) : 1;
+    Object.keys(LIVEQ.cards).forEach(function(id){
+      var card = LIVEQ.cards[id], cur = LIVEQ.cur[id], mid = LIVEQ.mid[id]; if (!cur) return;
+      var counts = cur.counts.map(function(c, i){ var m = mid ? n0(mid.counts[i]) : 0, v = n0(c); return Math.max(0, Math.round(m + (v - m) * f)); });
+      var total = counts.reduce(function(a, b){ return a + b; }, 0); if (!total) return;
+      var key = counts.join(); if (card._key === key) return; card._key = key;
+      card.querySelector('.pct').innerHTML = whole(pct(counts[0] + counts[1], total)) + '%<small>agree, ' + whole(pct(counts[0], total)) + '% strongly</small>';
+      var b = bar(counts.map(function(v){ return v > 0 && v < 10 ? null : v; }), total, S[id][0]);
+      if (card._grown) b.querySelectorAll('i').forEach(function(x){ x.style.width = x.dataset.w + '%'; });
+      card.replaceChild(b, card.querySelector('.bar'));
+      var m = card.querySelector('.meta'); m.textContent = total.toLocaleString('en-GB') + ' answered' + m.textContent.slice(m.textContent.indexOf(' ·'));
+    });
+  }
+  setInterval(function(){                    // the open poll's latest totals every five minutes
+    if (document.hidden) return;
+    fetch(API, {cache: 'no-store'}).then(function(r){ return r.ok ? r.json() : null; }).then(function(D){
+      if (D && D.ok && D.statements_midnight){ LIVEQ.cur = D.statements; LIVEQ.mid = D.statements_midnight; liveStatements(); }
+    }).catch(function(){});
+  }, 300000);
   var liveT = 0;
   function liveSoon(){
     if (liveT) return;
     liveT = setTimeout(function(){
       liveT = 0;
       if (LV.redrawLists) LV.redrawLists();
+      liveStatements();
       var tc = $('timechart');
       if (LV.ins && drawTime._shownAt && performance.now() - drawTime._shownAt > 2600 && inView(tc)) drawTime(LV.ins, true);
     }, 1000);
@@ -1192,14 +1304,18 @@ body.ticker-on .foot{padding-bottom:90px}
     $('todayTxt').textContent = counted === 1 ? 'person has signed today' : 'people have signed today';
     if (LV.ready) liveSoon();
   }
+  function litSeat(c){
+    if (LV.lit[c]) return; LV.lit[c] = 1; LV.litN++;
+    $('litToday').innerHTML = '<b>' + LV.litN.toLocaleString('en-GB') + '</b> of 650 constituencies have a signer today so far';
+  }
   function count(p){
-    counted++; bump('signers', 1); bump('answers', p.a); bump('quotes', p.q);
+    counted++; bump('signers', 1); bump('answers', p.a); bump('quotes', p.q); bump('emailed', p.e); if (p.c) litSeat(p.c);
     if (LV.ready){ shift(p, 1); if (p.c && LV.onSeat) LV.onSeat(p.c); }
     drawLive();
   }
 
   /* -- names -- */
-  function when(x){ return x.live || (!x.quiet && x.p.m <= 10) ? 'just signed' : x.p.y ? 'signed yesterday' : 'signed today'; }
+  function when(x){ return x.live || (!x.quiet && !x.loop && x.p.m <= 10) ? 'just signed' : x.p.y ? 'signed yesterday' : 'signed today'; }
   function avatar(p){ var c = AV[avi++ % AV.length]; return '<span class="av" style="background:' + c[0] + ';color:' + c[1] + '">' + esc((p.n || 'S').charAt(0)) + '</span>'; }
   function who(p){ return '<b>' + esc(p.n || 'Someone') + '</b>' + (p.t ? (Math.random() < .5 ? ' in ' : ' from ') + esc(p.t) : ''); }
   function pillHTML(x){
@@ -1237,16 +1353,23 @@ body.ticker-on .foot{padding-bottom:90px}
 
   /* -- the beat: the same everywhere -- */
   var lastBeat = 0, mode = 'stage';
+  /* Marcus, 9 Nov 2026: once today has 100 signers, today's signers go round again without a gap,
+     sound and all, except from 1am to 4am. Only real new signers move the numbers. */
+  var lastFresh = 0;
+  function londonHour(){ try { return +new Date().toLocaleString('en-GB', {timeZone: 'Europe/London', hour: '2-digit', hour12: false}); } catch (e) { return new Date().getHours(); } }
+  function looping(){ var h = londonHour(); return R.list.length >= 100 && !(h >= 1 && h < 4); }
   function nextUp(t){
-    if (R.fresh.length){                                   // someone has just signed
-      if (t - lastBeat < R.gap) return null;
-      lastBeat = t; var f = R.fresh.shift(); count(f); return {p: f, live: true};
+    if (R.fresh.length && t - lastFresh >= R.gap && t - lastBeat >= BEAT){   // someone has just signed
+      lastBeat = lastFresh = t; var f = R.fresh.shift(); count(f); return {p: f, live: true};
     }
+    if (t - lastBeat < BEAT) return null;
     if (R.i < R.list.length){                              // still counting up from midnight
-      if (t - lastBeat < BEAT) return null;
       lastBeat = t; var p = R.list[R.i++]; count(p); if (R.i === R.list.length) note(); return {p: p, live: false};
     }
-    if (!R.names.length || t - lastBeat < CALM) return null;   // all counted: today's names again, quietly, no count
+    if (looping()){                                        // round again, straight on, no count
+      lastBeat = t; var q = R.list[R.li++ % R.list.length]; if (q.c && LV.flash) LV.flash(q.c); return {p: q, live: false, loop: true};
+    }
+    if (!R.names.length || t - lastBeat < CALM) return null;   // a quiet day so far: names drift past, no sound, no count
     lastBeat = t; return {p: R.names[R.ni++ % R.names.length], live: false, quiet: true};
   }
   function beat(t){
@@ -1274,8 +1397,8 @@ body.ticker-on .foot{padding-bottom:90px}
     var day = londonDay(new Date(R.feedAt));
     if (!R.before || day !== R.day){                         // first load, or a new day after midnight
       var first = !R.before;
-      R.before = D.before; R.day = day; R.list = D.people; R.i = 0; R.fresh = []; counted = 0;
-      C = {signers: D.before.signers, answers: D.before.answers, quotes: D.before.quotes}; drawCounts();
+      R.before = D.before; R.day = day; R.list = D.people; R.i = 0; R.li = 0; R.fresh = []; counted = 0; LV.lit = {}; LV.litN = 0;
+      C = {signers: D.before.signers, answers: D.before.answers, quotes: D.before.quotes, emailed: D.before.emailed || 0}; drawCounts();
       if (!first && LV.ready){ LV.daily.push([day, 0]); }
       setNames(D); note();
       if (first){ setBase(); start(); }
