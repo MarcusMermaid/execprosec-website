@@ -87,10 +87,15 @@ h2{font:400 clamp(30px,5vw,44px)/1.08 var(--f-display);letter-spacing:-.01em;mar
 .hero-cta span{font-size:14px;color:var(--on-navy-2)}
 
 /* ---- the live stream (Marcus, 9 Nov 2026: "I want the top of the page to be alive") ---- */
-.stage{position:relative;display:flex;flex-direction:column;height:620px;border-radius:10px;overflow:hidden;
+.stage{position:relative;display:flex;flex-direction:column;height:720px;border-radius:10px;overflow:hidden;
   background:radial-gradient(120% 80% at 50% 110%,rgba(221,188,102,.18),rgba(221,188,102,0) 60%),linear-gradient(180deg,#0b1f5c,#061650);
   border:1px solid var(--line-navy);box-shadow:0 30px 70px rgba(0,0,0,.35)}
 .stage-head{position:relative;z-index:3;padding:18px 20px 14px;background:linear-gradient(180deg,#0b1f5c 70%,rgba(11,31,92,0))}
+/* the running total sits at the top of the live panel: everyone who has signed, not just today (Marcus, 9 Nov 2026) */
+.st-total{background:none;padding:0 0 14px;margin:0 0 14px;border-bottom:1px solid var(--line-navy)}
+.st-total b{font:400 clamp(56px,7vw,92px)/.95 var(--f-display);color:var(--gold);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.st-total span{display:block;margin-top:6px;font-size:16px;color:var(--on-navy)}
+.st-total .plus{top:6px;right:0}
 .stage-head .k{display:flex;align-items:center;gap:8px;font:700 12px/1 var(--f-body);letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
 .stage-head .k .dot{width:9px;height:9px;border-radius:50%;background:#2fa36b;animation:pulse 1.6s infinite}
 .stage-head .today{margin-top:10px;font-size:16px;color:var(--on-navy)}
@@ -120,7 +125,7 @@ h2{font:400 clamp(30px,5vw,44px)/1.08 var(--f-display);letter-spacing:-.01em;mar
 .squote cite{display:block;margin-top:8px;font:600 13.5px/1.2 var(--f-body);font-style:normal;color:var(--gold)}
 .stage.still .stream{display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start;gap:8px;padding:0 10px 10px}
 .stage.still .pill{position:static}
-@media(max-width:900px){.stage{height:520px}.squote{flex-basis:180px}}
+@media(max-width:900px){.stage{height:640px}.squote{flex-basis:180px}}
 @media(max-width:480px){.stage-head{padding:14px 16px 10px}.stage-head .today b{font-size:34px}.pill{font-size:13.5px}.squote p{font-size:16px}}
 
 /* ---- the sign bands ---- */
@@ -330,11 +335,11 @@ th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute
 .foot a{color:var(--on-navy)}
 
 /* ---- sound ---- */
-.bigtotal{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);gap:2px;border-radius:6px 6px 0 0;overflow:hidden;background:var(--line-navy);margin-bottom:2px}
+.bigtotal{display:grid;grid-template-columns:1fr;gap:2px;border-radius:6px 6px 0 0;overflow:hidden;background:var(--line-navy);margin-bottom:2px}
 .bigtotal .bt-main{background:var(--navy-2);padding:26px 26px 24px}
 .bigtotal .bt-main b{font-size:clamp(64px,9.5vw,128px);color:var(--gold);letter-spacing:-.02em}
 .bigtotal .bt-main span{font-size:17px;color:var(--on-navy)}
-.bt-side{display:grid;grid-template-rows:1fr 1fr;gap:2px}
+.bt-side{display:grid;grid-template-columns:1fr 1fr;gap:2px}
 .bt-stat{background:var(--navy-2);padding:20px 22px;display:flex;flex-direction:column;justify-content:center}
 .bt-stat b{font:400 clamp(34px,4.2vw,50px)/1 var(--f-display);color:var(--paper);font-variant-numeric:tabular-nums}
 .bt-stat span{margin-top:6px;font-size:14px;color:var(--on-navy-2);line-height:1.35}
@@ -504,6 +509,7 @@ body.ticker-on .foot{padding-bottom:90px}
     </div>
     <div class="stage" id="stage">
       <div class="stage-head">
+        <div class="st-total counter"><b data-t="signers">&nbsp;</b><span>people have signed so far, each confirmed by email</span></div>
         <div class="k"><span class="dot"></span><span id="stageK">Signing today</span></div>
         <div class="today" id="todayLine"><b id="todayN">&nbsp;</b><span id="todayTxt">people have signed today</span></div>
         <div class="hour" id="hourN"></div>
@@ -513,9 +519,8 @@ body.ticker-on .foot{padding-bottom:90px}
       <div class="squote" id="squote"></div>
     </div>
     <div class="today-data" id="todayData">
-      <div class="td-head"><span class="k"><span class="dot"></span><span id="tdLabel">Today’s count</span></span><span class="td-note" id="tdNote">&nbsp;</span></div>
+      <div class="td-head"><span class="k"><span class="dot"></span><span id="tdLabel">The count so far</span></span><span class="td-note" id="tdNote">&nbsp;</span></div>
       <div class="bigtotal">
-        <div class="bt-main counter"><b data-t="signers">&nbsp;</b><span>people have signed and confirmed by email</span></div>
         <div class="bt-side">
           <div class="bt-stat"><b id="daysLive">&nbsp;</b><span>days since we launched it to our backers on 26 October</span></div>
           <div class="bt-stat"><b id="perDay">&nbsp;</b><span>signatures a day on average</span></div>
