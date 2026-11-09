@@ -275,6 +275,24 @@ th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute
 @media(max-width:860px){.so-grid{grid-template-columns:1fr;gap:28px}.so-video{position:static;max-width:340px;margin:0 auto}}
 @media(max-width:760px){.so-counts{grid-template-columns:1fr 1fr}}
 
+/* ---- the two explainer videos (Marcus, 9 Nov 2026) ---- */
+.vf-grid{display:grid;grid-template-columns:minmax(240px,330px) 1fr;gap:56px;align-items:center}
+.vf-rev .vf-grid{grid-template-columns:1fr minmax(240px,330px)}
+.vf-rev .vf-video{order:2}
+.vf-video{position:static}
+.vf-text{max-width:620px}
+.vf-text p{font-size:17px;line-height:1.6;color:var(--on-navy);margin:0 0 16px}
+.vf-text blockquote{margin:0 0 18px;padding:4px 0 4px 18px;border-left:3px solid var(--gold);font:400 clamp(19px,2.2vw,23px)/1.35 var(--f-display);color:var(--paper)}
+.vf-scope{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:22px}
+.vf-scope div{padding:16px 18px;border-radius:8px;border:1px solid var(--line-navy);background:var(--navy-2)}
+.vf-scope b{display:block;font-size:13px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px}
+.vf-scope span{font-size:15.5px;line-height:1.45;color:var(--on-navy)}
+.vf-no b{color:var(--on-navy-2)}
+.vf-yes{border-color:var(--gold)!important}
+.vf-yes b{color:var(--gold)}
+@media(max-width:860px){.vf-grid,.vf-rev .vf-grid{grid-template-columns:1fr;gap:28px}.vf-rev .vf-video{order:0}.vf-video{max-width:320px;margin:0 auto}}
+@media(max-width:560px){.vf-scope{grid-template-columns:1fr}}
+
 /* ---- over time ---- */
 .timecard{padding:22px 18px 14px;position:relative}
 #timechart{width:100%;display:block}
@@ -594,6 +612,33 @@ body.ticker-on .foot{padding-bottom:90px}
   </div>
 </section>
 
+<section class="vfeat" id="vPolice">
+  <div class="wrap vf-grid">
+      <figure class="so-video vf-video rv">
+        <div class="so-phone">
+          <video class="vf-vid" data-code="Dfgvy2qFDz2" data-label="polices-itself" src="/what-the-public-think/media/polices-itself.mp4" poster="/what-the-public-think/media/polices-itself.jpg" muted loop playsinline preload="metadata" aria-label="Only Parliament should police them?"></video>
+          <button class="so-snd vf-snd" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="m22 9-6 6"/><path d="m16 9 6 6"/></svg><span>Tap for sound</span></button>
+          <div class="so-hearts" aria-hidden="true"></div>
+        </div>
+        <figcaption>
+          <b>Only Parliament should police them?</b>
+          <span class="so-vstats"><span><i data-v="views">21,050</i> views on Instagram since 9 November</span></span>
+          <a href="https://www.instagram.com/reel/Dfgvy2qFDz2/" target="_blank" rel="noopener noreferrer">Watch it on Instagram</a>
+        </figcaption>
+      </figure>
+      <div class="vf-text rv">
+        <p class="kicker">What our amendment covers</p>
+        <h2>Parliament stays protected. Public statements don’t.</h2>
+        <p>Our amendment does not apply the offence of misleading the public, the duty of candour or any other part of the Hillsborough Law to anything MPs, peers or members of any of the UK’s parliaments say or do in the proceedings of those parliaments. We accept that those proceedings must stay protected.</p>
+        <p>It asks only that lawmakers answer to the same law as everyone else when they speak to the public outside Parliament.</p>
+        <div class="vf-scope">
+          <div class="vf-no"><b>Not covered</b><span>Anything said or done in the proceedings of any UK parliament</span></div>
+          <div class="vf-yes"><b>Covered</b><span>What they tell the public outside: on television, on the radio, online and at public events</span></div>
+        </div>
+      </div>
+  </div>
+</section>
+
 <section id="parties">
   <div class="wrap">
     <p class="kicker">Across the parties</p>
@@ -635,6 +680,32 @@ body.ticker-on .foot{padding-bottom:90px}
         </div>
       </div>
     </div>
+  </div>
+</section>
+
+<section class="vfeat vf-rev" id="vPrivilege">
+  <div class="wrap vf-grid">
+      <figure class="so-video vf-video rv">
+        <div class="so-phone">
+          <video class="vf-vid" data-code="DfbmVuxCvJv" data-label="privilege" src="/what-the-public-think/media/privilege.mp4" poster="/what-the-public-think/media/privilege.jpg" muted loop playsinline preload="metadata" aria-label="Their excuse? Privilege."></video>
+          <button class="so-snd vf-snd" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="m22 9-6 6"/><path d="m16 9 6 6"/></svg><span>Tap for sound</span></button>
+          <div class="so-hearts" aria-hidden="true"></div>
+        </div>
+        <figcaption>
+          <b>Their excuse? Privilege.</b>
+          <span class="so-vstats"><span><i data-v="views">6,267</i> views on Instagram since 7 November</span></span>
+          <a href="https://www.instagram.com/reel/DfbmVuxCvJv/" target="_blank" rel="noopener noreferrer">Watch it on Instagram</a>
+        </figcaption>
+      </figure>
+      <div class="vf-text rv">
+        <p class="kicker">The privilege excuse</p>
+        <h2>Privilege was never the reason</h2>
+        <p>The government’s excuse for leaving MPs and peers out is parliamentary privilege. The minister, Lord Lemos, told the House of Lords on 12 October:</p>
+        <blockquote>“There is a long-standing principle of parliamentary privilege and I do not think the Bill is the right place for that.”</blockquote>
+        <p>But our amendment doesn’t touch what MPs and peers say in Parliament. Conservative peer Lord Wolfson told the House:</p>
+        <blockquote>“It is true that Amendment 66A excludes what is said in Parliament.”</blockquote>
+        <p>Nine days later, the government’s own Deputy Chief Whip, Baroness Anderson, told the Lords the courts would not read the new offences as setting aside the protections for “what Members say or do in Parliament.”</p>
+      </div>
   </div>
 </section>
 
@@ -1238,7 +1309,7 @@ body.ticker-on .foot{padding-bottom:90px}
   drawSound();
   var heard = false;
   function pop(bright){
-    if (!unlocked || muted || !audio || document.hidden || soundKey === 'silent' || window.wtptVideoLoud) return;
+    if (!unlocked || muted || !audio || document.hidden || soundKey === 'silent' || [].some.call(document.querySelectorAll('video'), function(v){ return !v.paused && !v.muted; })) return;
     var t = audio.currentTime; if (t - lastPop < 0.07) return; lastPop = t;
     if (!heard && audio.state === 'running'){ heard = true; track('sound_heard', {label: 'sound-' + soundKey}); }
     SOUNDS[soundKey].play(t + 0.01, bright);
@@ -1675,6 +1746,7 @@ body.ticker-on .foot{padding-bottom:90px}
     window.wtptVideoLoud = false;
     function loud(on){
       vid.muted = !on; window.wtptVideoLoud = on && !vid.paused;
+      if (on) [].forEach.call(document.querySelectorAll('.vf-vid'), function(o){ if (!o.muted){ o.muted = true; var b = o.closest('figure').querySelector('.so-snd'); b.classList.remove('on'); b.querySelector('span').textContent = 'Tap for sound'; } });
       snd.classList.toggle('on', on);
       snd.querySelector('span').textContent = on ? 'Sound on' : 'Tap for sound';
       track(on ? 'video_sound_on' : 'video_sound_off', {label: 'they-admit-it'});
@@ -1705,6 +1777,58 @@ body.ticker-on .foot{padding-bottom:90px}
       hearts.appendChild(i); setTimeout(function(){ i.remove(); }, 4200);
     }
     (function beatHearts(){ heart(); if (Math.random() < 0.3) setTimeout(heart, 90); setTimeout(beatHearts, 170 + Math.random() * 380); })();
+  })();
+
+  /* the two explainer videos: play muted while on screen, tap for sound, hearts, live view counts */
+  (function(){
+    var COL = ['#ff3040', '#ff3040', '#ff3040', '#ff3040', '#ff5a6e', '#e6223a'];
+    var vids = [].slice.call(document.querySelectorAll('.vf-vid'));
+    vids.forEach(function(vid){
+      var fig = vid.closest('figure'), snd = fig.querySelector('.vf-snd'), hearts = fig.querySelector('.so-hearts'), label = vid.dataset.label, onScreen = false, seen = false;
+      function loud(on){
+        if (on) vids.concat([$('soVid')]).forEach(function(o){ if (o && o !== vid && !o.muted){ o.muted = true; var b = o.closest('figure').querySelector('.so-snd'); if (b){ b.classList.remove('on'); b.querySelector('span').textContent = 'Tap for sound'; } } });
+        vid.muted = !on; snd.classList.toggle('on', on);
+        snd.querySelector('span').textContent = on ? 'Sound on' : 'Tap for sound';
+        track(on ? 'video_sound_on' : 'video_sound_off', {label: label});
+      }
+      snd.addEventListener('click', function(e){ e.stopPropagation(); loud(vid.muted); if (vid.paused) vid.play().catch(function(){}); });
+      vid.addEventListener('click', function(){ loud(vid.muted); if (vid.paused) vid.play().catch(function(){}); });
+      if ('IntersectionObserver' in window){
+        new IntersectionObserver(function(es){
+          es.forEach(function(e){
+            onScreen = e.isIntersecting && e.intersectionRatio > 0.35;
+            if (onScreen && !reduce){ vid.play().catch(function(){}); if (!seen){ seen = true; track('video_seen', {label: label}); } }
+            else if (!onScreen) vid.pause();
+          });
+        }, {threshold: [0, 0.35, 0.6]}).observe(vid);
+      }
+      function heart(){
+        if (reduce || !onScreen || vid.paused || document.hidden) return;
+        var i = document.createElement('i'), c = COL[Math.floor(Math.random() * COL.length)];
+        i.style.setProperty('--dx1', (Math.random() * 24 - 12) + 'px'); i.style.setProperty('--dx2', (Math.random() * 50 - 25) + 'px');
+        i.style.animationDuration = (2.8 + Math.random() * 1.6) + 's'; i.style.setProperty('--sc', (0.75 + Math.random() * 0.3).toFixed(2));
+        i.innerHTML = '<svg viewBox="0 0 24 24"><path fill="' + c + '" stroke="#fff" stroke-width="1.4" stroke-linejoin="round" d="M12 20.6c-.4 0-.8-.15-1.1-.4C6.6 16.7 2.4 13.2 2.4 8.9 2.4 6 4.6 3.7 7.4 3.7c1.9 0 3.5 1 4.6 2.6 1.1-1.6 2.7-2.6 4.6-2.6 2.8 0 5 2.3 5 5.2 0 4.3-4.2 7.8-8.5 11.3-.3.25-.7.4-1.1.4z"/></svg>';
+        hearts.appendChild(i); setTimeout(function(){ i.remove(); }, 4200);
+      }
+      (function beat(){ heart(); if (Math.random() < 0.3) setTimeout(heart, 90); setTimeout(beat, 170 + Math.random() * 380); })();
+    });
+    /* when one video gets sound, the main one goes quiet too */
+    var mv = $('soVid'); if (mv) mv.addEventListener('volumechange', function(){ if (!mv.muted) vids.forEach(function(v){ if (!v.muted){ v.muted = true; var b = v.closest('figure').querySelector('.so-snd'); b.classList.remove('on'); b.querySelector('span').textContent = 'Tap for sound'; } }); });
+    var shownV = {};
+    function views(){
+      fetch('https://central-2-mcp-production.up.railway.app/public/social/summary').then(function(r){ return r.json(); }).then(function(d){
+        var f = (d && d.featured) || {};
+        vids.forEach(function(vid){
+          var x = f[vid.dataset.code], el = vid.closest('figure').querySelector('[data-v="views"]'); if (!x || !el) return;
+          var from = shownV[vid.dataset.code] || parseInt(el.textContent.replace(/,/g, ''), 10) || x.views, to = x.views; shownV[vid.dataset.code] = to;
+          if (reduce || from >= to){ el.textContent = to.toLocaleString('en-GB'); return; }
+          var t0 = null, dur = 90000;
+          (function step(t){ if (!t0) t0 = t || performance.now(); var p = Math.min(1, ((t || performance.now()) - t0) / dur);
+            el.textContent = Math.round(from + (to - from) * p).toLocaleString('en-GB'); if (p < 1) requestAnimationFrame(step); })();
+        });
+      }).catch(function(){});
+    }
+    views(); setInterval(views, 300000);
   })();
 
   /* -- parliamentarians -- */
