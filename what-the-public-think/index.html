@@ -133,6 +133,23 @@ h2{font:400 clamp(30px,5vw,44px)/1.08 var(--f-display);letter-spacing:-.01em;mar
   background:linear-gradient(120deg,var(--navy-3),var(--navy-2));border:1px solid var(--line-navy)}
 .signband p{margin:0;font:400 clamp(22px,3vw,30px)/1.2 var(--f-display);max-width:640px}
 .signband p em{font-style:normal;color:var(--gold)}
+/* the sign pop-up (preview, Marcus, 9 Nov 2026) */
+.sp-modal{position:fixed;inset:0;z-index:200;display:flex;align-items:flex-start;justify-content:center;overflow-y:auto;padding:4vh 14px 30px;-webkit-overflow-scrolling:touch}
+.sp-modal[hidden]{display:none}
+.sp-back{position:fixed;inset:0;background:rgba(2,9,32,.78);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
+.sp-box{position:relative;width:100%;max-width:580px;background:var(--navy);border:1px solid var(--line-navy);border-radius:12px;padding:16px 16px 14px;box-shadow:0 40px 100px rgba(0,0,0,.6);animation:spIn .35s cubic-bezier(.2,.8,.2,1)}
+@keyframes spIn{from{transform:translateY(24px) scale(.98);opacity:0}to{transform:none;opacity:1}}
+.sp-x{all:unset;cursor:pointer;position:absolute;top:10px;right:10px;width:36px;height:36px;display:grid;place-items:center;border-radius:50%;color:var(--paper);background:rgba(255,255,255,.08);z-index:2}
+.sp-x svg{width:18px;height:18px}
+.sp-x:hover{background:rgba(255,255,255,.18)}
+.sp-top{display:flex;align-items:center;gap:9px;margin:2px 44px 12px 4px;font-size:15px;color:var(--on-navy)}
+.sp-top b{color:var(--gold);font-variant-numeric:tabular-nums}
+.sp-top .dot{flex:0 0 9px;width:9px;height:9px;border-radius:50%;background:#2fa36b;animation:pulse 1.6s infinite}
+#spFrame{display:block;width:100%;height:640px;border:0;border-radius:8px;background:transparent}
+.sp-skip{all:unset;cursor:pointer;display:block;margin:12px auto 2px;padding:8px 12px;font-size:14.5px;color:var(--on-navy-2);text-decoration:underline;text-underline-offset:3px}
+.sp-skip:hover{color:var(--paper)}
+html.sp-open,html.sp-open body{overflow:hidden}
+@media(max-width:560px){.sp-modal{padding:0}.sp-box{border-radius:0;min-height:100%;border:0;padding:12px 10px}}
 /* sign and share bands between the sections (Marcus, 9 Nov 2026) */
 section.band{padding:8px 0}
 .shareband{background:linear-gradient(120deg,#0f2a6e,#0a1d55);border-color:rgba(221,188,102,.45)}
@@ -797,6 +814,15 @@ body.ticker-on .foot{padding-bottom:90px}
 
 <div id="tip" hidden></div>
 <button class="soundbtn" id="soundBtn" type="button" aria-pressed="false"></button>
+<div class="sp-modal" id="spModal" hidden role="dialog" aria-modal="true" aria-label="Sign the petition">
+  <div class="sp-back" data-close></div>
+  <div class="sp-box">
+    <button class="sp-x" type="button" data-close aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    <p class="sp-top"><span class="dot"></span><span>Join <b id="spN">&nbsp;</b> people who have signed. Then see what they think.</span></p>
+    <iframe id="spFrame" title="Sign the petition" allow="payment *; clipboard-write *"></iframe>
+    <button class="sp-skip" type="button" data-close>Not now, show me the results</button>
+  </div>
+</div>
 <div class="ticker" id="ticker"><div class="tkc"><b id="tkN">&nbsp;</b><span>have signed</span></div><div class="tk" id="tk" aria-hidden="true"></div><a class="btn" href="/petition/?ref=results-ticker">Sign</a></div>
 
 <script>
@@ -1906,6 +1932,36 @@ body.ticker-on .foot{padding-bottom:90px}
         } catch (e) { fallback(btn); }
       });
     });
+  })();
+
+  /* -- the sign pop-up: on arrival, and from every sign button, without leaving the page (preview, Marcus, 9 Nov 2026) -- */
+  (function(){
+    var on = /[?&]popup=1/.test(location.search) || (PREVIEW && !/[?&]popup=0/.test(location.search));
+    var m = $('spModal'), fr = $('spFrame'); if (!on || !m) return;
+    var timer = null;
+    function count(){ var el = document.querySelector('[data-t="signers"]'); $('spN').textContent = el && el.textContent.trim() ? el.textContent : 'thousands of'; }
+    function open(ref){
+      if (!fr.src) fr.src = '/petition/?embed=1&ref=' + encodeURIComponent(ref);
+      m.hidden = false; document.documentElement.classList.add('sp-open'); m.scrollTop = 0;
+      count(); clearInterval(timer); timer = setInterval(count, 1000);
+      track('popup_open', {label: ref});
+    }
+    function close(){
+      m.hidden = true; document.documentElement.classList.remove('sp-open'); clearInterval(timer);
+      track('popup_close', {label: 'popup'});
+    }
+    [].forEach.call(m.querySelectorAll('[data-close]'), function(b){ b.addEventListener('click', close); });
+    document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && !m.hidden) close(); });
+    window.addEventListener('message', function(e){
+      if (e.origin !== location.origin || !e.data || e.data.wtpt !== 'h') return;
+      fr.style.height = Math.max(420, Math.min(4000, +e.data.h || 0)) + 'px';
+    });
+    /* every sign button opens the pop-up instead of leaving the page (after the sound tag is added) */
+    document.addEventListener('click', function(e){
+      var a = e.target && e.target.closest ? e.target.closest('a[href*="/petition/?ref=results"]') : null; if (!a) return;
+      e.preventDefault(); open((a.getAttribute('href').split('ref=')[1] || 'results'));
+    });
+    setTimeout(function(){ open('results-popup-' + soundKey); }, 700);
   })();
 
   /* -- parliamentarians -- */

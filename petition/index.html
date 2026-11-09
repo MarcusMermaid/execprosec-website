@@ -7,6 +7,8 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="Petition to Press and Parliament: include every MP, peer and UK legislator under the Hillsborough Law's duty of candour and offence of misleading the public.">
 <link rel="canonical" href="https://execprosec.org/petition/">
+<script>/* Marcus, 9 Nov 2026: ?embed=1 shows only the signing card, for the pop-up on /what-the-public-think/ */
+if (/[?&]embed=1(?![0-9])/.test(location.search) && window.parent !== window) document.documentElement.className += ' embed';</script>
 <link rel="icon" href="/_web/brand/favicon.ico">
 <link rel="icon" type="image/png" sizes="32x32" href="/_web/brand/icon-32.png">
 <link rel="apple-touch-icon" href="/_web/brand/icon-180.png">
@@ -47,6 +49,9 @@
 *,*::before,*::after{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--navy);color:var(--paper);font:400 16px/1.55 var(--f-body);-webkit-font-smoothing:antialiased}
+html.embed body{background:transparent}
+html.embed header#nav,html.embed .press,html.embed .more-links,html.embed footer.foot,html.embed #sticky{display:none!important}
+html.embed .page{padding:0;max-width:none}
 img{max-width:100%;display:block}
 button,input,textarea{font:inherit;color:inherit}
 a{color:inherit}
@@ -723,6 +728,20 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
 
  <p class="more-links"><a class="inline-link" href="https://execprosec.org/amendments-briefing/" target="_blank" rel="noopener">Objections answered</a> · <a class="inline-link" href="https://execprosec.org/examples-of-lying/" target="_blank" rel="noopener">Examples of lying in politics</a></p>
 </main>
+<script>
+  /* embedded: tell the results page how tall the card is, so the pop-up fits it */
+  (function(){
+    if (!document.documentElement.classList.contains('embed')) return;
+    var last = 0;
+    function send(){ var h = Math.ceil(document.documentElement.scrollHeight); if (h !== last){ last = h; try { parent.postMessage({wtpt: 'h', h: h}, location.origin); } catch (e) {} } }
+    if (window.ResizeObserver) new ResizeObserver(send).observe(document.body);
+    window.addEventListener('load', send); setInterval(send, 700); send();
+    document.addEventListener('click', function(e){
+      var a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
+      if (a && !a.target && a.host !== location.host) a.target = '_top';
+    }, true);
+  })();
+</script>
 <div class="sticky" id="sticky" hidden><button class="btn" type="button" id="stickyBtn">Sign the petition</button></div>
 
 <footer class="foot">
