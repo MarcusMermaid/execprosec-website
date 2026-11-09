@@ -305,6 +305,14 @@ body.rails-on .rail{opacity:1}
 .ticker .tk .when{color:var(--gold)}
 @keyframes tkIn{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
 @keyframes tkOut{to{opacity:0;transform:translateY(-22px)}}
+.ticker .tkc{flex:0 0 auto;display:flex;flex-direction:column;line-height:1.05;color:var(--paper);padding-right:12px;border-right:1px solid var(--line-navy)}
+.ticker .tkc b{font:400 22px/1 var(--f-display);font-variant-numeric:tabular-nums}
+.ticker .tkc span{font-size:11.5px;color:var(--on-navy-2);margin-top:2px}
+#quotes{overflow:hidden}
+#quotes .vrow{margin-top:6px}
+.top .tv.tick{animation:tick .4s ease}
+#hexmap path.ping{animation:hexping 1.4s ease-out}
+@keyframes hexping{0%{fill:#ffffff}25%{fill:#ddbc66}}
 .ticker .btn{min-height:42px;padding:0 16px;font-size:14.5px;box-shadow:none;flex:0 0 auto}
 body.ticker-on .foot{padding-bottom:90px}
 
@@ -403,7 +411,7 @@ body.ticker-on .foot{padding-bottom:90px}
       <p class="live"><span class="dot"></span><span id="updated">Live results from the petition</span></p>
       <p class="kicker">The Hillsborough Law petition</p>
       <h1>What the public think about MPs and peers <em>exempting themselves</em></h1>
-      <p class="lead">The Government's Hillsborough Law makes it a crime for public officials to mislead the public, but leaves MPs and peers out. Here is what the people who signed our petition told us, in their own words and in their answers. It updates as they sign.</p>
+      <p class="lead">The Government's Hillsborough Law makes it a crime for public officials to mislead the public, but leaves MPs and peers out. Here is what the people who signed our petition told us, in their own words and in their answers. It updates as they sign each day.</p>
       <div class="hero-cta"><a class="btn" href="/petition/?ref=results-top">Sign the petition</a><span>It takes a minute.</span></div>
     </div>
     <div class="stage" id="stage">
@@ -416,12 +424,12 @@ body.ticker-on .foot{padding-bottom:90px}
       <div class="squote" id="squote"></div>
     </div>
     <div class="today-data" id="todayData">
-      <div class="td-head"><span class="k"><span class="dot"></span><span id="tdLabel">Today's data</span></span><span class="td-note" id="tdNote">Counting today's signers from midnight, one by one</span></div>
+      <div class="td-head"><span class="k"><span class="dot"></span><span id="tdLabel">Live count</span></span><span class="td-note" id="tdNote">&nbsp;</span></div>
       <div class="counters" id="counters">
-        <div class="counter"><b data-t="signers">0</b><span data-l="signers">signed and confirmed by email today</span><small data-all="signers">&nbsp;</small></div>
-        <div class="counter"><b data-t="answers">0</b><span data-l="answers">answers to our statements today</span><small data-all="answers">&nbsp;</small></div>
-        <div class="counter"><b data-t="quotes">0</b><span data-l="quotes">wrote to us in their own words today</span><small data-all="quotes">&nbsp;</small></div>
-        <div class="counter"><b data-t="seats">0</b><span data-l="seats">constituencies with a signer today</span><small data-all="seats">&nbsp;</small></div>
+        <div class="counter"><b data-t="signers">&nbsp;</b><span>people have signed and confirmed by email</span></div>
+        <div class="counter"><b data-t="answers">&nbsp;</b><span>answers to our statements</span></div>
+        <div class="counter"><b data-t="quotes">&nbsp;</b><span>wrote to us in their own words</span></div>
+        <div class="counter"><b data-t="seats">&nbsp;</b><span>of the 650 constituencies have a signer</span></div>
       </div>
     </div>
   </div>
@@ -431,7 +439,6 @@ body.ticker-on .foot{padding-bottom:90px}
   <div class="wrap"><div><p class="kicker">In their own words</p><h2>Why they signed</h2></div><span id="voicesNote">Hover to pause. Every quote is exactly as written.</span></div>
   <div class="vrow r1" data-speed="30" data-dir="-1"><div class="vtrack"></div></div>
   <div class="vrow r2" data-speed="22" data-dir="1"><div class="vtrack"></div></div>
-  <div class="vrow r3" data-speed="36" data-dir="-1"><div class="vtrack"></div></div>
 </section>
 
 <section class="pressbar" id="press">
@@ -443,6 +450,7 @@ body.ticker-on .foot{padding-bottom:90px}
       <a class="pcard" href="https://news.sky.com/story/hillsborough-law-will-criminalise-lying-by-senior-ministers-say-campaigners-13509580" target="_blank" rel="noopener noreferrer"><span class="wm wm-sky">sky<span>NEWS</span></span><span class="hl">Hillsborough Law will ‘criminalise lying’ by senior ministers, say campaigners</span><span class="dt">19 February 2026</span></a>
       <a class="pcard" href="https://www.telegraph.co.uk/news/2026/10/17/burnham-accused-of-hypocrisy-over-hillsborough-law/" target="_blank" rel="noopener noreferrer"><span class="wm wm-tel">The Telegraph</span><span class="hl">Burnham accused of hypocrisy over Hillsborough Law</span><span class="dt">17 October 2026</span></a>
       <a class="pcard" href="https://www.express.co.uk/news/politics/2257971/comment-marcus-ball-hillsborough-law-lawmakers" target="_blank" rel="noopener noreferrer"><span class="wm wm-exp">Daily Express</span><span class="hl">Lords risk making same terrible mistake as MPs in excusing themselves from vital new law</span><span class="dt"><b>Op-ed by Marcus J Ball</b> · 18 October 2026</span></a>
+      <a class="pcard" href="https://www.express.co.uk/news/politics/2229849/hillsborough-law-account-mps" target="_blank" rel="noopener noreferrer"><span class="wm wm-exp">Daily Express</span><span class="hl">New Hillsborough Law holds official lies to account – with one major exception</span><span class="dt"><b>Op-ed by Marcus J Ball</b> · 16 July 2026</span></a>
       <a class="pcard" href="https://www.express.co.uk/news/politics/2184124/mps-must-submit-hillsborough-law" target="_blank" rel="noopener noreferrer"><span class="wm wm-exp">Daily Express</span><span class="hl">MPs must submit to Hillsborough Law – or sacrifice their very reputations</span><span class="dt"><b>Op-ed by Marcus J Ball</b> · 19 March 2026</span></a>
       <a class="pcard" href="https://firstindia.co.in/news/life-style/how-the-uk-is-criminalising-political-deception-for-the-first-time-1776572302" target="_blank" rel="noopener noreferrer"><span class="wm wm-fi">First India</span><span class="hl">How the UK is criminalising political deception for the first time</span><span class="dt"><b>Op-ed by Marcus J Ball</b> · 19 April 2026</span></a>
     </div>
@@ -532,10 +540,14 @@ body.ticker-on .foot{padding-bottom:90px}
   <div class="wrap">
     <p class="kicker">In their own words</p>
     <h2 id="quotesH">In their own words</h2>
-    <p class="sec-lead">Quoted exactly as written, with each person's first name and town. Search for your town or a word.</p>
-    <div class="vsearch"><input id="vq" type="search" placeholder="Search by town or word" aria-label="Search the quotes"><span id="vcount"></span></div>
+    <p class="sec-lead">Quoted exactly as written, with each person's first name and town. Hover to pause, or search for your town or a word.</p>
+  </div>
+  <div class="vrow q1" data-speed="26" data-dir="-1"><div class="vtrack"></div></div>
+  <div class="vrow q2" data-speed="33" data-dir="1"><div class="vtrack"></div></div>
+  <div class="wrap">
+    <div class="vsearch" style="margin-top:22px"><input id="vq" type="search" placeholder="Search by town or word" aria-label="Search the quotes"><span id="vcount"></span></div>
     <div class="quotes" id="quoteWall"></div>
-    <button class="morebtn" id="vmore" type="button">Show more</button>
+    <button class="morebtn" id="vmore" type="button" hidden>Show more</button>
   </div>
 </section>
 
@@ -564,7 +576,7 @@ body.ticker-on .foot{padding-bottom:90px}
 <button class="soundbtn" id="soundBtn" type="button" aria-pressed="false"></button>
 <div class="rail" id="railL" aria-hidden="true"></div>
 <div class="rail" id="railR" aria-hidden="true"></div>
-<div class="ticker" id="ticker"><div class="tk" id="tk" aria-hidden="true"></div><a class="btn" href="/petition/?ref=results-ticker">Sign</a></div>
+<div class="ticker" id="ticker"><div class="tkc"><b id="tkN">&nbsp;</b><span>have signed</span></div><div class="tk" id="tk" aria-hidden="true"></div><a class="btn" href="/petition/?ref=results-ticker">Sign</a></div>
 
 <script>
 (function(){
@@ -684,9 +696,9 @@ body.ticker-on .foot{padding-bottom:90px}
   function render(D){
     var at = new Date(D.at);
     $('updated').textContent = 'Live results · updated ' + at.toLocaleString('en-GB', {weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit', timeZone: 'Europe/London'});
-    var all = {signers: fmt(D.signers) + ' in total since 25 October', answers: fmt(D.answers) + ' in total',
-               quotes: fmt(D.quotes) + ' in total', seats: D.constituencies_reached + ' of 650 in total'};
-    Object.keys(all).forEach(function(k){ document.querySelector('[data-all="' + k + '"]').textContent = all[k]; });
+    cEl.seats.textContent = (D.constituencies_reached || 0).toLocaleString('en-GB');
+    if (!R.before){ cEl.signers.textContent = fmt(D.signers); cEl.answers.textContent = fmt(D.answers); cEl.quotes.textContent = fmt(D.quotes); }
+    initLV(D);
 
     /* headline findings */
     var st = D.statements || {};
@@ -783,6 +795,7 @@ body.ticker-on .foot{padding-bottom:90px}
     var wall = $('quoteWall'), more = $('vmore'), vq = $('vq'), shown = 0, hits = VOICES;
     function paint(reset){
       if (reset){ wall.innerHTML = ''; shown = 0; }
+      if (!vq.value.trim()){ more.hidden = true; $('vcount').textContent = VOICES.length + ' quotes'; return; }
       hits.slice(shown, shown + 24).forEach(function(v, i){
         var f = document.createElement('figure'); f.className = 'quote';
         f.innerHTML = '<p>' + esc(v.text) + '</p><cite>' + esc(v.first) + ', ' + esc(v.town) + '</cite>';
@@ -803,6 +816,7 @@ body.ticker-on .foot{padding-bottom:90px}
     $('quotesH').textContent = D.quotes.toLocaleString('en-GB') + ' signers wrote to us in their own words';
     $('midText').innerHTML = D.signers.toLocaleString('en-GB') + ' people have signed. <em>Voters of every party</em> want every MP and peer covered.';
     $('ctaText').textContent = 'Join ' + D.signers.toLocaleString('en-GB') + ' people telling Parliament that no one who makes the law should be above it.';
+    drawLive();
 
     document.querySelectorAll('.rv').forEach(function(el){ if (!el._in) onView(el); });
     loadMap(D);
@@ -810,7 +824,7 @@ body.ticker-on .foot{padding-bottom:90px}
 
   /* ---- signatures over time ---- */
   function drawTime(D, again){
-    var svg = $('timechart'), days = (D.daily || []).map(function(d){ return [d[0], n0(d[1])]; });
+    var svg = $('timechart'), days = (LV.daily || D.daily || []).map(function(d){ return [d[0], n0(d[1])]; });
     if (!days.length) return;
     var run = 0, pts = days.map(function(d){ run += d[1]; return [d[0], d[1], run]; });
     var W = Math.max(300, svg.parentNode.clientWidth - 36), H = W < 560 ? 230 : 300, L = W < 560 ? 44 : 56, R = 14, T = 14, B = 30;
@@ -830,7 +844,7 @@ body.ticker-on .foot{padding-bottom:90px}
     h += '<circle id="tDot" r="5" fill="#142a6b" stroke="#fff" stroke-width="2" visibility="hidden"/>';
     h += '<rect x="' + L + '" y="0" width="' + (W - L - R) + '" height="' + H + '" fill="transparent" id="tHit"/>';
     svg.innerHTML = h;
-    $('timeTotal').textContent = run.toLocaleString('en-GB');
+    $('timeTotal').textContent = (R.before ? C.signers : run).toLocaleString('en-GB'); if (reduce) drawTime._shownAt = 1;
     var best = pts.slice().sort(function(a, b){ return b[1] - a[1]; })[0];
     $('timeBest').textContent = 'Busiest day: ' + day(best[0], true) + ', ' + best[1].toLocaleString('en-GB') + ' signatures';
     var hit = $('tHit'), vx = $('tX'), dot = $('tDot');
@@ -848,6 +862,7 @@ body.ticker-on .foot{padding-bottom:90px}
       var ln = $('tLine'), len = ln.getTotalLength(), ar = $('tArea');
       ln.style.strokeDasharray = len; ln.style.strokeDashoffset = len; ar.style.opacity = 0;
       onView(svg.parentNode, function(){
+        drawTime._shownAt = performance.now();
         ln.style.transition = 'stroke-dashoffset 2.2s cubic-bezier(.4,0,.2,1)'; ln.style.strokeDashoffset = 0;
         ar.style.transition = 'opacity 1.2s ease 1s'; ar.style.opacity = 1;
       });
@@ -861,15 +876,14 @@ body.ticker-on .foot{padding-bottom:90px}
       .catch(function(){ $('mapLead').textContent = 'The map could not load. Please refresh the page.'; });
   }
   function drawMap(D, H){
-    var svg = $('hexmap'), hexes = H.hexes, codes = Object.keys(hexes), seats = D.constituencies || {};
+    var svg = $('hexmap'), hexes = H.hexes, codes = Object.keys(hexes), seats = LV.seat, mapSeen = false;
     var vals = codes.map(function(c){ return seats[c]; }).filter(function(v){ return v != null; }).sort(function(a, b){ return a - b; });
     function q(p){ return vals[Math.floor(p * (vals.length - 1))]; }
     function nice(v){ return v < 30 ? Math.round(v / 5) * 5 : Math.round(v / 10) * 10; }
     var br = [10, nice(q(.25)), nice(q(.5)), nice(q(.75)), nice(q(.92))];
     for (var i = 1; i < br.length; i++) if (br[i] <= br[i - 1]) br[i] = br[i - 1] + 5;
     function bin(v){ if (v == null) return 0; for (var k = br.length - 1; k >= 0; k--) if (v >= br[k]) return k + 1; return 0; }
-    var ranked = codes.slice().sort(function(a, b){ return n0(seats[b]) - n0(seats[a]); });
-    var rank = {}; ranked.forEach(function(c, k){ rank[c] = seats[c] == null ? null : k + 1; });
+    var rank = {};
     var minR = Infinity, maxR = -Infinity, minQ = Infinity, maxQ = -Infinity;
     codes.forEach(function(c){ var h = hexes[c]; minR = Math.min(minR, h.r); maxR = Math.max(maxR, h.r); minQ = Math.min(minQ, h.q); maxQ = Math.max(maxQ, h.q); });
     var s = 10, w = Math.sqrt(3) * s, odd = (H.layout || 'odd-r') === 'odd-r';
@@ -900,36 +914,67 @@ body.ticker-on .foot{padding-bottom:90px}
     svg.addEventListener('mousemove', function(e){ var c = e.target.dataset && e.target.dataset.c; if (c) showTip(info(c), e.clientX, e.clientY); else hideTip(); });
     svg.addEventListener('mouseleave', hideTip);
     svg.addEventListener('click', function(e){ var c = e.target.dataset && e.target.dataset.c; if (c){ select(c); showTip(info(c), e.clientX, e.clientY); e.stopPropagation(); } });
-    onView(svg.parentNode, function(){ requestAnimationFrame(function(){ svg.classList.remove('pre'); }); });
+    onView(svg.parentNode, function(){ requestAnimationFrame(function(){ svg.classList.remove('pre'); }); setTimeout(function(){ mapSeen = true; }, 1800); });
 
     /* legend */
     var lg = '<span><i style="background:' + RAMP[0] + '"></i>Fewer than 10</span>';
     for (var k = 0; k < br.length; k++) lg += '<span><i style="background:' + RAMP[k + 1] + '"></i>' + br[k] + (k < br.length - 1 ? '–' + (br[k + 1] - 1) : ' or more') + '</span>';
     $('maplegend').innerHTML = lg;
 
-    /* top 20 */
-    var top = ranked.slice(0, 10), mx = n0(seats[top[0]]), tl = $('topList'); tl.innerHTML = '';
-    top.forEach(function(c){
-      var li = document.createElement('li');
-      li.innerHTML = '<span class="tn">' + esc(hexes[c].n) + '<span class="tb" data-w="' + pct(n0(seats[c]), mx) + '"></span></span><span class="tv">' + fmt(seats[c]) + '</span>';
-      li.addEventListener('click', function(){ select(c, true); });
-      tl.appendChild(li);
-    });
-    onView(tl, function(){ tl.querySelectorAll('.tb').forEach(function(b, k){ setTimeout(function(){ b.style.width = b.dataset.w + '%'; }, reduce ? 0 : k * 50); }); });
+    /* the ten with the most signers, live */
+    var tl = $('topList'), topKey = '';
+    function drawTop(){
+      var ranked = codes.slice().sort(function(a, b){ return n0(seats[b]) - n0(seats[a]); });
+      rank = {}; ranked.forEach(function(c, k){ rank[c] = seats[c] == null ? null : k + 1; });
+      var top = ranked.slice(0, 10), mx = n0(seats[top[0]]), key = top.join();
+      if (key !== topKey){
+        topKey = key; tl.innerHTML = '';
+        top.forEach(function(c){
+          var li = document.createElement('li'); li.dataset.c = c;
+          li.innerHTML = '<span class="tn">' + esc(hexes[c].n) + '<span class="tb"></span></span><span class="tv"></span>';
+          li.addEventListener('click', function(){ select(c, true); });
+          tl.appendChild(li);
+        });
+      }
+      [].forEach.call(tl.children, function(li){
+        var c = li.dataset.c, v = li.querySelector('.tv'), t = fmt(seats[c]), b = li.querySelector('.tb');
+        if (v.textContent && v.textContent !== t && !reduce){ v.classList.remove('tick'); void v.offsetWidth; v.classList.add('tick'); }
+        v.textContent = t; b.dataset.w = pct(n0(seats[c]), mx);
+        if (tl._shown) b.style.width = b.dataset.w + '%';
+      });
+    }
+    drawTop();
+    onView(tl, function(){ tl.querySelectorAll('.tb').forEach(function(b, k){ setTimeout(function(){ b.style.width = b.dataset.w + '%'; }, reduce ? 0 : k * 50); }); setTimeout(function(){ tl._shown = true; }, 600); });
 
-    /* nations */
-    var N = D.nations || {}, ntot = Object.keys(N).reduce(function(a, k){ return a + N[k]; }, 0), nw = $('nations'); nw.innerHTML = '';
-    ['England', 'Scotland', 'Wales', 'Northern Ireland'].forEach(function(k){
-      var r = document.createElement('div'); r.className = 'nrow';
-      r.innerHTML = '<b>' + k + '</b>';
-      var b = document.createElement('div'); b.className = 'bar';
-      var seg = document.createElement('i'); seg.dataset.w = pct(N[k], ntot);
-      hover(seg, '<b>' + k + '</b><br>' + fmt(N[k]) + ' signers (' + Math.round(pct(N[k], ntot)) + '% of UK signers placed on the map)');
-      b.appendChild(seg); r.appendChild(b);
-      var v = document.createElement('div'); v.className = 'nv'; v.textContent = fmt(N[k]); r.appendChild(v);
-      nw.appendChild(r);
-    });
-    onView(nw, function(){ grow(nw); });
+    /* nations, live */
+    var nw = $('nations'), nKey = '';
+    function drawNations(){
+      var N = LV.nat, key = JSON.stringify(N); if (key === nKey) return; nKey = key;
+      var ntot = Object.keys(N).reduce(function(a, k){ return a + n0(N[k]); }, 0); nw.innerHTML = '';
+      ['England', 'Scotland', 'Wales', 'Northern Ireland'].forEach(function(k){
+        var r = document.createElement('div'); r.className = 'nrow';
+        r.innerHTML = '<b>' + k + '</b>';
+        var b = document.createElement('div'); b.className = 'bar';
+        var seg = document.createElement('i'); seg.dataset.w = pct(n0(N[k]), ntot);
+        if (nw._shown) seg.style.width = seg.dataset.w + '%';
+        hover(seg, '<b>' + k + '</b><br>' + fmt(N[k]) + ' signers (' + Math.round(pct(n0(N[k]), ntot)) + '% of UK signers placed on the map)');
+        b.appendChild(seg); r.appendChild(b);
+        var v = document.createElement('div'); v.className = 'nv'; v.textContent = fmt(N[k]); r.appendChild(v);
+        nw.appendChild(r);
+      });
+    }
+    drawNations();
+    onView(nw, function(){ grow(nw); setTimeout(function(){ nw._shown = true; }, 600); });
+
+    /* each signer counted lights up their constituency */
+    LV.onSeat = function(c){
+      var el = byCode[c]; if (!el) return;
+      el.setAttribute('fill', RAMP[bin(seats[c])]);
+      if (!reduce && mapSeen && inView(svg)){ el.classList.remove('ping'); void el.getBoundingClientRect(); el.classList.add('ping'); }
+      if (current === c) select(c);
+    };
+    LV.redrawLists = function(){ drawTop(); drawNations(); };
+    LV.redraw = function(){ codes.forEach(function(c){ byCode[c].setAttribute('fill', RAMP[bin(seats[c])]); }); drawTop(); drawNations(); };
 
     /* search */
     var input = $('seatSearch'), sugg = $('sugg'), names = codes.map(function(c){ return [hexes[c].n, c]; }).sort(), hi = -1;
@@ -952,45 +997,46 @@ body.ticker-on .foot{padding-bottom:90px}
     input.addEventListener('blur', function(){ setTimeout(close, 150); });
   }
 
-  /* ================= the living top (Marcus, 9 Nov 2026) =================
-     Today's signers are counted from midnight one by one, over and over: each pops up as a name, the
-     counters tick up with a "+", and a soft pop plays. When the day runs out it starts again from
-     midnight. Until today has 100 signers it replays yesterday. Real new signers pop up straight away. */
+  /* ================= the living page (Marcus, 9 Nov 2026) =================
+     Every count on the page is one live number. It opens on the totals at midnight and adds today's
+     signers one by one, at the same pace and with the same sound wherever you are on the page, until it
+     reaches the real total. Then it stops, and moves only when someone new signs. */
   if (!VOICES) VOICES = QUOTES.map(function(q){ return {first: q[0], town: q[1], text: q[2]}; });
   var FEED = 'https://central-2-mcp-production.up.railway.app/public/petition/today';
   var stage = $('stage'), stream = $('stream'), railL = $('railL'), railR = $('railR'), tk = $('tk'), ticker = $('ticker');
   var AV = [['#142a6b', '#fff'], ['#ddbc66', '#041440'], ['#8a6b1f', '#fff'], ['#d64045', '#fff']], avi = 0;
-  var R = {list: [], i: 0, day: '', fresh: [], pauseAt: 0, today: 0};
-  var C = {signers: 0, answers: 0, quotes: 0, seats: 0};
+  var BEAT = 450, CALM = 1600, SPEED = 90;      // one signer every 0.45 s everywhere; names rise at 90 px a second
+  var R = {list: [], i: 0, fresh: [], gap: BEAT, names: [], ni: 0, before: null, day: '', feedAt: 0};
+  var C = {signers: 0, answers: 0, quotes: 0}, counted = 0;
+  var LV = {ins: null, seat: {}, nat: {}, daily: null, ready: false};
 
-  /* -- sound -- */
+  /* -- sound: on unless the visitor turns it off (browsers only allow it after their first tap or click) -- */
   var audio = null, master = null, unlocked = false, muted = false;
-  try { muted = localStorage.getItem('wtpt-muted') === '1'; } catch (e) {}
+  try { muted = localStorage.getItem('wtpt-sound-off') === '1'; } catch (e) {}
   var sb = $('soundBtn');
   var ICON_ON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a10 10 0 0 1 0 14"/></svg>';
   var ICON_OFF = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="m22 9-6 6"/><path d="m16 9 6 6"/></svg>';
   function drawSound(){
-    var on = unlocked && !muted;
-    sb.innerHTML = (on ? ICON_ON : ICON_OFF) + '<span>' + (on ? 'Mute this page' : muted ? 'Sound off' : 'Tap for sound') + '</span>';
-    sb.classList.toggle('off', !on); sb.setAttribute('aria-pressed', on ? 'false' : 'true');
+    sb.innerHTML = (muted ? ICON_OFF : ICON_ON) + '<span>' + (muted ? 'Sound off' : 'Mute this page') + '</span>';
+    sb.classList.toggle('off', muted); sb.setAttribute('aria-pressed', muted ? 'true' : 'false');
   }
   function unlock(){
-    if (unlocked) return;
+    if (unlocked) { if (audio && audio.state === 'suspended') audio.resume(); return; }
     try {
       var AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
       audio = new AC(); master = audio.createGain(); master.gain.value = 0.5; master.connect(audio.destination);
       if (audio.state === 'suspended') audio.resume();
       unlocked = true;
     } catch (e) {}
-    drawSound();
   }
-  ['pointerdown', 'keydown', 'touchstart'].forEach(function(ev){
-    window.addEventListener(ev, function(e){ if (e.target && e.target.closest && e.target.closest('#soundBtn')) return; unlock(); }, {passive: true});
+  ['pointerdown', 'keydown', 'touchend', 'click'].forEach(function(ev){
+    window.addEventListener(ev, function(e){ if (e.target && e.target.closest && e.target.closest('#soundBtn')) return; if (!muted) unlock(); }, {passive: true});
   });
   sb.addEventListener('click', function(){
-    if (!unlocked){ muted = false; unlock(); } else muted = !muted;
-    try { localStorage.setItem('wtpt-muted', muted ? '1' : '0'); } catch (e) {}
-    drawSound(); if (!muted) pop(true);
+    muted = !muted;
+    try { localStorage.setItem('wtpt-sound-off', muted ? '1' : '0'); } catch (e) {}
+    if (!muted){ unlock(); pop(true); }
+    drawSound();
   });
   drawSound();
   var NOTES = [523.25, 587.33, 659.25, 783.99, 880.0, 1046.5], lastPop = 0;
@@ -1007,9 +1053,9 @@ body.ticker-on .foot{padding-bottom:90px}
     tone(f, t, 0.16); if (bright){ tone(f * 1.5, t + 0.09, 0.13); tone(f * 2, t + 0.18, 0.1); }
   }
 
-  /* -- counters -- */
+  /* -- the counters: one number each -- */
   var cEl = {}; ['signers', 'answers', 'quotes', 'seats'].forEach(function(k){ cEl[k] = document.querySelector('[data-t="' + k + '"]'); });
-  function drawCounts(){ Object.keys(cEl).forEach(function(k){ cEl[k].textContent = C[k].toLocaleString('en-GB'); }); }
+  function drawCounts(){ ['signers', 'answers', 'quotes'].forEach(function(k){ cEl[k].textContent = C[k].toLocaleString('en-GB'); }); }
   function bump(k, by){
     if (!by) return;
     C[k] += by; var el = cEl[k]; el.textContent = C[k].toLocaleString('en-GB');
@@ -1019,58 +1065,81 @@ body.ticker-on .foot{padding-bottom:90px}
     var pl = document.createElement('i'); pl.className = 'plus'; pl.textContent = '+' + by;
     box.appendChild(pl); pl.addEventListener('animationend', function(){ pl.remove(); });
   }
-  function labels(){
-    var y = R.day === 'yesterday', word = y ? 'yesterday' : 'today';
-    $('tdLabel').textContent = y ? 'Yesterday’s data' : 'Today’s data';
-    var L = {signers: 'signed and confirmed by email ' + word, answers: 'answers to our statements ' + word,
-             quotes: 'wrote to us in their own words ' + word, seats: 'constituencies with a signer ' + word};
-    Object.keys(L).forEach(function(k){ document.querySelector('[data-l="' + k + '"]').textContent = L[k]; });
-    note();
-  }
-  function note(loop){
-    var n = $('tdNote'), total = R.list.length.toLocaleString('en-GB');
-    n.classList.toggle('loop', !!loop);
-    if (loop) n.textContent = R.day === 'yesterday' ? 'That was all of yesterday. Starting again from midnight.' : 'That’s today so far. Starting again from midnight.';
-    else n.textContent = R.day === 'yesterday'
-      ? 'Today has ' + R.today.toLocaleString('en-GB') + ' so far, so this counts yesterday’s ' + total + ' signers from midnight, one by one'
-      : 'Counting today’s ' + total + ' signers from midnight, one by one';
-  }
-  function setLive(D){
-    $('stageK').textContent = 'Signing today';
-    $('todayN').textContent = (D.today || 0).toLocaleString('en-GB');
-    $('todayTxt').textContent = D.today === 1 ? 'person has signed today' : 'people have signed today';
-    $('hourN').textContent = D.last_hour ? D.last_hour.toLocaleString('en-GB') + ' in the last hour' : '';
+  function note(){
+    var n = $('tdNote'), left = R.list.length - R.i;
+    n.classList.toggle('loop', left <= 0);
+    n.textContent = left > 0 ? 'Counting from midnight: adding today’s ' + R.list.length.toLocaleString('en-GB') + ' signers one by one'
+                             : 'Everyone who has signed today is counted. The numbers rise as new people sign.';
   }
 
-  /* -- who comes next -- */
-  function nextPerson(){
-    if (R.fresh.length) return {p: R.fresh.shift(), live: true};
-    if (!R.list.length) return null;
-    if (R.i >= R.list.length){
-      var now = performance.now();
-      if (!R.pauseAt){ R.pauseAt = now; note(true); }
-      if (now - R.pauseAt < 5000) return null;
-      R.pauseAt = 0; R.i = 0; C = {signers: 0, answers: 0, quotes: 0, seats: 0}; drawCounts(); note();
-    }
-    var p = R.list[R.i++];
-    bump('signers', 1); bump('answers', p.a); bump('quotes', p.q); bump('seats', p.s);
-    return {p: p, live: false};
+  /* -- every other number on the page follows the same count -- */
+  function natOf(c){ var k = (c || '').charAt(0); return k === 'E' ? 'England' : k === 'S' ? 'Scotland' : k === 'W' ? 'Wales' : k === 'N' ? 'Northern Ireland' : ''; }
+  function londonDay(d){ try { return (d || new Date()).toLocaleDateString('en-CA', {timeZone: 'Europe/London'}); } catch (e) { return (d || new Date()).toISOString().slice(0, 10); } }
+  function shift(p, d){
+    var c = p.c;
+    if (c && LV.seat[c] != null) LV.seat[c] = Math.max(0, LV.seat[c] + d);
+    var nk = natOf(c); if (nk && LV.nat[nk] != null) LV.nat[nk] = Math.max(0, LV.nat[nk] + d);
+    if (LV.daily){ var last = LV.daily[LV.daily.length - 1]; last[1] = Math.max(0, last[1] + d); }
   }
-  function when(x){ return x.live || (R.day === 'today' && x.p.m <= 10) ? 'just signed' : R.day === 'yesterday' ? 'signed yesterday' : 'signed today'; }
+  function initLV(D){                       // the full figures, kept in objects the map and chart read from
+    LV.ins = D;
+    Object.keys(D.constituencies || {}).forEach(function(c){ LV.seat[c] = D.constituencies[c]; });
+    Object.keys(D.nations || {}).forEach(function(k){ LV.nat[k] = D.nations[k]; });
+    LV.daily = (D.daily || []).map(function(d){ return [d[0], n0(d[1])]; });
+    var key = londonDay();
+    if (!LV.daily.length || LV.daily[LV.daily.length - 1][0] !== key) LV.daily.push([key, 0]);
+    setBase();
+  }
+  function setBase(){                       // take today's signers back out, so the map and chart start at midnight too
+    if (LV.ready || !LV.ins || !R.before) return;
+    var insAt = Date.parse(LV.ins.at) || 0;
+    R.list.forEach(function(p){ if (R.feedAt - p.m * 60000 <= insAt) shift(p, -1); });
+    LV.ready = true;
+    for (var k = 0; k < R.i; k++) shift(R.list[k], 1);
+    if (LV.redraw) LV.redraw();
+    drawLive();
+  }
+  var liveT = 0;
+  function liveSoon(){
+    if (liveT) return;
+    liveT = setTimeout(function(){
+      liveT = 0;
+      if (LV.redrawLists) LV.redrawLists();
+      var tc = $('timechart');
+      if (LV.ins && drawTime._shownAt && performance.now() - drawTime._shownAt > 2600 && inView(tc)) drawTime(LV.ins, true);
+    }, 1000);
+  }
+  function drawLive(){
+    if (!R.before) return;
+    var s = C.signers.toLocaleString('en-GB');
+    $('midText').innerHTML = s + ' people have signed. <em>Voters of every party</em> want every MP and peer covered.';
+    $('ctaText').textContent = 'Join ' + s + ' people telling Parliament that no one who makes the law should be above it.';
+    $('quotesH').textContent = C.quotes.toLocaleString('en-GB') + ' signers wrote to us in their own words';
+    $('timeTotal').textContent = s;
+    $('tkN').textContent = s;
+    $('todayN').textContent = counted.toLocaleString('en-GB');
+    $('todayTxt').textContent = counted === 1 ? 'person has signed today' : 'people have signed today';
+    if (LV.ready) liveSoon();
+  }
+  function count(p){
+    counted++; bump('signers', 1); bump('answers', p.a); bump('quotes', p.q);
+    if (LV.ready){ shift(p, 1); if (p.c && LV.onSeat) LV.onSeat(p.c); }
+    drawLive();
+  }
+
+  /* -- names -- */
+  function when(x){ return x.live || (!x.quiet && x.p.m <= 10) ? 'just signed' : x.p.y ? 'signed yesterday' : 'signed today'; }
   function avatar(p){ var c = AV[avi++ % AV.length]; return '<span class="av" style="background:' + c[0] + ';color:' + c[1] + '">' + esc((p.n || 'S').charAt(0)) + '</span>'; }
   function who(p){ return '<b>' + esc(p.n || 'Someone') + '</b>' + (p.t ? (Math.random() < .5 ? ' in ' : ' from ') + esc(p.t) : ''); }
   function pillHTML(x){
     return '<span class="pop">' + avatar(x.p) + '<span class="tx"><span class="who">' + who(x.p) + '</span><span class="when">' + when(x) + '</span></span></span>';
   }
-
-  /* -- rising pills, in the panel or the side streams -- */
   var lane = 0;
   function rise(box, x, mini, opts){
     var el = document.createElement('div'); el.className = 'pill' + (mini ? ' mini' : '') + (when(x) === 'just signed' ? ' just' : '');
     el.innerHTML = pillHTML(x); el.style.visibility = 'hidden';
     var W = box.clientWidth, H = box.clientHeight;
-    if (opts.half) el.style.maxWidth = Math.floor(W / 2 - 10) + 'px';
-    else el.style.maxWidth = (W - 8) + 'px';
+    el.style.maxWidth = (opts.lanes === 2 ? Math.floor(W / 2 - 10) : W - 8) + 'px';
     box.appendChild(el);
     var w = el.offsetWidth, x0;
     if (opts.lanes === 2) x0 = lane++ % 2 ? W - w - 6 - Math.random() * 10 : 6 + Math.random() * 10;
@@ -1085,10 +1154,8 @@ body.ticker-on .foot{padding-bottom:90px}
     if (opts.at) a.currentTime = opts.at * dur;
     a.onfinish = function(){ el.remove(); };
   }
-  function stageOpts(){
-    var two = stream.clientWidth >= 440, tick = two ? 400 : 800, gap = two ? tick * 2 : tick;
-    return {lanes: two ? 2 : 1, half: two, tick: tick, dur: (stream.clientHeight + 10) / (60 / (gap / 1000)) * 1000};
-  }
+  function stageOpts(){ return {lanes: 2, dur: (stream.clientHeight + 10) / SPEED * 1000}; }
+  function railOpts(){ return {lanes: 1, dur: window.innerHeight / SPEED * 1000}; }
   function inView(el){ var r = el.getBoundingClientRect(); return r.bottom > 60 && r.top < window.innerHeight - 60; }
   var railSide = 0;
   function railsFit(){ return window.innerWidth >= 1400; }
@@ -1105,60 +1172,83 @@ body.ticker-on .foot{padding-bottom:90px}
     tk.appendChild(d); tkLast = d;
   }
 
-  /* -- the beat -- */
+  /* -- the beat: the same everywhere -- */
   var lastBeat = 0, mode = 'stage';
+  function nextUp(t){
+    if (R.fresh.length){                                   // someone has just signed
+      if (t - lastBeat < R.gap) return null;
+      lastBeat = t; var f = R.fresh.shift(); count(f); return {p: f, live: true};
+    }
+    if (R.i < R.list.length){                              // still counting up from midnight
+      if (t - lastBeat < BEAT) return null;
+      lastBeat = t; var p = R.list[R.i++]; count(p); if (R.i === R.list.length) note(); return {p: p, live: false};
+    }
+    if (!R.names.length || t - lastBeat < CALM) return null;   // all counted: today's names again, quietly, no count
+    lastBeat = t; return {p: R.names[R.ni++ % R.names.length], live: false, quiet: true};
+  }
   function beat(t){
     requestAnimationFrame(beat);
-    if (!R.list.length && !R.fresh.length) return;
+    if (!R.before) return;
     var showStage = inView(stage), wide = railsFit();
     mode = showStage ? 'stage' : wide ? 'rails' : 'ticker';
     document.body.classList.toggle('rails-on', mode === 'rails');
     ticker.classList.toggle('on', mode === 'ticker');
     document.body.classList.toggle('ticker-on', mode === 'ticker');
-    var tick = mode === 'stage' ? stageOpts().tick : mode === 'rails' ? 700 : 1700;
-    if (t - lastBeat < tick) return;
-    lastBeat = t;
     if (document.hidden) return;
-    var x = nextPerson(); if (!x) return;
+    var x = nextUp(t); if (!x) return;
     if (mode === 'stage') rise(stream, x, false, stageOpts());
-    else if (mode === 'rails'){
-      var box = railSide++ % 2 ? railR : railL;
-      rise(box, x, true, {lanes: 1, dur: window.innerHeight / 75 * 1000});
-    } else toTicker(x);
-    pop(x.live);
+    else if (mode === 'rails') rise(railSide++ % 2 ? railR : railL, x, true, railOpts());
+    else toTicker(x);
+    if (!x.quiet) pop(x.live);
   }
 
+  function setNames(D){
+    var list = D.people.map(function(p){ return {n: p.n, t: p.t}; });
+    if (D.people.length < 100) list = list.concat((D.yesterday || []).map(function(p){ return {n: p.n, t: p.t, y: 1}; }));
+    R.names = list; if (!R.ni) R.ni = Math.floor(Math.random() * Math.max(1, list.length));
+  }
   function takeFeed(D){
-    if (!D || !D.ok || !D.replay) return;
-    setLive(D); R.today = D.today || 0;
-    if (D.day !== R.day || D.replay.length < R.list.length){
-      var first = !R.day;
-      R.day = D.day; R.list = D.replay; R.i = 0; R.pauseAt = 0; R.fresh = [];
-      C = {signers: 0, answers: 0, quotes: 0, seats: 0}; drawCounts(); labels();
-      if (first) start();
+    if (!D || !D.ok || !D.before || !D.people) return;
+    R.feedAt = Date.parse(D.at) || Date.now();
+    $('hourN').textContent = D.last_hour ? D.last_hour.toLocaleString('en-GB') + ' in the last hour' : '';
+    var day = londonDay(new Date(R.feedAt));
+    if (!R.before || day !== R.day){                         // first load, or a new day after midnight
+      var first = !R.before;
+      R.before = D.before; R.day = day; R.list = D.people; R.i = 0; R.fresh = []; counted = 0;
+      C = {signers: D.before.signers, answers: D.before.answers, quotes: D.before.quotes}; drawCounts();
+      if (!first && LV.ready){ LV.daily.push([day, 0]); }
+      setNames(D); note();
+      if (first){ setBase(); start(); }
+      drawLive();
       return;
     }
-    var added = D.replay.slice(R.list.length);
-    added.forEach(function(p){ if (p.m <= 5 && R.day === 'today') R.fresh.push(p); });
-    R.list = D.replay; note();
+    if (D.people.length < R.list.length) return;
+    var added = D.people.slice(R.list.length), caughtUp = R.i >= R.list.length;
+    R.list = D.people; setNames(D);
+    if (caughtUp && added.length){
+      R.i = R.list.length;
+      if (reduce) added.forEach(count);
+      else { R.fresh = R.fresh.concat(added); R.gap = Math.min(6000, Math.max(BEAT, 30000 / R.fresh.length)); }
+    }
+    note();
   }
   function start(){
     if (reduce){
-      C = {signers: 0, answers: 0, quotes: 0, seats: 0};
-      R.list.forEach(function(p){ C.signers++; C.answers += p.a; C.quotes += p.q; C.seats += p.s; });
-      drawCounts(); stage.classList.add('still');
+      while (R.i < R.list.length) count(R.list[R.i++]);
+      note(); stage.classList.add('still');
       R.list.slice(-5).forEach(function(p){ var el = document.createElement('div'); el.className = 'pill'; el.innerHTML = pillHTML({p: p, live: false}); stream.appendChild(el); });
       return;
     }
-    var o = stageOpts(), fill = Math.floor(o.dur / o.tick);     // the panel starts already full
-    for (var k = fill; k >= 1; k--){ var x = nextPerson(); if (x) rise(stream, x, false, {lanes: o.lanes, half: o.half, dur: o.dur, at: k * o.tick / o.dur}); }
+    var o = stageOpts(), fill = Math.min(R.list.length, Math.floor(o.dur / BEAT));   // the panel starts already full
+    for (var k = fill; k >= 1; k--){ var p = R.list[R.i++]; count(p); rise(stream, {p: p, live: false}, false, {lanes: 2, dur: o.dur, at: k * BEAT / o.dur}); }
+    note();
     requestAnimationFrame(beat);
   }
   function pollFeed(){
     fetch(FEED, {cache: 'no-store'}).then(function(r){ return r.ok ? r.json() : null; }).then(takeFeed).catch(function(){});
   }
   pollFeed();
-  setInterval(function(){ if (!document.hidden) pollFeed(); }, 45000);
+  setInterval(function(){ if (!document.hidden) pollFeed(); }, 30000);
 
   /* -- quotes under the panel, changing -- */
   (function(){
@@ -1173,23 +1263,24 @@ body.ticker-on .foot{padding-bottom:90px}
     if (!reduce) setInterval(function(){ if (!document.hidden && inView(box)) show(); }, 6500);
   })();
 
-  /* -- rows of quotes, always moving -- */
+  /* -- rows of quotes, always moving. Each row has its own quotes, so no quote appears twice -- */
   (function(){
-    var rows = [].slice.call(document.querySelectorAll('.vrow')), pool = VOICES.map(function(q, i){ return i; }).sort(function(){ return Math.random() - .5; }), pi = 0;
-    function nextVoice(){ return VOICES[pool[pi++ % pool.length]]; }
-    function fill(card){ var v = nextVoice(); card.innerHTML = '<p>' + esc(v.text) + '</p><cite>' + esc(v.first) + ', ' + esc(v.town) + '</cite>'; }
-    var R2 = rows.map(function(row){
-      var track = row.querySelector('.vtrack'), dir = +row.dataset.dir, speed = +row.dataset.speed;
-      return {row: row, track: track, dir: dir, speed: speed, off: 0, stride: 0, paused: false};
+    var rows = [].slice.call(document.querySelectorAll('.vrow'));
+    var order = VOICES.map(function(q, i){ return i; }).sort(function(){ return Math.random() - .5; });
+    var per = Math.floor(order.length / Math.max(1, rows.length));
+    var R2 = rows.map(function(row, k){
+      return {row: row, track: row.querySelector('.vtrack'), dir: +row.dataset.dir, speed: +row.dataset.speed,
+              off: 0, stride: 0, paused: false, pool: order.slice(k * per, (k + 1) * per), pi: 0};
     });
+    function fill(r, card){ var v = VOICES[r.pool[r.pi++ % r.pool.length]]; card.innerHTML = '<p>' + esc(v.text) + '</p><cite>' + esc(v.first) + ', ' + esc(v.town) + '</cite>'; }
     function build(){
       R2.forEach(function(r){
         if (getComputedStyle(r.row).display === 'none') return;
-        r.track.innerHTML = '';
-        var probe = document.createElement('figure'); probe.className = 'vcard'; r.track.appendChild(probe); fill(probe);
+        r.track.innerHTML = ''; r.pi = 0;
+        var probe = document.createElement('figure'); probe.className = 'vcard'; r.track.appendChild(probe); fill(r, probe);
         r.stride = probe.offsetWidth + 16;
-        var n = Math.ceil(r.row.clientWidth / r.stride) + 2;
-        for (var k = 1; k < n; k++){ var c = document.createElement('figure'); c.className = 'vcard'; fill(c); r.track.appendChild(c); }
+        var n = Math.min(r.pool.length, Math.ceil(r.row.clientWidth / r.stride) + 2);
+        for (var k = 1; k < n; k++){ var c = document.createElement('figure'); c.className = 'vcard'; fill(r, c); r.track.appendChild(c); }
         r.off = r.dir < 0 ? 0 : -r.stride;
         r.track.style.transform = 'translateX(' + r.off + 'px)';
       });
@@ -1206,19 +1297,18 @@ body.ticker-on .foot{padding-bottom:90px}
     function frame(t){
       requestAnimationFrame(frame);
       var dt = last ? Math.min(0.05, (t - last) / 1000) : 0; last = t;
-      if (!inView($('voices'))) return;
       R2.forEach(function(r){
-        if (r.paused || !r.stride || !r.track.firstChild) return;
+        if (r.paused || !r.stride || !r.track.firstChild || !inView(r.row)) return;
         r.off += r.dir * r.speed * dt;
-        if (r.dir < 0 && r.off <= -r.stride){ r.off += r.stride; var c = r.track.firstChild; r.track.appendChild(c); fill(c); }
-        if (r.dir > 0 && r.off >= 0){ r.off -= r.stride; var d = r.track.lastChild; r.track.insertBefore(d, r.track.firstChild); fill(d); }
+        if (r.dir < 0 && r.off <= -r.stride){ r.off += r.stride; var c = r.track.firstChild; r.track.appendChild(c); fill(r, c); }
+        if (r.dir > 0 && r.off >= 0){ r.off -= r.stride; var d = r.track.lastChild; r.track.insertBefore(d, r.track.firstChild); fill(r, d); }
         r.track.style.transform = 'translateX(' + r.off.toFixed(1) + 'px)';
       });
     }
     requestAnimationFrame(frame);
     setInterval(function(){                            // now and then one quote lights up
-      if (document.hidden || !inView($('voices'))) return;
-      var cards = [].slice.call(document.querySelectorAll('.vcard')).filter(function(c){ var b = c.getBoundingClientRect(); return b.left > 40 && b.right < window.innerWidth - 40; });
+      if (document.hidden) return;
+      var cards = [].slice.call(document.querySelectorAll('.vcard')).filter(function(c){ var b = c.getBoundingClientRect(); return b.left > 40 && b.right < window.innerWidth - 40 && b.top > 60 && b.bottom < window.innerHeight - 60; });
       if (!cards.length) return;
       var c = cards[Math.floor(Math.random() * cards.length)]; c.classList.add('glow'); setTimeout(function(){ c.classList.remove('glow'); }, 2200);
     }, 1800);
