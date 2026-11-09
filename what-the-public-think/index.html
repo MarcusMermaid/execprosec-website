@@ -86,7 +86,7 @@ h2{font:400 clamp(30px,5vw,44px)/1.08 var(--f-display);letter-spacing:-.01em;mar
 .hero-cta span{font-size:14px;color:var(--on-navy-2)}
 
 /* ---- the live stream (Marcus, 9 Nov 2026: "I want the top of the page to be alive") ---- */
-.stage{position:relative;display:flex;flex-direction:column;height:560px;border-radius:10px;overflow:hidden;
+.stage{position:relative;display:flex;flex-direction:column;height:620px;border-radius:10px;overflow:hidden;
   background:radial-gradient(120% 80% at 50% 110%,rgba(221,188,102,.18),rgba(221,188,102,0) 60%),linear-gradient(180deg,#0b1f5c,#061650);
   border:1px solid var(--line-navy);box-shadow:0 30px 70px rgba(0,0,0,.35)}
 .stage-head{position:relative;z-index:3;padding:18px 20px 14px;background:linear-gradient(180deg,#0b1f5c 70%,rgba(11,31,92,0))}
@@ -828,9 +828,12 @@ th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute
     if (at) a.currentTime = at * dur;
     a.onfinish = function(){ el.remove(); };
   }
-  function loop(){
-    if (!document.hidden && stream.childElementCount < 40) spawn(0);
-    setTimeout(loop, TICK);
+  // one pill per beat, driven by the screen's own frames: a slow or sleeping tab never catches up in a burst
+  var last = 0;
+  function loop(t){
+    if (!last) last = t;
+    if (t - last >= TICK){ last = t; if (stream.childElementCount < 40) spawn(0); }
+    requestAnimationFrame(loop);
   }
   function setToday(D){
     if (D.today == null) return;
@@ -859,7 +862,7 @@ th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute
       TICK = stream.clientWidth >= 440 ? 400 : 640;
       var dur = duration(), fill = Math.floor(dur / TICK);       // start with the stream already full
       for (var k = fill; k >= 1; k--) spawn(k * TICK / dur);
-      setTimeout(loop, TICK);
+      requestAnimationFrame(loop);
     }
   }
   function pollFeed(){
