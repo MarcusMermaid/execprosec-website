@@ -92,10 +92,10 @@ h2{font:400 clamp(30px,5vw,44px)/1.08 var(--f-display);letter-spacing:-.01em;mar
   border:1px solid var(--line-navy);box-shadow:0 30px 70px rgba(0,0,0,.35)}
 .stage-head{position:relative;z-index:3;padding:18px 20px 14px;background:linear-gradient(180deg,#0b1f5c 70%,rgba(11,31,92,0))}
 /* the running total sits at the top of the live panel: everyone who has signed, not just today (Marcus, 9 Nov 2026) */
-.st-total{background:none;padding:0 0 14px;margin:0 0 14px;border-bottom:1px solid var(--line-navy)}
-.st-total b{font:400 clamp(56px,7vw,92px)/.95 var(--f-display);color:var(--gold);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
-.st-total span{display:block;margin-top:6px;font-size:16px;color:var(--on-navy)}
-.st-total .plus{top:6px;right:0}
+.stage-head .st-total{background:none;padding:0 0 14px;margin:0 0 14px;border-bottom:1px solid var(--line-navy)}
+.stage-head .st-total b{display:block;font:400 clamp(56px,7vw,92px)/.95 var(--f-display);color:var(--gold);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.stage-head .st-total span{display:block;margin-top:6px;font-size:16px;color:var(--on-navy)}
+.stage-head .st-total .plus{top:6px;right:0}
 .stage-head .k{display:flex;align-items:center;gap:8px;font:700 12px/1 var(--f-body);letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
 .stage-head .k .dot{width:9px;height:9px;border-radius:50%;background:#2fa36b;animation:pulse 1.6s infinite}
 .stage-head .today{margin-top:10px;font-size:16px;color:var(--on-navy)}
