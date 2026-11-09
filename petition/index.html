@@ -7,6 +7,28 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="Petition to Press and Parliament: include every MP, peer and UK legislator under the Hillsborough Law's duty of candour and offence of misleading the public.">
 <link rel="canonical" href="https://execprosec.org/petition/">
+<script>/* The 50/50 test (Marcus, 9 Nov 2026): half of the people who arrive here by a link see this page (A); the other half
+   go to the big results page, where the signing box opens as a pop-up (B). Each visitor keeps the same version.
+   A's signatures carry "-pa" on the end of their ref and B's carry "-pb", so the two can be compared source by source.
+   OFF on execprosec.org until Marcus says: only the preview runs it. ?ab=a or ?ab=b picks a version. */
+(function(){
+  var LIVE = false;
+  var q = location.search;
+  if (!LIVE && !/pages\.dev$/.test(location.hostname)) return;
+  if (/[?&]embed=1/.test(q) || window.parent !== window) return;                                  // the pop-up itself
+  var only = q.replace(/^\?/, '').split('&').every(function(p){ return !p || /^(ref|utm_[a-z]+|fbclid|gclid|ab)=/.test(p); });
+  if (!only) return;                                                                              // a confirm link or anything else
+  var signed = ''; try { signed = localStorage.getItem('ep_petition_key') || ''; } catch (e) {}
+  if (signed && !/[?&]ab=/.test(q)) return;                                                         // already signed: carry on here
+  var arm = (q.match(/[?&]ab=([ab])(?![\w])/) || [])[1];
+  if (!arm) { try { arm = localStorage.getItem('ep_pet_ab'); } catch (e) {} }
+  if (arm !== 'a' && arm !== 'b') arm = Math.random() < 0.5 ? 'a' : 'b';
+  try { localStorage.setItem('ep_pet_ab', arm); } catch (e) {}
+  var ref = ((q.match(/[?&](?:ref|utm_source)=([\w.\-]{1,36})/) || [])[1] || 'direct').replace(/-p[ab]$/, '');
+  if (arm === 'b') { location.replace('/what-the-public-think/?popup=1&ab=b&ref=' + encodeURIComponent(ref)); return; }
+  try { history.replaceState(null, '', location.pathname + '?ref=' + encodeURIComponent(ref + '-pa')); } catch (e) {}
+})();
+</script>
 <script>/* Marcus, 9 Nov 2026: ?embed=1 shows only the signing card, for the pop-up on /what-the-public-think/ */
 if (/[?&]embed=1(?![0-9])/.test(location.search) && window.parent !== window) document.documentElement.className += ' embed';</script>
 <link rel="icon" href="/_web/brand/favicon.ico">

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>What the public think: MPs and peers exempting themselves from the Hillsborough Law</title>
+<title>Petition: include all lawmakers under the Hillsborough Law</title>
 <meta name="description" content="Today’s results from the petition to include every MP and peer under the Hillsborough Law: how signers answered, what they wrote, and where they live.">
 <link rel="canonical" href="https://execprosec.org/what-the-public-think/">
 <link rel="icon" href="/_web/brand/favicon.ico">
@@ -171,6 +171,11 @@ section.band{padding:8px 0}
 .cta .sb-done{display:block;margin-top:12px}
 .hero h1 em{font-style:normal;color:var(--gold)}
 .hero .lead{max-width:680px;font-size:clamp(17px,2.2vw,20px);color:var(--on-navy);margin:0 0 30px}
+.hero .lead b{color:var(--paper)}
+.hero .lead:has(+ .pet-stmt){margin-bottom:18px}
+.pet-stmt{max-width:680px;margin:0 0 30px;padding:4px 0 4px 18px;border-left:3px solid var(--gold);font-size:16.5px;line-height:1.55;color:var(--on-navy)}
+.pet-stmt a{color:var(--paper);text-decoration:underline;text-underline-offset:3px}
+.pet-stmt sup a{color:var(--gold);text-decoration:none;font-weight:700;padding:0 2px}
 .live{display:inline-flex;align-items:center;gap:8px;font-size:13.5px;color:var(--on-navy-2);margin:0 0 18px}
 .live .dot{width:8px;height:8px;border-radius:50%;background:#2fa36b;animation:pulse 1.6s infinite}
 @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(47,163,107,.55)}70%{box-shadow:0 0 0 8px rgba(47,163,107,0)}100%{box-shadow:0 0 0 0 rgba(47,163,107,0)}}
@@ -546,9 +551,10 @@ body.ticker-on .foot{padding-bottom:90px}
   <div class="wrap hero-grid">
     <div class="hero-text">
       <p class="live"><span class="dot"></span><span id="updated">Today’s results from the petition</span></p>
-      <p class="kicker">The Hillsborough Law petition</p>
-      <h1>What the public think about MPs and peers <em>exempting themselves</em></h1>
-      <p class="lead">The Government's Hillsborough Law makes it a crime for public officials to mislead the public, but leaves MPs and peers out. Here is what the people who signed our petition told us, in their own words and in their answers. It updates as they sign each day.</p>
+      <p class="kicker">Petition to press &amp; Parliament</p>
+      <h1>Include all lawmakers under the <em>Hillsborough Law</em></h1>
+      <p class="lead"><b>Parliament votes on this in December.</b> Parliamentarians and journalists will be sent the data from this petition in advance of that showdown vote.</p>
+      <p class="pet-stmt">End the carve-out for lawmakers (MPs, peers, MSPs, MSs and MLAs) from the duty of candour and the offence of misleading the public in the <a href="https://bills.parliament.uk/bills/4019" target="_blank" rel="noopener">Public Office (Accountability) Bill</a>,<sup><a href="https://bills.parliament.uk/publications/68275/documents/8957#sched_2__para_2__subpara_4__intro" target="_blank" rel="noopener" title="Source 1">1</a></sup> for reckless or intentionally deceitful acts outside the proceedings of their parliaments:<sup><a href="https://www.legislation.gov.uk/aep/WillandMarSess2/1/2/introduction" target="_blank" rel="noopener" title="Source 2">2</a></sup> on TV and radio, on social media, at events, etc.</p>
       <div class="hero-cta"><a class="btn" href="/petition/?ref=results-top">Sign the petition</a><span>It takes a minute.</span></div>
     </div>
     <div class="stage" id="stage">
@@ -2011,7 +2017,8 @@ body.ticker-on .foot{padding-bottom:90px}
       var a = e.target && e.target.closest ? e.target.closest('a[href*="/petition/?ref=results"]') : null; if (!a) return;
       e.preventDefault(); open((a.getAttribute('href').split('ref=')[1] || 'results'));
     });
-    setTimeout(function(){ open('results-popup-' + soundKey); }, 700);
+    var AB = (location.search.match(/[?&]ab=b(?![\w])/) && (location.search.match(/[?&]ref=([\w.\-]{1,36})/) || [])[1]);
+    setTimeout(function(){ open(AB ? AB + '-pb' : 'results-popup-' + soundKey); }, 700);
   })();
 
   /* -- parliamentarians -- */
