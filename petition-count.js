@@ -7,7 +7,9 @@
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   var st = document.createElement('style');
   st.textContent = '.pet-n{display:inline-flex;align-items:center;gap:8px;flex:0 0 auto;font:400 15px/1.2 "DM Sans",sans-serif;color:rgba(255,255,255,.85)}' +
-    '.pet-n[hidden]{display:none}' +
+    '.pet-n[hidden],.pet-br[hidden]{display:none}' +
+    '.pet-br{flex:0 0 100%;height:0}' +
+    '.pet-banner .pet-b{margin-left:auto}' +
     '.pet-n b{font:700 22px/1 "DM Sans",sans-serif;color:#ddbc66;font-variant-numeric:tabular-nums;letter-spacing:.01em}' +
     '.pet-n b.t{animation:petT .45s ease-out}' +
     '@keyframes petT{0%{color:#fff;text-shadow:0 0 14px rgba(221,188,102,.9)}100%{color:#ddbc66;text-shadow:none}}' +
@@ -19,14 +21,15 @@
   var nums = [].map.call(banners, function(b){
     var s = document.createElement('span'); s.className = 'pet-n'; s.hidden = true;
     s.innerHTML = '<i class="pet-dot" aria-hidden="true"></i><b>0</b><span>people have signed</span>';
-    var btn = b.querySelector('.pet-b'); b.insertBefore(s, btn || null);
+    var br = document.createElement('i'); br.className = 'pet-br'; br.hidden = true;
+    var btn = b.querySelector('.pet-b'); b.insertBefore(br, btn || null); b.insertBefore(s, btn || null);
     return s;
   });
   var shown = null, target = 0, running = false;
   function draw(){
     var txt = shown.toLocaleString('en-GB');
     nums.forEach(function(s){
-      var b = s.firstChild.nextSibling; b.textContent = txt; s.hidden = false;
+      var b = s.firstChild.nextSibling; b.textContent = txt; s.hidden = false; s.previousSibling.hidden = false;
       if (!reduce){ b.classList.remove('t'); void b.offsetWidth; b.classList.add('t'); }
     });
   }
