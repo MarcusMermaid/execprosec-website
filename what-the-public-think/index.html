@@ -1326,6 +1326,7 @@ body.ticker-on .foot{padding-bottom:90px}
     $('mpFaces').innerHTML = rest.map(function(m){
       return '<a href="' + esc(m.source || '#') + '" target="_blank" rel="noopener noreferrer" title="' + esc(m.name + ', ' + m.party + '. ' + m.did) + '"><img src="' + esc(m.photo) + '" alt="' + esc(m.name) + '" loading="lazy"></a>';
     }).join('');
+    if (rest.length) $('mpFaces').insertAdjacentHTML('afterend', '<p class="fine" style="margin-top:10px">' + rest.length + ' more MPs signed Luke Myer’s amendments to bring MPs and peers under the law. Hover over or tap a face for the name.</p>');
   })();
 
   /* ---- load: live figures, or the snapshot if Central does not answer in 5 seconds ---- */
