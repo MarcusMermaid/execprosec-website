@@ -240,10 +240,10 @@ th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute
 .so-snd{all:unset;cursor:pointer;position:absolute;left:12px;bottom:12px;z-index:3;display:flex;align-items:center;gap:7px;padding:8px 13px;border-radius:999px;background:rgba(4,20,64,.82);color:#fff;font:600 13.5px/1 var(--f-body);backdrop-filter:blur(4px)}
 .so-snd svg{width:17px;height:17px}
 .so-snd.on{background:var(--gold);color:var(--navy)}
-.so-hearts{position:absolute;right:6px;bottom:44px;width:70px;height:62%;pointer-events:none;z-index:2;overflow:visible}
-.so-hearts i{position:absolute;bottom:0;left:50%;width:26px;height:26px;margin-left:-13px;animation:floatup 3.2s ease-out forwards;opacity:0}
-.so-hearts i svg{width:100%;height:100%;display:block;filter:drop-shadow(0 2px 4px rgba(0,0,0,.35))}
-@keyframes floatup{0%{transform:translate(0,0) scale(.4);opacity:0}12%{opacity:1;transform:translate(var(--dx1),-30px) scale(1)}60%{opacity:.95}100%{transform:translate(var(--dx2),-340px) scale(.85);opacity:0}}
+.so-hearts{position:absolute;right:4px;bottom:46px;width:84px;height:74%;pointer-events:none;z-index:2;overflow:visible}
+.so-hearts i{position:absolute;bottom:0;left:50%;width:32px;height:32px;margin-left:-16px;animation:floatup 3.2s ease-out forwards;opacity:0}
+.so-hearts i svg{width:100%;height:100%;display:block;filter:drop-shadow(0 2px 6px rgba(0,0,0,.45))}
+@keyframes floatup{0%{transform:translate(0,0) scale(.3);opacity:0}10%{opacity:1;transform:translate(var(--dx1),-26px) scale(1.12)}18%{transform:translate(var(--dx1),-44px) scale(1)}70%{opacity:1}100%{transform:translate(var(--dx2),-420px) scale(var(--sc));opacity:0}}
 .so-video figcaption{margin-top:16px;color:var(--on-navy-2);font-size:14px;line-height:1.5}
 .so-video figcaption b{display:block;color:var(--paper);font-size:15.5px;margin-bottom:4px}
 .so-vstats{display:flex;flex-wrap:wrap;gap:2px 14px}
@@ -252,6 +252,8 @@ th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute
 .so-big b{display:block;font:400 clamp(60px,10vw,118px)/.92 var(--f-display);color:var(--gold);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
 .so-big span{display:block;margin-top:10px;font-size:17px;color:var(--on-navy)}
 .so-counts{margin-top:26px}
+.so-td{display:block;font-style:normal;font-weight:700;font-size:13.5px;color:#7ad3a3;margin-top:6px;font-variant-numeric:tabular-nums;min-height:1em}
+.so-big .so-td{display:inline;margin:0 0 0 8px;font-size:16px}
 .so-counts .counter b{font-size:clamp(28px,2.9vw,40px)}
 .so-follow{margin:26px 0 0;font-size:15px;color:var(--on-navy)}
 .so-follow b{color:var(--paper);font-variant-numeric:tabular-nums}
@@ -456,6 +458,7 @@ body.ticker-on .foot{padding-bottom:90px}
   <a class="logo" href="/" aria-label="ExecProsec home"><img src="/_web/brand/logo-nav.png" alt="ExecProsec" width="82" height="45"></a>
   <nav class="nav-links">
     <a href="/petition/">Petition</a>
+    <a href="/what-the-public-think/" class="active" aria-current="page">What the public think</a>
     <a href="/amendments-briefing/">Amendments Briefing</a>
     <a href="/examples-of-lying/">Examples of Lying</a>
     <a href="/news">News</a>
@@ -555,12 +558,12 @@ body.ticker-on .foot{padding-bottom:90px}
         </figcaption>
       </figure>
       <div class="so-side">
-        <div class="so-big rv"><b id="soViews">1,545,018</b><span>views across our pages</span></div>
+        <div class="so-big rv"><b id="soViews">1,545,018</b><span>views across our pages <em class="so-td" id="tdViews"></em></span></div>
         <div class="counters so-counts rv">
-          <div class="counter"><b id="soGained">18,094</b><span>new followers since 18 October</span></div>
-          <div class="counter"><b id="soLikes">151,101</b><span>likes</span></div>
-          <div class="counter"><b id="soComments">13,046</b><span>comments</span></div>
-          <div class="counter"><b id="soShares">32,163</b><span>shares</span></div>
+          <div class="counter"><b id="soGained">18,094</b><span>new followers since 18 October</span><em class="so-td" id="tdGained"></em></div>
+          <div class="counter"><b id="soLikes">151,101</b><span>likes</span><em class="so-td" id="tdLikes"></em></div>
+          <div class="counter"><b id="soComments">13,046</b><span>comments</span><em class="so-td" id="tdComments"></em></div>
+          <div class="counter"><b id="soShares">32,163</b><span>shares</span><em class="so-td" id="tdShares"></em></div>
         </div>
         <div class="card timecard so-chart rv">
           <div class="timehead"><div><b id="soGained2">18,094</b> <span>new followers since 18 October</span></div><span class="so-today"><i class="dot"></i><b id="soToday">+366</b>&nbsp;today</span></div>
@@ -1273,8 +1276,7 @@ body.ticker-on .foot{padding-bottom:90px}
     var n = $('tdNote'), left = R.list.length - R.i;
     n.classList.toggle('loop', left <= 0);
     n.textContent = left > 0 ? 'Counting from midnight: adding today’s ' + R.list.length.toLocaleString('en-GB') + ' signers one by one'
-                             : looping() ? 'Everyone who has signed today is counted. Today’s signers go round again; the numbers rise only when someone new signs.'
-                             : 'Everyone who has signed today is counted. The numbers rise as new people sign.';
+                             : ' ';   // Marcus, 9 Nov 2026: once counted, no extra sentence
   }
 
   /* -- every other number on the page follows the same count -- */
@@ -1564,23 +1566,42 @@ body.ticker-on .foot{padding-bottom:90px}
     var S = {now: 71677, views: 1545018, likes: 151101, comments: 13046, shares: 32163, gained: 18094, today: 366,
              per: {instagram: 10194, facebook: 9399, x: 50487, youtube: 1340, threads: 257},
              days: [], v: {views: 317687, likes: 19147, comments: 1095, shares: 5368}};
-    var shown = false;
-    function tween(el, from, to, plus){
+    var shown = false, KEY = {soViews: 'views', soLikes: 'likes', soComments: 'comments', soShares: 'shares', soGained: 'gained', soGained2: 'gained', soNow: 'now'};
+    var TD = {tdViews: 'views', tdLikes: 'likes', tdComments: 'comments', tdShares: 'shares', tdGained: 'gained'};
+    var anim = {};
+    function tween(el, from, to, plus, d, suffix){
       if (!el) return;
-      function txt(n){ return (plus ? '+' : '') + Math.round(n).toLocaleString('en-GB'); }
+      function txt(n){ return (plus ? '+' : '') + Math.round(n).toLocaleString('en-GB') + (suffix || ''); }
+      if (anim[el.id]) cancelAnimationFrame(anim[el.id]);
       if (reduce || from === to){ el.textContent = txt(to); return; }
-      var t0 = null, d = from ? 1200 : 1900;
-      if (from && to !== from){ el.classList.remove('tick'); void el.offsetWidth; el.classList.add('tick'); }
-      function step(t){ if (!t0) t0 = t; var p = Math.min(1, (t - t0) / d), e = 1 - Math.pow(1 - p, 3);
-        el.textContent = txt(from + (to - from) * e); if (p < 1) requestAnimationFrame(step); }
-      requestAnimationFrame(step);
+      var t0 = null;
+      function step(t){ if (!t0) t0 = t; var p = Math.min(1, (t - t0) / d), e = d > 20000 ? p : 1 - Math.pow(1 - p, 3);
+        el.textContent = txt(from + (to - from) * e); if (p < 1) anim[el.id] = requestAnimationFrame(step); }
+      anim[el.id] = requestAnimationFrame(step);
+    }
+    function startOf(k){
+      var st = S.start || {};
+      if (k === 'gained') return st.followers_gained != null ? st.followers_gained : S.gained;
+      if (k === 'now') return S.now - (S.gained - (st.followers_gained != null ? st.followers_gained : S.gained));
+      return st[k] != null ? Math.min(st[k], S[k]) : S[k];
     }
     var last = {};
-    function show(){
-      var f = {soViews: S.views, soLikes: S.likes, soComments: S.comments, soShares: S.shares, soGained: S.gained, soGained2: S.gained, soNow: S.now,
-               soVv: S.v.views, soVl: S.v.likes, soVc: S.v.comments, soVs: S.v.shares};
-      Object.keys(f).forEach(function(id){ tween($(id), shown ? (last[id] || 0) : 0, f[id]); last[id] = f[id]; });
-      tween($('soToday'), shown ? (last.today || 0) : 0, S.today, true); last.today = S.today;
+    /* first time on screen: from the midnight figure up to now in a few seconds; after that each new
+       reading from Central (every ten minutes or so) ticks the numbers up slowly, one at a time */
+    function show(first){
+      Object.keys(KEY).forEach(function(id){
+        var to = S[KEY[id]], from = first ? startOf(KEY[id]) : (last[id] != null ? last[id] : to);
+        tween($(id), from, to, false, first ? 6000 : 120000); last[id] = to;
+      });
+      Object.keys(TD).forEach(function(id){
+        var el = $(id); if (!el) return;
+        if (!S.midnight){ el.textContent = ''; return; }
+        var k = TD[id], to = Math.max(0, S[k] - startOf(k)), from = first ? 0 : (last[id] != null ? last[id] : to);
+        tween(el, from, to, true, first ? 6000 : 120000, ' today'); last[id] = to;
+      });
+      var v = {soVv: S.v.views, soVl: S.v.likes, soVc: S.v.comments, soVs: S.v.shares};
+      Object.keys(v).forEach(function(id){ tween($(id), last[id] != null ? last[id] : v[id], v[id], false, first ? 1 : 120000); last[id] = v[id]; });
+      tween($('soToday'), first ? 0 : (last.today || 0), S.today, true, first ? 6000 : 120000); last.today = S.today;
       $('soH').textContent = S.views >= 1000000 ? 'Over ' + (S.views >= 2000000 ? Math.floor(S.views / 1000000) + ' million' : 'a million') + ' views' : 'Hundreds of thousands of views';
       var box = $('soLinks');
       box.innerHTML = LINKS.map(function(l){
@@ -1590,6 +1611,8 @@ body.ticker-on .foot{padding-bottom:90px}
       }).join('');
       drawChart();
     }
+    /* before the section is seen it shows the midnight figures, so the climb starts from there */
+    function park(){ Object.keys(KEY).forEach(function(id){ var el = $(id); if (el) el.textContent = Math.round(startOf(KEY[id])).toLocaleString('en-GB'); }); }
     function drawChart(){
       var svg = $('sochart'), days = S.days; if (!days.length) return;
       var W = Math.max(300, svg.parentNode.clientWidth - 36), H = W < 560 ? 190 : 230, L = W < 560 ? 44 : 52, R = 14, T = 14, B = 30;
@@ -1633,14 +1656,15 @@ body.ticker-on .foot{padding-bottom:90px}
     function load(){
       fetch('https://central-2-mcp-production.up.railway.app/public/social/summary').then(function(r){ return r.json(); }).then(function(d){
         if (!d || !d.posts) return;
+        if (d.today && d.today.start){ S.start = d.today.start; S.midnight = !!d.today.midnight; }
         S.views = d.posts.views; S.likes = d.posts.likes; S.comments = d.posts.comments; S.shares = d.posts.shares;
         S.gained = d.followers.gained; S.now = d.followers.now || S.now; S.today = Math.max(0, d.followers.today); S.per = d.followers.per_platform || S.per; S.days = d.followers.days || [];
         (d.most_viewed || []).forEach(function(p){ if (p.permalink && p.permalink.indexOf(VIDEO) >= 0) S.v = p; });
-        if (shown) show();
+        if (shown) show(false); else park();
       }).catch(function(){});
     }
-    load(); setInterval(load, 600000);
-    onView($('social').querySelector('.so-side'), function(){ shown = true; show(); });
+    load(); setInterval(load, 300000);
+    onView($('social').querySelector('.so-side'), function(){ if (shown) return; shown = true; show(true); });
     var rw = window.innerWidth; window.addEventListener('resize', function(){ if (Math.abs(window.innerWidth - rw) > 40){ rw = window.innerWidth; drawChart(); } });
 
     /* the video plays, muted, only while it is on screen; tapping turns its sound on and the page's
@@ -1669,16 +1693,16 @@ body.ticker-on .foot{padding-bottom:90px}
     }
 
     /* hearts floating up beside the video while it plays */
-    var hearts = $('soHearts'), COL = ['#f08a6c', '#ddbc66', '#ffffff', '#f08a6c', '#e8566a'];
+    var hearts = $('soHearts'), COL = ['#ff3040', '#ff3040', '#ff3040', '#ff3040', '#ff5a6e', '#e6223a'];
     function heart(){
       if (reduce || !onScreen || vid.paused || document.hidden) return;
       var i = document.createElement('i'), c = COL[Math.floor(Math.random() * COL.length)];
       i.style.setProperty('--dx1', (Math.random() * 24 - 12) + 'px'); i.style.setProperty('--dx2', (Math.random() * 50 - 25) + 'px');
-      i.style.animationDuration = (2.6 + Math.random() * 1.4) + 's';
-      i.innerHTML = '<svg viewBox="0 0 24 24"><path fill="' + c + '" d="M12 21s-7.5-4.6-9.6-9.1C.9 8.6 3 5 6.6 5c2.1 0 3.6 1.2 4.4 2.4C11.8 6.2 13.3 5 15.4 5 19 5 21.1 8.6 19.6 11.9 17.5 16.4 12 21 12 21z"/></svg>';
+      i.style.animationDuration = (2.8 + Math.random() * 1.6) + 's'; i.style.setProperty('--sc', (0.75 + Math.random() * 0.3).toFixed(2));
+      i.innerHTML = '<svg viewBox="0 0 24 24"><path fill="' + c + '" stroke="#fff" stroke-width="1.4" stroke-linejoin="round" d="M12 20.6c-.4 0-.8-.15-1.1-.4C6.6 16.7 2.4 13.2 2.4 8.9 2.4 6 4.6 3.7 7.4 3.7c1.9 0 3.5 1 4.6 2.6 1.1-1.6 2.7-2.6 4.6-2.6 2.8 0 5 2.3 5 5.2 0 4.3-4.2 7.8-8.5 11.3-.3.25-.7.4-1.1.4z"/></svg>';
       hearts.appendChild(i); setTimeout(function(){ i.remove(); }, 4200);
     }
-    (function beatHearts(){ heart(); setTimeout(beatHearts, 380 + Math.random() * 700); })();
+    (function beatHearts(){ heart(); if (Math.random() < 0.3) setTimeout(heart, 90); setTimeout(beatHearts, 170 + Math.random() * 380); })();
   })();
 
   /* -- parliamentarians -- */
