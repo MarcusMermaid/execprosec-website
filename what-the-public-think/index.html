@@ -232,6 +232,43 @@ th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute
 .nrow .bar i{background:var(--gold-ink)}
 .nrow .bar i:only-child{border-radius:4px}
 
+/* ---- social media (Marcus, 9 Nov 2026) ---- */
+.so-grid{display:grid;grid-template-columns:minmax(260px,360px) 1fr;gap:40px;align-items:start}
+.so-video{margin:0;position:sticky;top:80px}
+.so-phone{position:relative;aspect-ratio:9/16;border-radius:22px;overflow:hidden;background:#000;border:6px solid #0b1a4a;box-shadow:0 30px 70px rgba(0,0,0,.45),0 0 0 1px var(--line-navy)}
+.so-phone video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.so-snd{all:unset;cursor:pointer;position:absolute;left:12px;bottom:12px;z-index:3;display:flex;align-items:center;gap:7px;padding:8px 13px;border-radius:999px;background:rgba(4,20,64,.82);color:#fff;font:600 13.5px/1 var(--f-body);backdrop-filter:blur(4px)}
+.so-snd svg{width:17px;height:17px}
+.so-snd.on{background:var(--gold);color:var(--navy)}
+.so-hearts{position:absolute;right:6px;bottom:44px;width:70px;height:62%;pointer-events:none;z-index:2;overflow:visible}
+.so-hearts i{position:absolute;bottom:0;left:50%;width:26px;height:26px;margin-left:-13px;animation:floatup 3.2s ease-out forwards;opacity:0}
+.so-hearts i svg{width:100%;height:100%;display:block;filter:drop-shadow(0 2px 4px rgba(0,0,0,.35))}
+@keyframes floatup{0%{transform:translate(0,0) scale(.4);opacity:0}12%{opacity:1;transform:translate(var(--dx1),-30px) scale(1)}60%{opacity:.95}100%{transform:translate(var(--dx2),-340px) scale(.85);opacity:0}}
+.so-video figcaption{margin-top:16px;color:var(--on-navy-2);font-size:14px;line-height:1.5}
+.so-video figcaption b{display:block;color:var(--paper);font-size:15.5px;margin-bottom:4px}
+.so-vstats{display:flex;flex-wrap:wrap;gap:2px 14px}
+.so-vstats i{font-style:normal;color:var(--paper);font-weight:700;font-variant-numeric:tabular-nums}
+.so-video figcaption a{display:inline-block;margin-top:8px;color:var(--gold);font-weight:600}
+.so-big b{display:block;font:400 clamp(60px,10vw,118px)/.92 var(--f-display);color:var(--gold);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.so-big span{display:block;margin-top:10px;font-size:17px;color:var(--on-navy)}
+.so-counts{margin-top:26px}
+.so-chart{margin-top:22px}
+#sochart{width:100%;display:block}
+#sochart text{font:500 12px var(--f-body);fill:var(--muted)}
+.so-today{display:inline-flex;align-items:center;gap:7px;font-size:14px;color:var(--muted)}
+.so-today b{font:700 15px/1 var(--f-body);color:#1f7a4d}
+.so-today .dot{width:8px;height:8px;border-radius:50%;background:#2fa36b;animation:pulse 1.6s infinite}
+.so-links{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.so-links a{display:flex;flex-direction:column;gap:3px;padding:12px 16px;border-radius:8px;border:1px solid var(--line-navy);background:var(--navy-2);color:var(--paper);text-decoration:none;min-width:120px;transition:border-color .2s,transform .2s}
+.so-links a:hover{border-color:var(--gold);transform:translateY(-2px)}
+.so-links a b{font-size:15px}
+.so-links a span{font-size:13px;color:var(--on-navy-2)}
+.so-links a span i{font-style:normal;color:var(--gold);font-weight:700;font-variant-numeric:tabular-nums}
+.so-counts .counter b.tick, .so-big b.tick{animation:sotick .5s ease}
+@keyframes sotick{40%{color:#f08a6c}}
+@media(max-width:860px){.so-grid{grid-template-columns:1fr;gap:28px}.so-video{position:static;max-width:340px;margin:0 auto}}
+@media(max-width:760px){.so-counts{grid-template-columns:1fr 1fr}}
+
 /* ---- over time ---- */
 .timecard{padding:22px 18px 14px;position:relative}
 #timechart{width:100%;display:block}
@@ -496,9 +533,45 @@ body.ticker-on .foot{padding-bottom:90px}
   </div>
 </section>
 
+<section id="social">
+  <div class="wrap">
+    <p class="kicker">On social media</p>
+    <h2 id="soH">Over a million views</h2>
+    <p class="sec-lead">Our videos and posts, added up across Instagram, Facebook, X, YouTube and Threads. Every day thousands more people watch, and hundreds more follow.</p>
+    <div class="so-grid">
+      <figure class="so-video rv">
+        <div class="so-phone">
+          <video id="soVid" src="/what-the-public-think/media/they-admit-it.mp4" poster="/what-the-public-think/media/they-admit-it.jpg" muted loop playsinline preload="metadata" aria-label="Our most-watched video"></video>
+          <button class="so-snd" id="soSnd" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="m22 9-6 6"/><path d="m16 9 6 6"/></svg><span>Tap for sound</span></button>
+          <div class="so-hearts" id="soHearts" aria-hidden="true"></div>
+        </div>
+        <figcaption>
+          <b>Our most-watched video</b>
+          <span class="so-vstats"><span><i id="soVv">317,687</i> views</span><span><i id="soVl">19,147</i> likes</span><span><i id="soVc">1,095</i> comments</span><span><i id="soVs">5,368</i> shares</span></span>
+          <a href="https://www.instagram.com/reel/DfRZ9KWjkMf/" target="_blank" rel="noopener noreferrer">Watch it on Instagram</a>
+        </figcaption>
+      </figure>
+      <div class="so-side">
+        <div class="so-big rv"><b id="soViews">1,545,018</b><span>views across our pages</span></div>
+        <div class="counters so-counts rv">
+          <div class="counter"><b id="soGained">18,098</b><span>new followers since 18 October</span></div>
+          <div class="counter"><b id="soLikes">151,087</b><span>likes</span></div>
+          <div class="counter"><b id="soComments">13,043</b><span>comments</span></div>
+          <div class="counter"><b id="soShares">32,164</b><span>shares</span></div>
+        </div>
+        <div class="card timecard so-chart rv">
+          <div class="timehead"><div><b id="soGained2">18,098</b> <span>new followers since 18 October</span></div><span class="so-today"><i class="dot"></i><b id="soToday">+367</b>&nbsp;today</span></div>
+          <svg id="sochart" role="img" aria-label="New followers day by day, added up across our pages"></svg>
+        </div>
+        <div class="so-links" id="soLinks"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section style="padding-top:20px">
   <div class="wrap"><p class="kicker">What signers told us</p><h2>What the people who signed think</h2>
-    <p class="sec-lead">These are the answers of members of the public who signed the petition, not of MPs or peers.</p></div>
+    <p class="sec-lead">These are the answers of members of the public who signed the petition.</p></div>
   <div class="wrap findings" id="findings"></div>
 </section>
 
@@ -1073,8 +1146,8 @@ body.ticker-on .foot{padding-bottom:90px}
   }
   document.addEventListener('click', function(e){
     var a = e.target && e.target.closest ? e.target.closest('a[href*="/petition/?ref=results"]') : null; if (!a) return;
-    var base = a.getAttribute('href').replace(/(ref=results[a-z-]*?)(-(chime|build|rising)(-unheard|-muted)?)?$/, '$1');
-    var tag = soundKey + (muted ? '-muted' : heard ? '' : '-unheard');
+    var base = a.getAttribute('href').replace(/(ref=results[a-z-]*?)(-(chime|rising|silent)(-unheard|-muted)?)?$/, '$1');
+    var tag = soundKey === 'silent' ? 'silent' : soundKey + (muted ? '-muted' : heard ? '' : '-unheard');
     a.setAttribute('href', base + '-' + tag);
     track('click', {label: 'sign ' + base.split('ref=')[1] + ' sound-' + tag, href: a.getAttribute('href')});
   }, true);
@@ -1088,7 +1161,8 @@ body.ticker-on .foot{padding-bottom:90px}
   function drawSound(){
     sb.innerHTML = (muted ? ICON_OFF : ICON_ON) + '<span>' + (muted ? 'Sound off' : 'Mute this page') + '</span>';
     sb.classList.toggle('off', muted); sb.setAttribute('aria-pressed', muted ? 'true' : 'false');
-    var hh = document.getElementById('hearHint'); if (hh) hh.hidden = muted || (unlocked && audio && audio.state === 'running');
+    var quiet = soundKey === 'silent'; sb.hidden = quiet;   // the silent group sees no sound controls at all
+    var hh = document.getElementById('hearHint'); if (hh) hh.hidden = quiet || muted || (unlocked && audio && audio.state === 'running');
   }
   function unlock(){
     if (unlocked) { if (audio && audio.state === 'suspended') audio.resume(); return; }
@@ -1111,30 +1185,10 @@ body.ticker-on .foot{padding-bottom:90px}
     drawSound();
   });
   drawSound();
-  /* Three sounds to try (Marcus, 9 Nov 2026). Each is one recognisable sound with a small, controlled
+  /* Two sounds and silence to try (Marcus, 9 Nov 2026; Build dropped for Silent the same night). Each is one recognisable sound with a small, controlled
      change from one signer to the next, so it never sounds like a machine repeating itself. Someone who
      signs while you are on the page gets a brighter version, so a real new signer stands out. */
-  var lastPop = 0, rising = 0, build = 0, lastNote = -1;
-  function synth(f, t, dur, vol, cutoff){       // a sawtooth through a low-pass filter: a bright, warm pluck
-    var o = audio.createOscillator(), fl = audio.createBiquadFilter(), g = audio.createGain();
-    o.type = 'sawtooth'; o.frequency.setValueAtTime(f, t);
-    fl.type = 'lowpass'; fl.Q.value = 6; fl.frequency.setValueAtTime(cutoff * 1.6, t); fl.frequency.exponentialRampToValueAtTime(Math.max(300, cutoff * 0.5), t + dur);
-    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol, t + 0.008); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-    o.connect(fl); fl.connect(g); g.connect(master); o.start(t); o.stop(t + dur + 0.02);
-  }
-  function sparkle(t, n){ for (var i = 0; i < n; i++){ var f = 2000 + Math.random() * 2600; osc('sine', f, f, t + i * 0.045, 0, 0.35, 0.035); } }
-  function burst(t, vol){                        // the payoff: a full chord that swells, a whoosh and a sparkle
-    [523.25, 659.25, 783.99, 1046.5].forEach(function(f){ synth(f, t, 1.3, vol * 0.7, 2600); osc('sine', f, f, t, 0, 1.2, vol * 0.25); });
-    try {
-      var len = Math.floor(audio.sampleRate * 0.6), buf = audio.createBuffer(1, len, audio.sampleRate), d = buf.getChannelData(0);
-      for (var i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / len);
-      var src = audio.createBufferSource(), bp = audio.createBiquadFilter(), g = audio.createGain();
-      src.buffer = buf; bp.type = 'bandpass'; bp.Q.value = 1.2; bp.frequency.setValueAtTime(600, t); bp.frequency.exponentialRampToValueAtTime(6000, t + 0.5);
-      g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol * 0.5, t + 0.12); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.6);
-      src.connect(bp); bp.connect(g); g.connect(master); src.start(t); src.stop(t + 0.62);
-    } catch (e) {}
-    sparkle(t + 0.15, 7);
-  }
+  var lastPop = 0, rising = 0, lastNote = -1, soundKey = '';
   function osc(type, f0, f1, t, glide, dur, vol, at){
     var o = audio.createOscillator(), g = audio.createGain();
     o.type = type; o.frequency.setValueAtTime(f0, t); if (f1 !== f0) o.frequency.exponentialRampToValueAtTime(f1, t + glide);
@@ -1151,45 +1205,38 @@ body.ticker-on .foot{padding-bottom:90px}
       osc('sine', f, f, t, 0, 0.55, vary(0.12)); osc('sine', f * 2.76, f * 2.76, t, 0, 0.18, vary(0.03));
       if (bright){ osc('sine', f * 1.5, f * 1.5, t + 0.1, 0, 0.6, 0.1); osc('sine', f * 2, f * 2, t + 0.2, 0, 0.7, 0.08); }
     }},
-    build: {name: 'B · Build', play: function(t, bright){             // a bright synth climbing a I-IV-V-I chord run, then a burst
-      var STEPS = [261.63, 329.63, 392, 523.25, 349.23, 440, 523.25, 698.46, 392, 493.88, 587.33, 783.99, 523.25, 659.25, 783.99, 1046.5];
-      var k = build % STEPS.length, f = STEPS[k] * jitter(6), lift = k / (STEPS.length - 1); build++;
-      synth(f, t, 0.24, vary(0.09 + 0.05 * lift), 900 + 3200 * lift);
-      osc('sine', f / 2, f / 2, t, 0, 0.2, 0.04 + 0.03 * lift);
-      if (k === STEPS.length - 1) burst(t + 0.14, 0.11);
-      if (bright){ [783.99, 987.77, 1174.66, 1567.98].forEach(function(n, i){ synth(n, t + 0.07 * (i + 1), 0.3, 0.09, 4200); }); sparkle(t + 0.3, 5); }
-    }},
     rising: {name: 'C · Rising', play: function(t, bright){           // each signer is the next note up, so the crowd sounds like it is building
       var P = [392, 440, 493.88, 587.33, 659.25, 783.99, 880, 987.77, 1174.66, 1318.51, 1567.98, 1760];
       var f = P[rising % P.length] * jitter(8); rising++;
       osc('triangle', f, f, t, 0, 0.22, vary(0.11), 0.004); osc('sine', f * 2, f * 2, t, 0, 0.12, 0.03);
       if (rising % P.length === 0) { osc('sine', 783.99, 783.99, t + 0.12, 0, 0.9, 0.06); osc('sine', 987.77, 987.77, t + 0.12, 0, 0.9, 0.05); osc('sine', 1174.66, 1174.66, t + 0.12, 0, 0.9, 0.05); }
       if (bright){ [1, 1.25, 1.5, 2].forEach(function(m, i){ osc('triangle', 783.99 * m, 783.99 * m, t + 0.08 * (i + 1), 0, 0.35, 0.09, 0.004); }); }
-    }}
+    }},
+    silent: {name: 'Silent', play: function(){}}                       // the control group: no sound and no sound button
   };
-  /* which sound this visitor hears. On execprosec.org each visitor gets one of the three at random and
-     keeps it, so we can see whether the sound changes what people do. The preview lets you choose. */
+  /* which sound this visitor hears. On execprosec.org each visitor gets Chime, Rising or Silent at random
+     and keeps it, so we can see whether sound changes what people do. The preview lets you choose. */
   var PREVIEW = /pages\.dev$/.test(location.hostname) || /[?&]sounds=1/.test(location.search);
-  var soundKey = '';
   try {
-    soundKey = (location.search.match(/[?&]sound=(chime|build|rising)/) || [])[1] || '';
+    soundKey = (location.search.match(/[?&]sound=(chime|rising|silent)/) || [])[1] || '';
     if (!soundKey && PREVIEW) soundKey = localStorage.getItem('wtpt-sound') || '';
-    if (!soundKey && !PREVIEW) soundKey = localStorage.getItem('wtpt-sound-test') || '';
+    if (!soundKey && !PREVIEW) soundKey = localStorage.getItem('wtpt-sound-test2') || '';
     if (!SOUNDS[soundKey]){
       soundKey = PREVIEW ? 'rising' : Object.keys(SOUNDS)[Math.floor(Math.random() * 3)];
-      if (!PREVIEW) localStorage.setItem('wtpt-sound-test', soundKey);
+      if (!PREVIEW) localStorage.setItem('wtpt-sound-test2', soundKey);
     }
   } catch (e) { if (!SOUNDS[soundKey]) soundKey = 'rising'; }
+  drawSound();
   var heard = false;
   function pop(bright){
-    if (!unlocked || muted || !audio || document.hidden) return;
+    if (!unlocked || muted || !audio || document.hidden || soundKey === 'silent' || window.wtptVideoLoud) return;
     var t = audio.currentTime; if (t - lastPop < 0.07) return; lastPop = t;
     if (!heard && audio.state === 'running'){ heard = true; track('sound_heard', {label: 'sound-' + soundKey}); }
     SOUNDS[soundKey].play(t + 0.01, bright);
   }
-  /* on the preview only: a chooser to compare the three */
   track('pageview', {label: 'sound-' + soundKey});
   if (TRACK){ var es = document.createElement('script'); es.src = '/_web/engagement.js'; es.defer = true; document.body.appendChild(es); }
+  /* on the preview only: a chooser to compare them */
   if (PREVIEW){
     var pick = document.createElement('div'); pick.className = 'sndpick'; pick.innerHTML = '<span>Try a sound (preview only)</span>';
     Object.keys(SOUNDS).forEach(function(k){
@@ -1198,7 +1245,7 @@ body.ticker-on .foot{padding-bottom:90px}
         soundKey = k; try { localStorage.setItem('wtpt-sound', k); } catch (e) {}
         muted = false; try { localStorage.setItem('wtpt-sound-off', '0'); } catch (e) {} drawSound(); unlock();
         pick.querySelectorAll('button').forEach(function(x){ x.classList.toggle('on', x.dataset.k === k); });
-        if (audio){ var t0 = audio.currentTime + 0.05, n = k === 'chime' ? 4 : k === 'rising' ? 12 : 16; rising = 0; build = 0; for (var i = 0; i < n; i++) SOUNDS[k].play(t0 + i * 0.3, false); SOUNDS[k].play(t0 + n * 0.3 + 0.9, true); }
+        if (audio && k !== 'silent'){ var t0 = audio.currentTime + 0.05, n = k === 'chime' ? 4 : 12; rising = 0; for (var i = 0; i < n; i++) SOUNDS[k].play(t0 + i * 0.3, false); SOUNDS[k].play(t0 + n * 0.3 + 0.9, true); }
       });
       if (k === soundKey) b.className = 'on';
       pick.appendChild(b);
@@ -1495,6 +1542,139 @@ body.ticker-on .foot{padding-bottom:90px}
       if (!cards.length) return;
       var c = cards[Math.floor(Math.random() * cards.length)]; c.classList.add('glow'); setTimeout(function(){ c.classList.remove('glow'); }, 2200);
     }, 1800);
+  })();
+
+  /* ================= social media (Marcus, 9 Nov 2026) =================
+     Totals from Central, added up across our pages, refreshed every ten minutes. The numbers in the
+     page are the latest snapshot, so the section reads right even if Central does not answer. */
+  (function(){
+    var vid = $('soVid'); if (!vid) return;
+    var VIDEO = 'DfRZ9KWjkMf';
+    var LINKS = [
+      ['instagram', 'Instagram', 'https://www.instagram.com/marcusjball/'],
+      ['facebook', 'Facebook', 'https://www.facebook.com/101805467849694'],
+      ['x', 'X', 'https://x.com/MarcusJBall'],
+      ['youtube', 'YouTube', 'https://www.youtube.com/@marcusjball'],
+      ['threads', 'Threads', 'https://www.threads.com/@marcusjball']
+    ];
+    var S = {views: 1545018, likes: 151087, comments: 13043, shares: 32164, gained: 18098, today: 367,
+             per: {instagram: 10194, facebook: 9399, x: 50487, youtube: 1340, threads: 257},
+             days: [], v: {views: 317687, likes: 19147, comments: 1095, shares: 5368}};
+    var shown = false;
+    function tween(el, from, to, plus){
+      if (!el) return;
+      function txt(n){ return (plus ? '+' : '') + Math.round(n).toLocaleString('en-GB'); }
+      if (reduce || from === to){ el.textContent = txt(to); return; }
+      var t0 = null, d = from ? 1200 : 1900;
+      if (from && to !== from){ el.classList.remove('tick'); void el.offsetWidth; el.classList.add('tick'); }
+      function step(t){ if (!t0) t0 = t; var p = Math.min(1, (t - t0) / d), e = 1 - Math.pow(1 - p, 3);
+        el.textContent = txt(from + (to - from) * e); if (p < 1) requestAnimationFrame(step); }
+      requestAnimationFrame(step);
+    }
+    var last = {};
+    function show(){
+      var f = {soViews: S.views, soLikes: S.likes, soComments: S.comments, soShares: S.shares, soGained: S.gained, soGained2: S.gained,
+               soVv: S.v.views, soVl: S.v.likes, soVc: S.v.comments, soVs: S.v.shares};
+      Object.keys(f).forEach(function(id){ tween($(id), shown ? (last[id] || 0) : 0, f[id]); last[id] = f[id]; });
+      tween($('soToday'), shown ? (last.today || 0) : 0, S.today, true); last.today = S.today;
+      $('soH').textContent = S.views >= 1000000 ? 'Over ' + (S.views >= 2000000 ? Math.floor(S.views / 1000000) + ' million' : 'a million') + ' views' : 'Hundreds of thousands of views';
+      var box = $('soLinks');
+      box.innerHTML = LINKS.map(function(l){
+        var n = S.per[l[0]];
+        return '<a href="' + l[2] + '" target="_blank" rel="noopener noreferrer"><b>' + l[1] + '</b><span>' +
+               (n >= 1000 ? '<i>' + n.toLocaleString('en-GB') + '</i> followers' : 'Follow us') + '</span></a>';
+      }).join('');
+      drawChart();
+    }
+    function drawChart(){
+      var svg = $('sochart'), days = S.days; if (!days.length) return;
+      var W = Math.max(300, svg.parentNode.clientWidth - 36), H = W < 560 ? 190 : 230, L = W < 560 ? 44 : 52, R = 14, T = 14, B = 30;
+      svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H); svg.setAttribute('height', H);
+      var max = days[days.length - 1].gained, step = max > 40000 ? 10000 : max > 16000 ? 5000 : 2000, top = Math.max(step, Math.ceil(max / step) * step);
+      function x(i){ return L + (W - L - R) * (days.length === 1 ? 0.5 : i / (days.length - 1)); }
+      function y(v){ return T + (H - T - B) * (1 - v / top); }
+      var h = '';
+      for (var g = 0; g <= top; g += step) h += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + y(g) + '" y2="' + y(g) + '" stroke="#e2ddcf" stroke-width="1"/><text x="' + (L - 8) + '" y="' + (y(g) + 4) + '" text-anchor="end">' + (g ? (g / 1000) + 'k' : '0') + '</text>';
+      var every = Math.ceil(days.length / (W < 560 ? 4 : 6)), lastX = x(days.length - 1);
+      days.forEach(function(d, i){ if ((i % every === 0 && lastX - x(i) > 70) || i === days.length - 1) h += '<text x="' + x(i) + '" y="' + (H - 8) + '" text-anchor="' + (i === 0 ? 'start' : i === days.length - 1 ? 'end' : 'middle') + '">' + day(d.d) + '</text>'; });
+      var line = days.map(function(d, i){ return (i ? 'L' : 'M') + x(i).toFixed(1) + ',' + y(d.gained).toFixed(1); }).join('');
+      h += '<path d="' + line + 'L' + x(days.length - 1) + ',' + y(0) + 'L' + x(0) + ',' + y(0) + 'Z" fill="rgba(221,188,102,.25)" id="soArea"/>';
+      h += '<path d="' + line + '" fill="none" stroke="#142a6b" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" id="soLine"/>';
+      h += '<circle cx="' + x(days.length - 1) + '" cy="' + y(max) + '" r="5" fill="#f08a6c" stroke="#fff" stroke-width="2" class="so-end"/>';
+      h += '<line id="soX" y1="' + T + '" y2="' + (H - B) + '" stroke="#5a6075" stroke-width="1" stroke-dasharray="3 3" visibility="hidden"/>';
+      h += '<circle id="soDot" r="5" fill="#142a6b" stroke="#fff" stroke-width="2" visibility="hidden"/>';
+      h += '<rect x="' + L + '" y="0" width="' + (W - L - R) + '" height="' + H + '" fill="transparent" id="soHit"/>';
+      svg.innerHTML = h;
+      var hit = $('soHit'), vx = $('soX'), dot = $('soDot');
+      function at(e){
+        var r = svg.getBoundingClientRect(), px = (e.clientX - r.left) * W / r.width;
+        var i = Math.max(0, Math.min(days.length - 1, Math.round((px - L) / (W - L - R) * (days.length - 1)))), d = days[i], prev = i ? days[i - 1].total : d.total;
+        vx.setAttribute('x1', x(i)); vx.setAttribute('x2', x(i)); vx.setAttribute('visibility', 'visible');
+        dot.setAttribute('cx', x(i)); dot.setAttribute('cy', y(d.gained)); dot.setAttribute('visibility', 'visible');
+        showTip('<b>' + day(d.d, true) + '</b><br>' + (i ? '+' + Math.max(0, d.total - prev).toLocaleString('en-GB') + ' that day<br>' : '') + d.gained.toLocaleString('en-GB') + ' new followers by then', e.clientX, e.clientY);
+      }
+      hit.addEventListener('mousemove', at);
+      hit.addEventListener('click', function(e){ at(e); e.stopPropagation(); });
+      hit.addEventListener('mouseleave', function(){ hideTip(); vx.setAttribute('visibility', 'hidden'); dot.setAttribute('visibility', 'hidden'); });
+      if (!drawChart._done && !reduce){
+        drawChart._done = true;
+        var ln = $('soLine'), len = ln.getTotalLength(), ar = $('soArea');
+        ln.style.strokeDasharray = len; ln.style.strokeDashoffset = len; ar.style.opacity = 0;
+        onView(svg.parentNode, function(){
+          ln.style.transition = 'stroke-dashoffset 2.2s cubic-bezier(.4,0,.2,1)'; ln.style.strokeDashoffset = 0;
+          ar.style.transition = 'opacity 1.2s ease 1s'; ar.style.opacity = 1;
+        });
+      }
+    }
+    function load(){
+      fetch('https://central-2-mcp-production.up.railway.app/public/social/summary').then(function(r){ return r.json(); }).then(function(d){
+        if (!d || !d.posts) return;
+        S.views = d.posts.views; S.likes = d.posts.likes; S.comments = d.posts.comments; S.shares = d.posts.shares;
+        S.gained = d.followers.gained; S.today = Math.max(0, d.followers.today); S.per = d.followers.per_platform || S.per; S.days = d.followers.days || [];
+        (d.most_viewed || []).forEach(function(p){ if (p.permalink && p.permalink.indexOf(VIDEO) >= 0) S.v = p; });
+        if (shown) show();
+      }).catch(function(){});
+    }
+    load(); setInterval(load, 600000);
+    onView($('social').querySelector('.so-side'), function(){ shown = true; show(); });
+    var rw = window.innerWidth; window.addEventListener('resize', function(){ if (Math.abs(window.innerWidth - rw) > 40){ rw = window.innerWidth; drawChart(); } });
+
+    /* the video plays, muted, only while it is on screen; tapping turns its sound on and the page's
+       own signature sounds go quiet while it plays with sound */
+    var snd = $('soSnd'), onScreen = false;
+    window.wtptVideoLoud = false;
+    function loud(on){
+      vid.muted = !on; window.wtptVideoLoud = on && !vid.paused;
+      snd.classList.toggle('on', on);
+      snd.querySelector('span').textContent = on ? 'Sound on' : 'Tap for sound';
+      track(on ? 'video_sound_on' : 'video_sound_off', {label: 'they-admit-it'});
+    }
+    snd.addEventListener('click', function(e){ e.stopPropagation(); loud(vid.muted); if (vid.paused) vid.play().catch(function(){}); });
+    vid.addEventListener('click', function(){ loud(vid.muted); if (vid.paused) vid.play().catch(function(){}); });
+    vid.addEventListener('pause', function(){ window.wtptVideoLoud = false; });
+    vid.addEventListener('play', function(){ window.wtptVideoLoud = !vid.muted; });
+    var playedOnce = false;
+    if ('IntersectionObserver' in window){
+      new IntersectionObserver(function(es){
+        es.forEach(function(e){
+          onScreen = e.isIntersecting && e.intersectionRatio > 0.35;
+          if (onScreen && !reduce){ vid.play().catch(function(){}); if (!playedOnce){ playedOnce = true; track('video_seen', {label: 'they-admit-it'}); } }
+          else if (!onScreen) vid.pause();
+        });
+      }, {threshold: [0, 0.35, 0.6]}).observe(vid);
+    }
+
+    /* hearts floating up beside the video while it plays */
+    var hearts = $('soHearts'), COL = ['#f08a6c', '#ddbc66', '#ffffff', '#f08a6c', '#e8566a'];
+    function heart(){
+      if (reduce || !onScreen || vid.paused || document.hidden) return;
+      var i = document.createElement('i'), c = COL[Math.floor(Math.random() * COL.length)];
+      i.style.setProperty('--dx1', (Math.random() * 24 - 12) + 'px'); i.style.setProperty('--dx2', (Math.random() * 50 - 25) + 'px');
+      i.style.animationDuration = (2.6 + Math.random() * 1.4) + 's';
+      i.innerHTML = '<svg viewBox="0 0 24 24"><path fill="' + c + '" d="M12 21s-7.5-4.6-9.6-9.1C.9 8.6 3 5 6.6 5c2.1 0 3.6 1.2 4.4 2.4C11.8 6.2 13.3 5 15.4 5 19 5 21.1 8.6 19.6 11.9 17.5 16.4 12 21 12 21z"/></svg>';
+      hearts.appendChild(i); setTimeout(function(){ i.remove(); }, 4200);
+    }
+    (function beatHearts(){ heart(); setTimeout(beatHearts, 380 + Math.random() * 700); })();
   })();
 
   /* -- parliamentarians -- */
