@@ -66,7 +66,7 @@ header#nav .nav-links a:not(.nav-donate):hover{color:#fff;background:rgba(255,25
 @media(max-width:700px){header#nav .nav-links{display:none!important}}
 
 /* ---- layout ---- */
-.wrap{max-width:1120px;margin:0 auto;padding-left:var(--gl);padding-right:var(--gr)}
+.wrap{max-width:1080px;margin:0 auto;padding-left:var(--gl);padding-right:var(--gr)}
 section{padding:56px 0}
 .kicker{font:700 12px/1.4 var(--f-body);letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin:0 0 12px}
 h2{font:400 clamp(30px,5vw,44px)/1.08 var(--f-display);letter-spacing:-.01em;margin:0 0 12px;text-wrap:balance}
@@ -79,7 +79,7 @@ h2{font:400 clamp(30px,5vw,44px)/1.08 var(--f-display);letter-spacing:-.01em;mar
   background:radial-gradient(closest-side,rgba(221,188,102,.16),rgba(221,188,102,0));pointer-events:none;animation:drift 18s ease-in-out infinite alternate}
 @keyframes drift{to{transform:translate(-120px,80px)}}
 .hero-grid{display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);gap:28px 44px;align-items:center}
-.hero-grid .counters{grid-column:1 / -1;margin-top:10px}
+.hero-grid .today-data{grid-column:1 / -1;margin-top:6px}
 @media(max-width:900px){.hero-grid{grid-template-columns:1fr}.stage{order:-1}}
 .hero h1{font:400 clamp(36px,5.2vw,64px)/1.03 var(--f-display);letter-spacing:-.015em;margin:0 0 18px;text-wrap:balance}
 .hero-cta{display:flex;flex-wrap:wrap;align-items:center;gap:12px 18px;margin:0 0 6px}
@@ -264,6 +264,109 @@ th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute
   display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:space-between;font-size:13px;color:var(--on-navy-2)}
 .foot a{color:var(--on-navy)}
 
+/* ---- sound ---- */
+.soundbtn{position:fixed;top:14px;right:14px;z-index:70;display:inline-flex;align-items:center;gap:8px;padding:8px 14px 8px 10px;border-radius:999px;
+  border:1px solid rgba(255,255,255,.28);background:rgba(4,20,64,.85);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);color:#fff;font:600 13px/1 var(--f-body);cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.3)}
+.soundbtn svg{width:18px;height:18px;flex:0 0 18px}
+.soundbtn:hover{border-color:var(--gold)}
+.soundbtn.off{color:var(--gold)}
+@media(max-width:480px){.soundbtn{top:12px;right:10px;padding:7px 11px 7px 9px;font-size:12px}}
+
+/* ---- today's data ---- */
+.td-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 16px;margin:0 0 10px}
+.td-head .k{display:inline-flex;align-items:center;gap:8px;font:700 12.5px/1 var(--f-body);letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
+.td-head .k .dot{width:9px;height:9px;border-radius:50%;background:#2fa36b;animation:pulse 1.6s infinite}
+.td-note{font-size:13.5px;color:var(--on-navy-2);transition:color .4s}
+.td-note.loop{color:var(--gold)}
+.counter{position:relative;overflow:hidden}
+.counter b{transition:color .3s}
+.counter b.tick{animation:tick .4s ease}
+@keyframes tick{40%{transform:scale(1.05);color:var(--gold)}}
+.counter small{display:block;margin-top:10px;padding-top:8px;border-top:1px solid var(--line-navy);font-size:12.5px;color:var(--on-navy-2);line-height:1.35}
+.plus{position:absolute;top:14px;right:14px;font:700 14px/1 var(--f-body);font-style:normal;color:var(--navy);background:var(--gold);border-radius:999px;padding:5px 9px;
+  box-shadow:0 4px 14px rgba(221,188,102,.45);animation:plus 1.2s cubic-bezier(.2,.8,.3,1) forwards;pointer-events:none}
+@keyframes plus{0%{opacity:0;transform:translateY(10px) scale(.6)}18%{opacity:1;transform:translateY(0) scale(1.08)}30%{transform:scale(1)}100%{opacity:0;transform:translateY(-28px)}}
+
+/* ---- the side streams (wide screens) and the ticker (everything else) ---- */
+.rail{position:fixed;top:0;bottom:0;z-index:5;pointer-events:none;opacity:0;transition:opacity .8s;
+  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 16%,#000 84%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 16%,#000 84%,transparent 100%)}
+body.rails-on .rail{opacity:1}
+.pill.mini{padding:5px 14px 5px 5px;font-size:13px;bottom:0;box-shadow:0 6px 18px rgba(0,0,0,.35)}
+.pill.mini .av{flex-basis:28px;width:28px;height:28px;font-size:12.5px}
+.pill.mini .when{font-size:11.5px}
+.ticker{position:fixed;left:0;right:0;bottom:0;z-index:60;display:flex;align-items:center;gap:12px;min-height:58px;padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px)) 14px;
+  background:rgba(4,20,64,.95);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-top:1px solid var(--line-navy);transform:translateY(110%);transition:transform .45s cubic-bezier(.22,1,.36,1)}
+.ticker.on{transform:none}
+.ticker .tk{position:relative;flex:1 1 auto;min-width:0;height:40px;overflow:hidden}
+.ticker .tk > div{position:absolute;inset:0;display:flex;align-items:center;gap:10px;font-size:14px;color:var(--paper);white-space:nowrap;animation:tkIn .5s cubic-bezier(.22,1,.36,1) both}
+.ticker .tk > div.out{animation:tkOut .4s ease forwards}
+.ticker .tk .av{flex:0 0 28px;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font:700 12.5px/1 var(--f-body)}
+.ticker .tk .tx{overflow:hidden;text-overflow:ellipsis}
+.ticker .tk .when{color:var(--gold)}
+@keyframes tkIn{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+@keyframes tkOut{to{opacity:0;transform:translateY(-22px)}}
+.ticker .btn{min-height:42px;padding:0 16px;font-size:14.5px;box-shadow:none;flex:0 0 auto}
+body.ticker-on .foot{padding-bottom:90px}
+
+/* ---- voices: their own words, always moving ---- */
+.voices{padding:50px 0 26px;overflow:hidden}
+.voices .wrap{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:8px 20px;margin-bottom:22px}
+.voices h2{margin:0}
+.voices .wrap > span{font-size:14px;color:var(--on-navy-2)}
+.vrow{position:relative;overflow:hidden;margin:0 0 16px;padding:4px 0}
+.vtrack{display:flex;gap:16px;align-items:stretch;will-change:transform}
+.vcard{flex:0 0 340px;margin:0;padding:18px 20px 16px;border-radius:8px;background:var(--navy-2);border:1px solid var(--line-navy);
+  transition:border-color .7s,box-shadow .7s,background .7s,transform .7s}
+.vcard p{margin:0;font-size:15.5px;line-height:1.5;color:var(--paper)}
+.vcard p::before{content:'\201C';color:var(--gold);font:400 34px/0 var(--f-display);vertical-align:-12px;margin-right:3px}
+.vcard cite{display:block;margin-top:10px;font:600 13px/1.2 var(--f-body);font-style:normal;color:var(--gold)}
+.vcard.glow{border-color:var(--gold);background:#10276b;box-shadow:0 0 0 1px var(--gold),0 14px 40px rgba(221,188,102,.22);transform:translateY(-3px)}
+.vrow:hover .vcard{cursor:default}
+@media(max-width:640px){.vcard{flex-basis:272px;padding:16px 16px 14px}.vcard p{font-size:14.5px}.vrow.r3{display:none}}
+
+/* ---- press ---- */
+.pressbar{padding:30px 0 20px}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.pcard{display:flex;flex-direction:column;gap:10px;padding:18px 18px 16px;border-radius:8px;background:rgba(255,255,255,.045);border:1px solid var(--line-navy);
+  text-decoration:none;color:var(--paper);transition:transform .2s,border-color .2s,background .2s}
+.pcard:hover{transform:translateY(-3px);border-color:var(--gold);background:rgba(255,255,255,.08)}
+.pcard .wm{min-height:30px;display:flex;align-items:center;color:#fff}
+.pcard .hl{font-size:14.5px;line-height:1.42;color:var(--on-navy)}
+.pcard .dt{margin-top:auto;font-size:12.5px;color:var(--on-navy-2)}
+.pcard .dt b{color:var(--gold);font-weight:600}
+.wm-bbc{display:inline-flex;gap:3px;font:900 15px/1 Arial,Helvetica,sans-serif}
+.wm-bbc i{display:inline-grid;place-items:center;width:22px;height:22px;background:#fff;color:var(--navy);font-style:normal}
+.wm-bbc span{margin-left:7px;letter-spacing:.06em}
+.wm-itv{font:900 23px/1 Arial,Helvetica,sans-serif;letter-spacing:.01em}
+.wm-itv span{font-weight:700;font-size:15px;margin-left:6px;letter-spacing:.08em}
+.wm-sky{font:900 23px/1 Arial,Helvetica,sans-serif;letter-spacing:-.01em}
+.wm-sky span{font-weight:700;margin-left:6px;font-size:15px;letter-spacing:.08em}
+.wm-tel{font:700 21px/1 'Times New Roman',Times,serif;letter-spacing:.02em}
+.wm-exp{font:700 italic 21px/1 Georgia,'Times New Roman',serif}
+.wm-fi{font:800 21px/1 Georgia,'Times New Roman',serif;letter-spacing:.02em}
+
+/* ---- parliamentarians ---- */
+.mps{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.mp{display:flex;flex-direction:column;gap:12px;padding:18px;border-radius:8px;background:var(--paper);color:var(--ink);border-top:4px solid var(--gold)}
+.mp .who{display:flex;align-items:center;gap:12px}
+.mp img{width:58px;height:58px;border-radius:50%;object-fit:cover;background:var(--paper-2);flex:0 0 58px}
+.mp .nm{font-weight:700;color:var(--navy);line-height:1.2}
+.mp .pt{font-size:13px;color:var(--muted);margin-top:2px}
+.mp blockquote{margin:0;font:400 16px/1.45 var(--f-display);color:var(--ink)}
+.mp .did{margin-top:auto;font-size:13px;color:var(--muted)}
+.mp .did a{color:var(--gold-ink)}
+.mpfaces{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.mpfaces a{display:block;width:46px;height:46px;border-radius:50%;overflow:hidden;border:2px solid var(--line-navy)}
+.mpfaces img{width:100%;height:100%;object-fit:cover}
+
+/* ---- all the voices, searchable ---- */
+.vsearch{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:0 0 18px}
+.vsearch input{flex:1 1 260px;max-width:420px;padding:12px 14px;border-radius:6px;border:1.5px solid var(--line-navy);background:var(--navy-2);color:#fff;font-size:16px}
+.vsearch input:focus{outline:none;border-color:var(--gold)}
+.vsearch span{font-size:14px;color:var(--on-navy-2)}
+.morebtn{display:block;margin:6px auto 0;padding:12px 22px;border-radius:4px;border:1px solid var(--gold);background:none;color:var(--gold);font-weight:600;cursor:pointer}
+.morebtn:hover{background:rgba(221,188,102,.12)}
+
 /* ---- reveal and tooltip ---- */
 .rv{opacity:0;transform:translateY(22px);transition:opacity .8s ease,transform .8s cubic-bezier(.22,1,.36,1)}
 .rv.in{opacity:1;transform:none}
@@ -305,19 +408,54 @@ th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute
     </div>
     <div class="stage" id="stage">
       <div class="stage-head">
-        <div class="k"><span class="dot"></span>Live today</div>
+        <div class="k"><span class="dot"></span><span id="stageK">Signing today</span></div>
         <div class="today" id="todayLine"><b id="todayN">&nbsp;</b><span id="todayTxt">people have signed today</span></div>
         <div class="hour" id="hourN"></div>
       </div>
       <div class="stream" id="stream" aria-hidden="true"></div>
       <div class="squote" id="squote"></div>
     </div>
-    <div class="counters" id="counters">
-      <div class="counter"><b data-k="signers">0</b><span>people signed and confirmed by email</span></div>
-      <div class="counter"><b data-k="answers">0</b><span>answers to our statements</span></div>
-      <div class="counter"><b data-k="quotes">0</b><span>wrote to us in their own words</span></div>
-      <div class="counter"><b data-k="reached">0</b><span>of 650 constituencies have signers</span></div>
+    <div class="today-data" id="todayData">
+      <div class="td-head"><span class="k"><span class="dot"></span><span id="tdLabel">Today's data</span></span><span class="td-note" id="tdNote">Counting today's signers from midnight, one by one</span></div>
+      <div class="counters" id="counters">
+        <div class="counter"><b data-t="signers">0</b><span data-l="signers">signed and confirmed by email today</span><small data-all="signers">&nbsp;</small></div>
+        <div class="counter"><b data-t="answers">0</b><span data-l="answers">answers to our statements today</span><small data-all="answers">&nbsp;</small></div>
+        <div class="counter"><b data-t="quotes">0</b><span data-l="quotes">wrote to us in their own words today</span><small data-all="quotes">&nbsp;</small></div>
+        <div class="counter"><b data-t="seats">0</b><span data-l="seats">constituencies with a signer today</span><small data-all="seats">&nbsp;</small></div>
+      </div>
     </div>
+  </div>
+</section>
+
+<section class="voices" id="voices" aria-label="What signers wrote, in their own words">
+  <div class="wrap"><div><p class="kicker">In their own words</p><h2>Why they signed</h2></div><span id="voicesNote">Hover to pause. Every quote is exactly as written.</span></div>
+  <div class="vrow r1" data-speed="30" data-dir="-1"><div class="vtrack"></div></div>
+  <div class="vrow r2" data-speed="22" data-dir="1"><div class="vtrack"></div></div>
+  <div class="vrow r3" data-speed="36" data-dir="-1"><div class="vtrack"></div></div>
+</section>
+
+<section class="pressbar" id="press">
+  <div class="wrap">
+    <p class="kicker">Coverage so far</p>
+    <div class="pgrid">
+      <a class="pcard" href="https://www.bbc.co.uk/news/articles/cjdj2ezmgveo" target="_blank" rel="noopener noreferrer"><span class="wm wm-bbc"><i>B</i><i>B</i><i>C</i><span>NEWS</span></span><span class="hl">Middlesbrough South MP Luke Myer’s proposal to ban politicians from lying</span><span class="dt">14 January 2026</span></a>
+      <a class="pcard" href="https://www.itv.com/watch/news/could-mps-be-sent-to-prison-for-lying/3z74j31" target="_blank" rel="noopener noreferrer"><span class="wm wm-itv">ITV<span>NEWS</span></span><span class="hl">Could MPs be sent to prison for lying?</span><span class="dt">Watch the report</span></a>
+      <a class="pcard" href="https://news.sky.com/story/hillsborough-law-will-criminalise-lying-by-senior-ministers-say-campaigners-13509580" target="_blank" rel="noopener noreferrer"><span class="wm wm-sky">sky<span>NEWS</span></span><span class="hl">Hillsborough Law will ‘criminalise lying’ by senior ministers, say campaigners</span><span class="dt">19 February 2026</span></a>
+      <a class="pcard" href="https://www.telegraph.co.uk/news/2026/10/17/burnham-accused-of-hypocrisy-over-hillsborough-law/" target="_blank" rel="noopener noreferrer"><span class="wm wm-tel">The Telegraph</span><span class="hl">Burnham accused of hypocrisy over Hillsborough Law</span><span class="dt">17 October 2026</span></a>
+      <a class="pcard" href="https://www.express.co.uk/news/politics/2257971/comment-marcus-ball-hillsborough-law-lawmakers" target="_blank" rel="noopener noreferrer"><span class="wm wm-exp">Daily Express</span><span class="hl">Lords risk making same terrible mistake as MPs in excusing themselves from vital new law</span><span class="dt"><b>Op-ed by Marcus J Ball</b> · 18 October 2026</span></a>
+      <a class="pcard" href="https://www.express.co.uk/news/politics/2184124/mps-must-submit-hillsborough-law" target="_blank" rel="noopener noreferrer"><span class="wm wm-exp">Daily Express</span><span class="hl">MPs must submit to Hillsborough Law – or sacrifice their very reputations</span><span class="dt"><b>Op-ed by Marcus J Ball</b> · 19 March 2026</span></a>
+      <a class="pcard" href="https://firstindia.co.in/news/life-style/how-the-uk-is-criminalising-political-deception-for-the-first-time-1776572302" target="_blank" rel="noopener noreferrer"><span class="wm wm-fi">First India</span><span class="hl">How the UK is criminalising political deception for the first time</span><span class="dt"><b>Op-ed by Marcus J Ball</b> · 19 April 2026</span></a>
+    </div>
+  </div>
+</section>
+
+<section id="parliamentarians" hidden>
+  <div class="wrap">
+    <p class="kicker">In Parliament</p>
+    <h2>Parliamentarians who agree</h2>
+    <p class="sec-lead" id="mpLead">MPs and peers who have said, in their own words or by signing an amendment, that legislators should be covered too.</p>
+    <div class="mps" id="mpCards"></div>
+    <div class="mpfaces" id="mpFaces"></div>
   </div>
 </section>
 
@@ -394,8 +532,10 @@ th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute
   <div class="wrap">
     <p class="kicker">In their own words</p>
     <h2 id="quotesH">In their own words</h2>
-    <p class="sec-lead">A selection, quoted exactly as written, with each person's first name and town.</p>
+    <p class="sec-lead">Quoted exactly as written, with each person's first name and town. Search for your town or a word.</p>
+    <div class="vsearch"><input id="vq" type="search" placeholder="Search by town or word" aria-label="Search the quotes"><span id="vcount"></span></div>
     <div class="quotes" id="quoteWall"></div>
+    <button class="morebtn" id="vmore" type="button">Show more</button>
   </div>
 </section>
 
@@ -421,6 +561,10 @@ th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute
 </footer>
 
 <div id="tip" hidden></div>
+<button class="soundbtn" id="soundBtn" type="button" aria-pressed="false"></button>
+<div class="rail" id="railL" aria-hidden="true"></div>
+<div class="rail" id="railR" aria-hidden="true"></div>
+<div class="ticker" id="ticker"><div class="tk" id="tk" aria-hidden="true"></div><a class="btn" href="/petition/?ref=results-ticker">Sign</a></div>
 
 <script>
 (function(){
@@ -449,6 +593,8 @@ th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute
              ['Disagree', 'var(--di)', '#eea2a4'], ['Strongly disagree', 'var(--sd)', '#c23a40']];
   var PARTY = {1: 'Labour', 2: 'Conservative', 3: 'Reform UK', 4: 'Liberal Democrat', 5: 'Green', 6: 'SNP', 7: 'Plaid Cymru',
                8: 'Another party', 9: 'Didn’t vote', 10: 'Prefer not to say'};
+  var VOICES = /*VOICES*/null;          // the 300 quotes chosen for the page (Marcus to approve)
+  var PARL = /*PARL*/null;              // parliamentarians on the record
   var QUOTES = [
     ['Clover', 'Guildford', 'Why should the government be protected from lying? They shouldn’t be lying in the first place. I work in the nhs, and I’m not scared about this bill and my career, why are you?'],
     ['Kym', 'Swansea', 'MPs, as people honoured by the public vote to represent the public, integrity should be paramount; If MPs are omitted from this bill, how can we trust anything they say or do?'],
@@ -538,9 +684,9 @@ th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute
   function render(D){
     var at = new Date(D.at);
     $('updated').textContent = 'Live results · updated ' + at.toLocaleString('en-GB', {weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit', timeZone: 'Europe/London'});
-    var vals = {signers: D.signers, answers: D.answers, quotes: D.quotes, reached: D.constituencies_reached};
-    var cs = $('counters');
-    onView(cs, function(){ cs.querySelectorAll('[data-k]').forEach(function(el){ countUp(el, vals[el.dataset.k]); }); });
+    var all = {signers: fmt(D.signers) + ' in total since 25 October', answers: fmt(D.answers) + ' in total',
+               quotes: fmt(D.quotes) + ' in total', seats: D.constituencies_reached + ' of 650 in total'};
+    Object.keys(all).forEach(function(k){ document.querySelector('[data-all="' + k + '"]').textContent = all[k]; });
 
     /* headline findings */
     var st = D.statements || {};
@@ -633,15 +779,28 @@ th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute
     drawTime(D);
     window.addEventListener('resize', function(){ clearTimeout(drawTime._t); drawTime._t = setTimeout(function(){ drawTime(D, true); }, 150); });
 
-    /* quotes */
-    $('quotesH').textContent = D.quotes.toLocaleString('en-GB') + ' signers wrote to us in their own words';
-    var qw = $('quoteWall'); qw.innerHTML = '';
-    QUOTES.forEach(function(q, i){
-      var f = document.createElement('figure'); f.className = 'quote';
-      f.innerHTML = '<p>' + esc(q[2]) + '</p><cite>' + esc(q[0]) + ', ' + esc(q[1]) + '</cite>';
-      f.style.transitionDelay = (reduce ? 0 : (i % 3) * 90) + 'ms';
-      qw.appendChild(f); onView(f);
+    /* every chosen quote, searchable */
+    var wall = $('quoteWall'), more = $('vmore'), vq = $('vq'), shown = 0, hits = VOICES;
+    function paint(reset){
+      if (reset){ wall.innerHTML = ''; shown = 0; }
+      hits.slice(shown, shown + 24).forEach(function(v, i){
+        var f = document.createElement('figure'); f.className = 'quote';
+        f.innerHTML = '<p>' + esc(v.text) + '</p><cite>' + esc(v.first) + ', ' + esc(v.town) + '</cite>';
+        f.style.transitionDelay = (reduce ? 0 : (i % 3) * 90) + 'ms';
+        wall.appendChild(f); onView(f);
+      });
+      shown = Math.min(hits.length, shown + 24);
+      more.hidden = shown >= hits.length;
+      $('vcount').textContent = hits.length === VOICES.length ? VOICES.length + ' quotes' : hits.length + ' of ' + VOICES.length + ' quotes';
+    }
+    more.addEventListener('click', function(){ paint(false); });
+    vq.addEventListener('input', function(){
+      var t = vq.value.trim().toLowerCase();
+      hits = !t ? VOICES : VOICES.filter(function(v){ return (v.text + ' ' + v.town + ' ' + v.first).toLowerCase().indexOf(t) >= 0; });
+      paint(true);
     });
+    paint(true);
+    $('quotesH').textContent = D.quotes.toLocaleString('en-GB') + ' signers wrote to us in their own words';
     $('midText').innerHTML = D.signers.toLocaleString('en-GB') + ' people have signed. <em>Voters of every party</em> want every MP and peer covered.';
     $('ctaText').textContent = 'Join ' + D.signers.toLocaleString('en-GB') + ' people telling Parliament that no one who makes the law should be above it.';
 
@@ -793,81 +952,207 @@ th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute
     input.addEventListener('blur', function(){ setTimeout(close, 150); });
   }
 
-  /* ---- the live stream at the top ---- */
+  /* ================= the living top (Marcus, 9 Nov 2026) =================
+     Today's signers are counted from midnight one by one, over and over: each pops up as a name, the
+     counters tick up with a "+", and a soft pop plays. When the day runs out it starts again from
+     midnight. Until today has 100 signers it replays yesterday. Real new signers pop up straight away. */
+  if (!VOICES) VOICES = QUOTES.map(function(q){ return {first: q[0], town: q[1], text: q[2]}; });
   var FEED = 'https://central-2-mcp-production.up.railway.app/public/petition/today';
-  var stage = $('stage'), stream = $('stream'), people = [], fresh = [], seen = {}, idx = 0, todayShown = null, started = false;
-  var AV = [['#142a6b', '#fff'], ['#ddbc66', '#041440'], ['#8a6b1f', '#fff'], ['#d64045', '#fff']], avi = 0, lane = 0, TICK = 400;
-  function key(p){ return p.n + '|' + p.t + '|' + p.d; }
-  function when(p, fromQueue){ return fromQueue || p.m <= 10 ? 'just signed' : p.d === 'today' ? 'signed today' : 'signed yesterday'; }
-  function pillHTML(p, fromQueue){
-    var c = AV[avi++ % AV.length], link = Math.random() < .5 ? ' in ' : ' from ';
-    return '<span class="pop"><span class="av" style="background:' + c[0] + ';color:' + c[1] + '">' + esc(p.n.charAt(0)) + '</span>' +
-      '<span class="tx"><span class="who"><b>' + esc(p.n) + '</b>' + (p.t ? link + esc(p.t) : '') + '</span><span class="when">' + when(p, fromQueue) + '</span></span></span>';
+  var stage = $('stage'), stream = $('stream'), railL = $('railL'), railR = $('railR'), tk = $('tk'), ticker = $('ticker');
+  var AV = [['#142a6b', '#fff'], ['#ddbc66', '#041440'], ['#8a6b1f', '#fff'], ['#d64045', '#fff']], avi = 0;
+  var R = {list: [], i: 0, day: '', fresh: [], pauseAt: 0, today: 0};
+  var C = {signers: 0, answers: 0, quotes: 0, seats: 0};
+
+  /* -- sound -- */
+  var audio = null, master = null, unlocked = false, muted = false;
+  try { muted = localStorage.getItem('wtpt-muted') === '1'; } catch (e) {}
+  var sb = $('soundBtn');
+  var ICON_ON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a10 10 0 0 1 0 14"/></svg>';
+  var ICON_OFF = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="m22 9-6 6"/><path d="m16 9 6 6"/></svg>';
+  function drawSound(){
+    var on = unlocked && !muted;
+    sb.innerHTML = (on ? ICON_ON : ICON_OFF) + '<span>' + (on ? 'Mute this page' : muted ? 'Sound off' : 'Tap for sound') + '</span>';
+    sb.classList.toggle('off', !on); sb.setAttribute('aria-pressed', on ? 'false' : 'true');
   }
-  function next(){
-    if (fresh.length) return [fresh.shift(), true];
-    if (!people.length) return null;
-    return [people[idx++ % people.length], false];
+  function unlock(){
+    if (unlocked) return;
+    try {
+      var AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
+      audio = new AC(); master = audio.createGain(); master.gain.value = 0.5; master.connect(audio.destination);
+      if (audio.state === 'suspended') audio.resume();
+      unlocked = true;
+    } catch (e) {}
+    drawSound();
   }
-  function lanes(){ return stream.clientWidth >= 440 ? 2 : 1; }
-  function duration(){ var gap = lanes() === 2 ? TICK * 2 : TICK; return (stream.clientHeight + 10) / (60 / (gap / 1000)) * 1000; }
-  function spawn(at){
-    var n = next(); if (!n) return;
-    var el = document.createElement('div'); el.className = 'pill' + (when(n[0], n[1]) === 'just signed' ? ' just' : '');
-    el.innerHTML = pillHTML(n[0], n[1]); el.style.visibility = 'hidden';
-    var W = stream.clientWidth, H = stream.clientHeight;
-    if (lanes() === 2) el.style.maxWidth = Math.floor(W / 2 - 10) + 'px';     // two columns never touch
-    stream.appendChild(el);
-    var w = el.offsetWidth;
-    var x = lanes() === 1 ? (W - w) / 2 + (Math.random() * 30 - 15) : (lane++ % 2 ? W - w - 6 - Math.random() * 10 : 6 + Math.random() * 10);
-    x = Math.max(4, Math.min(W - w - 4, x));
-    var dur = duration();
-    el.style.visibility = '';
-    var a = el.animate([
-      {transform: 'translate(' + x + 'px,0)', opacity: 0, offset: 0},
-      {opacity: 1, offset: 0.05},
-      {opacity: 1, offset: 0.78},
-      {transform: 'translate(' + x + 'px,' + (-H + 4) + 'px)', opacity: 0, offset: 1}
-    ], {duration: dur, easing: 'linear', fill: 'forwards'});
-    if (at) a.currentTime = at * dur;
-    a.onfinish = function(){ el.remove(); };
+  ['pointerdown', 'keydown', 'touchstart'].forEach(function(ev){
+    window.addEventListener(ev, function(e){ if (e.target && e.target.closest && e.target.closest('#soundBtn')) return; unlock(); }, {passive: true});
+  });
+  sb.addEventListener('click', function(){
+    if (!unlocked){ muted = false; unlock(); } else muted = !muted;
+    try { localStorage.setItem('wtpt-muted', muted ? '1' : '0'); } catch (e) {}
+    drawSound(); if (!muted) pop(true);
+  });
+  drawSound();
+  var NOTES = [523.25, 587.33, 659.25, 783.99, 880.0, 1046.5], lastPop = 0;
+  function tone(f, t, vol){
+    var o = audio.createOscillator(), g = audio.createGain();
+    o.type = 'sine'; o.frequency.setValueAtTime(f * 1.8, t); o.frequency.exponentialRampToValueAtTime(f, t + 0.07);
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol, t + 0.012); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.3);
+    o.connect(g); g.connect(master); o.start(t); o.stop(t + 0.34);
   }
-  // one pill per beat, driven by the screen's own frames: a slow or sleeping tab never catches up in a burst
-  var last = 0;
-  function loop(t){
-    if (!last) last = t;
-    if (t - last >= TICK){ last = t; if (stream.childElementCount < 40) spawn(0); }
-    requestAnimationFrame(loop);
+  function pop(bright){
+    if (!unlocked || muted || !audio || document.hidden) return;
+    var t = audio.currentTime; if (t - lastPop < 0.07) return; lastPop = t;
+    var f = NOTES[Math.floor(Math.random() * NOTES.length)];
+    tone(f, t, 0.16); if (bright){ tone(f * 1.5, t + 0.09, 0.13); tone(f * 2, t + 0.18, 0.1); }
   }
-  function setToday(D){
-    if (D.today == null) return;
-    var b = $('todayN');
-    if (todayShown === null || D.today > todayShown){
-      var bump = todayShown !== null; todayShown = D.today; b.textContent = D.today.toLocaleString('en-GB');
-      if (bump){ b.classList.add('bump'); setTimeout(function(){ b.classList.remove('bump'); }, 600); }
-    }
+
+  /* -- counters -- */
+  var cEl = {}; ['signers', 'answers', 'quotes', 'seats'].forEach(function(k){ cEl[k] = document.querySelector('[data-t="' + k + '"]'); });
+  function drawCounts(){ Object.keys(cEl).forEach(function(k){ cEl[k].textContent = C[k].toLocaleString('en-GB'); }); }
+  function bump(k, by){
+    if (!by) return;
+    C[k] += by; var el = cEl[k]; el.textContent = C[k].toLocaleString('en-GB');
+    if (reduce) return;
+    el.classList.remove('tick'); void el.offsetWidth; el.classList.add('tick');
+    var box = el.parentNode; if (box.querySelectorAll('.plus').length > 1) return;
+    var pl = document.createElement('i'); pl.className = 'plus'; pl.textContent = '+' + by;
+    box.appendChild(pl); pl.addEventListener('animationend', function(){ pl.remove(); });
+  }
+  function labels(){
+    var y = R.day === 'yesterday', word = y ? 'yesterday' : 'today';
+    $('tdLabel').textContent = y ? 'Yesterday’s data' : 'Today’s data';
+    var L = {signers: 'signed and confirmed by email ' + word, answers: 'answers to our statements ' + word,
+             quotes: 'wrote to us in their own words ' + word, seats: 'constituencies with a signer ' + word};
+    Object.keys(L).forEach(function(k){ document.querySelector('[data-l="' + k + '"]').textContent = L[k]; });
+    note();
+  }
+  function note(loop){
+    var n = $('tdNote'), total = R.list.length.toLocaleString('en-GB');
+    n.classList.toggle('loop', !!loop);
+    if (loop) n.textContent = R.day === 'yesterday' ? 'That was all of yesterday. Starting again from midnight.' : 'That’s today so far. Starting again from midnight.';
+    else n.textContent = R.day === 'yesterday'
+      ? 'Today has ' + R.today.toLocaleString('en-GB') + ' so far, so this counts yesterday’s ' + total + ' signers from midnight, one by one'
+      : 'Counting today’s ' + total + ' signers from midnight, one by one';
+  }
+  function setLive(D){
+    $('stageK').textContent = 'Signing today';
+    $('todayN').textContent = (D.today || 0).toLocaleString('en-GB');
     $('todayTxt').textContent = D.today === 1 ? 'person has signed today' : 'people have signed today';
     $('hourN').textContent = D.last_hour ? D.last_hour.toLocaleString('en-GB') + ' in the last hour' : '';
   }
-  function takeFeed(D){
-    if (!D || !D.ok) return;
-    setToday(D);
-    var list = D.people || [];
-    if (started) list.slice().reverse().forEach(function(p){ if (p.m <= 5 && !seen[key(p)]) fresh.push(p); });
-    list.forEach(function(p){ seen[key(p)] = 1; });
-    people = list;
-    if (!started && people.length){
-      started = true;
-      if (reduce){
-        stage.classList.add('still');
-        people.slice(0, 5).reverse().forEach(function(p){ var el = document.createElement('div'); el.className = 'pill' + (p.m <= 10 ? ' just' : ''); el.innerHTML = pillHTML(p, false); stream.appendChild(el); });
-        return;
-      }
-      TICK = stream.clientWidth >= 440 ? 400 : 800;
-      var dur = duration(), fill = Math.floor(dur / TICK);       // start with the stream already full
-      for (var k = fill; k >= 1; k--) spawn(k * TICK / dur);
-      requestAnimationFrame(loop);
+
+  /* -- who comes next -- */
+  function nextPerson(){
+    if (R.fresh.length) return {p: R.fresh.shift(), live: true};
+    if (!R.list.length) return null;
+    if (R.i >= R.list.length){
+      var now = performance.now();
+      if (!R.pauseAt){ R.pauseAt = now; note(true); }
+      if (now - R.pauseAt < 5000) return null;
+      R.pauseAt = 0; R.i = 0; C = {signers: 0, answers: 0, quotes: 0, seats: 0}; drawCounts(); note();
     }
+    var p = R.list[R.i++];
+    bump('signers', 1); bump('answers', p.a); bump('quotes', p.q); bump('seats', p.s);
+    return {p: p, live: false};
+  }
+  function when(x){ return x.live || (R.day === 'today' && x.p.m <= 10) ? 'just signed' : R.day === 'yesterday' ? 'signed yesterday' : 'signed today'; }
+  function avatar(p){ var c = AV[avi++ % AV.length]; return '<span class="av" style="background:' + c[0] + ';color:' + c[1] + '">' + esc((p.n || 'S').charAt(0)) + '</span>'; }
+  function who(p){ return '<b>' + esc(p.n || 'Someone') + '</b>' + (p.t ? (Math.random() < .5 ? ' in ' : ' from ') + esc(p.t) : ''); }
+  function pillHTML(x){
+    return '<span class="pop">' + avatar(x.p) + '<span class="tx"><span class="who">' + who(x.p) + '</span><span class="when">' + when(x) + '</span></span></span>';
+  }
+
+  /* -- rising pills, in the panel or the side streams -- */
+  var lane = 0;
+  function rise(box, x, mini, opts){
+    var el = document.createElement('div'); el.className = 'pill' + (mini ? ' mini' : '') + (when(x) === 'just signed' ? ' just' : '');
+    el.innerHTML = pillHTML(x); el.style.visibility = 'hidden';
+    var W = box.clientWidth, H = box.clientHeight;
+    if (opts.half) el.style.maxWidth = Math.floor(W / 2 - 10) + 'px';
+    else el.style.maxWidth = (W - 8) + 'px';
+    box.appendChild(el);
+    var w = el.offsetWidth, x0;
+    if (opts.lanes === 2) x0 = lane++ % 2 ? W - w - 6 - Math.random() * 10 : 6 + Math.random() * 10;
+    else x0 = (W - w) / 2 + (Math.random() * 30 - 15);
+    x0 = Math.max(2, Math.min(W - w - 2, x0));
+    el.style.visibility = '';
+    var dur = opts.dur, a = el.animate([
+      {transform: 'translate(' + x0 + 'px,0)', opacity: 0, offset: 0},
+      {opacity: 1, offset: 0.05}, {opacity: 1, offset: 0.8},
+      {transform: 'translate(' + x0 + 'px,' + (-H + 4) + 'px)', opacity: 0, offset: 1}
+    ], {duration: dur, easing: 'linear', fill: 'forwards'});
+    if (opts.at) a.currentTime = opts.at * dur;
+    a.onfinish = function(){ el.remove(); };
+  }
+  function stageOpts(){
+    var two = stream.clientWidth >= 440, tick = two ? 400 : 800, gap = two ? tick * 2 : tick;
+    return {lanes: two ? 2 : 1, half: two, tick: tick, dur: (stream.clientHeight + 10) / (60 / (gap / 1000)) * 1000};
+  }
+  function inView(el){ var r = el.getBoundingClientRect(); return r.bottom > 60 && r.top < window.innerHeight - 60; }
+  var railSide = 0;
+  function railsFit(){ return window.innerWidth >= 1400; }
+  function layoutRails(){
+    var w = Math.floor((window.innerWidth - 1080) / 2 - 20);
+    railL.style.left = '10px'; railR.style.right = '10px'; railL.style.width = railR.style.width = w + 'px';
+  }
+  layoutRails(); window.addEventListener('resize', layoutRails);
+  var tkLast = null;
+  function toTicker(x){
+    if (tkLast){ var old = tkLast; old.classList.add('out'); setTimeout(function(){ old.remove(); }, 420); }
+    var d = document.createElement('div');
+    d.innerHTML = avatar(x.p) + '<span class="tx">' + who(x.p) + ' <span class="when">' + when(x) + '</span></span>';
+    tk.appendChild(d); tkLast = d;
+  }
+
+  /* -- the beat -- */
+  var lastBeat = 0, mode = 'stage';
+  function beat(t){
+    requestAnimationFrame(beat);
+    if (!R.list.length && !R.fresh.length) return;
+    var showStage = inView(stage), wide = railsFit();
+    mode = showStage ? 'stage' : wide ? 'rails' : 'ticker';
+    document.body.classList.toggle('rails-on', mode === 'rails');
+    ticker.classList.toggle('on', mode === 'ticker');
+    document.body.classList.toggle('ticker-on', mode === 'ticker');
+    var tick = mode === 'stage' ? stageOpts().tick : mode === 'rails' ? 700 : 1700;
+    if (t - lastBeat < tick) return;
+    lastBeat = t;
+    if (document.hidden) return;
+    var x = nextPerson(); if (!x) return;
+    if (mode === 'stage') rise(stream, x, false, stageOpts());
+    else if (mode === 'rails'){
+      var box = railSide++ % 2 ? railR : railL;
+      rise(box, x, true, {lanes: 1, dur: window.innerHeight / 75 * 1000});
+    } else toTicker(x);
+    pop(x.live);
+  }
+
+  function takeFeed(D){
+    if (!D || !D.ok || !D.replay) return;
+    setLive(D); R.today = D.today || 0;
+    if (D.day !== R.day || D.replay.length < R.list.length){
+      var first = !R.day;
+      R.day = D.day; R.list = D.replay; R.i = 0; R.pauseAt = 0; R.fresh = [];
+      C = {signers: 0, answers: 0, quotes: 0, seats: 0}; drawCounts(); labels();
+      if (first) start();
+      return;
+    }
+    var added = D.replay.slice(R.list.length);
+    added.forEach(function(p){ if (p.m <= 5 && R.day === 'today') R.fresh.push(p); });
+    R.list = D.replay; note();
+  }
+  function start(){
+    if (reduce){
+      C = {signers: 0, answers: 0, quotes: 0, seats: 0};
+      R.list.forEach(function(p){ C.signers++; C.answers += p.a; C.quotes += p.q; C.seats += p.s; });
+      drawCounts(); stage.classList.add('still');
+      R.list.slice(-5).forEach(function(p){ var el = document.createElement('div'); el.className = 'pill'; el.innerHTML = pillHTML({p: p, live: false}); stream.appendChild(el); });
+      return;
+    }
+    var o = stageOpts(), fill = Math.floor(o.dur / o.tick);     // the panel starts already full
+    for (var k = fill; k >= 1; k--){ var x = nextPerson(); if (x) rise(stream, x, false, {lanes: o.lanes, half: o.half, dur: o.dur, at: k * o.tick / o.dur}); }
+    requestAnimationFrame(beat);
   }
   function pollFeed(){
     fetch(FEED, {cache: 'no-store'}).then(function(r){ return r.ok ? r.json() : null; }).then(takeFeed).catch(function(){});
@@ -875,17 +1160,82 @@ th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute
   pollFeed();
   setInterval(function(){ if (!document.hidden) pollFeed(); }, 45000);
 
-  /* quotes fading in and out under the stream */
+  /* -- quotes under the panel, changing -- */
   (function(){
-    var box = $('squote'), order = QUOTES.map(function(q, i){ return i; }).sort(function(){ return Math.random() - .5; }), qi = 0, figs = [];
+    var box = $('squote'), order = VOICES.map(function(q, i){ return i; }).sort(function(){ return Math.random() - .5; }), qi = 0, figs = [];
     for (var k = 0; k < 2; k++){ var f = document.createElement('figure'); box.appendChild(f); figs.push(f); }
     function show(){
-      var q = QUOTES[order[qi % order.length]], f = figs[qi % 2], other = figs[(qi + 1) % 2];
-      f.innerHTML = '<p>' + esc(q[2]) + '</p><cite>' + esc(q[0]) + ', ' + esc(q[1]) + '</cite>';
+      var q = VOICES[order[qi % order.length]], f = figs[qi % 2], other = figs[(qi + 1) % 2];
+      f.innerHTML = '<p>' + esc(q.text) + '</p><cite>' + esc(q.first) + ', ' + esc(q.town) + '</cite>';
       other.classList.remove('on'); f.classList.add('on'); qi++;
     }
     show();
-    if (!reduce) setInterval(function(){ if (!document.hidden) show(); }, 7000);
+    if (!reduce) setInterval(function(){ if (!document.hidden && inView(box)) show(); }, 6500);
+  })();
+
+  /* -- rows of quotes, always moving -- */
+  (function(){
+    var rows = [].slice.call(document.querySelectorAll('.vrow')), pool = VOICES.map(function(q, i){ return i; }).sort(function(){ return Math.random() - .5; }), pi = 0;
+    function nextVoice(){ return VOICES[pool[pi++ % pool.length]]; }
+    function fill(card){ var v = nextVoice(); card.innerHTML = '<p>' + esc(v.text) + '</p><cite>' + esc(v.first) + ', ' + esc(v.town) + '</cite>'; }
+    var R2 = rows.map(function(row){
+      var track = row.querySelector('.vtrack'), dir = +row.dataset.dir, speed = +row.dataset.speed;
+      return {row: row, track: track, dir: dir, speed: speed, off: 0, stride: 0, paused: false};
+    });
+    function build(){
+      R2.forEach(function(r){
+        if (getComputedStyle(r.row).display === 'none') return;
+        r.track.innerHTML = '';
+        var probe = document.createElement('figure'); probe.className = 'vcard'; r.track.appendChild(probe); fill(probe);
+        r.stride = probe.offsetWidth + 16;
+        var n = Math.ceil(r.row.clientWidth / r.stride) + 2;
+        for (var k = 1; k < n; k++){ var c = document.createElement('figure'); c.className = 'vcard'; fill(c); r.track.appendChild(c); }
+        r.off = r.dir < 0 ? 0 : -r.stride;
+        r.track.style.transform = 'translateX(' + r.off + 'px)';
+      });
+    }
+    build();
+    var bw = window.innerWidth;
+    window.addEventListener('resize', function(){ if (Math.abs(window.innerWidth - bw) > 40){ bw = window.innerWidth; build(); } });
+    R2.forEach(function(r){
+      r.row.addEventListener('mouseenter', function(){ r.paused = true; });
+      r.row.addEventListener('mouseleave', function(){ r.paused = false; });
+    });
+    if (reduce) return;
+    var last = 0;
+    function frame(t){
+      requestAnimationFrame(frame);
+      var dt = last ? Math.min(0.05, (t - last) / 1000) : 0; last = t;
+      if (!inView($('voices'))) return;
+      R2.forEach(function(r){
+        if (r.paused || !r.stride || !r.track.firstChild) return;
+        r.off += r.dir * r.speed * dt;
+        if (r.dir < 0 && r.off <= -r.stride){ r.off += r.stride; var c = r.track.firstChild; r.track.appendChild(c); fill(c); }
+        if (r.dir > 0 && r.off >= 0){ r.off -= r.stride; var d = r.track.lastChild; r.track.insertBefore(d, r.track.firstChild); fill(d); }
+        r.track.style.transform = 'translateX(' + r.off.toFixed(1) + 'px)';
+      });
+    }
+    requestAnimationFrame(frame);
+    setInterval(function(){                            // now and then one quote lights up
+      if (document.hidden || !inView($('voices'))) return;
+      var cards = [].slice.call(document.querySelectorAll('.vcard')).filter(function(c){ var b = c.getBoundingClientRect(); return b.left > 40 && b.right < window.innerWidth - 40; });
+      if (!cards.length) return;
+      var c = cards[Math.floor(Math.random() * cards.length)]; c.classList.add('glow'); setTimeout(function(){ c.classList.remove('glow'); }, 2200);
+    }, 1800);
+  })();
+
+  /* -- parliamentarians -- */
+  (function(){
+    if (!PARL || !PARL.length) return;
+    $('parliamentarians').hidden = false;
+    var withQuote = PARL.filter(function(m){ return m.quote; }), rest = PARL.filter(function(m){ return !m.quote; });
+    $('mpCards').innerHTML = withQuote.map(function(m){
+      return '<div class="mp rv"><div class="who"><img src="' + esc(m.photo) + '" alt="" loading="lazy"><div><div class="nm">' + esc(m.name) + '</div><div class="pt">' + esc(m.party) + ' · ' + esc(m.house) + '</div></div></div>' +
+        '<blockquote>“' + esc(m.quote) + '”</blockquote><div class="did">' + esc(m.did) + (m.source ? ' · <a href="' + esc(m.source) + '" target="_blank" rel="noopener noreferrer">Source</a>' : '') + '</div></div>';
+    }).join('');
+    $('mpFaces').innerHTML = rest.map(function(m){
+      return '<a href="' + esc(m.source || '#') + '" target="_blank" rel="noopener noreferrer" title="' + esc(m.name + ', ' + m.party + '. ' + m.did) + '"><img src="' + esc(m.photo) + '" alt="' + esc(m.name) + '" loading="lazy"></a>';
+    }).join('');
   })();
 
   /* ---- load: live figures, or the snapshot if Central does not answer in 5 seconds ---- */
