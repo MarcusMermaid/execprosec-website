@@ -78,7 +78,53 @@ h2{font:400 clamp(30px,5vw,44px)/1.08 var(--f-display);letter-spacing:-.01em;mar
 .hero::before{content:'';position:absolute;inset:-30% -10% auto auto;width:900px;height:900px;border-radius:50%;
   background:radial-gradient(closest-side,rgba(221,188,102,.16),rgba(221,188,102,0));pointer-events:none;animation:drift 18s ease-in-out infinite alternate}
 @keyframes drift{to{transform:translate(-120px,80px)}}
-.hero h1{font:400 clamp(38px,7.2vw,76px)/1.02 var(--f-display);letter-spacing:-.015em;margin:0 0 18px;max-width:940px;text-wrap:balance}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px 44px;align-items:center}
+.hero-grid .counters{grid-column:1 / -1;margin-top:10px}
+@media(max-width:900px){.hero-grid{grid-template-columns:1fr}.stage{order:-1}}
+.hero h1{font:400 clamp(36px,5.2vw,64px)/1.03 var(--f-display);letter-spacing:-.015em;margin:0 0 18px;text-wrap:balance}
+.hero-cta{display:flex;flex-wrap:wrap;align-items:center;gap:12px 18px;margin:0 0 6px}
+.hero-cta span{font-size:14px;color:var(--on-navy-2)}
+
+/* ---- the live stream (Marcus, 9 Nov 2026: "I want the top of the page to be alive") ---- */
+.stage{position:relative;display:flex;flex-direction:column;height:560px;border-radius:10px;overflow:hidden;
+  background:radial-gradient(120% 80% at 50% 110%,rgba(221,188,102,.18),rgba(221,188,102,0) 60%),linear-gradient(180deg,#0b1f5c,#061650);
+  border:1px solid var(--line-navy);box-shadow:0 30px 70px rgba(0,0,0,.35)}
+.stage-head{position:relative;z-index:3;padding:18px 20px 14px;background:linear-gradient(180deg,#0b1f5c 70%,rgba(11,31,92,0))}
+.stage-head .k{display:flex;align-items:center;gap:8px;font:700 12px/1 var(--f-body);letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
+.stage-head .k .dot{width:9px;height:9px;border-radius:50%;background:#2fa36b;animation:pulse 1.6s infinite}
+.stage-head .today{margin-top:10px;font-size:16px;color:var(--on-navy)}
+.stage-head .today b{font:400 40px/1 var(--f-display);color:var(--paper);margin-right:8px;font-variant-numeric:tabular-nums;display:inline-block;transition:transform .3s,color .3s}
+.stage-head .today b.bump{transform:scale(1.12);color:var(--gold)}
+.stage-head .hour{margin-top:4px;font-size:13.5px;color:var(--on-navy-2)}
+.stream{position:relative;flex:1 1 auto;min-height:200px}
+.pill{position:absolute;left:0;bottom:6px;display:inline-flex;align-items:center;max-width:calc(100% - 16px);padding:6px 16px 6px 6px;border-radius:999px;
+  background:#fff;color:var(--ink);font-size:14.5px;line-height:1.25;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,.28);will-change:transform,opacity}
+.pill .av{position:relative;flex:0 0 32px;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font:700 14px/1 var(--f-body)}
+.pill .av::after{content:'';position:absolute;inset:0;border-radius:50%;border:2px solid currentColor;animation:ring .9s ease-out forwards}
+@keyframes ring{from{transform:scale(1);opacity:.7}to{transform:scale(2.3);opacity:0}}
+.pill .tx{overflow:hidden;text-overflow:ellipsis}
+.pill b{color:var(--navy)}
+.pill .when{color:var(--muted)}
+.pill.just .when{color:#1f7a4c;font-weight:600}
+.pill .pop{display:inline-flex;align-items:center;gap:10px;min-width:0;animation:pop .5s cubic-bezier(.3,1.6,.5,1) both}
+@keyframes pop{from{transform:scale(.55)}to{transform:scale(1)}}
+.squote{position:relative;z-index:3;flex:0 0 172px;margin:0;border-top:1px solid var(--line-navy);background:rgba(4,20,64,.72);backdrop-filter:blur(6px)}
+.squote figure{position:absolute;inset:0;margin:0;padding:16px 20px 14px;opacity:0;transform:translateY(10px);transition:opacity .9s ease,transform .9s cubic-bezier(.22,1,.36,1)}
+.squote figure.on{opacity:1;transform:none}
+.squote p{margin:0;font:400 17px/1.42 var(--f-display);color:var(--paper);display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden}
+.squote p::before{content:'\201C';color:var(--gold)}
+.squote p::after{content:'\201D';color:var(--gold)}
+.squote cite{display:block;margin-top:8px;font:600 13.5px/1.2 var(--f-body);font-style:normal;color:var(--gold)}
+.stage.still .stream{display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start;gap:8px;padding:0 10px 10px}
+.stage.still .pill{position:static}
+@media(max-width:900px){.stage{height:470px}.squote{flex-basis:190px}}
+@media(max-width:480px){.stage-head{padding:14px 16px 10px}.stage-head .today b{font-size:34px}.pill{font-size:13.5px}.squote p{font-size:16px}}
+
+/* ---- the sign bands ---- */
+.signband{margin:6px 0 0;padding:26px 28px;border-radius:8px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px 28px;
+  background:linear-gradient(120deg,var(--navy-3),var(--navy-2));border:1px solid var(--line-navy)}
+.signband p{margin:0;font:400 clamp(22px,3vw,30px)/1.2 var(--f-display);max-width:640px}
+.signband p em{font-style:normal;color:var(--gold)}
 .hero h1 em{font-style:normal;color:var(--gold)}
 .hero .lead{max-width:680px;font-size:clamp(17px,2.2vw,20px);color:var(--on-navy);margin:0 0 30px}
 .live{display:inline-flex;align-items:center;gap:8px;font-size:13.5px;color:var(--on-navy-2);margin:0 0 18px}
@@ -247,11 +293,23 @@ th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute
 
 <main>
 <section class="hero">
-  <div class="wrap">
-    <p class="live"><span class="dot"></span><span id="updated">Live results from the petition</span></p>
-    <p class="kicker">The Hillsborough Law petition</p>
-    <h1>What the public think about MPs and peers <em>exempting themselves</em></h1>
-    <p class="lead">The Government's Hillsborough Law makes it a crime for public officials to mislead the public, but leaves MPs and peers out. Here is what the people who signed our petition told us, in their own words and in their answers. It updates as they sign.</p>
+  <div class="wrap hero-grid">
+    <div class="hero-text">
+      <p class="live"><span class="dot"></span><span id="updated">Live results from the petition</span></p>
+      <p class="kicker">The Hillsborough Law petition</p>
+      <h1>What the public think about MPs and peers <em>exempting themselves</em></h1>
+      <p class="lead">The Government's Hillsborough Law makes it a crime for public officials to mislead the public, but leaves MPs and peers out. Here is what the people who signed our petition told us, in their own words and in their answers. It updates as they sign.</p>
+      <div class="hero-cta"><a class="btn" href="/petition/?ref=results-top">Sign the petition</a><span>It takes a minute.</span></div>
+    </div>
+    <div class="stage" id="stage">
+      <div class="stage-head">
+        <div class="k"><span class="dot"></span>Live today</div>
+        <div class="today" id="todayLine"><b id="todayN">&nbsp;</b><span id="todayTxt">people have signed today</span></div>
+        <div class="hour" id="hourN"></div>
+      </div>
+      <div class="stream" id="stream" aria-hidden="true"></div>
+      <div class="squote" id="squote"></div>
+    </div>
     <div class="counters" id="counters">
       <div class="counter"><b data-k="signers">0</b><span>people signed and confirmed by email</span></div>
       <div class="counter"><b data-k="answers">0</b><span>answers to our statements</span></div>
@@ -282,6 +340,7 @@ th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute
     <p class="sec-lead" id="partyLead">Signers were asked which party they voted for in 2024. This is how each group answered the four newer statements on the Government's reasons for leaving MPs and peers out.</p>
     <div class="card parties rv" id="partyChart"></div>
     <p class="fine-n">Shares of answers given, not of people. Only groups with at least 10 voters and 50 answers are shown. Asked since 4 November.</p>
+    <div class="signband rv" style="margin-top:40px"><p id="midText"><em>Voters of every party</em> want every MP and peer covered.</p><a class="btn" href="/petition/?ref=results-mid">Add your name</a></div>
   </div>
 </section>
 
@@ -350,7 +409,7 @@ th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute
   <h3>How these figures are made</h3>
   <p>Only people who signed and then confirmed by email are counted. Every figure is a total: we never publish anyone's email, postcode or individual answers, and any group of fewer than 10 people is shown as "fewer than 10".</p>
   <p>Constituencies are worked out inside our own systems from the first part of each signer's postcode (for example "NR2 2"), using the Office for National Statistics' lookup of every UK postcode to the July 2024 constituencies. Where that area crosses a boundary, its signers are shared between the constituencies in proportion. No postcode is sent to anyone else. Signers who live abroad are counted in the totals but not on the map.</p>
-  <p>Some statements were worded differently over time; each is shown with the dates it was asked. Hexagon map layout by Open Innovations (CC BY-SA 4.0).</p>
+  <p>Each statement is shown with the dates it was asked. The live stream at the top shows the first name and town of people who signed in the last 24 hours, over and over; the number above it is the real count for today. Hexagon map layout by Open Innovations (CC BY-SA 4.0).</p>
 </div>
 </main>
 
@@ -378,16 +437,11 @@ th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute
     s14: ['A jury should decide', 'Parliament’s own rules only deal with what is said inside Parliament. When an MP or peer is proven to have intentionally or recklessly lied to the public outside it, a jury should decide, just as it would for a police officer or civil servant.'],
     s15: ['Lying needs no secrets', 'The Government’s reason for leaving backbench MPs and peers out is that, unlike ministers, they don’t have access to secret government information. That shows a complete misunderstanding of what lying is. A lie doesn’t depend on access to the truth; it is the opposite of the truth. All it takes is a willingness to make things up.'],
     s16: ['Checks and balances', 'Outside Parliament, the government, the opposition and the backbenchers who scrutinise them all speak to the public. If government ministers can be prosecuted for lying but shadow ministers and scrutinisers can’t, the system of checks and balances will be thrown completely off balance. Every MP and peer should be covered.'],
-    s17: ['No chilling effect', 'Some politicians say being included would have a chilling effect on political debate. That concern is not credible: the offence only covers proven intentional or reckless lies on serious public matters, never honest mistakes, opinions or anything said in Parliament. The only thing it would chill is lying, and politicians who can’t debate without lying have no place in politics.'],
-    s10: ['A jury should decide (earlier wording)', 'The Government says Parliament should deal with MPs and peers who lie, through its own standards rules. But those rules only cover what is said inside Parliament, not lies told to the public on TV, radio, social media or at events. When an MP or peer is proven to have intentionally or recklessly lied to the public outside Parliament, a jury should decide whether it is a crime, just as it would for a police officer, civil servant or minister.'],
-    s11: ['Three roles in Parliament (earlier wording)', 'The Government says only ministers should be covered, because backbench MPs and peers don’t take decisions for the state or see secret government information. But Parliament works through three roles: the government, the opposition, and those who scrutinise both. Each keeps a check on the others, and none of them works on its own. That doesn’t stop at the doors of Parliament: all three speak to the public every day on TV, radio, social media and at events. If only the government can be prosecuted for lying to the public out there, while the opposition and the scrutinisers can lie freely, that system of checks and balances breaks down. And the Government’s argument rests on a fundamental misunderstanding: you don’t need access to secret information to make up lies about it. A politician can simply invent it. Every MP and peer should be covered for what they say to the public outside Parliament, not just ministers.'],
-    s12: ['Speaking freely (earlier wording)', 'Some peers say including MPs and peers would stop them speaking freely. But the offence would only cover proven intentional or reckless lies about matters of serious public concern. It would never cover honest mistakes, opinions or anything said in Parliament, and every prosecution would need the consent of the Director of Public Prosecutions. Honest politicians would remain free to speak their minds.'],
-    s3:  ['Trust in Parliament', 'If legislators vote to exempt themselves, I will trust the Parliaments of the UK much less.']
+    s17: ['No chilling effect', 'Some politicians say being included would have a chilling effect on political debate. That concern is not credible: the offence only covers proven intentional or reckless lies on serious public matters, never honest mistakes, opinions or anything said in Parliament. The only thing it would chill is lying, and politicians who can’t debate without lying have no place in politics.']
   };
   var GROUPS = [
     {t: 'The case for including every lawmaker', ids: ['s1', 's9', 's4', 's5', 's6', 's7', 's8']},
-    {t: 'The Government’s reasons for leaving them out', ids: ['s14', 's15', 's16', 's17']},
-    {t: 'Earlier wordings, asked for a short time', ids: ['s10', 's11', 's12', 's3'], fold: true}
+    {t: 'The Government’s reasons for leaving them out', ids: ['s14', 's15', 's16', 's17']}
   ];
   var ANS = [['Strongly agree', 'var(--sa)', '#142a6b'], ['Agree', 'var(--ag)', '#8d9bcb'], ['Not sure', 'var(--ns)', '#cdc9bd'],
              ['Disagree', 'var(--di)', '#eea2a4'], ['Strongly disagree', 'var(--sd)', '#c23a40']];
@@ -586,6 +640,7 @@ th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute
       f.style.transitionDelay = (reduce ? 0 : (i % 3) * 90) + 'ms';
       qw.appendChild(f); onView(f);
     });
+    $('midText').innerHTML = D.signers.toLocaleString('en-GB') + ' people have signed. <em>Voters of every party</em> want every MP and peer covered.';
     $('ctaText').textContent = 'Join ' + D.signers.toLocaleString('en-GB') + ' people telling Parliament that no one who makes the law should be above it.';
 
     document.querySelectorAll('.rv').forEach(function(el){ if (!el._in) onView(el); });
@@ -735,6 +790,96 @@ th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute
     });
     input.addEventListener('blur', function(){ setTimeout(close, 150); });
   }
+
+  /* ---- the live stream at the top ---- */
+  var FEED = 'https://central-2-mcp-production.up.railway.app/public/petition/today';
+  var stage = $('stage'), stream = $('stream'), people = [], fresh = [], seen = {}, idx = 0, todayShown = null, started = false;
+  var AV = [['#142a6b', '#fff'], ['#ddbc66', '#041440'], ['#8a6b1f', '#fff'], ['#d64045', '#fff']], avi = 0, lane = 0, TICK = 400;
+  function key(p){ return p.n + '|' + p.t + '|' + p.d; }
+  function when(p, fromQueue){ return fromQueue || p.m <= 10 ? 'just signed' : p.d === 'today' ? 'signed today' : 'signed yesterday'; }
+  function pillHTML(p, fromQueue){
+    var c = AV[avi++ % AV.length], link = Math.random() < .5 ? ' in ' : ' from ';
+    return '<span class="pop"><span class="av" style="background:' + c[0] + ';color:' + c[1] + '">' + esc(p.n.charAt(0)) + '</span>' +
+      '<span class="tx"><b>' + esc(p.n) + '</b>' + (p.t ? link + esc(p.t) : '') + ' <span class="when">' + when(p, fromQueue) + '</span></span></span>';
+  }
+  function next(){
+    if (fresh.length) return [fresh.shift(), true];
+    if (!people.length) return null;
+    return [people[idx++ % people.length], false];
+  }
+  function lanes(){ return stream.clientWidth >= 440 ? 2 : 1; }
+  function duration(){ var gap = lanes() === 2 ? TICK * 2 : TICK; return (stream.clientHeight + 10) / (56 / (gap / 1000)) * 1000; }
+  function spawn(at){
+    var n = next(); if (!n) return;
+    var el = document.createElement('div'); el.className = 'pill' + (when(n[0], n[1]) === 'just signed' ? ' just' : '');
+    el.innerHTML = pillHTML(n[0], n[1]); el.style.visibility = 'hidden';
+    stream.appendChild(el);
+    var W = stream.clientWidth, H = stream.clientHeight, w = el.offsetWidth;
+    var x = lanes() === 1 ? (W - w) / 2 + (Math.random() * 30 - 15) : (lane++ % 2 ? W - w - 8 - Math.random() * 24 : 8 + Math.random() * 24);
+    x = Math.max(4, Math.min(W - w - 4, x));
+    var dur = duration();
+    el.style.visibility = '';
+    var a = el.animate([
+      {transform: 'translate(' + x + 'px,0)', opacity: 0, offset: 0},
+      {opacity: 1, offset: 0.05},
+      {opacity: 1, offset: 0.78},
+      {transform: 'translate(' + x + 'px,' + (-H + 4) + 'px)', opacity: 0, offset: 1}
+    ], {duration: dur, easing: 'linear', fill: 'forwards'});
+    if (at) a.currentTime = at * dur;
+    a.onfinish = function(){ el.remove(); };
+  }
+  function loop(){
+    if (!document.hidden && stream.childElementCount < 40) spawn(0);
+    setTimeout(loop, TICK);
+  }
+  function setToday(D){
+    if (D.today == null) return;
+    var b = $('todayN');
+    if (todayShown === null || D.today > todayShown){
+      var bump = todayShown !== null; todayShown = D.today; b.textContent = D.today.toLocaleString('en-GB');
+      if (bump){ b.classList.add('bump'); setTimeout(function(){ b.classList.remove('bump'); }, 600); }
+    }
+    $('todayTxt').textContent = D.today === 1 ? 'person has signed today' : 'people have signed today';
+    $('hourN').textContent = D.last_hour ? D.last_hour.toLocaleString('en-GB') + ' in the last hour' : '';
+  }
+  function takeFeed(D){
+    if (!D || !D.ok) return;
+    setToday(D);
+    var list = D.people || [];
+    if (started) list.slice().reverse().forEach(function(p){ if (p.m <= 5 && !seen[key(p)]) fresh.push(p); });
+    list.forEach(function(p){ seen[key(p)] = 1; });
+    people = list;
+    if (!started && people.length){
+      started = true;
+      if (reduce){
+        stage.classList.add('still');
+        people.slice(0, 5).reverse().forEach(function(p){ var el = document.createElement('div'); el.className = 'pill' + (p.m <= 10 ? ' just' : ''); el.innerHTML = pillHTML(p, false); stream.appendChild(el); });
+        return;
+      }
+      TICK = stream.clientWidth >= 440 ? 400 : 640;
+      var dur = duration(), fill = Math.floor(dur / TICK);       // start with the stream already full
+      for (var k = fill; k >= 1; k--) spawn(k * TICK / dur);
+      setTimeout(loop, TICK);
+    }
+  }
+  function pollFeed(){
+    fetch(FEED, {cache: 'no-store'}).then(function(r){ return r.ok ? r.json() : null; }).then(takeFeed).catch(function(){});
+  }
+  pollFeed();
+  setInterval(function(){ if (!document.hidden) pollFeed(); }, 45000);
+
+  /* quotes fading in and out under the stream */
+  (function(){
+    var box = $('squote'), order = QUOTES.map(function(q, i){ return i; }).sort(function(){ return Math.random() - .5; }), qi = 0, figs = [];
+    for (var k = 0; k < 2; k++){ var f = document.createElement('figure'); box.appendChild(f); figs.push(f); }
+    function show(){
+      var q = QUOTES[order[qi % order.length]], f = figs[qi % 2], other = figs[(qi + 1) % 2];
+      f.innerHTML = '<p>' + esc(q[2]) + '</p><cite>' + esc(q[0]) + ', ' + esc(q[1]) + '</cite>';
+      other.classList.remove('on'); f.classList.add('on'); qi++;
+    }
+    show();
+    if (!reduce) setInterval(function(){ if (!document.hidden) show(); }, 7000);
+  })();
 
   /* ---- load: live figures, or the snapshot if Central does not answer in 5 seconds ---- */
   var done = false;
