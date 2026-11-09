@@ -61,6 +61,7 @@ header#nav .nav-links{display:flex;align-items:center;gap:2px;flex:0 1 auto;flex
 header#nav .nav-links .nav-donate{margin-left:18px;flex:0 0 auto}
 header#nav .nav-links a:not(.nav-donate){color:#fff}
 header#nav .nav-links a:not(.nav-donate):hover{color:#fff;background:rgba(255,255,255,.07)}
+header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{color:var(--gold)}
 @media(max-width:1080px){header#nav{padding:14px 18px 10px;gap:14px} header#nav .nav-links a{font-size:11px;padding:5px 6px;letter-spacing:.02em}}
 @media(max-width:880px){header#nav{flex-wrap:wrap} header#nav .nav-links{flex-wrap:wrap}}
 @media(max-width:700px){header#nav .nav-links{display:none!important}}
@@ -318,15 +319,16 @@ th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute
 .counters.four{grid-template-columns:repeat(4,1fr);border-radius:0 0 6px 6px}
 .counter b small{display:inline;font-size:.45em;color:var(--on-navy-2);margin:0 0 0 6px;padding:0;border:0;letter-spacing:0}
 @media(max-width:760px){.bigtotal{grid-template-columns:1fr}.bt-side{grid-template-rows:none;grid-template-columns:1fr 1fr}.bt-stat{padding:16px}.counters.four{grid-template-columns:1fr 1fr}}
-.sndpick{position:fixed;top:60px;right:14px;z-index:70;display:flex;flex-direction:column;gap:6px;padding:10px;border-radius:10px;background:rgba(4,20,64,.92);border:1px solid var(--line-navy);font-size:12.5px;color:var(--on-navy-2)}
+.sndpick{position:fixed;top:132px;right:14px;z-index:70;display:flex;flex-direction:column;gap:6px;padding:10px;border-radius:10px;background:rgba(4,20,64,.92);border:1px solid var(--line-navy);font-size:12.5px;color:var(--on-navy-2)}
 .sndpick button{all:unset;cursor:pointer;padding:6px 10px;border-radius:999px;border:1px solid var(--line-navy);color:var(--paper);font-weight:600}
 .sndpick button.on{background:var(--gold);color:var(--navy);border-color:var(--gold)}
 @media(max-width:480px){.sndpick{top:54px;right:10px}}
-.soundbtn{position:fixed;top:14px;right:14px;z-index:70;display:inline-flex;align-items:center;gap:8px;padding:8px 14px 8px 10px;border-radius:999px;
+.soundbtn{position:fixed;top:84px;right:14px;z-index:70;display:inline-flex;align-items:center;gap:8px;padding:8px 14px 8px 10px;border-radius:999px;
   border:1px solid rgba(255,255,255,.28);background:rgba(4,20,64,.85);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);color:#fff;font:600 13px/1 var(--f-body);cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.3)}
 .soundbtn svg{width:18px;height:18px;flex:0 0 18px}
 .soundbtn:hover{border-color:var(--gold)}
 .soundbtn.off{color:var(--gold)}
+@media(max-width:700px){.soundbtn{top:12px}}
 @media(max-width:480px){.soundbtn{top:12px;right:10px;padding:7px 11px 7px 9px;font-size:12px}}
 
 /* ---- today's data ---- */
