@@ -709,7 +709,7 @@ body.ticker-on .foot{padding-bottom:90px}
   </div>
 </section>
 
-<section style="padding-top:20px">
+<section id="think" style="padding-top:20px">
   <div class="wrap"><p class="kicker">What signers told us</p><h2>What the people who signed think</h2>
     <p class="sec-lead">These are the answers of members of the public who signed the petition.</p></div>
   <div class="wrap findings" id="findings"></div>
@@ -1364,8 +1364,9 @@ body.ticker-on .foot{padding-bottom:90px}
     track('click', {label: 'sign ' + base.split('ref=')[1] + ' sound-' + tag, href: a.getAttribute('href')});
   }, true);
 
-  /* -- how the page is used (Marcus, 10 Nov 2026): which sections people reach, how far down they scroll, how long they
-     are active, how much of each video plays and what they tap. Each is sent once per visit, so a visit sends a handful. -- */
+  /* -- how the page is used (Marcus, 10 Nov 2026): which sections people reach, by name, and what they tap. Time on
+     screen, how far down, headings reached and video watch time already come from /_web/engagement.js. Each is sent
+     once per visit. -- */
   (function(){
     if (!TRACK) return;
     var html = document.documentElement;
@@ -1378,33 +1379,6 @@ body.ticker-on .foot{padding-bottom:90px}
       }, {rootMargin: '0px 0px -40% 0px'});
       secs.forEach(function(s){ io.observe(s); });
     }
-    /* how far down: 25, 50, 75 and 100 per cent of the page */
-    var sentD = {}, dT = 0;
-    function depth(){
-      dT = 0; var h = html.scrollHeight - window.innerHeight; if (h <= 0) return;
-      var pct = (window.pageYOffset || html.scrollTop) / h * 100;
-      [25, 50, 75, 100].forEach(function(m){ if (pct >= m - 2 && !sentD[m]){ sentD[m] = 1; track('scroll_depth', {label: String(m)}); } });
-    }
-    window.addEventListener('scroll', function(){ if (!dT) dT = setTimeout(depth, 400); }, {passive: true});
-    /* active time: the tab is in front and they touched, scrolled or typed in the last 30 seconds (or the signing box is open) */
-    var last = Date.now(), active = 0, steps = [10, 30, 60, 120, 300], si = 0;
-    ['scroll', 'pointermove', 'pointerdown', 'keydown', 'touchstart', 'wheel'].forEach(function(t){ window.addEventListener(t, function(){ last = Date.now(); }, {passive: true}); });
-    var tick = setInterval(function(){
-      var box = html.classList.contains('sp-open');
-      if (document.hidden || (!box && Date.now() - last > 30000)) return;
-      active += 5;
-      while (si < steps.length && active >= steps[si]){ track('time_active', {label: steps[si] + 's' + (box ? ' box' : ' page')}); si++; }
-      if (si >= steps.length) clearInterval(tick);
-    }, 5000);
-    /* how much of each video plays: a quarter, half, three quarters, all of it (and whether the sound was on) */
-    [].forEach.call(document.querySelectorAll('video'), function(v){
-      var lab = v.dataset.label || (v.id === 'soVid' ? 'they-admit-it' : v.id || 'video'), got = {};
-      v.addEventListener('timeupdate', function(){
-        if (!v.duration) return;
-        var p = v.currentTime / v.duration * 100;
-        [25, 50, 75, 95].forEach(function(m){ if (p >= m && !got[m]){ got[m] = 1; track('video_progress', {label: lab + ' ' + (m === 95 ? 100 : m) + (v.muted ? ' muted' : ' sound')}); } });
-      });
-    });
     /* taps: which section, and on what (a link, a button, a video, a chart or plain text) */
     var tapped = {};
     document.addEventListener('click', function(e){
