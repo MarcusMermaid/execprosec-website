@@ -282,17 +282,10 @@ textarea:focus{outline:none;border-bottom-color:var(--gold)}
 <div class="j" id="j">
   <div class="track" id="track">
 
-    <!-- intro -->
-    <section class="s s-intro">
-      <div class="bleed"></div>
-      <div class="hl"><span>Parliament is making it a crime</span><span>to lie to the public.</span><span>For nearly everyone,</span><span class="g">apart from the politicians making the law.</span></div>
-      <p class="live a" style="animation-delay:1.3s"><span class="pulse"></span><span><b data-n="signers">18,000</b> people have signed</span></p>
-      <p class="hint">Swipe to add your name <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></p>
-    </section>
-
     <!-- sign -->
     <section class="s mid" id="sSign">
-      <h2>Add your name</h2>
+      <p class="k"><span class="pulse" style="display:inline-block;vertical-align:middle;margin:-2px 8px 0 0"></span>Petition · <span data-n="signers">18,900</span> have signed</p>
+      <h2>Include all lawmakers under the Hillsborough Law</h2>
       <div class="row2"><label class="f"><span>First name</span><input id="fFirst" autocomplete="given-name"></label><label class="f"><span>Last name</span><input id="fLast" autocomplete="family-name"></label></div>
       <label class="f"><span>Email</span><input id="fEmail" type="email" autocomplete="email" inputmode="email"></label>
       <label class="f" id="pcBox"><span>Postcode</span><input id="fPc" autocomplete="postal-code" style="text-transform:uppercase"></label>
@@ -314,6 +307,14 @@ textarea:focus{outline:none;border-bottom-color:var(--gold)}
       <div class="ok" id="codeOk"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5 9-10"/></svg><span id="codeOkT">Confirmed.</span></div>
       <p class="small" id="codeMore">Not there? Check your junk or spam folder. <button type="button" class="lnk" id="resend">Send it again</button> · <button type="button" class="lnk" id="changeEmail">Change email</button></p>
       <p class="small" id="codeNote" style="margin-top:8px;color:var(--t2)"></p>
+    </section>
+
+    <!-- intro -->
+    <section class="s s-intro" hidden data-gate="code">
+      <div class="bleed"></div>
+      <div class="hl"><span>Parliament is making it a crime</span><span>to lie to the public.</span><span>For nearly everyone,</span><span class="g">apart from the politicians making the law.</span></div>
+      <p class="live a" style="animation-delay:1.3s"><span class="pulse"></span><span><b data-n="signers">18,000</b> people have signed</span></p>
+      <p class="hint">Swipe to see how we change that <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></p>
     </section>
 
     <!-- who it covers -->
