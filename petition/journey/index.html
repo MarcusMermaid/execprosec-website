@@ -81,9 +81,9 @@ h2 em{font-style:normal;color:var(--gold)}
 .tl li.later:before{content:'';background:var(--navy-3);border:2px solid var(--line)}
 .tl li b{color:#fff}
 @keyframes gp{0%{box-shadow:0 0 0 0 rgba(221,188,102,.6)}70%{box-shadow:0 0 0 10px rgba(221,188,102,0)}100%{box-shadow:0 0 0 0 rgba(221,188,102,0)}}
-.machine{position:relative;border-radius:8px;padding:14px 14px 14px 64px;background:rgba(221,188,102,.1);border:1px solid rgba(221,188,102,.45);margin:0 0 16px;font-size:14.5px;color:var(--on-navy);overflow:hidden}
+.machine{position:relative;border-radius:8px;padding:30px 14px 14px 64px;background:rgba(221,188,102,.1);border:1px solid rgba(221,188,102,.45);margin:0 0 16px;font-size:14.5px;color:var(--on-navy);overflow:hidden}
 .machine b{color:#fff}
-.machine .env{position:absolute;left:14px;top:50%;width:36px;height:36px;margin-top:-18px}
+.machine .env{position:absolute;left:14px;top:10px;width:36px;height:36px}
 .fly{position:absolute;width:18px;height:13px;border-radius:2px;background:var(--gold);opacity:0;animation:fly 2.4s ease-in infinite}
 .fly:after{content:'';position:absolute;inset:0;background:linear-gradient(155deg,transparent 48%,var(--navy) 49%,var(--navy) 55%,transparent 56%),linear-gradient(25deg,transparent 48%,var(--navy) 49%,var(--navy) 55%,transparent 56%)}
 @keyframes fly{0%{opacity:0;transform:translate(0,0) scale(.6)}15%{opacity:1}100%{opacity:0;transform:translate(var(--fx),var(--fy)) scale(1)}}
@@ -116,7 +116,7 @@ h2 em{font-style:normal;color:var(--gold)}
 .q p.t{font:400 clamp(18px,4.4vw,21px)/1.35 var(--f-display);margin:0 0 18px;color:#fff}
 .scale{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}
 .opt{all:unset;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:7px;padding:6px 0;text-align:center;font-size:12px;font-weight:700;line-height:1.2}
-.opt i{width:38px;height:38px;border-radius:50%;border:2px solid rgba(255,255,255,.35);transition:all .15s}
+.opt i{display:block;width:38px;height:38px;border-radius:50%;border:2px solid rgba(255,255,255,.35);transition:all .15s}
 .opt.y{color:#7ad3a3}.opt.n{color:#ff8a8e}.opt.m{color:var(--on-navy-2)}
 .opt.sel i{background:currentColor;border-color:currentColor;box-shadow:0 0 0 4px rgba(255,255,255,.08)}
 .party{display:grid;grid-template-columns:1fr 1fr;gap:7px}
@@ -153,7 +153,7 @@ h2 em{font-style:normal;color:var(--gold)}
 .follow{position:absolute;left:50%;top:44%;display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:20px;background:#fff;color:var(--ink);font-size:12.5px;font-weight:700;box-shadow:0 8px 20px rgba(0,0,0,.35);animation:popf 2.6s ease-out forwards;pointer-events:none;white-space:nowrap}
 .follow i{width:16px;height:16px;border-radius:50%;background:linear-gradient(45deg,#f9a33a,#e1306c,#833ab4)}
 .big{font:400 clamp(58px,15vw,84px)/.95 var(--f-display);color:var(--gold);letter-spacing:-.02em;font-variant-numeric:tabular-nums;margin:0 0 4px}
-.chart{display:flex;align-items:flex-end;gap:3px;height:110px;margin:12px 0 10px;padding:0 0 2px;border-bottom:1px solid var(--line)}
+.chart{display:flex;align-items:flex-end;gap:3px;height:140px;margin:12px 0 10px;padding:0 0 2px;border-bottom:1px solid var(--line)}
 .chart i{flex:1;background:linear-gradient(180deg,var(--gold),#b08a35);border-radius:3px 3px 0 0;height:0;transition:height .8s cubic-bezier(.2,.8,.2,1)}
 .chart i:last-child{background:var(--green)}
 .rel{position:relative}
@@ -327,7 +327,7 @@ h2 em{font-style:normal;color:var(--gold)}
     <!-- 9 · wins: social media -->
     <section class="s" data-c="5" id="sSocial">
       <p class="k">What we’ve achieved · 2 of 3</p>
-      <h2>Over <em><span id="soHead">1.5 million</span> views</em> of our videos</h2>
+      <h2>Over <em><span id="soHead">1.5 million</span> views</em> of our videos and posts</h2>
       <div class="phones rel" id="phones">
         <div class="ph"><video data-src="/what-the-public-think/media/they-admit-it.mp4" poster="/what-the-public-think/media/they-admit-it.jpg" muted loop playsinline preload="none"></video><div class="hearts"></div><span class="v">321k views</span></div>
         <div class="ph"><video data-src="/what-the-public-think/media/polices-itself.mp4" poster="/what-the-public-think/media/polices-itself.jpg" muted loop playsinline preload="none"></video><div class="hearts"></div><span class="v">32k views</span></div>
@@ -339,7 +339,7 @@ h2 em{font-style:normal;color:var(--gold)}
         <div class="st"><b data-so="shares">0</b><span>shares</span></div>
         <div class="st wide"><b data-so="gained">0</b><span>new followers since 18 October</span></div>
       </div>
-      <p class="note" style="margin:0 0 10px">Instagram, Facebook, X, YouTube and Threads, added up. Updated every night at midnight.</p>
+      <p class="note" style="margin:0 0 10px">Added up across Instagram, Facebook, X, YouTube and Threads. Updated every night at midnight.</p>
       <div class="grow"></div>
       <button class="btn gold" data-next>And the petition…</button>
     </section>
@@ -347,14 +347,13 @@ h2 em{font-style:normal;color:var(--gold)}
     <!-- 10 · wins: signatures -->
     <section class="s" data-c="5" id="sSigners">
       <p class="k">What we’ve achieved · 3 of 3</p>
-      <div class="rel">
-        <div class="pops" id="sigPops" style="top:0;height:100%"></div>
+      <div>
         <div class="big" data-n="signers">18,000</div>
         <p class="sub" style="margin:0">people have signed in <b style="color:#fff" id="days">15 days</b>, each confirmed by email.</p>
       </div>
       <div class="chart" id="chart"></div>
-      <p class="note">Signatures each day since we launched on 26 October. Every one of the 650 constituencies in the UK has a signer.</p>
-      <div class="grow"></div>
+      <p class="note">Signatures each day since we launched on 26 October (today so far in green). Every one of the 650 constituencies in the UK has a signer.</p>
+      <div class="grow rel" style="min-height:96px"><div class="pops" id="sigPops" style="top:0;height:100%"></div></div>
       <button class="btn gold" data-next>What happens next</button>
     </section>
 
@@ -377,7 +376,7 @@ h2 em{font-style:normal;color:var(--gold)}
     <section class="s" data-c="6" id="sGive">
       <p class="k">Step 4 · Fund the campaign</p>
       <h2>Help us win this vote</h2>
-      <div class="me"><img src="media/marcus.jpg" alt="Marcus J Ball"><p>“We believe we can win this. Your money puts it in front of millions more people before the vote, so every MP and peer knows the public is watching.”<small>Marcus J Ball, founder of ExecProsec · Photo: Alexander Hansez</small></p></div>
+      <div class="me"><img src="media/marcus.jpg" alt="Marcus J Ball"><p>“We believe we’re likely to win this vote. Your money puts it in front of millions more people before it happens, so every MP and peer knows the public is watching. Join us.”<small>Marcus J Ball, founder of ExecProsec · Photo: Alexander Hansez</small></p></div>
       <div class="freq" role="radiogroup"><button type="button" class="sel" data-f="once">One-off</button><button type="button" data-f="monthly">Monthly</button></div>
       <div class="amts" id="amts"><button class="amt" data-a="10">£10</button><button class="amt sel" data-a="20">£20</button><button class="amt" data-a="50">£50</button><button class="amt" data-a="100">£100</button></div>
       <label class="f other" id="otherBox"><span>Another amount (£10 or more)</span><input id="otherAmt" inputmode="decimal"></label>
@@ -391,7 +390,7 @@ h2 em{font-style:normal;color:var(--gold)}
     <section class="s done" data-c="6" id="sDone">
       <div class="chk"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M5 12l5 5 9-10"/></svg></div>
       <h2>Thank you<span id="dName"></span>.</h2>
-      <p class="sub">You’re part of it now. When the vote comes, we’ll email you who to write to and what to say.</p>
+      <p class="sub" id="dSub">You’re part of it now. When the vote comes, we’ll email you who to write to and what to say.</p>
       <button class="btn gold" id="shareBtn" style="margin:0 0 6px">Copy the link to share</button>
       <span class="err" id="shareDone" style="color:#7ad3a3;text-align:center"></span>
       <button class="link" id="closeBtn">See what everyone thinks</button>
@@ -503,8 +502,8 @@ h2 em{font-style:normal;color:var(--gold)}
   setInterval(function(){
     if (reduce || !S[at] || !S[at].contains($('machine'))) return;
     var f = document.createElement('i'); f.className = 'fly';
-    f.style.left = '24px'; f.style.top = '50%';
-    f.style.setProperty('--fx', (220 + Math.random() * 220) + 'px'); f.style.setProperty('--fy', (-40 + Math.random() * 80) + 'px');
+    f.style.left = '34px'; f.style.top = '8px';
+    f.style.setProperty('--fx', (200 + Math.random() * 260) + 'px'); f.style.setProperty('--fy', (Math.random() * 8 - 4) + 'px');
     $('machine').appendChild(f); setTimeout(function(){ f.remove(); }, 2500);
   }, 260);
 
@@ -548,9 +547,9 @@ h2 em{font-style:normal;color:var(--gold)}
   /* ---- questions: "Do you agree?" above each statement; arrows go back and forward through them ---- */
   var QS = [
     {id: 's14', t: 'Parliament’s own rules only deal with what is said inside Parliament. When an MP or peer is proven to have intentionally or recklessly lied to the public outside it, a jury should decide, just as it would for a police officer or civil servant.'},
-    {id: 's15', t: 'The Government’s reason for leaving backbench MPs and peers out is that, unlike ministers, they don’t have access to secret government information. That shows a complete misunderstanding of what lying is. A lie doesn’t depend on access to the truth; it is the opposite of the truth.'},
-    {id: 's16', t: 'If government ministers can be prosecuted for lying but shadow ministers and the backbenchers who scrutinise them can’t, the system of checks and balances will be thrown completely off balance. Every MP and peer should be covered.'},
-    {id: 's17', t: 'Some politicians say being included would have a chilling effect on political debate. The only thing it would chill is lying, and politicians who can’t debate without lying have no place in politics.'},
+    {id: 's15', t: 'The Government’s reason for leaving backbench MPs and peers out is that, unlike ministers, they don’t have access to secret government information. That shows a complete misunderstanding of what lying is. A lie doesn’t depend on access to the truth; it is the opposite of the truth. All it takes is a willingness to make things up.'},
+    {id: 's16', t: 'Outside Parliament, the government, the opposition and the backbenchers who scrutinise them all speak to the public. If government ministers can be prosecuted for lying but shadow ministers and scrutinisers can’t, the system of checks and balances will be thrown completely off balance. Every MP and peer should be covered.'},
+    {id: 's17', t: 'Some politicians say being included would have a chilling effect on political debate. That concern is not credible: the offence only covers proven intentional or reckless lies on serious public matters, never honest mistakes, opinions or anything said in Parliament. The only thing it would chill is lying, and politicians who can’t debate without lying have no place in politics.'},
     {id: 'v24', party: true, t: 'Which party did you vote for in 2024?', sub: 'We’ll use this to show parliamentarians that voters of every party care about this.'},
     {id: 's13', t: 'I would be interested in attending an organised, peaceful demonstration outside Parliament in Westminster on the day of the vote.'}
   ];
@@ -684,7 +683,10 @@ h2 em{font-style:normal;color:var(--gold)}
   $('giveBtn').addEventListener('click', function(){ show(at + 1, 1); });
 
   /* ---- done ---- */
-  hooks.sDone = function(){ $('dName').textContent = me.first ? ', ' + me.first : ''; };
+  hooks.sDone = function(){
+    $('dName').textContent = me.first ? ', ' + me.first : '';
+    $('dSub').textContent = consent === 'no' ? 'You’re part of it now. Share the petition, and when the vote comes, every name on it counts.' : 'You’re part of it now. When the vote comes, we’ll email you who to write to and what to say.';
+  };
   $('shareBtn').addEventListener('click', function(){
     var u = 'https://execprosec.org/petition/?ref=share';
     (navigator.clipboard && window.isSecureContext ? navigator.clipboard.writeText(u) : Promise.reject()).then(function(){ $('shareDone').textContent = 'Link copied. Paste it into WhatsApp, an email or a post.'; },
