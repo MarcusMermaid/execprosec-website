@@ -287,46 +287,7 @@ textarea:focus{outline:none;border-bottom-color:var(--gold)}
       <div class="bleed"></div>
       <div class="hl"><span>Parliament is making it a crime</span><span>to lie to the public.</span><span>For nearly everyone,</span><span class="g">apart from the politicians making the law.</span></div>
       <p class="live a" style="animation-delay:1.3s"><span class="pulse"></span><span><b data-n="signers">18,000</b> people have signed</span></p>
-      <p class="hint">Swipe to see how we change that <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></p>
-    </section>
-
-    <!-- who it covers -->
-    <section class="s mid">
-      <p class="k a">The new crime of misleading the public</p>
-      <h2 class="a">Guess who it <em>leaves out?</em></h2>
-      <p class="lbl a">Covered</p>
-      <div class="chips">
-        <span class="chip" style="animation-delay:.25s"><b>&#10003;</b>The Prime Minister</span>
-        <span class="chip" style="animation-delay:.35s"><b>&#10003;</b>Ministers</span>
-        <span class="chip" style="animation-delay:.45s"><b>&#10003;</b>Civil servants</span>
-        <span class="chip" style="animation-delay:.55s"><b>&#10003;</b>The police</span>
-        <span class="chip" style="animation-delay:.65s"><b>&#10003;</b>NHS doctors and nurses</span>
-        <span class="chip" style="animation-delay:.75s"><b>&#10003;</b>The armed forces</span>
-      </div>
-      <p class="lbl no a" style="animation-delay:1s">Left out</p>
-      <div class="chips">
-        <span class="chip no" style="animation-delay:1.15s"><b>&#10005;</b>MPs</span>
-        <span class="chip no" style="animation-delay:1.3s"><b>&#10005;</b>Peers</span>
-        <span class="chip no" style="animation-delay:1.45s"><b>&#10005;</b>MSPs</span>
-        <span class="chip no" style="animation-delay:1.6s"><b>&#10005;</b>MSs</span>
-        <span class="chip no" style="animation-delay:1.75s"><b>&#10005;</b>MLAs</span>
-      </div>
-      <p class="lead a" style="animation-delay:2.1s">We want to end the carve-out for <em>every lawmaker in the UK</em>.</p>
-    </section>
-
-    <!-- not a polite petition -->
-    <section class="s s-machine">
-      <div class="bleed"></div>
-      <h2 class="a">This is not a polite petition. <em>It’s an email campaigning machine.</em></h2>
-      <ul class="tl">
-        <li style="animation-delay:.2s">Our amendment is written</li>
-        <li style="animation-delay:.32s">Debated in the House of Lords</li>
-        <li style="animation-delay:.44s">Peers from across the House of Lords back our call</li>
-        <li class="next" style="animation-delay:.56s">One big vote in the House of Lords, expected in December</li>
-        <li class="later" style="animation-delay:.68s">If we win, a vote in the House of Commons</li>
-      </ul>
-      <p class="p a" style="margin:0;animation-delay:.9s">Before the vote, and on the day, everyone who signed will be asked to email the people who decide it:</p>
-      <div class="send a" id="send" style="animation-delay:1s"><svg class="env" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg><span>Peers</span><span>MPs</span><span>Ministers</span></div>
+      <p class="hint">Swipe to add your name <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></p>
     </section>
 
     <!-- sign -->
@@ -353,6 +314,45 @@ textarea:focus{outline:none;border-bottom-color:var(--gold)}
       <div class="ok" id="codeOk"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5 9-10"/></svg><span id="codeOkT">Confirmed.</span></div>
       <p class="small" id="codeMore">Not there? Check your junk or spam folder. <button type="button" class="lnk" id="resend">Send it again</button> · <button type="button" class="lnk" id="changeEmail">Change email</button></p>
       <p class="small" id="codeNote" style="margin-top:8px;color:var(--t2)"></p>
+    </section>
+
+    <!-- who it covers -->
+    <section class="s mid" hidden data-gate="code">
+      <p class="k a">The new crime of misleading the public</p>
+      <h2 class="a">Guess who it <em>leaves out?</em></h2>
+      <p class="lbl a">Covered</p>
+      <div class="chips">
+        <span class="chip" style="animation-delay:.25s"><b>&#10003;</b>The Prime Minister</span>
+        <span class="chip" style="animation-delay:.35s"><b>&#10003;</b>Ministers</span>
+        <span class="chip" style="animation-delay:.45s"><b>&#10003;</b>Civil servants</span>
+        <span class="chip" style="animation-delay:.55s"><b>&#10003;</b>The police</span>
+        <span class="chip" style="animation-delay:.65s"><b>&#10003;</b>NHS doctors and nurses</span>
+        <span class="chip" style="animation-delay:.75s"><b>&#10003;</b>The armed forces</span>
+      </div>
+      <p class="lbl no a" style="animation-delay:1s">Left out</p>
+      <div class="chips">
+        <span class="chip no" style="animation-delay:1.15s"><b>&#10005;</b>MPs</span>
+        <span class="chip no" style="animation-delay:1.3s"><b>&#10005;</b>Peers</span>
+        <span class="chip no" style="animation-delay:1.45s"><b>&#10005;</b>MSPs</span>
+        <span class="chip no" style="animation-delay:1.6s"><b>&#10005;</b>MSs</span>
+        <span class="chip no" style="animation-delay:1.75s"><b>&#10005;</b>MLAs</span>
+      </div>
+      <p class="lead a" style="animation-delay:2.1s">We want to end the carve-out for <em>every lawmaker in the UK</em>.</p>
+    </section>
+
+    <!-- not a polite petition -->
+    <section class="s s-machine" hidden data-gate="code">
+      <div class="bleed"></div>
+      <h2 class="a">This is not a polite petition. <em>It’s an email campaigning machine.</em></h2>
+      <ul class="tl">
+        <li style="animation-delay:.2s">Our amendment is written</li>
+        <li style="animation-delay:.32s">Debated in the House of Lords</li>
+        <li style="animation-delay:.44s">Peers from across the House of Lords back our call</li>
+        <li class="next" style="animation-delay:.56s">One big vote in the House of Lords, expected in December</li>
+        <li class="later" style="animation-delay:.68s">If we win, a vote in the House of Commons</li>
+      </ul>
+      <p class="p a" style="margin:0;animation-delay:.9s">Before the vote, and on the day, everyone who signed will be asked to email the people who decide it:</p>
+      <div class="send a" id="send" style="animation-delay:1s"><svg class="env" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg><span>Peers</span><span>MPs</span><span>Ministers</span></div>
     </section>
 
     <!-- the six questions are added here, one slide each -->
