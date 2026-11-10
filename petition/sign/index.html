@@ -234,6 +234,17 @@ button.press-item{background:none;border:0;cursor:pointer;position:relative}
 #likert .lk-row.cur{display:block;border-top:0;padding:4px 0 8px}
 #likert .lk-row.cur .lk-t{margin:0 0 18px;font:400 21px/1.35 var(--f-display);color:var(--navy)}
 #likert .lk-dot{width:36px;height:36px}
+/* Marcus, 10 Nov 2026: "Do you agree?" above each statement, and two arrows to go back and forward on every step */
+.lk-ask{display:none}
+#likert .lk-row.cur .lk-ask{display:block;grid-column:1 / -1;margin:0 0 8px;font-size:12.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#8a6b1f}
+.stepnav{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:16px 0 0;padding:12px 0 0;border-top:1px solid var(--rule)}
+.stepnav[hidden]{display:none}
+.stepnav button{all:unset;box-sizing:border-box;cursor:pointer;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;border:2px solid var(--navy);color:var(--navy);transition:background .15s,opacity .15s}
+.stepnav button:hover{background:var(--navy);color:#fff}
+.stepnav button:focus-visible{box-shadow:0 0 0 3px rgba(221,188,102,.8)}
+.stepnav button[disabled]{opacity:.22;cursor:default;background:none;color:var(--navy)}
+.stepnav svg{width:22px;height:22px}
+.stepnav span{font-size:12.5px;font-weight:700;color:var(--muted);text-align:center}
 #likert .lk-row.cur.lk-long .lk-t{font-size:17px;line-height:1.45}
 .lk-sub{margin:-10px 0 14px;font-size:14px;line-height:1.4;color:var(--muted)}
 .lk-party{display:grid;grid-template-columns:1fr 1fr;gap:8px}
@@ -710,6 +721,11 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       <button class="btn navy" type="button" id="doneShare" hidden>Copy the petition link</button>
       <a class="btn navy" href="https://www.instagram.com/marcusjball/" target="_blank" rel="noopener">Follow Marcus J Ball on Instagram</a>
     </div>
+    <div class="stepnav" id="stepNav" hidden>
+      <button type="button" id="navPrev" aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+      <span id="navLbl"></span>
+      <button type="button" id="navNext" aria-label="Next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+    </div>
   </div>
  </div>
 
@@ -1137,7 +1153,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     order = STATEMENTS.filter(function (st) { return st.lead; }).concat(order, STATEMENTS.filter(function (st) { return st.fixed; }));
     track('questions', DRAW.qs);
     $('likert').innerHTML = order.map(function (st) {
-      var head = '<div class="lk-row' + (st.t.length > 300 ? ' lk-long' : '') + '" data-id="' + st.id + '"><p class="lk-t" id="lk_' + st.id + '">' + esc(st.t) + '</p>';
+      var head = '<div class="lk-row' + (st.t.length > 300 ? ' lk-long' : '') + '" data-id="' + st.id + '">' + (st.party ? '' : '<p class="lk-ask">Do you agree?</p>') + '<p class="lk-t" id="lk_' + st.id + '">' + esc(st.t) + '</p>';
       if (st.party) return head + '<p class="lk-sub">' + esc(st.sub) + '</p><div class="lk-party" role="radiogroup" aria-labelledby="lk_' + st.id + '">' +
         PARTIES.map(function (o) {
           return '<label class="lk-pty"><input type="radio" name="lk_' + st.id + '" value="' + o[1] + '">' + esc(o[0]) + '</label>';
@@ -1161,7 +1177,10 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     var done = lkAt >= rows.length;
     $('lkProg').textContent = done ? 'All ' + rows.length + ' answered. Thank you.' : (lkAt + 1) + ' of ' + rows.length;
     $('lkBar').style.width = Math.round(100 * lkAt / rows.length) + '%';
-    $('lkBack').hidden = lkAt === 0 || done;
+    $('lkBack').hidden = true;                          // the arrows at the foot of the box do this now
+    $('p2').classList.toggle('lk-done', done);
+    navDraw();
+    return;
     $('p2').classList.toggle('lk-done', done);
   }
   $('lkBack').addEventListener('click', function () { lkShow(lkAt - 1); });
@@ -1393,7 +1412,41 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     setTimeout(function () { $('first').focus({ preventScroll: true }); }, reduced ? 0 : 500);
   });
 
+  // Back and forward (Marcus, 10 Nov 2026): every step they reach is remembered, so the left arrow goes back through
+  // them (through each statement too) and the right arrow goes forward again, or moves on as Skip would.
+  // Signing and the confirm-your-email screen are never revisited once confirmed.
+  var navHist = [], navPos = -1, navCur = 1, navMoving = false;
   function go(n, quiet) {
+    if (!navMoving && n !== 1 && n !== 'w' && navHist[navPos] !== n) { navHist = navHist.slice(0, navPos + 1); navHist.push(n); navPos = navHist.length - 1; }
+    navCur = n;
+    goRaw(n, quiet);
+    navDraw();
+  }
+  function navRows() { return $('likert').querySelectorAll('.lk-row').length; }
+  var NAV_SKIP = { pitch: 'ptSkip', s: 'shareDone', 3: 'mpSkip', 4: 'skipFund' };
+  function navDraw() {
+    var nav = $('stepNav'); if (!nav) return;
+    nav.hidden = navCur === 1 || navCur === 'w';
+    if (nav.hidden) return;
+    var q = navCur === 2 && lkAt < navRows();
+    $('navPrev').disabled = !(navPos > 0 || (navCur === 2 && lkAt > 0));
+    $('navNext').disabled = !(q || navCur === 2 || navPos < navHist.length - 1 || NAV_SKIP[navCur]);
+    $('navLbl').textContent = q ? 'Question ' + (lkAt + 1) + ' of ' + navRows() : '';
+  }
+  function navTo(n) { navMoving = true; go(n); navMoving = false; }
+  $('navPrev').addEventListener('click', function () {
+    if (navCur === 2 && lkAt > 0) return lkShow(lkAt - 1);
+    if (navPos <= 0) return;
+    navPos--; navTo(navHist[navPos]);
+    if (navCur === 2) lkShow(navRows());
+  });
+  $('navNext').addEventListener('click', function () {
+    if (navCur === 2 && lkAt < navRows()) return lkShow(lkAt + 1);
+    if (navPos < navHist.length - 1) { navPos++; navTo(navHist[navPos]); if (navCur === 2) lkShow(0); return; }
+    if (navCur === 2) return $('skipQs').click();
+    if (NAV_SKIP[navCur]) $(NAV_SKIP[navCur]).click();
+  });
+  function goRaw(n, quiet) {
     var w = n === 'w';                                  // the "confirm it in your inbox" screen
     var c = n === 'c';                                  // the "three ways to help" screen
     var sh = n === 's';                                 // the share-the-link screen
