@@ -34,3 +34,6 @@
 # /privacy/ and /privacy/#delete, so these must keep working.
 /privacy /terms/#privacy 301
 /privacy/ /terms/#privacy 301
+# 10 Nov 2026: What the public think became the petition page itself.
+/what-the-public-think /petition/ 301
+/what-the-public-think/ /petition/ 301
