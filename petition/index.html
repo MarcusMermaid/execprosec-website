@@ -2011,8 +2011,12 @@ body.ticker-on .foot{padding-bottom:90px}
       $('spLoad').innerHTML = '<span>The form is taking a while to load.</span><a class="btn" href="/petition/sign/?ref=' + encodeURIComponent(firstRef) + '">Open the petition</a>';
       fr.style.visibility = 'hidden';
     }
+    /* the form loads quietly in the background soon after arrival, so it is ready the moment anyone opens the box */
+    function preload(ref){ if (!fr.getAttribute('src')){ firstRef = ref; fr.src = '/petition/sign/?embed=1&ref=' + encodeURIComponent(ref); } }
+    var waiting = false;
     function open(ref, from){
-      if (!fr.src){ firstRef = ref; fr.src = '/petition/sign/?embed=1&ref=' + encodeURIComponent(ref); setTimeout(fallback, 8000); }
+      preload(ref);
+      if (!ready && !waiting){ waiting = true; setTimeout(fallback, 10000); }
       m.hidden = false; document.documentElement.classList.add('sp-open'); m.scrollTop = 0;
       count(); clearInterval(timer); timer = setInterval(count, 1000);
       track('popup_open', {label: (from || '') + ' ' + ref});
@@ -2037,6 +2041,7 @@ body.ticker-on .foot{padding-bottom:90px}
       e.preventDefault(); open(TAG, a.getAttribute('href').split('ref=')[1] || 'results');
     });
     if (arm === 'b' || /[?&]popup=1/.test(q)) setTimeout(function(){ open(TAG, 'arrival'); }, 700);
+    else setTimeout(function(){ preload(TAG); }, 1500);
   })();
 
   /* -- parliamentarians -- */
