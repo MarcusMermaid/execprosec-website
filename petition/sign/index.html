@@ -429,13 +429,14 @@ body.l-bare .card-head{padding-bottom:14px}
 .codebox{margin:4px 0 14px}
 .codebox label{display:block;font-size:14px;font-weight:600;color:var(--ink);margin:0 0 7px}
 .code-row{display:flex;gap:10px;align-items:stretch}
-.code-row input{flex:0 1 190px;font:700 25px/1 Consolas,Menlo,monospace;letter-spacing:7px;
+.code-row input{flex:1 1 190px;max-width:260px;font:700 25px/1 Consolas,Menlo,monospace;letter-spacing:7px;
   text-align:center;padding:13px 10px;border:1.5px solid #c8ccda;border-radius:7px;min-width:0;
   background:#fff;color:var(--ink);-webkit-appearance:none;appearance:none}
 .code-row input::placeholder{color:#b6bbc9;font-weight:400}
 .code-row input:focus{outline:none;border-color:var(--navy);box-shadow:0 0 0 3px rgba(4,20,64,.12)}
-.code-row .btn{flex:0 0 auto;margin:0;padding:13px 22px}
-@media(max-width:420px){.code-row{flex-direction:column}.code-row input{flex:1 1 auto}.code-row .btn{width:100%}}
+/* 11 Nov 2026: .btn is full width everywhere, so beside the box it squeezed the box to nothing on any screen wider than 420px */
+.code-row .btn{flex:0 0 auto;width:auto;margin:0;padding:13px 22px}
+@media(max-width:480px){.code-row{flex-direction:column}.code-row input{flex:1 1 auto;max-width:none}.code-row .btn{width:100%}}
 
 /* ---- the email question: two buttons, nothing to read (Marcus, 31 Oct 2026) ---- */
 .consent{display:grid;gap:8px;margin:0 0 4px}
