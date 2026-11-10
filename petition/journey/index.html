@@ -434,7 +434,8 @@ h2 em{font-style:normal;color:var(--gold)}
 
   /* ---- size: a phone gets the whole screen, a computer a tall card ---- */
   var vh = +((location.search.match(/[?&]vh=(\d{3,4})/) || [])[1]) || window.innerHeight;
-  var PHONE = window.innerWidth <= 560;
+  var vw = +((location.search.match(/[?&]vw=(\d{3,4})/) || [])[1]) || window.innerWidth;
+  var PHONE = vw <= 560;
   if (PHONE) document.documentElement.classList.add('phone');
   var H = EMBED ? (PHONE ? vh : Math.min(760, vh - 48)) : Math.min(760, vh - 32);
   H = Math.max(520, H);

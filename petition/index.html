@@ -2026,7 +2026,7 @@ body.ticker-on .foot{padding-bottom:90px}
     /* ?journey=1 (preview, Marcus 10 Nov 2026): the new step-by-step journey instead of the current form */
     var JOURNEY = /[?&]journey=1/.test(q);
     if (JOURNEY) document.documentElement.classList.add('sp-journey');
-    function preload(ref){ if (!fr.getAttribute('src')){ firstRef = ref; fr.src = (JOURNEY ? '/petition/journey/?embed=1&vh=' + window.innerHeight + '&ref=' : '/petition/sign/?embed=1&ref=') + encodeURIComponent(ref); } }
+    function preload(ref){ if (!fr.getAttribute('src')){ firstRef = ref; fr.src = (JOURNEY ? '/petition/journey/?embed=1&vh=' + window.innerHeight + '&vw=' + window.innerWidth + '&ref=' : '/petition/sign/?embed=1&ref=') + encodeURIComponent(ref); } }
     var waiting = false;
     function open(ref, from){
       preload(ref);
