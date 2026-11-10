@@ -168,6 +168,13 @@ h2{font:400 clamp(30px,5vw,44px)/1.08 var(--f-display);letter-spacing:-.01em;mar
 .sp-skip{all:unset;cursor:pointer;display:block;margin:12px auto 2px;padding:8px 12px;font-size:14.5px;color:var(--on-navy-2);text-decoration:underline;text-underline-offset:3px}
 .sp-skip:hover{color:var(--paper)}
 html.sp-open,html.sp-open body{overflow:hidden}
+/* the new journey preview (?journey=1): no frame around it, only a close button */
+html.sp-journey .sp-top,html.sp-journey .sp-skip{display:none}
+html.sp-journey .sp-modal{align-items:center;padding:24px 14px}
+html.sp-journey .sp-box{max-width:560px;padding:0;background:transparent;border:0;box-shadow:0 40px 100px rgba(0,0,0,.6);border-radius:14px}
+html.sp-journey #spFrame{border-radius:14px}
+html.sp-journey .sp-x{top:12px;right:12px;background:rgba(4,20,64,.6);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+@media(max-width:560px){html.sp-journey .sp-modal{padding:0}html.sp-journey .sp-box{border-radius:0;box-shadow:none}html.sp-journey #spFrame{border-radius:0}}
 @media(max-width:560px){.sp-modal{padding:0}.sp-box{border-radius:0;min-height:100%;border:0;padding:12px 10px}}
 /* sign and share bands between the sections (Marcus, 9 Nov 2026) */
 section.band{padding:8px 0}
@@ -642,7 +649,7 @@ body.ticker-on .foot{padding-bottom:90px}
     <div class="so-grid">
       <figure class="so-video rv">
         <div class="so-phone">
-          <video id="soVid" src="/what-the-public-think/media/they-admit-it.mp4" poster="/what-the-public-think/media/they-admit-it.jpg" muted loop playsinline preload="metadata" aria-label="Our most-watched video"></video>
+          <video id="soVid" src="/what-the-public-think/media/they-admit-it.mp4" poster="/what-the-public-think/media/they-admit-it.jpg" muted loop playsinline preload="none" aria-label="Our most-watched video"></video>
           <button class="so-snd" id="soSnd" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="m22 9-6 6"/><path d="m16 9 6 6"/></svg><span>Tap for sound</span></button>
           <button class="so-snd so-restart" type="button" aria-label="Watch from the start with sound"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg><span>Start again</span></button>
           <div class="so-hearts" id="soHearts" aria-hidden="true"></div>
@@ -678,7 +685,7 @@ body.ticker-on .foot{padding-bottom:90px}
   <div class="wrap vf-grid">
       <figure class="so-video vf-video rv">
         <div class="so-phone">
-          <video class="vf-vid" data-code="Dfgvy2qFDz2" data-label="polices-itself" src="/what-the-public-think/media/polices-itself.mp4" poster="/what-the-public-think/media/polices-itself.jpg" muted loop playsinline preload="metadata" aria-label="Only Parliament should police them?"></video>
+          <video class="vf-vid" data-code="Dfgvy2qFDz2" data-label="polices-itself" src="/what-the-public-think/media/polices-itself.mp4" poster="/what-the-public-think/media/polices-itself.jpg" muted loop playsinline preload="none" aria-label="Only Parliament should police them?"></video>
           <button class="so-snd vf-snd" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="m22 9-6 6"/><path d="m16 9 6 6"/></svg><span>Tap for sound</span></button>
           <button class="so-snd so-restart" type="button" aria-label="Watch from the start with sound"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg><span>Start again</span></button>
           <div class="so-hearts" aria-hidden="true"></div>
@@ -722,7 +729,7 @@ body.ticker-on .foot{padding-bottom:90px}
   <div class="wrap vf-grid">
       <figure class="so-video vf-video rv">
         <div class="so-phone">
-          <video class="vf-vid" data-code="" data-label="voices" src="/what-the-public-think/media/voices.mp4" poster="/what-the-public-think/media/voices.jpg" muted loop playsinline preload="metadata" aria-label="Peers, MPs and the public, in their own words"></video>
+          <video class="vf-vid" data-code="" data-label="voices" src="/what-the-public-think/media/voices.mp4" poster="/what-the-public-think/media/voices.jpg" muted loop playsinline preload="none" aria-label="Peers, MPs and the public, in their own words"></video>
           <button class="so-snd vf-snd" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="m22 9-6 6"/><path d="m16 9 6 6"/></svg><span>Tap for sound</span></button>
           <button class="so-snd so-restart" type="button" aria-label="Watch from the start with sound"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg><span>Start again</span></button>
         </div>
@@ -792,7 +799,7 @@ body.ticker-on .foot{padding-bottom:90px}
   <div class="wrap vf-grid">
       <figure class="so-video vf-video rv">
         <div class="so-phone">
-          <video class="vf-vid" data-code="DfbmVuxCvJv" data-label="privilege" src="/what-the-public-think/media/privilege.mp4" poster="/what-the-public-think/media/privilege.jpg" muted loop playsinline preload="metadata" aria-label="Their excuse? Privilege."></video>
+          <video class="vf-vid" data-code="DfbmVuxCvJv" data-label="privilege" src="/what-the-public-think/media/privilege.mp4" poster="/what-the-public-think/media/privilege.jpg" muted loop playsinline preload="none" aria-label="Their excuse? Privilege."></video>
           <button class="so-snd vf-snd" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="m22 9-6 6"/><path d="m16 9 6 6"/></svg><span>Tap for sound</span></button>
           <button class="so-snd so-restart" type="button" aria-label="Watch from the start with sound"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg><span>Start again</span></button>
           <div class="so-hearts" aria-hidden="true"></div>
@@ -2018,6 +2025,7 @@ body.ticker-on .foot{padding-bottom:90px}
     /* the form loads quietly in the background soon after arrival, so it is ready the moment anyone opens the box */
     /* ?journey=1 (preview, Marcus 10 Nov 2026): the new step-by-step journey instead of the current form */
     var JOURNEY = /[?&]journey=1/.test(q);
+    if (JOURNEY) document.documentElement.classList.add('sp-journey');
     function preload(ref){ if (!fr.getAttribute('src')){ firstRef = ref; fr.src = (JOURNEY ? '/petition/journey/?embed=1&vh=' + window.innerHeight + '&ref=' : '/petition/sign/?embed=1&ref=') + encodeURIComponent(ref); } }
     var waiting = false;
     function open(ref, from){
@@ -2063,7 +2071,7 @@ body.ticker-on .foot{padding-bottom:90px}
     /* every one of them, on a belt that never runs out: the row twice over, moving left by exactly one row, then round again */
     function face(m, copy){
       return '<a class="mp-face" href="' + esc(m.source || '#') + '" target="_blank" rel="noopener noreferrer" title="' + esc(m.name + ', ' + m.party + '. ' + (m.did || '')) + '"' + (copy ? ' aria-hidden="true" tabindex="-1"' : '') + '>' +
-        '<img src="' + esc(m.photo) + '" alt="' + (copy ? '' : esc(m.name)) + '"><span>' + esc(m.name) + '</span></a>';
+        '<img src="' + esc(m.photo) + '" alt="' + (copy ? '' : esc(m.name)) + '" loading="lazy" decoding="async"><span>' + esc(m.name) + '</span></a>';
     }
     var row = PARL.map(function(m){ return face(m, false); }).join(''), copy = PARL.map(function(m){ return face(m, true); }).join('');
     $('mpFaces').innerHTML = '<div class="mp-belt" style="--belt:' + Math.max(40, PARL.length * 2.6) + 's">' + row + copy + '</div>';
