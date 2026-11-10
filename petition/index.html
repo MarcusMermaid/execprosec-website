@@ -1345,10 +1345,14 @@ body.ticker-on .foot{padding-bottom:90px}
   /* -- measuring (execprosec.org only): which sound, whether it was heard, and the sign links -- */
   var TRACK = /(^|\.)execprosec\.org$/.test(location.hostname), SID = '';
   try { SID = localStorage.getItem('mjb_sid') || ''; if (!SID){ SID = 's_' + Math.random().toString(36).slice(2) + Date.now().toString(36); localStorage.setItem('mjb_sid', SID); } } catch (e) {}
+  /* A personal link (#r= plus 8 letters, as in the emails to MPs and peers, Marcus 10 Nov 2026) is kept on every event,
+     so Central can see who came and what they did. Every other visit is recorded as the plain address, as before. */
+  var RCODE = (location.hash.match(/(?:^#|&)r=([0-9a-f]{8})(?=&|$)/) || [])[1] || '';
+  var PAGE = (location.pathname + (RCODE ? '#r=' + RCODE : '')).slice(0, 300);
   function track(ev, d){
     if (!TRACK) return;
     try {
-      var b = JSON.stringify(Object.assign({site: 'execprosec', event: ev, page: location.pathname.slice(0, 300), session_id: SID, referrer: (document.referrer || '').slice(0, 300)}, d || {}));
+      var b = JSON.stringify(Object.assign({site: 'execprosec', event: ev, page: PAGE, session_id: SID, referrer: (document.referrer || '').slice(0, 300)}, d || {}));
       if (navigator.sendBeacon) navigator.sendBeacon('https://central-2-mcp-production.up.railway.app/public/analytics', new Blob([b], {type: 'text/plain'}));
     } catch (e) {}
   }
