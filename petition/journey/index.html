@@ -1012,11 +1012,15 @@ textarea:focus{outline:none;border-bottom-color:var(--gold)}
     giveLabel();
   }); });
   $('otherAmt').addEventListener('input', function(){ if (amount() >= 10) $('giveErr').textContent = ''; giveLabel(); });
+  /* Stripe's script loads while they read the slide before, and is tried a second time if the first attempt fails */
+  var stripeP = null;
   function stripeJs(){
-    return new Promise(function(ok, fail){
-      if (window.Stripe) return ok();
-      var tag = document.createElement('script'); tag.src = 'https://js.stripe.com/v3/'; tag.onload = ok; tag.onerror = fail; document.head.appendChild(tag);
-    });
+    if (window.Stripe) return Promise.resolve();
+    if (stripeP) return stripeP;
+    function load(src){ return new Promise(function(ok, fail){ var tag = document.createElement('script'); tag.src = src; tag.onload = ok; tag.onerror = fail; document.head.appendChild(tag); }); }
+    stripeP = load('https://js.stripe.com/v3/').catch(function(){ return load('https://js.stripe.com/v3/?retry=' + Date.now()); })
+      .then(function(){ if (!window.Stripe) throw new Error('no Stripe'); }, function(e){ stripeP = null; throw e; });
+    return stripeP;
   }
   $('giveBtn').addEventListener('click', function(){
     if (paying) return;
@@ -1043,6 +1047,8 @@ textarea:focus{outline:none;border-bottom-color:var(--gold)}
     $('payBox').innerHTML = ''; $('payWrap').hidden = true; $('ask').hidden = false;
   });
   hooks.sGive = function(){ stepOnce('fund_seen'); };
+  var planEl = document.querySelector('.s-plan'); planEl.id = planEl.id || 'sPlan';
+  hooks.sPlan = function(){ stripeJs().catch(function(){}); };
 
   /* ---- thanks ---- */
   function jump(i){ track.scrollLeft = i * track.clientWidth; activate(i); }
