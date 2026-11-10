@@ -133,6 +133,8 @@ h2 em{font-style:normal;color:var(--gold)}
 .f.bad input{border-bottom-color:#ff7a7f}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .ask2{margin:6px 0 8px;font-size:14px;color:var(--t1)}
+/* 10 Nov 2026 (Marcus): why we ask to email them, just above the question */
+.why{margin:2px 0 6px;font-size:13.5px;line-height:1.42;color:var(--t2)}.why b{color:#fff;font-weight:700}
 .pills{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 0 6px}
 .pill{all:unset;box-sizing:border-box;cursor:pointer;height:56px;display:flex;align-items:center;justify-content:center;gap:8px;border-radius:10px;font-size:18px;font-weight:700;
   box-shadow:inset 0 0 0 2px rgba(255,255,255,.28);transition:background .2s,color .2s,box-shadow .2s}
@@ -157,8 +159,8 @@ h2 em{font-style:normal;color:var(--gold)}
 .ok.show{display:flex;animation:rise .5s var(--ease) both}
 
 /* questions */
-.qt{margin:0 0 26px;font:400 clamp(19px,4.8vw,22px)/1.36 var(--serif);color:#fff}
-.qt.long{font-size:clamp(17px,4.3vw,19px)}
+.qt{margin:0 0 26px;font:500 clamp(18px,4.6vw,21px)/1.45 var(--sans);color:#fff}
+.qt.long{font-size:clamp(16px,4.1vw,18px)}
 .scale{display:grid;grid-template-columns:repeat(5,1fr);gap:2px}
 .opt{all:unset;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;font-size:11.5px;font-weight:700;line-height:1.2;color:var(--t2)}
 .opt i{display:block;width:40px;height:40px;border-radius:50%;box-shadow:inset 0 0 0 2px rgba(255,255,255,.3);transition:all .2s var(--ease)}
@@ -275,7 +277,7 @@ textarea:focus{outline:none;border-bottom-color:var(--gold)}
 /* shorter phones: everything on a slide still fits without scrolling */
 @media(max-height:720px){
   #sSign{padding-top:40px}#sSign h2{margin-bottom:8px;font-size:26px}#sSign .f{margin-bottom:8px}#sSign .f input{height:34px}
-  #sSign .pill{height:48px}#sSign .ask2{margin:2px 0 6px}#sSign .pcrow{margin:-4px 0 2px}#sSign .stmt{font-size:11px;line-height:1.4}#sSign .err{min-height:14px}
+  #sSign .pill{height:48px}#sSign .why{font-size:12.5px;margin:0 0 4px}#sSign .ask2{margin:2px 0 6px}#sSign .pcrow{margin:-4px 0 2px}#sSign .stmt{font-size:11px;line-height:1.4}#sSign .err{min-height:14px}
   .s-intro .bleed{height:54%}.s-machine .bleed{min-height:100px;height:22%}.tl li{padding-bottom:7px}
   .s-plan .bleed{height:22%;min-height:110px}.s-plan h2{font-size:26px}
   #sMp h2{margin-bottom:10px}.cp{padding:8px 12px}}
@@ -295,6 +297,7 @@ textarea:focus{outline:none;border-bottom-color:var(--gold)}
       <label class="f" id="pcBox"><span>Postcode</span><input id="fPc" autocomplete="postal-code" style="text-transform:uppercase"></label>
       <label class="f" id="ctyBox" hidden><span>Country</span><input id="fCty" autocomplete="country-name"></label>
       <div class="pcrow"><button type="button" class="lnk" id="abroadBtn">Not in the UK?</button></div>
+      <p class="why"><b>Not a polite petition: an email machine.</b> Just before the Lords vote, when the pressure counts most, we’ll tell you who to email.</p>
       <p class="ask2">Can we email you when it’s time to act?</p>
       <div class="pills" role="radiogroup" aria-label="Can we email you when it’s time to act?"><button type="button" class="pill" role="radio" aria-checked="true" data-v="yes">Yes</button><button type="button" class="pill" role="radio" aria-checked="false" data-v="no">No</button></div>
       <span class="err" id="signErr"></span>
