@@ -12,12 +12,15 @@
 <link rel="preload" as="image" href="media/commons.jpg">
 <script>if (window.parent !== window) document.documentElement.className += ' embed';</script>
 <style>
-/* The signing journey as a swipe carousel, second draft (Marcus, 10 Nov 2026): one way to move, forward and back;
-   fewer buttons; cleaner. PREVIEW: nothing typed here is sent anywhere. */
+/* The signing journey as a swipe carousel (Marcus, 10 Nov 2026): one way to move, forward and back; fewer buttons; cleaner.
+   Live from 10 Nov 2026 for half of the people who open the signing box on /petition/ (the other half get /petition/sign/).
+   It signs, confirms, saves answers and quotes, and takes money through the same Central calls as /petition/sign/.
+   ?demo=1 records nothing: any six numbers confirm. */
 :root{--navy:#041440;--navy-2:#0a1b52;--gold:#ddbc66;--red:#d64045;--paper:#f7f6f2;--ink:#0d1530;--muted:#6a7088;
   --t1:rgba(255,255,255,.92);--t2:rgba(255,255,255,.66);--t3:rgba(255,255,255,.42);--hair:rgba(255,255,255,.12);--green:#3fb67b;
   --serif:'DM Serif Display',Georgia,serif;--sans:'DM Sans',system-ui,sans-serif;--px:28px;--ease:cubic-bezier(.2,.8,.2,1)}
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 html,body{margin:0}
 body{background:#020a24;color:#fff;font:400 16px/1.5 var(--sans);-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px}
 html.embed body{background:transparent;padding:0;min-height:0;display:block}
@@ -34,7 +37,7 @@ html.embed.phone .j{border-radius:0}
   padding:58px var(--px) 66px;display:flex;flex-direction:column;scrollbar-width:none}
 .s::-webkit-scrollbar{display:none}
 .s[hidden]{display:none}
-.mid{justify-content:center}
+.mid>:first-child{margin-top:auto}.mid>:last-child{margin-bottom:auto}
 @media(hover:hover) and (min-width:480px){:root{--px:58px}}
 
 /* the one control: dots + count at the foot, side arrows on computers (as on Instagram) */
@@ -52,8 +55,6 @@ html.embed.phone .j{border-radius:0}
 .arr.prev{left:12px}.arr.next{right:12px}
 .arr.gone{opacity:0;pointer-events:none}
 @media(hover:none){.arr{display:none}}
-.chip-pv{position:absolute;top:16px;left:16px;z-index:6;padding:4px 9px;border-radius:20px;background:rgba(4,20,64,.6);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
-  font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--t2)}
 
 /* type */
 .k{margin:0 0 12px;font:700 11.5px/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
@@ -132,9 +133,16 @@ h2 em{font-style:normal;color:var(--gold)}
 .f.bad input{border-bottom-color:#ff7a7f}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .ask2{margin:6px 0 8px;font-size:14px;color:var(--t1)}
-.pills{display:flex;gap:8px;margin:0 0 6px}
-.pill{all:unset;cursor:pointer;padding:9px 18px;border-radius:30px;font-size:14px;font-weight:600;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.25);transition:all .2s}
+.pills{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 0 6px}
+.pill{all:unset;box-sizing:border-box;cursor:pointer;height:56px;display:flex;align-items:center;justify-content:center;gap:8px;border-radius:10px;font-size:18px;font-weight:700;
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.28);transition:background .2s,color .2s,box-shadow .2s}
+.pill:hover{box-shadow:inset 0 0 0 2px #fff}
 .pill[aria-checked=true]{background:var(--gold);color:var(--navy);box-shadow:none}
+.pill[aria-checked=true]:before{content:'';width:18px;height:18px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23041440' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center/contain no-repeat}
+.pill:focus-visible{outline:3px solid rgba(221,188,102,.8);outline-offset:2px}
+.lnk{all:unset;cursor:pointer;font-size:12.5px;font-weight:600;color:var(--t2);text-decoration:underline;text-underline-offset:3px}
+.lnk:hover{color:#fff}
+.pcrow{display:flex;justify-content:flex-end;margin:-8px 0 10px}
 .err{display:block;min-height:18px;font-size:13px;color:#ff9a9e;margin:2px 0 6px}
 .stmt{margin:0 0 6px;padding:0 0 0 12px;border-left:2px solid var(--gold);font-size:12px;line-height:1.5;color:var(--t3)}
 .stmt a,.small a{color:var(--t2)}
@@ -161,14 +169,22 @@ h2 em{font-style:normal;color:var(--gold)}
 .pty{all:unset;cursor:pointer;box-sizing:border-box;padding:11px;border-radius:30px;text-align:center;font-size:14px;font-weight:600;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.2);transition:all .2s}
 .pty.sel{background:var(--gold);color:var(--navy);box-shadow:none}
 
-/* MP */
-.mp{display:flex;align-items:center;gap:12px;margin:0 0 14px}
+/* MP: the three copy buttons of the current form (Marcus, 10 Nov 2026: "same as the original version") */
+.mp{display:flex;align-items:center;gap:12px;margin:0 0 12px}
 .mp img{width:50px;height:50px;border-radius:50%;object-fit:cover;background:var(--navy-2);flex:0 0 50px}
-.mp b{display:block;font-size:16px}.mp span{font-size:13px;color:var(--t2)}
-.letter{position:relative;flex:0 0 auto;max-height:190px;overflow:hidden;margin:0 0 16px;padding:16px 18px;border-radius:8px;background:var(--paper);color:var(--ink);font-size:13.5px;line-height:1.55;white-space:pre-wrap}
-.letter:after{content:'';position:absolute;left:0;right:0;bottom:0;height:60px;background:linear-gradient(rgba(247,246,242,0),var(--paper))}
-.copy{all:unset;position:absolute;top:8px;right:8px;z-index:1;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:#fff;color:var(--navy);cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.12)}
-.copy svg{width:16px;height:16px}
+.mp b{display:block;font-size:16px;line-height:1.3}.mp>div>span{display:block;font-size:13px;color:var(--t2)}
+.mp .from{font-weight:500;font-size:13px;color:var(--t2)}
+.cp{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"l b" "v v";gap:3px 10px;align-items:center;margin:0 0 8px;padding:9px 12px;border-radius:8px;background:rgba(255,255,255,.07);flex:0 0 auto}
+.cp-l{grid-area:l;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--t3)}
+.cp-v{grid-area:v;font-size:14px;line-height:1.45;color:#fff;overflow-wrap:anywhere;white-space:pre-wrap}
+.cp-msg .cp-v{max-height:130px;overflow-y:auto;margin-top:4px;padding:10px 12px;border-radius:6px;background:var(--paper);color:var(--ink);font-size:13px;line-height:1.5}
+.cp-b{all:unset;grid-area:b;cursor:pointer;padding:6px 15px;border-radius:30px;background:var(--gold);color:var(--navy);font-size:13px;font-weight:700;transition:background .2s}
+.cp-b.done{background:var(--green);color:#fff}
+.cp-b:disabled{opacity:.35;cursor:default}
+.cp-b:focus-visible{outline:3px solid rgba(221,188,102,.8);outline-offset:2px}
+textarea{width:100%;min-height:92px;padding:10px 0;border:0;border-bottom:1.5px solid rgba(255,255,255,.25);background:none;color:#fff;font:17px/1.4 var(--sans);resize:none;border-radius:0}
+textarea:focus{outline:none;border-bottom-color:var(--gold)}
+.qcount{display:block;text-align:right;font-size:12px;color:var(--t3)}
 
 /* wins: press */
 .press{display:grid;grid-template-columns:repeat(3,1fr);gap:24px 10px;margin:8px 0 22px;align-items:center}
@@ -214,7 +230,7 @@ h2 em{font-style:normal;color:var(--gold)}
 
 /* plan */
 .s.s-plan{padding-top:0}
-.s-plan .bleed{height:36%;min-height:170px;margin-top:0;background-image:url(media/tube.jpg);background-position:center 40%}
+.s-plan .bleed{height:30%;min-height:150px;margin-top:0;background-image:url(media/tube.jpg);background-position:center 40%}
 .s-plan .bleed:after{background:linear-gradient(180deg,rgba(4,20,64,0) 60%,var(--navy))}
 .badge{position:absolute;left:var(--px);bottom:16px;z-index:1;display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:30px;background:var(--green);font-size:12px;font-weight:700}
 .nx{list-style:none;margin:0 0 16px;padding:0}
@@ -234,6 +250,7 @@ h2 em{font-style:normal;color:var(--gold)}
 .amt{all:unset;cursor:pointer;box-sizing:border-box;height:52px;border-radius:8px;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.22);display:grid;place-items:center;font:700 18px var(--sans);transition:all .2s}
 .amt.sel{background:var(--gold);color:var(--navy);box-shadow:none}
 .other{display:none}.other.show{display:block}
+#payBox{margin:6px 0 0;border-radius:8px;overflow:hidden;background:#fff;min-height:420px}
 
 /* thanks */
 .done{align-items:center;text-align:center}
@@ -247,14 +264,13 @@ h2 em{font-style:normal;color:var(--gold)}
 .note2{display:block;min-height:20px;margin-top:10px;font-size:13px;color:var(--green)}
 
 @media(max-width:420px){:root{--px:22px}.s{padding-top:52px}.bleed{margin-top:-52px}.chips{gap:6px}.chip{font-size:13px;padding:6px 10px 6px 7px}.tl li{font-size:13.5px;padding-bottom:8px}
-  .code{gap:7px}.code input{width:38px}.letter{max-height:150px}.stats .st b{font-size:19px}.chart{height:96px}}
-@media(max-height:640px){.letter{max-height:120px}.chart{height:80px}.press{gap:16px 8px}}
+  .code{gap:7px}.code input{width:38px}.cp-msg .cp-v{max-height:110px}.stats .st b{font-size:19px}.chart{height:96px}}
+@media(max-height:640px){.cp-msg .cp-v{max-height:90px}.chart{height:80px}.press{gap:16px 8px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01s!important;animation-delay:0s!important;transition-duration:.01s!important}}
 </style>
 </head>
 <body>
 <div class="j" id="j">
-  <span class="chip-pv" title="This is a preview: nothing you type is sent">Preview · nothing is sent</span>
   <div class="track" id="track">
 
     <!-- intro -->
@@ -301,7 +317,7 @@ h2 em{font-style:normal;color:var(--gold)}
         <li class="later" style="animation-delay:.68s">If we win, a vote in the House of Commons</li>
       </ul>
       <p class="p a" style="margin:0;animation-delay:.9s">Before the vote, and on the day, everyone who signed will be asked to email the people who decide it:</p>
-      <div class="send a" id="send" style="animation-delay:1s"><svg class="env" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg><span>Peers</span><span>MPs</span><span>Ministers</span><span>Journalists</span></div>
+      <div class="send a" id="send" style="animation-delay:1s"><svg class="env" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg><span>Peers</span><span>MPs</span><span>Ministers</span></div>
     </section>
 
     <!-- sign -->
@@ -309,9 +325,11 @@ h2 em{font-style:normal;color:var(--gold)}
       <h2>Add your name</h2>
       <div class="row2"><label class="f"><span>First name</span><input id="fFirst" autocomplete="given-name"></label><label class="f"><span>Last name</span><input id="fLast" autocomplete="family-name"></label></div>
       <label class="f"><span>Email</span><input id="fEmail" type="email" autocomplete="email" inputmode="email"></label>
-      <label class="f"><span>Postcode</span><input id="fPc" autocomplete="postal-code" style="text-transform:uppercase"></label>
+      <label class="f" id="pcBox"><span>Postcode</span><input id="fPc" autocomplete="postal-code" style="text-transform:uppercase"></label>
+      <label class="f" id="ctyBox" hidden><span>Country</span><input id="fCty" autocomplete="country-name"></label>
+      <div class="pcrow"><button type="button" class="lnk" id="abroadBtn">Not in the UK?</button></div>
       <p class="ask2">Can we email you when it’s time to act?</p>
-      <div class="pills" role="radiogroup"><button type="button" class="pill" role="radio" aria-checked="false" data-v="yes">Yes</button><button type="button" class="pill" role="radio" aria-checked="false" data-v="no">No</button></div>
+      <div class="pills" role="radiogroup" aria-label="Can we email you when it’s time to act?"><button type="button" class="pill" role="radio" aria-checked="true" data-v="yes">Yes</button><button type="button" class="pill" role="radio" aria-checked="false" data-v="no">No</button></div>
       <span class="err" id="signErr"></span>
       <button class="btn" id="signBtn">Sign the petition</button>
       <p class="stmt" style="margin-top:16px">You’re signing: end the carve-out for lawmakers (MPs, peers, MSPs, MSs and MLAs) from the duty of candour and the offence of misleading the public in the Public Office (Accountability) Bill, for reckless or intentionally deceitful acts outside the proceedings of their parliaments: on TV and radio, on social media, at events, etc. <a href="/terms/#petitions" target="_blank" rel="noopener">Terms and privacy</a>.</p>
@@ -320,22 +338,34 @@ h2 em{font-style:normal;color:var(--gold)}
     <!-- confirm -->
     <section class="s mid" id="sCode" hidden data-gate="sign">
       <h2>Check your email</h2>
-      <p class="p">We’ve sent a 6-digit code to <b id="cEmail" style="color:#fff">your email</b>. Type it in to confirm. Only confirmed signatures count.</p>
-      <div class="code" id="code"><input inputmode="numeric" maxlength="1" aria-label="Digit 1"><input inputmode="numeric" maxlength="1" aria-label="Digit 2"><input inputmode="numeric" maxlength="1" aria-label="Digit 3"><input inputmode="numeric" maxlength="1" aria-label="Digit 4"><input inputmode="numeric" maxlength="1" aria-label="Digit 5"><input inputmode="numeric" maxlength="1" aria-label="Digit 6"></div>
-      <div class="ok" id="codeOk"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5 9-10"/></svg>Confirmed. You’re signer number <span id="myNo">18,001</span>.</div>
-      <p class="small" id="codeHint">Preview: type any six numbers.</p>
+      <p class="p" id="codeTxt">We’ve sent a six digit code to your email. Type it in to confirm. Only confirmed signatures count.</p>
+      <div class="code" id="code"><input inputmode="numeric" autocomplete="one-time-code" aria-label="Digit 1"><input inputmode="numeric" aria-label="Digit 2"><input inputmode="numeric" aria-label="Digit 3"><input inputmode="numeric" aria-label="Digit 4"><input inputmode="numeric" aria-label="Digit 5"><input inputmode="numeric" aria-label="Digit 6"></div>
+      <span class="err" id="codeErr"></span>
+      <div class="ok" id="codeOk"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5 9-10"/></svg><span id="codeOkT">Confirmed.</span></div>
+      <p class="small" id="codeMore">Not there? Check your junk or spam folder. <button type="button" class="lnk" id="resend">Send it again</button> · <button type="button" class="lnk" id="changeEmail">Change email</button></p>
+      <p class="small" id="codeNote" style="margin-top:8px;color:var(--t2)"></p>
     </section>
 
     <!-- the six questions are added here, one slide each -->
 
+    <!-- their own words (optional), as on the current form -->
+    <section class="s mid" id="sQuote" hidden data-gate="code">
+      <p class="k a">In your own words</p>
+      <h2 class="a">How do you feel about lawmakers leaving themselves out?</h2>
+      <label class="f a"><textarea id="quote" maxlength="200" rows="3" placeholder="Say it the way you’d say it to your MP." aria-label="In your own words"></textarea><span class="qcount" id="qCount">200</span></label>
+      <span class="err" id="quoteErr"></span>
+      <button class="btn gold a" id="quoteBtn">Add my words</button>
+      <p class="small a" style="margin-top:12px">Optional. No swearing, abuse or threats. We may share your words with your first name and town, including with journalists.</p>
+    </section>
+
     <!-- MP -->
-    <section class="s mid" id="sMp" hidden data-gate="code">
+    <section class="s mid" id="sMp" hidden data-gate="mp">
       <h2>Now email your MP</h2>
-      <p class="p">It takes a minute. Sent from your own email, it counts as a real constituent.</p>
-      <div class="mp"><img id="mpImg" alt=""><div><b id="mpName">Your MP</b><span id="mpSeat">Found from your postcode</span></div></div>
-      <div class="letter"><button class="copy" id="mpCopy" aria-label="Copy the letter" title="Copy the letter"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button><span id="letter"></span></div>
-      <button class="btn" id="mpOpen">Open the email</button>
-      <p class="small" id="copied" style="text-align:center;margin-top:10px;min-height:18px"></p>
+      <div class="mp"><img id="mpImg" alt="" hidden><div><b><span id="mpName">Your MP</span> <span class="from" id="mpFrom"></span></b><span id="mpSeat"></span></div></div>
+      <p class="p" style="font-size:14px;margin-bottom:12px">Copy these into an email from your own address. It takes a minute.</p>
+      <div class="cp"><span class="cp-l">To</span><span class="cp-v" id="mpMail"></span><button class="cp-b" type="button" data-copy="mpMail">Copy</button></div>
+      <div class="cp"><span class="cp-l">Subject</span><span class="cp-v" id="mpSubj"></span><button class="cp-b" type="button" data-copy="mpSubj">Copy</button></div>
+      <div class="cp cp-msg"><span class="cp-l">Message</span><span class="cp-v" id="mpMsg"></span><button class="cp-b" type="button" data-copy="mpMsg">Copy</button></div>
     </section>
 
     <!-- wins: press -->
@@ -386,7 +416,10 @@ h2 em{font-style:normal;color:var(--gold)}
     <!-- the plan -->
     <section class="s s-plan" hidden data-gate="code">
       <div class="bleed"><span class="badge">&#10003; Booked and paid for</span></div>
-      <h2 class="a">Coming next: <em>our Tube poster at Westminster</em>, the station beside Parliament</h2>
+      <p class="k a">Coming next</p>
+      <h2 class="a">Our poster at <em>Westminster Tube station</em></h2>
+      <p class="p a" style="margin-bottom:10px">The station is underneath Parliament. It’s the one politicians, their staff and journalists go through.</p>
+      <p class="p a">Our aim: to humiliate politicians into including themselves, and show them how much the public will hate them if they exclude themselves.</p>
       <p class="lbl a">After that</p>
       <ul class="nx">
         <li style="animation-delay:.3s"><b>1</b>Billboards</li>
@@ -398,19 +431,23 @@ h2 em{font-style:normal;color:var(--gold)}
 
     <!-- give -->
     <section class="s mid" id="sGive" hidden data-gate="code">
+      <div id="ask">
       <div class="me a"><img src="media/marcus.jpg" alt="Marcus J Ball"><p>“We believe we’re likely to win this vote. Your money puts it in front of millions more people before it happens. Join us.”<small>Marcus J Ball · Photo: Alexander Hansez</small></p></div>
       <h2 class="a">Help us win this vote</h2>
       <div class="freq a" role="radiogroup"><button type="button" class="sel" data-f="once">One-off</button><button type="button" data-f="monthly">Monthly</button></div>
       <div class="amts a"><button class="amt" data-a="10">£10</button><button class="amt sel" data-a="20">£20</button><button class="amt" data-a="50">£50</button><button class="amt" data-a="other">Other</button></div>
-      <label class="f other" id="otherBox"><span>Your amount (£10 or more)</span><input id="otherAmt" inputmode="decimal"></label>
-      <button class="btn a" id="giveBtn" style="margin-top:6px">Give £20</button>
-      <p class="small a" style="text-align:center;margin-top:10px">Secure card payment by Stripe. Preview: no payment is taken.</p>
+      <label class="f other" id="otherBox"><span>Your amount (£10 or more)</span><input id="otherAmt" inputmode="numeric"></label>
+      <span class="err" id="giveErr"></span>
+      <button class="btn a" id="giveBtn">Give £20</button>
+      <p class="small a" id="giveFine" style="text-align:center;margin-top:10px">Secure payment by Stripe.</p>
+      </div>
+      <div id="payWrap" hidden><button type="button" class="lnk" id="payBack">‹ Change the amount</button><div id="payBox"></div></div>
     </section>
 
     <!-- thanks -->
     <section class="s mid done" id="sDone" hidden data-gate="code">
-      <svg class="tickmark" viewBox="0 0 84 84"><circle cx="42" cy="42" r="40"/><path d="M27 43l10 10 20-22"/></svg>
-      <h2 class="a">Thank you<span id="dName"></span></h2>
+      <svg class="tickmark" id="dTick" viewBox="0 0 84 84"><circle cx="42" cy="42" r="40"/><path d="M27 43l10 10 20-22"/></svg>
+      <h2 class="a" id="dH">Thank you</h2>
       <p class="p a" id="dSub">You’re part of it now. When the vote comes, we’ll email you who to write to and what to say.</p>
       <button class="btn gold a" id="shareBtn">Copy the link to share</button>
       <span class="note2" id="shareDone"></span>
@@ -432,6 +469,55 @@ h2 em{font-style:normal;color:var(--gold)}
   var fmt = function(n){ return Math.round(n).toLocaleString('en-GB'); };
   var esc = function(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); };
   var wait = function(f, ms){ return setTimeout(f, ms); };
+
+  /* ---- Central: the same calls as the current form (/petition/sign/) ---- */
+  var DEMO = /[?&]demo=1\b/.test(location.search);        // ?demo=1 records nothing: any six numbers confirm
+  var REF = ((location.search.match(/[?&](?:ref|utm_source)=([\w.\-]{1,40})/) || [])[1] ||
+    (function(){ try { return new URL(document.referrer).hostname; } catch (e) { return ''; } })()).slice(0, 40);
+  var AB = 'jy-jy-jy-code';      // the journey; ending in "-code" makes Central put the six digit code in the email
+  var SG = {sig: 0, key: '', confirmed: false, backer: false, paid: false};
+  function post(path, body, keep){
+    if (DEMO && /^petition\//.test(path)) return Promise.resolve(demoAnswer(path));
+    return fetch(API + path, {method: 'POST', body: JSON.stringify(body), keepalive: !!keep, headers: {'Content-Type': 'text/plain;charset=UTF-8'}})
+      .then(function(r){ return r.json().catch(function(){ return {ok: false}; }); });
+  }
+  function demoAnswer(path){
+    if (path === 'petition/sign') return {ok: true, sig: 1, key: 'demo', town: 'Norwich'};
+    if (path === 'petition/confirm-code') return {ok: true, number: (target || 18000) + 1};
+    return {ok: true};
+  }
+  function getJson(path){ return fetch(API + path, {cache: 'no-store'}).then(function(r){ return r.json(); }); }
+  function beacon(path, o){
+    if (DEMO) return;
+    try {
+      var b = JSON.stringify(o);
+      if (navigator.sendBeacon) navigator.sendBeacon(API + path, new Blob([b], {type: 'text/plain'}));
+      else fetch(API + path, {method: 'POST', body: b, keepalive: true, headers: {'Content-Type': 'text/plain'}});
+    } catch (e) {}
+  }
+  /* this browser's own key, shared with the current form: signing again from the same browser finds the same signature */
+  function browserKey(){
+    var k = '';
+    try { k = localStorage.getItem('ep_petition_key') || ''; } catch (e) {}
+    if (!/^[A-Za-z0-9_-]{20,64}$/.test(k)){
+      var a = new Uint8Array(18); (window.crypto || window.msCrypto).getRandomValues(a);
+      k = Array.prototype.map.call(a, function(b){ return ('0' + b.toString(16)).slice(-2); }).join('');
+      try { localStorage.setItem('ep_petition_key', k); } catch (e) {}
+    }
+    return k;
+  }
+  /* how far each signer gets, for the funnel (the same step names as the current form) */
+  var sent = {};
+  function stepEv(name, detail){ if (SG.sig && SG.key) beacon('petition/step', {sig: SG.sig, key: SG.key, step: name, detail: detail || ''}); }
+  function stepOnce(name, detail){ if (!sent[name]){ sent[name] = 1; stepEv(name, detail); } }
+  /* where people stop on the signing slide: the field's name and the error, never what was typed */
+  var form = {started: false, signed: false, last: '', left: false};
+  function formEv(e, f, d){ beacon('petition/form', {v: browserKey(), e: e, f: f || '', d: d || '', ref: REF, ab: AB}); }
+  (function(){
+    var sid = '';
+    try { sid = localStorage.getItem('mjb_sid') || ''; if (!sid){ sid = 's_' + Math.random().toString(36).slice(2) + Date.now().toString(36); localStorage.setItem('mjb_sid', sid); } } catch (e) {}
+    beacon('analytics', {site: 'execprosec', event: 'pageview', page: location.pathname.slice(0, 300), label: AB, session_id: sid, referrer: (document.referrer || '').slice(0, 300)});
+  })();
 
   /* ---- size: a phone gets the whole screen, a computer a tall card ---- */
   var vh = +((location.search.match(/[?&]vh=(\d{3,4})/) || [])[1]) || window.innerHeight;
@@ -455,7 +541,7 @@ h2 em{font-style:normal;color:var(--gold)}
   ];
   var SCALE = [['Strongly agree', 2], ['Agree', 1], ['Not sure', 0], ['Disagree', -1], ['Strongly disagree', -2]];
   var PARTIES = ['Labour', 'Conservative', 'Reform UK', 'Liberal Democrat', 'Green', 'SNP', 'Plaid Cymru', 'Another party', 'Didn’t vote', 'Prefer not to say'];
-  $('sMp').insertAdjacentHTML('beforebegin', QS.map(function(q, k){
+  $('sQuote').insertAdjacentHTML('beforebegin', QS.map(function(q, k){
     var head = '<section class="s mid" hidden data-gate="code" data-q="' + k + '"><p class="k a">' + (q.party ? 'One more thing' : 'Do you agree?') + ' · ' + (k + 1) + ' of 6</p>';
     if (q.party) return head + '<p class="qt a" style="margin-bottom:8px">' + esc(q.t) + '</p><p class="p a">' + esc(q.sub) + '</p><div class="party a">' +
       PARTIES.map(function(p, n){ return '<button type="button" class="pty" data-v="' + (n + 1) + '">' + esc(p) + '</button>'; }).join('') + '</div></section>';
@@ -507,7 +593,7 @@ h2 em{font-style:normal;color:var(--gold)}
   /* a mouse can drag the slides too, like a finger */
   var dx = null, sx = 0, sl = 0;
   track.addEventListener('pointerdown', function(e){
-    if (e.pointerType !== 'mouse' || e.button !== 0 || e.target.closest('input,button,a,.letter')) return;
+    if (e.pointerType !== 'mouse' || e.button !== 0 || e.target.closest('input,textarea,button,a,.cp,#payBox')) return;
     dx = 0; sx = e.clientX; sl = track.scrollLeft; track.classList.add('drag');
   });
   window.addEventListener('pointermove', function(e){ if (dx === null) return; dx = e.clientX - sx; track.scrollLeft = sl - dx; });
@@ -552,54 +638,222 @@ h2 em{font-style:normal;color:var(--gold)}
     [].forEach.call(sp, function(x, k){ x.classList.toggle('lit', k < n); });
   }, 650);
 
-  /* ---- sign (preview: checked here, sent nowhere) ---- */
-  var consent = '';
+  /* ---- sign: the same checks and the same call as the current form ---- */
+  var consent = 'yes', abroad = false, signing = false;      // Yes is chosen already (Marcus, 10 Nov 2026)
+  var NAME = /^[\p{L}][\p{L}'’‘ .\-]{0,49}$/u, EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/, PCRE = /^[A-Z]{1,2}\d[A-Z\d]?\d[A-Z]{2}$/;
+  var FIELD = {fFirst: 'first', fLast: 'last', fEmail: 'email', fPc: 'pc', fCty: 'cty'};
+  function formField(f){
+    if (!form.started){ form.started = true; formEv('start', f); }
+    if (f !== form.last){ form.last = f; formEv('field', f); }
+  }
+  $('sSign').addEventListener('focusin', function(e){ if (FIELD[e.target.id]) formField(FIELD[e.target.id]); });
+  function formLeave(){ if (form.started && !form.signed && !form.left){ form.left = true; formEv('leave', form.last); } }
+  window.addEventListener('pagehide', formLeave);
+  document.addEventListener('visibilitychange', function(){ if (document.hidden) formLeave(); else form.left = false; });
   [].forEach.call(document.querySelectorAll('.pill'), function(b){
-    b.addEventListener('click', function(){ consent = b.dataset.v; [].forEach.call(document.querySelectorAll('.pill'), function(x){ x.setAttribute('aria-checked', x === b); }); });
+    b.addEventListener('click', function(){ consent = b.dataset.v; formField('consent'); [].forEach.call(document.querySelectorAll('.pill'), function(x){ x.setAttribute('aria-checked', x === b); }); });
+  });
+  $('abroadBtn').addEventListener('click', function(){
+    abroad = !abroad;
+    $('pcBox').hidden = abroad; $('ctyBox').hidden = !abroad;
+    this.textContent = abroad ? 'I live in the UK' : 'Not in the UK?';
+    $(abroad ? 'fCty' : 'fPc').focus();
   });
   function bad(id, on){ $(id).closest('.f').classList.toggle('bad', on); return on; }
   function sign(){
-    var e = [];
-    me.first = $('fFirst').value.trim(); me.last = $('fLast').value.trim(); me.email = $('fEmail').value.trim(); me.pc = $('fPc').value.trim().toUpperCase();
-    if (bad('fFirst', !me.first)) e.push('your first name');
-    if (bad('fLast', !me.last)) e.push('your last name');
-    if (bad('fEmail', !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(me.email))) e.push('your email');
-    if (bad('fPc', !/^[A-Z]{1,2}\d[A-Z\d]?\s*\d[A-Z]{2}$/.test(me.pc))) e.push('a UK postcode');
-    if (!consent) e.push('whether we can email you');
-    $('signErr').textContent = e.length ? 'Please add ' + e.join(', ').replace(/, ([^,]*)$/, ' and $1') + '.' : '';
-    if (e.length) return;
-    $('cEmail').textContent = me.email; findMp(me.pc);
-    unlock('sign'); go(S.indexOf($('sSign')) + 1);
-    wait(function(){ $('code').querySelector('input').focus({preventScroll: true}); }, 550);
+    if (signing) return;
+    if (SG.confirmed) return go(S.indexOf($('sSign')) + 1);
+    me.first = $('fFirst').value.trim(); me.last = $('fLast').value.trim(); me.email = $('fEmail').value.trim();
+    var pc = $('fPc').value.trim().toUpperCase().replace(/\s+/g, ''), cty = $('fCty').value.trim(), e = [];
+    if (bad('fFirst', !NAME.test(me.first))) e.push('your first name');
+    if (bad('fLast', !NAME.test(me.last))) e.push('your last name');
+    if (bad('fEmail', !EMAIL.test(me.email))) e.push('your email address');
+    if (abroad){ bad('fPc', false); if (bad('fCty', cty.length < 2)) e.push('your country'); }
+    else { bad('fCty', false); if (bad('fPc', !PCRE.test(pc))) e.push('your full postcode, like ME13 8GD'); }
+    formEv('submit', form.last);
+    if (e.length){ $('signErr').textContent = 'Please add ' + e.join(', ').replace(/, ([^,]*)$/, ' and $1') + '.'; formEv('error', form.last, 'missing'); return; }
+    $('signErr').textContent = '';
+    signing = true; $('signBtn').textContent = 'Signing…';
+    var body = {first: me.first, last: me.last, email: me.email, consent: consent, key: browserKey(), ref: REF, ab: AB, website: ''};
+    if (abroad) body.country = cty; else body.pc = pc;
+    var done = function(){ signing = false; $('signBtn').textContent = 'Sign the petition'; };
+    post('petition/sign', body).then(function(d){
+      done();
+      if (!d || !d.ok){
+        var f = {first: 'fFirst', last: 'fLast', email: 'fEmail', pc: abroad ? 'fCty' : 'fPc', country: 'fCty'}[d && d.field];
+        if (f) bad(f, true);
+        $('signErr').textContent = (d && d.reason) || 'Something went wrong. Please try again.';
+        formEv('error', (d && d.field) || '', (d && d.reason) || ''); return;
+      }
+      form.signed = true; formEv('signed', form.last);
+      SG.sig = d.sig; SG.key = d.key || '';
+      me.first = me.first.charAt(0).toUpperCase() + me.first.slice(1);
+      me.last = me.last.charAt(0).toUpperCase() + me.last.slice(1);
+      me.town = d.town || 'the UK'; me.emailOk = consent === 'yes';
+      me.pc = abroad ? '' : pc.replace(/^(.+)(\d[A-Z]{2})$/, '$1 $2');
+      mp = null; if (!abroad) findMp(pc);
+      resetCode();
+      unlock('sign'); go(S.indexOf($('sSign')) + 1);
+      if (d.confirmed){ confirmed({already: true}); return; }
+      waitStart();
+      wait(function(){ if (SG.key) cins[0].focus({preventScroll: true}); }, 550);
+    }, function(){ done(); $('signErr').textContent = 'We couldn’t reach our server. Check your connection and try again.'; });
   }
   $('signBtn').addEventListener('click', sign);
 
-  /* ---- confirm code ---- */
-  var cins = [].slice.call($('code').querySelectorAll('input'));
+  /* ---- confirm: the six digit code from the email (or the link in it, on any device) ---- */
+  var cins = [].slice.call($('code').querySelectorAll('input')), checking = false;
+  function resetCode(){
+    cins.forEach(function(x){ x.value = ''; });
+    $('codeErr').textContent = ''; $('codeNote').textContent = '';
+    $('codeOk').classList.remove('show');
+    $('code').hidden = !SG.key; $('codeMore').hidden = false; $('resend').hidden = !SG.key;
+    $('codeTxt').innerHTML = SG.key
+      ? 'We’ve sent a six digit code to <b style="color:#fff">' + esc(me.email) + '</b>. Type it in to confirm. Only confirmed signatures count.'
+      : 'We’ve sent an email to <b style="color:#fff">' + esc(me.email) + '</b>. Tap <b style="color:#fff">Confirm my signature</b> in it. This moves on by itself once you have.';
+  }
   cins.forEach(function(inp, k){
     inp.addEventListener('input', function(){
-      inp.value = inp.value.replace(/\D/g, '').slice(-1);
-      if (inp.value && cins[k + 1]) cins[k + 1].focus({preventScroll: true});
-      if (cins.every(function(x){ return x.value; }) && !unlocked.code){
-        $('myNo').textContent = fmt((shown || 18000) + 1); $('codeOk').classList.add('show'); $('codeHint').hidden = true;
-        target++; if (!running){ running = true; setTimeout(step, 100); }
-        unlock('code'); if (document.activeElement) document.activeElement.blur();
-        var ci = S.indexOf($('sCode'));
-        wait(function(){ if (here() === ci) go(ci + 1); }, 1300);
-      }
+      var v = inp.value.replace(/\D/g, '');
+      if (v.length > 1) v.split('').slice(0, 6 - k).forEach(function(ch, j){ cins[k + j].value = ch; });   // the whole code pasted in one box
+      else inp.value = v;
+      $('codeErr').textContent = '';
+      var code = cins.map(function(x){ return x.value; }).join('');
+      if (code.length === 6) return checkCode(code);
+      var gap = cins.filter(function(x){ return !x.value; })[0];
+      if (v && gap) gap.focus({preventScroll: true});
     });
     inp.addEventListener('keydown', function(e){ if (e.key === 'Backspace' && !inp.value && cins[k - 1]) cins[k - 1].focus(); });
   });
+  function checkCode(code){
+    if (checking || SG.confirmed) return;
+    checking = true;
+    post('petition/confirm-code', {sig: SG.sig, key: SG.key, code: code}).then(function(d){
+      checking = false;
+      if (!d || !d.ok){
+        $('codeErr').textContent = (d && d.reason) || 'That code didn’t work. Check the email and type it again.';
+        cins.forEach(function(x){ x.value = ''; }); cins[0].focus(); return;
+      }
+      SG.backer = !!d.backer; confirmed(d);
+    }, function(){ checking = false; $('codeErr').textContent = 'Something went wrong. Try again in a moment.'; });
+  }
+  /* confirmed by the link instead (here or on another device): look every few seconds */
+  var waitT = 0, waitUntil = 0;
+  function waitStart(){ clearTimeout(waitT); if (DEMO) return; waitUntil = Date.now() + 30 * 60000; waitT = setTimeout(poll, 4000); }
+  function poll(){
+    waitT = 0;
+    if (SG.confirmed || !SG.sig || Date.now() > waitUntil) return;
+    if (document.hidden){ waitT = setTimeout(poll, 4000); return; }
+    getJson('petition/status?sig=' + SG.sig).then(function(d){
+      if (d && d.confirmed){ SG.backer = !!d.backer; confirmed({number: d.number}); }
+      else waitT = setTimeout(poll, 4000);
+    }, function(){ waitT = setTimeout(poll, 8000); });
+  }
+  document.addEventListener('visibilitychange', function(){ if (!document.hidden && waitT && !SG.confirmed){ clearTimeout(waitT); poll(); } });
+  $('resend').addEventListener('click', function(){
+    var b = this; b.disabled = true;
+    post('petition/resend', {sig: SG.sig, key: SG.key}).then(function(d){
+      b.disabled = false;
+      if (d && d.confirmed){ poll(); return; }
+      $('codeNote').textContent = d && d.ok ? 'Sent again to ' + me.email + '. It can take a minute to arrive.' : ((d && d.reason) || 'Please try again in a minute.');
+    }, function(){ b.disabled = false; $('codeNote').textContent = 'We couldn’t reach our server. Please try again.'; });
+  });
+  $('changeEmail').addEventListener('click', function(){ go(S.indexOf($('sSign'))); wait(function(){ $('fEmail').focus({preventScroll: true}); $('fEmail').select(); }, 600); });
+  function confirmed(d){
+    if (SG.confirmed) return;
+    SG.confirmed = true; clearTimeout(waitT);
+    var n = d.number || 0;
+    $('codeOkT').textContent = d.already ? 'You’ve already signed. Thank you, ' + me.first + '.' : n ? 'Confirmed. You’re signer number ' + fmt(n) + '.' : 'Confirmed. Thank you, ' + me.first + '.';
+    $('codeOk').classList.add('show'); $('code').hidden = true; $('codeMore').hidden = true; $('codeErr').textContent = ''; $('codeNote').textContent = '';
+    if (!d.already) feed();
+    if (abroad) dropMp();
+    unlock('code'); unlock('mp');
+    if (document.activeElement) document.activeElement.blur();
+    stepOnce('questions', 'journey');
+    var ci = S.indexOf($('sCode'));
+    wait(function(){ if (here() === ci) go(ci + 1); }, 1300);
+  }
+  /* nobody to write to from abroad: the MP slide goes */
+  function dropMp(){
+    var el = $('sMp'), i = S.indexOf(el); if (i < 0) return;
+    el.remove(); S.splice(i, 1); TOTAL = S.length;
+    $('dots').innerHTML = S.map(function(){ return '<i></i>'; }).join('');
+    draw(at);
+  }
 
   /* ---- questions: a tap saves the answer and moves on; swiping on skips ---- */
-  var answers = {};
+  var answers = {}, ansT;
   track.addEventListener('click', function(e){
     var b = e.target.closest('.opt, .pty'); if (!b) return;
     var sl = b.closest('.s'), k = +sl.dataset.q, mine = S.indexOf(sl);
     [].forEach.call(sl.querySelectorAll('.opt, .pty'), function(x){ x.classList.toggle('sel', x === b); });
     answers[QS[k].id] = +b.dataset.v;
+    clearTimeout(ansT); ansT = wait(function(){ sendAnswers(false, 0); }, 250);
     wait(function(){ if (here() === mine) go(mine + 1); }, 420);
   });
+  /* all the answers so far go each time, so a lost request costs nothing */
+  function sendAnswers(keep, tries){
+    var batch = {}, n = 0;
+    for (var id in answers){ batch[id] = answers[id]; n++; }
+    if (!n || !SG.key) return;
+    post('petition/answer', {sig: SG.sig, key: SG.key, answers: batch}, keep).then(function(){}, function(){ if (tries < 2) wait(function(){ sendAnswers(keep, tries + 1); }, 3000); });
+  }
+
+  /* ---- their own words: the same checks as the current form, and the server checks again ---- */
+  var MOD = JSON.parse(atob('eyJwIjpbImZ1Y2siLCJtb3RoZXJmdWNrIiwic2hpdCIsImN1bnQiLCJ3YW5rIiwidHdhdCIsImJvbG9jayIsImJhc3RhcmQiLCJiaXRjaCIsImFyc2Vob2xlIiwiYXNob2xlIiwiYmVsZW5kIiwiZmFnb3QiLCJyZXRhcmQiLCJzY3VtIiwiY29ja3N1Y2siLCJkaWNraGVhZCIsImtub2JoZWFkIiwidG9zc2VyIiwic3Bhc3RpYyIsInBhZWRvIiwibmlnZyIsImdvbHl3b2ciXSwiZSI6WyJuaWdnZXIiLCJuaWdnZXJzIiwibmlnZ2EiLCJuaWdnYXMiLCJuaWdhIiwibmlnYXMiLCJwYWtpIiwicGFraXMiLCJjaGluayIsImNoaW5rcyIsInNwaWMiLCJzcGljcyIsImtpa2UiLCJraWtlcyIsIndvZyIsIndvZ3MiLCJjb29uIiwiY29vbnMiLCJneXBvIiwiZ3lwcG8iLCJnaXBwbyIsInBpa2V5IiwicGlrZXlzIiwiZmFnIiwiZmFncyIsImR5a2UiLCJkeWtlcyIsInRyYW5ueSIsInRyYW5uaWVzIiwibW9uZyIsIm1vbmdzIiwibm9uY2UiLCJub25jZXMiLCJwZWRvIiwicGVkb3MiLCJzbHV0Iiwic2x1dHMiLCJ3aG9yZSIsIndob3JlcyIsInNsYWciLCJzbGFncyIsImRpY2siLCJkaWNrcyIsImNvY2siLCJjb2NrcyIsInByaWNrIiwicHJpY2tzIiwicGlzcyIsInBpc3NlZCIsInBpc3NpbmciLCJhcnNlIiwiYXJzZXMiLCJhc3MiLCJhc3NlcyIsImJsb29keSIsImRhbW4iLCJnb2RkYW1uIiwiYnVnZ2VyIiwiY3JhcCIsInNwYXoiLCJtdXp6aWUiLCJtdXp6aWVzIiwicmFnaGVhZCIsInJhZ2hlYWRzIiwidG93ZWxoZWFkIiwidG93ZWxoZWFkcyIsImRhcmtpZSIsImRhcmtpZXMiLCJzYW1ibyIsImphcCIsImphcHMiLCJnb29rIiwiZ29va3MiLCJuYXppIiwibmF6aXMiLCJiZWxsZW5kIiwiYm9sbG9ja3MiLCJ3YW5rZXIiLCJ3YW5rZXJzIl19'));
+  var collapse = function (w) { return w.replace(/([a-z])\1+/g, '$1'); };
+  var MOD_E = {}; MOD.e.forEach(function (w) { MOD_E[w] = 1; });
+  var MOD_P = MOD.p.map(collapse);
+  var plain = function (s) { return s.normalize('NFKD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[‘’]/g, "'"); };
+  var LEET = { '0': 'o', '1': 'i', '3': 'e', '4': 'a', '5': 's', '7': 't', '8': 'b', '@': 'a', '$': 's' };
+  function swears(s) {
+    var raw = plain(s).replace(/[0134578@$]/g, function (c) { return LEET[c]; }).split(/[^a-z]+/).filter(Boolean);
+    var words = raw.slice(), run = [];
+    raw.concat(['']).forEach(function (w) {          // "f u c k" and "f.u.c.k" join back into one word
+      if (w.length === 1) run.push(w); else { if (run.length >= 3) words.push(run.join('')); run = []; }
+    });
+    return words.some(function (w) {
+      var c = collapse(w);
+      if (MOD_E[w] || MOD_E[c] || /fuck|shit/.test(w)) return true;
+      return MOD_P.some(function (p) { return c.indexOf(p) === 0 || w.indexOf(p) === 0; });
+    });
+  }
+  var VIOLENCE = [
+    /\b(kill|shoot|hang|lynch|behead|stab|burn|execute|murder|hurt|attack|beat|punch)\s+(them|him|her|em|'em|all|every\w*|the\s+lot|these|those|mps?|peers?|politicians?|ministers?|you)\b/,
+    /\b(should|must|deserves?|ought|needs?|want)\s+(all\s+|both\s+)?(to\s+)?(be\s+)?(shot|hanged|hung|killed|executed|lynched|strung\s+up|burn(ed|t)|stabbed|beheaded|dead|murdered|beaten)\b/,
+    /\bstring\s+(them|him|her|you|em|'em)\s+(all\s+)?up\b/,
+    /\b(hope|wish|pray)\s+(they|he|she|you|u)\s+(all\s+)?(die|dies|rot|burn|suffer)\b/,
+    /\b(guillotine|firing\s+squad|gallows|noose|lynch\w*|pitchforks?|molotov|bomb(s|ing|ed)?|death\s+to)\b/
+  ];
+  var TOPIC = /\b(jews?|jewish|jewry|zionis[mt]s?|zion|israel(i|is)?|gaza|palestin\w*|antisemit\w*|holocaust)\b/;
+  // Naming a person goes to a check first: we may publish the quote, so we carry the risk of what it says.
+  var NAMES = /\b(starmer|sunak|johnson|boris|truss|cameron|blair|farage|badenoch|reeves|rayner|burnham|lammy|streeting|mahmood|davey|corbyn|patel|braverman|jenrick|tice|galloway|gove|hancock|mone|zahawi|mogg|miliband|sturgeon|swinney|lemos|hoyle|symonds|levitt|faulks|falkner|wolfson|anderson|cummings|trump)\b/;
+  function quoteCheck(t) {
+    var p = plain(t);
+    if (t.replace(/\s/g, '').length < 8) return { ok: false, msg: 'A few more words, please.' };
+    if (swears(t)) return { ok: false, msg: 'Please take out the swearing or offensive word. Quotes need to be fit to print.' };
+    if (TOPIC.test(p)) return { ok: false, msg: 'Please keep your words to this law and why it matters to you.' };
+    if (VIOLENCE.some(function (r) { return r.test(p); })) return { ok: false, msg: 'Please take out anything that sounds like violence or a threat. Anger is fine, threats are not.' };
+    if (/(https?:\/\/|www\.|\b[a-z0-9-]+\.(com|co\.uk|org|net|io|uk|info|ly|me)\b)/.test(p)) return { ok: false, msg: 'Please take out the web link.' };
+    if (/[^\s@]+@[^\s@]+\.[a-z]{2,}/.test(p) || /\+?\d[\d\s\-()]{9,}\d/.test(p)) return { ok: false, msg: "Please don't include email addresses or phone numbers." };
+    var letters = t.replace(/[^A-Za-z]/g, '');
+    if (letters.length >= 12 && letters.replace(/[^A-Z]/g, '').length / letters.length > 0.7) return { ok: false, msg: "Please don't write it all in capitals." };
+    if (/(.)\1{5,}/.test(t)) return { ok: false, msg: "Please don't repeat the same character over and over." };
+    return { ok: true, hold: NAMES.test(p) };
+  }
+  var quoteSent = false;
+  $('quote').addEventListener('input', function(){ $('qCount').textContent = 200 - this.value.length; $('quoteErr').textContent = ''; });
+  $('quoteBtn').addEventListener('click', function(){
+    var qi = S.indexOf($('sQuote')), t = $('quote').value.trim().replace(/\s+/g, ' ');
+    if (!t || quoteSent) return go(qi + 1);
+    var r = quoteCheck(t);
+    if (!r.ok){ $('quoteErr').textContent = r.msg; $('quote').focus(); return; }
+    quoteSent = true;
+    if (SG.key) post('petition/quote', {sig: SG.sig, key: SG.key, text: t}, true).catch(function(){});
+    this.textContent = 'Thank you';
+    wait(function(){ if (here() === qi) go(qi + 1); }, 700);
+  });
+  hooks.sQuote = function(){ sendAnswers(true, 0); stepOnce('statements_done'); };
 
   /* ---- your MP: found from the postcode (Parliament's own members service) ---- */
   var mp = null;
@@ -608,30 +862,77 @@ h2 em{font-style:normal;color:var(--gold)}
     fetch(api + 'Location/Constituency/Search?searchText=' + encodeURIComponent(pc) + '&skip=0&take=1').then(function(r){ return r.json(); }).then(function(r){
       var v = r.items[0].value, m = v.currentRepresentation.member.value;
       mp = {seat: v.name, name: m.nameDisplayAs, photo: m.thumbnailUrl || '', email: ''};
-      $('mpName').textContent = mp.name + ' MP'; $('mpSeat').textContent = 'MP for ' + mp.seat; if (mp.photo) $('mpImg').src = mp.photo;
-      letter();
+      mpDraw();
       return fetch(api + 'Members/' + m.id + '/Contact').then(function(c){ return c.json(); });
     }).then(function(c){
       var e = c.value.filter(function(x){ return x.typeId === 1 && x.email; })[0] || c.value.filter(function(x){ return x.email; })[0];
-      if (e && mp) mp.email = e.email.trim();
+      if (e && mp){ mp.email = e.email.trim(); mpDraw(); }
     }).catch(function(){});
   }
-  var SUBJ = 'Include all lawmakers under the Hillsborough Law';
-  function letterText(){
-    var others = shown ? fmt(shown - 1) : 'thousands of';
-    return 'Dear ' + (mp ? mp.name + ' MP' : '[your MP]') + ',\n\n' +
-      'I am your constituent' + (me.pc ? ' (' + me.pc + ')' : '') + '. Along with ' + others + ' other people, I have signed the petition to include all lawmakers under the Hillsborough Law, and I back the campaign behind it.\n\n' +
+  var MP_SUBJECT = 'Include all lawmakers under the Hillsborough Law';
+  /* the number of other signers is the live count, so the MP knows this is not one person */
+  function othersSigned(){ var n = Math.max(target || 0, shown || 0) - 1; return n >= 100 ? fmt(n) : ''; }
+  /* the letter, word for word as on the current form */
+  function mpLetter(html) {
+    var T = function (x) { return html ? esc(x) : x; };
+    var B = function (x) { return html ? '<b>' + esc(x) + '</b>' : x; };
+    var others = othersSigned();
+    return T('Dear ' + (mp ? mp.name + ' MP' : '[your MP]') + ',\n\n' +
+      'I am your constituent' + (me.pc ? ' (' + me.pc + ')' : '') + '. ' +
+      (others ? 'Along with ' + others + ' other people, I have signed the petition' : 'I have signed the petition') +
+      ' to include all lawmakers under the Hillsborough Law, and I back the campaign behind it.\n\n' +
       'I am writing to ask you to include yourself. The Public Office (Accountability) Bill will make it a crime for police officers, civil servants, soldiers, ministers and even the intelligence services to intentionally or recklessly mislead the public. But MPs, MSPs, MSs, MLAs and peers have a carve-out from their own law. Please vote to end that carve-out for lies told to the public outside their parliaments: on TV and radio, on social media and at public events.\n\n' +
-      '[The full letter then answers the Government’s lines one by one, as it does now.]\n\n' +
-      'Yours sincerely,\n' + ((me.first || '') + ' ' + (me.last || '')).trim();
+      'I do not want a reply that repeats the lines the Cabinet Office has written for MPs. The ExecProsec campaign, which is leading this petition, has read them all and concluded that none of them stands up, as the below makes clear:\n\n') +
+      B('1. Parliamentary privilege is not a barrier to including legislators') + T('\n' +
+      'The Government says parliamentary privilege protects what is said in Parliament. It still would. Our amendment does not threaten parliamentary privilege; it respects it completely. It only covers what legislators say to the public outside their parliaments.\n\n' +
+      'In fact, it goes further. The Senedd, the Scottish Parliament and the Northern Ireland Assembly do not have parliamentary privilege; they only have limited protection against claims of slander. As it is written, the Bill gives no immunity from prosecution for what is said in those parliaments. So at present, a government minister could be prosecuted for misleading the public if they chose to lie in the Senedd, the Scottish Parliament or the Northern Ireland Assembly. That is a major oversight in the Bill. Our amendment applies an immunity from prosecution for the new offences to proceedings in all of the UK\'s other parliaments, something the Government and the Bill have not even thought to do.\n\n') +
+      B('2. Parliament\'s existing procedures are no barrier to including legislators either') + T('\n' +
+      'The Government says Parliament regulates its own affairs. But Parliament\'s own rules only deal with what is said inside Parliament. They do not deal with lies told to the public outside Parliament. When a police officer or civil servant lies to the public, a jury decides. MPs and peers should be no different.\n\n') +
+      B('3. Legislators do not need executive power to be held to these offences') + T('\n' +
+      'The Government says backbench MPs and peers do not take decisions on behalf of the state. They do not need to. Backbenchers scrutinise the Government, vote on laws and public spending, and influence decisions of national importance. Most are elected by the public and trusted to report back on what the Government is doing, and when they speak to the public about it, the public must be able to trust them to tell the truth. Under our system, executive power is nothing without scrutiny from the opposition and the backbenches. If government ministers can be prosecuted for lying but shadow ministers and scrutinisers cannot, the system of checks and balances is thrown completely off balance when legislators communicate with the public.\n\n') +
+      B('4. Lying does not depend on access to secret government information') + T('\n' +
+      'The Government says backbench MPs and peers do not have access to the kind of information ministers have. That shows a complete misunderstanding of what lying is. A lie does not depend on access to the truth; it is the opposite of the truth. All it takes is a willingness to make things up.\n\n') +
+      B('5. Elections and prosecutions do two completely different things') + T('\n' +
+      'The Government says elected members are accountable to the public at elections. But elections decide who holds office, and they reflect the popularity of a party, its leader or its policies. A prosecution decides something else entirely: whether one person deliberately deceived the public. Only a jury, under careful analysis of the evidence at trial, can decide that. No election can.\n\n' +
+      'The parliamentary expenses scandal proves the point. Elected politicians went to prison for false expense claims. Being elected did not put them above the law; they faced justice, as everyone should. And peers never face an election at all.\n\n') +
+      B('6. The Government says this offence is targeting Hillsborough-style cover-ups, and it is not right to criminalise political speech') + T('\n' +
+      'Firstly, we are not attempting to criminalise political speech. Our aim is to make sure normal political debate, opinions, honest mistakes and broken promises can never be prosecuted.\n\n' +
+      'Secondly, nothing written in the Bill limits it to Hillsborough-style cover-ups. It should rightly cover cover-ups like Hillsborough, but it should equally cover lying to start a war or lying to manipulate the result of a referendum. The bar for a criminal conviction is high, but the range of situations the offence can cover is very broad, as it should be.\n\n') +
+      B('Conclusion:') + T('\n' +
+      'If Parliament votes to exempt its own members, I will feel angry and betrayed. A law for everyone else but not for the people who make it is a law for thee, but not for me. Such an act would destroy public trust in the UK\'s parliaments, as you would be telling us that you wanted the freedom to lie to us.\n\n' +
+      'It would show the public that you have not learnt your lesson after years of lying in politics, which we have endured from Iraq to the Brexit referendum to the scandals of the COVID-19 pandemic, and countless others. There is a reason politicians are among the least trusted professions in the whole country. Do you seriously want to do this? It would be the most damaging, reputationally self-harming thing imaginable for Parliament.\n\n' +
+      'The House of Lords votes next on this amendment. So far, more peers have spoken in favour of it than against it, so it seems likely the Lords will add it to the Bill. It will then come back to the Commons for final approval. Please tell me how you will vote when it does.\n\n' +
+      'Please do not send me lines written by the Cabinet Office: as set out above, they are meaningless. Every other objection the campaign has heard is answered in its briefing below. If your reply repeats one of them, I will take it that you have no real answer, and I will assume the worst.\n\n' +
+      'Detailed briefing: https://execprosec.org/amendments-briefing/\n\n' +
+      'Yours sincerely,\n' + me.first + ' ' + me.last + (me.pc ? '\n' + me.pc : ''));
   }
-  function letter(){ $('letter').textContent = letterText(); }
-  hooks.sMp = letter;
-  $('mpOpen').addEventListener('click', function(){
-    location.href = 'mailto:' + encodeURIComponent((mp && mp.email) || '') + '?subject=' + encodeURIComponent(SUBJ) + '&body=' + encodeURIComponent(letterText());
-  });
-  $('mpCopy').addEventListener('click', function(){
-    (navigator.clipboard && window.isSecureContext ? navigator.clipboard.writeText(letterText()) : Promise.reject()).then(function(){ $('copied').textContent = 'Letter copied. Paste it into an email to your MP.'; }, function(){ $('copied').textContent = 'Copying is blocked here. Use Open the email.'; });
+  /* the name, and where it came from: most people don't know who their MP is (Marcus, 10 Nov 2026) */
+  function mpDraw(){
+    $('mpName').textContent = mp ? mp.name + ' MP' : 'Your MP';
+    $('mpFrom').textContent = me.pc ? '(based on the postcode you gave us: ' + me.pc + ')' : '';
+    $('mpSeat').textContent = mp ? 'MP for ' + mp.seat : 'We couldn’t look up your MP just now. Find their email at members.parliament.uk';
+    if (mp && mp.photo){ $('mpImg').src = mp.photo; $('mpImg').hidden = false; } else $('mpImg').hidden = true;
+    $('mpMail').textContent = mp && mp.email ? mp.email : 'Your MP’s email address appears here';
+    document.querySelector('[data-copy="mpMail"]').disabled = !(mp && mp.email);
+    $('mpSubj').textContent = MP_SUBJECT;
+    $('mpMsg').innerHTML = mpLetter(true);
+  }
+  hooks.sMp = function(){ mpDraw(); stepOnce('mp_seen'); };
+  function selectText(el){ var r = document.createRange(); r.selectNodeContents(el); var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r); }
+  [].forEach.call(document.querySelectorAll('.cp-b'), function(b){
+    b.addEventListener('click', function(){
+      var id = b.getAttribute('data-copy'), text = $(id).textContent;
+      var shown_ = function(){ b.classList.add('done'); b.textContent = 'Copied'; stepEv('mp_copied', id); };
+      var fail = function(){ selectText($(id)); b.textContent = 'Selected'; };
+      /* the letter goes as rich text too, so its bold titles stay bold when pasted into an email */
+      if (id === 'mpMsg' && window.ClipboardItem && navigator.clipboard && navigator.clipboard.write){
+        navigator.clipboard.write([new ClipboardItem({
+          'text/html': new Blob(['<div>' + mpLetter(true).replace(/\n/g, '<br>') + '</div>'], {type: 'text/html'}),
+          'text/plain': new Blob([mpLetter(false)], {type: 'text/plain'})
+        })]).then(shown_, function(){ navigator.clipboard.writeText(text).then(shown_, fail); });
+      } else if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(shown_, fail);
+      else fail();
+    });
   });
 
   /* ---- wins: social media, at last midnight's figures ---- */
@@ -689,33 +990,109 @@ h2 em{font-style:normal;color:var(--gold)}
     $('ticker').innerHTML = ''; $('ticker').appendChild(el);
   }, 2200);
 
-  /* ---- give (preview: no payment) ---- */
-  var freq = 'once', amt = 20;
-  function giveLabel(){ $('giveBtn').textContent = 'Give £' + amt + (freq === 'monthly' ? ' a month' : ''); }
+  /* ---- give: Stripe's card form opens here, as on the current form (one-off £20 first, £10 minimum) ---- */
+  var freq = 'once', amt = 20, other = false, checkout = null, paying = false;
+  function amount(){ return other ? Math.floor(+$('otherAmt').value || 0) : amt; }
+  function giveLabel(){
+    var a = amount();
+    $('giveBtn').textContent = a >= 10 ? 'Give £' + fmt(a) + (freq === 'monthly' ? ' a month' : '') : (freq === 'monthly' ? 'Give monthly' : 'Give');
+    $('giveFine').textContent = freq === 'monthly' ? 'Cancel any time. Secure payment by Stripe.' : 'Secure payment by Stripe.';
+    $('otherBox').querySelector('span').textContent = freq === 'monthly' ? 'Your amount each month (£10 or more)' : 'Your amount (£10 or more)';
+  }
   [].forEach.call(document.querySelectorAll('.freq button'), function(b){
-    b.addEventListener('click', function(){ freq = b.dataset.f; [].forEach.call(document.querySelectorAll('.freq button'), function(x){ x.classList.toggle('sel', x === b); }); giveLabel(); });
+    b.addEventListener('click', function(){ freq = b.dataset.f; [].forEach.call(document.querySelectorAll('.freq button'), function(x){ x.classList.toggle('sel', x === b); }); if (freq === 'once') stepEv('fund_once'); giveLabel(); });
   });
   [].forEach.call(document.querySelectorAll('.amt'), function(b){ b.addEventListener('click', function(){
     [].forEach.call(document.querySelectorAll('.amt'), function(x){ x.classList.toggle('sel', x === b); });
-    var o = b.dataset.a === 'other'; $('otherBox').classList.toggle('show', o);
-    if (o) { $('otherAmt').focus(); return; }
-    amt = +b.dataset.a; giveLabel();
+    other = b.dataset.a === 'other'; $('otherBox').classList.toggle('show', other); $('giveErr').textContent = '';
+    if (other) $('otherAmt').focus(); else amt = +b.dataset.a;
+    giveLabel();
   }); });
-  $('otherAmt').addEventListener('input', function(){ var v = Math.round(parseFloat($('otherAmt').value) || 0); if (v >= 10){ amt = v; giveLabel(); } });
-  $('giveBtn').addEventListener('click', function(){ go(at + 1); });
+  $('otherAmt').addEventListener('input', function(){ if (amount() >= 10) $('giveErr').textContent = ''; giveLabel(); });
+  function stripeJs(){
+    return new Promise(function(ok, fail){
+      if (window.Stripe) return ok();
+      var tag = document.createElement('script'); tag.src = 'https://js.stripe.com/v3/'; tag.onload = ok; tag.onerror = fail; document.head.appendChild(tag);
+    });
+  }
+  $('giveBtn').addEventListener('click', function(){
+    if (paying) return;
+    var a = amount(), btn = this;
+    if (a < 10){ $('giveErr').textContent = freq === 'monthly' ? 'The minimum is £10 a month.' : 'The minimum is £10.'; $('otherAmt').focus(); return; }
+    $('giveErr').textContent = ''; paying = true; btn.textContent = 'One moment…';
+    /* if Stripe sends them back to this page, this is what it needs to say thank you */
+    try { sessionStorage.setItem('ep_journey_me', JSON.stringify({first: me.first || '', emailOk: consent === 'yes', sig: SG.sig, key: SG.key})); } catch (e) {}
+    post('donate/session', {tier: freq === 'once' ? 'one_off_custom' : 'monthly_custom', amount: a, return_url: location.origin + location.pathname, in_place: true}).then(function(d){
+      if (!d || !d.ok || !d.client_secret) throw new Error('no checkout');
+      return stripeJs().then(function(){
+        return Stripe(d.publishable_key).initEmbeddedCheckout({clientSecret: d.client_secret, onComplete: function(){ showPaid(d.session_id); }});
+      });
+    }).then(function(ch){
+      checkout = ch; paying = false;
+      $('ask').hidden = true; $('payWrap').hidden = false;
+      ch.mount('#payBox');
+      stepEv('card_opened', (freq === 'once' ? 'once ' : 'monthly ') + a);
+      $('sGive').scrollTop = 0; giveLabel();
+    }).catch(function(){ paying = false; giveLabel(); $('giveErr').textContent = 'The card form didn’t load. Please try again in a moment.'; });
+  });
+  $('payBack').addEventListener('click', function(){
+    if (checkout){ try { checkout.destroy(); } catch (e) {} checkout = null; }
+    $('payBox').innerHTML = ''; $('payWrap').hidden = true; $('ask').hidden = false;
+  });
+  hooks.sGive = function(){ stepOnce('fund_seen'); };
 
   /* ---- thanks ---- */
+  function jump(i){ track.scrollLeft = i * track.clientWidth; activate(i); }
   hooks.sDone = function(){
-    $('dName').textContent = me.first ? ', ' + me.first : '';
+    if (SG.paid) return;
+    $('dTick').hidden = false;
+    $('dH').textContent = 'Thank you' + (me.first ? ', ' + me.first : '');
     $('dSub').textContent = consent === 'no' ? 'You’re part of it now. Share the petition: when the vote comes, every name on it counts.' : 'You’re part of it now. When the vote comes, we’ll email you who to write to and what to say.';
+    stepOnce('done');
   };
+  /* the card form says it is finished: check with Stripe that the money really moved, then say so */
+  function showPaid(id){
+    if (checkout){ try { checkout.destroy(); } catch (e) {} checkout = null; }
+    $('payBox').innerHTML = ''; $('payWrap').hidden = true; $('ask').hidden = false;
+    SG.paid = true;
+    var nm = me.first ? ', ' + me.first : '';
+    $('dTick').hidden = true; $('dH').textContent = 'Checking your payment…'; $('dSub').textContent = 'One moment while Stripe confirms it.';
+    jump(S.indexOf($('sDone')));
+    getJson('donate/status?session_id=' + encodeURIComponent(id)).then(function(d){
+      try { history.replaceState({}, '', location.pathname + location.search.replace(/([?&])session_id=[^&]*&?/, '$1').replace(/[?&]$/, '')); } catch (e) {}
+      var paid = !!(d && d.ok && (d.paid === true || d.payment_status === 'paid'));
+      var pending = !paid && !!(d && d.ok && d.pending === true);
+      if (paid || pending){
+        var once = d.tier === 'one_off_custom', amt_ = d.amount_total ? '£' + Number(d.amount_total).toFixed(0) : '';
+        $('dTick').hidden = false;
+        $('dH').textContent = once ? 'Thank you' + nm + '. Your contribution is with us.' : 'Congratulations' + nm + '. You’re now funding us monthly.';
+        $('dSub').textContent = 'You’re part of this fight now. ' + (once ? (amt_ ? 'Your ' + amt_ : 'Your contribution') : (amt_ ? 'Your ' + amt_ + ' a month' : 'Your monthly backing')) +
+          ' helps pay for the Tube poster, the billboards and the newspaper adverts that make sure Parliament knows we’re watching. ' +
+          (pending ? (once ? 'Your Direct Debit payment leaves your account in a few working days. ' : 'Your Direct Debit is set up: the first payment leaves your account in a few working days, then every month. ') : '') +
+          (once ? 'Stripe has emailed your receipt.' : 'Stripe has emailed your receipt, with a link to change or stop it any time.');
+        stepEv('paid', (once ? 'once ' : 'monthly ') + (d.amount_total || ''));
+        return;
+      }
+      SG.paid = false;
+      jump(S.indexOf($('sGive')));
+      $('giveErr').textContent = 'That payment did not go through, and nothing has been taken. Try again, or use a card instead of a wallet.';
+    }).catch(function(){
+      $('dTick').hidden = false; $('dH').textContent = 'Thank you' + nm + '.'; $('dSub').textContent = 'Stripe will email you a receipt.';
+    });
+  }
   $('shareBtn').addEventListener('click', function(){
     var u = 'https://execprosec.org/petition/?ref=share';
-    (navigator.clipboard && window.isSecureContext ? navigator.clipboard.writeText(u) : Promise.reject()).then(function(){ $('shareDone').textContent = 'Link copied. Paste it into WhatsApp, an email or a post.'; },
+    (navigator.clipboard && window.isSecureContext ? navigator.clipboard.writeText(u) : Promise.reject()).then(function(){ $('shareDone').textContent = 'Link copied. Paste it into WhatsApp, an email or a post.'; stepEv('share_copied'); },
       function(){ $('shareDone').textContent = u; });
   });
 
-  activate(0);
+  /* back from Stripe (a payment that had to leave the page): straight to the thank-you */
+  var paidId = (location.search.match(/[?&]session_id=(cs_[A-Za-z0-9_]+)/) || [])[1];
+  if (paidId){
+    try { var sv = JSON.parse(sessionStorage.getItem('ep_journey_me') || '{}') || {}; me.first = sv.first || ''; consent = sv.emailOk ? 'yes' : 'no'; SG.sig = sv.sig || 0; SG.key = sv.key || ''; } catch (e) {}
+    SG.confirmed = true; unlock('sign'); unlock('code'); unlock('mp');
+    showPaid(paidId);
+  } else activate(0);
 })();
 </script>
 </body>

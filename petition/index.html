@@ -2011,20 +2011,29 @@ body.ticker-on .foot{padding-bottom:90px}
     if (arm !== 'a' && arm !== 'b') arm = Math.random() < 0.5 ? 'a' : 'b';
     try { localStorage.setItem('ep_pet_ab2', arm); } catch (e) {}
     if (signed && !/[?&]ab=/.test(q)) arm = '';
-    var SRC = ((q.match(/[?&](?:ref|utm_source)=([\w.\-]{1,36})/) || [])[1] || 'direct').replace(/-p[ab]$/, '');
-    var TAG = arm ? SRC + '-p' + arm : SRC;
+    /* The box test (Marcus, 10 Nov 2026): half of visitors get the current signing form in the box ("o", old), half the new
+       swipe journey at /petition/journey/ ("n", new). Each visitor keeps the same one. Signatures carry "-jo" or "-jn" after
+       the pop-up side (e.g. "ig-pb-jn"), so the two can be compared. ?journey=1 or ?journey=0 forces one. People who have
+       already signed are outside both tests and always get the current form. */
+    var box = ((q.match(/[?&]journey=([01])(?![\w])/) || [])[1] || '').replace('1', 'n').replace('0', 'o');
+    if (!box){ try { box = localStorage.getItem('ep_pet_box'); } catch (e) {} }
+    if (box !== 'o' && box !== 'n') box = Math.random() < 0.5 ? 'o' : 'n';
+    try { localStorage.setItem('ep_pet_box', box); } catch (e) {}
+    if (signed && !/[?&]journey=/.test(q)) box = 'o';
+    var SRC = ((q.match(/[?&](?:ref|utm_source)=([\w.\-]{1,34})/) || [])[1] || 'direct').replace(/(-p[ab])?(-j[on])?$/, '');
+    var TAG = arm ? SRC + '-p' + arm + '-j' + box : SRC;
     track('petition_ab', {label: (arm || 'signed') + ' ' + SRC});
+    if (arm) track('petition_box', {label: box + ' ' + SRC});
     var timer = null;
     function count(){ var el = document.querySelector('[data-t="signers"]'); $('spN').textContent = el && el.textContent.trim() ? el.textContent : 'thousands of'; }
     var ready = false, firstRef = '';
     function fallback(){
       if (ready) return;     /* the form has not shown after 8 seconds: offer the petition page itself, never an empty box */
-      $('spLoad').innerHTML = '<span>The form is taking a while to load.</span><a class="btn" href="/petition/sign/?ref=' + encodeURIComponent(firstRef) + '">Open the petition</a>';
+      $('spLoad').innerHTML = '<span>The form is taking a while to load.</span><a class="btn" href="' + (JOURNEY ? '/petition/journey/' : '/petition/sign/') + '?ref=' + encodeURIComponent(firstRef) + '">Open the petition</a>';
       fr.style.visibility = 'hidden';
     }
     /* the form loads quietly in the background soon after arrival, so it is ready the moment anyone opens the box */
-    /* ?journey=1 (preview, Marcus 10 Nov 2026): the new step-by-step journey instead of the current form */
-    var JOURNEY = /[?&]journey=1/.test(q);
+    var JOURNEY = box === 'n';
     if (JOURNEY) document.documentElement.classList.add('sp-journey');
     function preload(ref){ if (!fr.getAttribute('src')){ firstRef = ref; fr.src = (JOURNEY ? '/petition/journey/?embed=1&vh=' + window.innerHeight + '&vw=' + window.innerWidth + '&ref=' : '/petition/sign/?embed=1&ref=') + encodeURIComponent(ref); } }
     var waiting = false;
