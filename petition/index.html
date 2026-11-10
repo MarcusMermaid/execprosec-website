@@ -566,7 +566,7 @@ body.ticker-on .foot{padding-bottom:90px}
       <p class="kicker">Petition to press &amp; Parliament</p>
       <h1>Include all lawmakers under the <em>Hillsborough Law</em></h1>
       <div class="hero-cta"><a class="btn" href="/petition/sign/?ref=results-top">Sign the petition</a><span>It takes a minute.</span></div>
-      <p class="lead"><b>Parliament votes on this in December.</b> Parliamentarians and journalists will be sent the data from this petition in advance of that showdown vote.</p>
+      <p class="lead"><b>Parliament votes on this in December (expected).</b> Parliamentarians and journalists will be sent the data from this petition in advance of that showdown vote.</p>
       <p class="pet-stmt">End the carve-out for lawmakers (MPs, peers, MSPs, MSs and MLAs) from the duty of candour and the offence of misleading the public in the <a href="https://bills.parliament.uk/bills/4019" target="_blank" rel="noopener">Public Office (Accountability) Bill</a>,<sup><a href="https://bills.parliament.uk/publications/68275/documents/8957#sched_2__para_2__subpara_4__intro" target="_blank" rel="noopener" title="Source 1">1</a></sup> for reckless or intentionally deceitful acts outside the proceedings of their parliaments:<sup><a href="https://www.legislation.gov.uk/aep/WillandMarSess2/1/2/introduction" target="_blank" rel="noopener" title="Source 2">2</a></sup> on TV and radio, on social media, at events, etc.</p>
     </div>
     <div class="stage" id="stage">
@@ -725,7 +725,6 @@ body.ticker-on .foot{padding-bottom:90px}
           <video class="vf-vid" data-code="" data-label="voices" src="/what-the-public-think/media/voices.mp4" poster="/what-the-public-think/media/voices.jpg" muted loop playsinline preload="metadata" aria-label="Peers, MPs and the public, in their own words"></video>
           <button class="so-snd vf-snd" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="m22 9-6 6"/><path d="m16 9 6 6"/></svg><span>Tap for sound</span></button>
           <button class="so-snd so-restart" type="button" aria-label="Watch from the start with sound"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg><span>Start again</span></button>
-          <div class="so-hearts" aria-hidden="true"></div>
         </div>
         <figcaption>
           <b>Peers, MPs and the public, in their own words</b>
@@ -1925,7 +1924,7 @@ body.ticker-on .foot{padding-bottom:90px}
         }, {threshold: [0, 0.35, 0.6]}).observe(vid);
       }
       function heart(){
-        if (reduce || !onScreen || vid.paused || document.hidden) return;
+        if (!hearts || reduce || !onScreen || vid.paused || document.hidden) return;   /* no hearts on the voices video: not posted yet (Marcus, 10 Nov 2026) */
         var i = document.createElement('i'), c = COL[Math.floor(Math.random() * COL.length)];
         i.style.setProperty('--dx1', (Math.random() * 24 - 12) + 'px'); i.style.setProperty('--dx2', (Math.random() * 50 - 25) + 'px');
         i.style.animationDuration = (2.8 + Math.random() * 1.6) + 's'; i.style.setProperty('--sc', (0.75 + Math.random() * 0.3).toFixed(2));
