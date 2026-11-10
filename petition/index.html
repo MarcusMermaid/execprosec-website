@@ -2035,8 +2035,9 @@ body.ticker-on .foot{padding-bottom:90px}
     var m = $('spModal'), fr = $('spFrame'); if (!m) return;
     var q = location.search, arm = (q.match(/[?&]ab=([ab])(?![\w])/) || [])[1], signed = '';
     try { signed = localStorage.getItem('ep_petition_key') || ''; } catch (e) {}
-    if (!arm){ try { arm = localStorage.getItem('ep_pet_ab2'); } catch (e) {} }
-    if (arm !== 'a' && arm !== 'b') arm = Math.random() < 0.5 ? 'a' : 'b';
+    /* Test ended 10 Nov 2026 (Marcus, "Yes, do it"): the box on arrival won (42 confirmed per 100 visitors against 36),
+       so everyone who has not signed gets it. ?ab=a still shows the page without it. Signatures keep "-pb". */
+    if (arm !== 'a') arm = 'b';
     try { localStorage.setItem('ep_pet_ab2', arm); } catch (e) {}
     if (signed && !/[?&]ab=/.test(q)) arm = '';
     /* The box test (Marcus, 10 Nov 2026): half of visitors get the current signing form in the box ("o", old), half the new
