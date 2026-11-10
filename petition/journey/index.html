@@ -180,7 +180,7 @@ h2 em{font-style:normal;color:var(--gold)}
 /* wins: social, the videos behind */
 .s-social{justify-content:flex-end}
 .wall{position:absolute;inset:0;display:grid;grid-template-columns:repeat(3,1fr);gap:2px;overflow:hidden}
-.wall video{width:100%;height:100%;object-fit:cover;display:block}
+.wall video{width:100%;height:100%;object-fit:cover;display:block;filter:blur(1.5px) brightness(.85);transform:scale(1.04)}
 .wall:after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(4,20,64,.2) 0%,rgba(4,20,64,.55) 36%,rgba(4,20,64,.97) 66%)}
 .s-social>.k,.s-social>p,.s-social>.stats{position:relative;z-index:1}
 .hearts{position:absolute;right:10px;top:0;bottom:42%;width:56px;pointer-events:none;z-index:1}
@@ -386,7 +386,8 @@ h2 em{font-style:normal;color:var(--gold)}
     <!-- the plan -->
     <section class="s s-plan" hidden data-gate="code">
       <div class="bleed"><span class="badge">&#10003; Booked and paid for</span></div>
-      <h2 class="a">Next: <em>our Tube poster at Westminster</em>, the station beside Parliament</h2>
+      <h2 class="a">Coming next: <em>our Tube poster at Westminster</em>, the station beside Parliament</h2>
+      <p class="lbl a">After that</p>
       <ul class="nx">
         <li style="animation-delay:.3s"><b>1</b>Billboards</li>
         <li style="animation-delay:.45s"><b>2</b>Newspaper adverts</li>
