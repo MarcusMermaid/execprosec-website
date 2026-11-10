@@ -93,14 +93,14 @@ h2{font:400 clamp(30px,5vw,44px)/1.08 var(--f-display);letter-spacing:-.01em;mar
   background:radial-gradient(closest-side,rgba(221,188,102,.16),rgba(221,188,102,0));pointer-events:none;animation:drift 18s ease-in-out infinite alternate}
 @keyframes drift{to{transform:translate(-120px,80px)}}
 .hero-grid{display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);gap:28px 44px;align-items:center}
-.hero-grid .today-data{grid-column:1 / -1;margin-top:6px}
+.hero-grid .today-data{grid-column:1 / -1;margin-top:56px}
 @media(max-width:900px){.hero-grid{grid-template-columns:1fr}.stage{order:-1}}
-.hero h1{font:400 clamp(36px,5.2vw,64px)/1.03 var(--f-display);letter-spacing:-.015em;margin:0 0 18px;text-wrap:balance}
-.hero-cta{display:flex;flex-wrap:wrap;align-items:center;gap:12px 18px;margin:0 0 6px}
+.hero h1{font:400 clamp(34px,min(3.7vw,6.2vh),56px)/1.04 var(--f-display);letter-spacing:-.015em;margin:0 0 20px;text-wrap:balance}
+.hero-cta{display:flex;flex-wrap:wrap;align-items:center;gap:12px 18px;margin:0 0 24px}
 .hero-cta span{font-size:14px;color:var(--on-navy-2)}
 
 /* ---- the live stream (Marcus, 9 Nov 2026: "I want the top of the page to be alive") ---- */
-.stage{position:relative;display:flex;flex-direction:column;height:720px;border-radius:10px;overflow:hidden;
+.stage{position:relative;display:flex;flex-direction:column;height:clamp(440px,calc(100vh - 150px),720px);height:clamp(440px,calc(100svh - 150px),720px);border-radius:10px;overflow:hidden;
   background:radial-gradient(120% 80% at 50% 110%,rgba(221,188,102,.18),rgba(221,188,102,0) 60%),linear-gradient(180deg,#0b1f5c,#061650);
   border:1px solid var(--line-navy);box-shadow:0 30px 70px rgba(0,0,0,.35)}
 .stage-head{position:relative;z-index:3;padding:18px 20px 14px;background:linear-gradient(180deg,#0b1f5c 70%,rgba(11,31,92,0))}
@@ -138,7 +138,7 @@ h2{font:400 clamp(30px,5vw,44px)/1.08 var(--f-display);letter-spacing:-.01em;mar
 .squote cite{display:block;margin-top:8px;font:600 13.5px/1.2 var(--f-body);font-style:normal;color:var(--gold)}
 .stage.still .stream{display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start;gap:8px;padding:0 10px 10px}
 .stage.still .pill{position:static}
-@media(max-width:900px){.stage{height:640px}.squote{flex-basis:180px}}
+@media(max-width:900px){.stage{height:clamp(360px,50vh,560px);height:clamp(360px,50svh,560px)}.squote{flex-basis:180px}.hero{padding-top:16px}}
 @media(max-width:480px){.stage-head{padding:14px 16px 10px}.stage-head .today b{font-size:34px}.pill{font-size:13.5px}.squote p{font-size:16px}}
 
 /* ---- the sign bands ---- */
@@ -183,10 +183,10 @@ section.band{padding:8px 0}
 .cta-btns{display:flex;flex-wrap:wrap;justify-content:center;gap:14px}
 .cta .sb-done{display:block;margin-top:12px}
 .hero h1 em{font-style:normal;color:var(--gold)}
-.hero .lead{max-width:680px;font-size:clamp(17px,2.2vw,20px);color:var(--on-navy);margin:0 0 30px}
+.hero .lead{max-width:680px;font-size:clamp(16px,1.5vw,18px);color:var(--on-navy);margin:0 0 30px}
 .hero .lead b{color:var(--paper)}
 .hero .lead:has(+ .pet-stmt){margin-bottom:18px}
-.pet-stmt{max-width:680px;margin:0 0 30px;padding:4px 0 4px 18px;border-left:3px solid var(--gold);font-size:16.5px;line-height:1.55;color:var(--on-navy)}
+.pet-stmt{max-width:680px;margin:0;padding:4px 0 4px 18px;border-left:3px solid var(--gold);font-size:15.5px;line-height:1.55;color:var(--on-navy)}
 .pet-stmt a{color:var(--paper);text-decoration:underline;text-underline-offset:3px}
 .pet-stmt sup a{color:var(--gold);text-decoration:none;font-weight:700;padding:0 2px}
 .live{display:inline-flex;align-items:center;gap:8px;font-size:13.5px;color:var(--on-navy-2);margin:0 0 18px}
@@ -565,9 +565,9 @@ body.ticker-on .foot{padding-bottom:90px}
       <p class="live"><span class="dot"></span><span id="updated">Today’s results from the petition</span></p>
       <p class="kicker">Petition to press &amp; Parliament</p>
       <h1>Include all lawmakers under the <em>Hillsborough Law</em></h1>
+      <div class="hero-cta"><a class="btn" href="/petition/sign/?ref=results-top">Sign the petition</a><span>It takes a minute.</span></div>
       <p class="lead"><b>Parliament votes on this in December.</b> Parliamentarians and journalists will be sent the data from this petition in advance of that showdown vote.</p>
       <p class="pet-stmt">End the carve-out for lawmakers (MPs, peers, MSPs, MSs and MLAs) from the duty of candour and the offence of misleading the public in the <a href="https://bills.parliament.uk/bills/4019" target="_blank" rel="noopener">Public Office (Accountability) Bill</a>,<sup><a href="https://bills.parliament.uk/publications/68275/documents/8957#sched_2__para_2__subpara_4__intro" target="_blank" rel="noopener" title="Source 1">1</a></sup> for reckless or intentionally deceitful acts outside the proceedings of their parliaments:<sup><a href="https://www.legislation.gov.uk/aep/WillandMarSess2/1/2/introduction" target="_blank" rel="noopener" title="Source 2">2</a></sup> on TV and radio, on social media, at events, etc.</p>
-      <div class="hero-cta"><a class="btn" href="/petition/sign/?ref=results-top">Sign the petition</a><span>It takes a minute.</span></div>
     </div>
     <div class="stage" id="stage">
       <div class="stage-head">
