@@ -1364,6 +1364,56 @@ body.ticker-on .foot{padding-bottom:90px}
     track('click', {label: 'sign ' + base.split('ref=')[1] + ' sound-' + tag, href: a.getAttribute('href')});
   }, true);
 
+  /* -- how the page is used (Marcus, 10 Nov 2026): which sections people reach, how far down they scroll, how long they
+     are active, how much of each video plays and what they tap. Each is sent once per visit, so a visit sends a handful. -- */
+  (function(){
+    if (!TRACK) return;
+    var html = document.documentElement;
+    var secs = [].slice.call(document.querySelectorAll('section')).filter(function(s){ return !s.parentElement.closest('section'); });
+    secs.forEach(function(s, i){ s.dataset.mname = (i < 9 ? '0' : '') + (i + 1) + ' ' + (s.id || (s.className || '').split(' ')[0] || 'section'); });
+    /* a section counts as reached once its top comes into the upper 60% of the screen */
+    if ('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(es){
+        es.forEach(function(e){ if (!e.isIntersecting) return; io.unobserve(e.target); track('section_seen', {label: e.target.dataset.mname}); });
+      }, {rootMargin: '0px 0px -40% 0px'});
+      secs.forEach(function(s){ io.observe(s); });
+    }
+    /* how far down: 25, 50, 75 and 100 per cent of the page */
+    var sentD = {}, dT = 0;
+    function depth(){
+      dT = 0; var h = html.scrollHeight - window.innerHeight; if (h <= 0) return;
+      var pct = (window.pageYOffset || html.scrollTop) / h * 100;
+      [25, 50, 75, 100].forEach(function(m){ if (pct >= m - 2 && !sentD[m]){ sentD[m] = 1; track('scroll_depth', {label: String(m)}); } });
+    }
+    window.addEventListener('scroll', function(){ if (!dT) dT = setTimeout(depth, 400); }, {passive: true});
+    /* active time: the tab is in front and they touched, scrolled or typed in the last 30 seconds (or the signing box is open) */
+    var last = Date.now(), active = 0, steps = [10, 30, 60, 120, 300], si = 0;
+    ['scroll', 'pointermove', 'pointerdown', 'keydown', 'touchstart', 'wheel'].forEach(function(t){ window.addEventListener(t, function(){ last = Date.now(); }, {passive: true}); });
+    var tick = setInterval(function(){
+      var box = html.classList.contains('sp-open');
+      if (document.hidden || (!box && Date.now() - last > 30000)) return;
+      active += 5;
+      while (si < steps.length && active >= steps[si]){ track('time_active', {label: steps[si] + 's' + (box ? ' box' : ' page')}); si++; }
+      if (si >= steps.length) clearInterval(tick);
+    }, 5000);
+    /* how much of each video plays: a quarter, half, three quarters, all of it (and whether the sound was on) */
+    [].forEach.call(document.querySelectorAll('video'), function(v){
+      var lab = v.dataset.label || (v.id === 'soVid' ? 'they-admit-it' : v.id || 'video'), got = {};
+      v.addEventListener('timeupdate', function(){
+        if (!v.duration) return;
+        var p = v.currentTime / v.duration * 100;
+        [25, 50, 75, 95].forEach(function(m){ if (p >= m && !got[m]){ got[m] = 1; track('video_progress', {label: lab + ' ' + (m === 95 ? 100 : m) + (v.muted ? ' muted' : ' sound')}); } });
+      });
+    });
+    /* taps: which section, and on what (a link, a button, a video, a chart or plain text) */
+    var tapped = {};
+    document.addEventListener('click', function(e){
+      var t = e.target, s = t && t.closest ? t.closest('section') : null; if (!s || !s.dataset.mname) return;
+      var w = t.closest('a,button,video,svg,canvas,img'), key = s.dataset.mname + ' ' + (w ? w.tagName.toLowerCase() : 'text');
+      if (tapped[key]) return; tapped[key] = 1; track('tap', {label: key});
+    }, true);
+  })();
+
   /* -- sound: on unless the visitor turns it off (browsers only allow it after their first tap or click) -- */
   var audio = null, master = null, unlocked = false, muted = false;
   try { muted = localStorage.getItem('wtpt-sound-off') === '1'; } catch (e) {}
