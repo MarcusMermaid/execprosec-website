@@ -509,6 +509,7 @@ textarea:focus{outline:none;border-bottom-color:var(--gold)}
     }
     return k;
   }
+  browserKey();      // made on arrival, as the current form does, so both sides of the box test treat a returning visitor alike
   /* how far each signer gets, for the funnel (the same step names as the current form) */
   var sent = {};
   function stepEv(name, detail){ if (SG.sig && SG.key) beacon('petition/step', {sig: SG.sig, key: SG.key, step: name, detail: detail || ''}); }
