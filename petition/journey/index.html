@@ -484,6 +484,7 @@ h2 em{font-style:normal;color:var(--gold)}
     i = Math.max(0, Math.min(visible() - 1, i));
     track.scrollTo({left: i * track.clientWidth, behavior: reduce ? 'auto' : 'smooth'});
     draw(i);
+    wait(function(){ if (here() !== i && dx === null) { track.scrollLeft = i * track.clientWidth; activate(i); } }, 900);   // in case a browser drops the smooth scroll
   }
   var st;
   function here(){ return Math.round(track.scrollLeft / track.clientWidth); }
