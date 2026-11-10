@@ -317,7 +317,7 @@ textarea:focus{outline:none;border-bottom-color:var(--gold)}
     <section class="s s-intro" hidden data-gate="code">
       <div class="bleed"></div>
       <div class="hl"><span>Parliament is making it a crime</span><span>to lie to the public.</span><span>For nearly everyone,</span><span class="g">apart from the politicians making the law.</span></div>
-      <p class="live a" style="animation-delay:1.3s"><span class="pulse"></span><span><b data-n="signers">18,000</b> people have signed</span></p>
+      <p class="live a" style="animation-delay:1.3s"><span class="pulse"></span><span><b data-n="signers">18,000</b> people have signed, including you</span></p>
       <p class="hint">Swipe to see how we change that <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></p>
     </section>
 
@@ -778,6 +778,8 @@ textarea:focus{outline:none;border-bottom-color:var(--gold)}
     if (!d.already) feed();
     if (abroad) dropMp();
     unlock('code'); unlock('mp');
+    [].forEach.call($('sSign').querySelectorAll('input, .pill, #abroadBtn'), function(x){ x.disabled = true; });
+    $('signBtn').textContent = '✓ You’ve signed. Thank you.'; $('signBtn').classList.add('gold'); $('signErr').textContent = '';
     if (document.activeElement) document.activeElement.blur();
     stepOnce('questions', 'journey');
     var ci = S.indexOf($('sCode'));
