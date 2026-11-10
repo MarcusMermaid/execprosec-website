@@ -2243,6 +2243,12 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       document.querySelectorAll('.me-first').forEach(function (el) { el.textContent = S.me.first; });
       toPitch();
     }
+    else if (DEMO && /[?&]qs=1(?![0-9])/.test(q)) {           // ?demo=1&qs=1: straight to the statements, nothing recorded
+      S.signed = true; S.me = { first: 'Sam', last: 'Taylor', email: '', emailOk: true, town: 'Norwich', pc: 'NR2 2PW' };
+      S.mp = { seat: 'Your constituency', name: 'Jane Smith', party: 'Labour', email: 'your.mp@parliament.uk' };
+      document.querySelectorAll('.me-first').forEach(function (el) { el.textContent = S.me.first; });
+      buildLikert(); go(2, true);
+    }
     loadStats(true);
   }
   start();
