@@ -142,6 +142,10 @@ h2 em{font-style:normal;color:var(--gold)}
 .pill[aria-checked=true]{background:var(--gold);color:var(--navy);box-shadow:none}
 .pill[aria-checked=true]:before{content:'';width:18px;height:18px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23041440' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center/contain no-repeat}
 .pill:focus-visible{outline:3px solid rgba(221,188,102,.8);outline-offset:2px}
+/* 11 Nov 2026: the inbox button and the junk warning, as on the current form */
+.inbox{display:inline-flex;align-items:center;gap:8px;margin:2px 0 12px;padding:11px 18px;border-radius:9px;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.35);font:600 15px/1.2 var(--sans);color:#fff;text-decoration:none}
+.inbox:hover{box-shadow:inset 0 0 0 1.5px #fff}
+.junk{margin:0 0 10px;padding:10px 12px;border-left:3px solid var(--gold);background:rgba(221,188,102,.1);font-size:13.5px;line-height:1.45;color:#fff}
 .lnk{all:unset;cursor:pointer;font-size:12.5px;font-weight:600;color:var(--t2);text-decoration:underline;text-underline-offset:3px}
 .lnk:hover{color:#fff}
 .pcrow{display:flex;justify-content:flex-end;margin:-8px 0 10px}
@@ -316,7 +320,9 @@ textarea:focus{outline:none;border-bottom-color:var(--gold)}
       <div class="code" id="code"><input inputmode="numeric" autocomplete="one-time-code" aria-label="Digit 1"><input inputmode="numeric" aria-label="Digit 2"><input inputmode="numeric" aria-label="Digit 3"><input inputmode="numeric" aria-label="Digit 4"><input inputmode="numeric" aria-label="Digit 5"><input inputmode="numeric" aria-label="Digit 6"></div>
       <span class="err" id="codeErr"></span>
       <div class="ok" id="codeOk"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5 9-10"/></svg><span id="codeOkT">Confirmed.</span></div>
-      <p class="small" id="codeMore">Not there? Check your junk or spam folder. <button type="button" class="lnk" id="resend">Send it again</button> · <button type="button" class="lnk" id="changeEmail">Change email</button></p>
+      <a class="inbox" id="inboxBtn" href="#" target="_blank" rel="noopener" hidden></a>
+      <p class="junk" id="junkTxt" hidden></p>
+      <p class="small" id="codeMore"><span id="notThere">Not there? Check your junk or spam folder.</span> <button type="button" class="lnk" id="resend">Send it again</button> · <button type="button" class="lnk" id="changeEmail">Change email</button></p>
       <p class="small" id="codeNote" style="margin-top:8px;color:var(--t2)"></p>
     </section>
 
@@ -728,6 +734,30 @@ textarea:focus{outline:none;border-bottom-color:var(--gold)}
     $('codeTxt').innerHTML = SG.key
       ? 'We’ve sent a six digit code to <b style="color:#fff">' + esc(me.email) + '</b>. Type it in to confirm. Only confirmed signatures count.'
       : 'We’ve sent an email to <b style="color:#fff">' + esc(me.email) + '</b>. Tap <b style="color:#fff">Confirm my signature</b> in it. This moves on by itself once you have.';
+    inboxHelp(me.email);
+  }
+  /* 11 Nov 2026 (Marcus): a button straight to their inbox, and Hotmail, Outlook, Yahoo and AOL users told plainly
+     to look in Junk or Spam. Copied from the current form, where Hotmail users confirm far less often than Gmail's. */
+  var MAILBOXES = [
+    [/^(gmail|googlemail)\.com$/, 'Open Gmail', 'https://mail.google.com/mail/u/0/#search/from%3Aexecprosec+in%3Aanywhere'],
+    [/^(hotmail|outlook|live|msn)\.(com|co\.uk)$/, 'Open my Junk folder', 'https://outlook.live.com/mail/0/junkemail'],
+    [/^(yahoo|ymail)\.(com|co\.uk)$/, 'Open Yahoo Mail', 'https://mail.yahoo.com/'],
+    [/^aol\.(com|co\.uk)$/, 'Open AOL Mail', 'https://mail.aol.com/'],
+    [/^(icloud|me|mac)\.com$/, 'Open iCloud Mail', 'https://www.icloud.com/mail/'],
+    [/^(proton\.me|protonmail\.com)$/, 'Open Proton Mail', 'https://mail.proton.me/']
+  ];
+  var JUNK = [
+    [/^(hotmail|outlook|live|msn)\.(com|co\.uk)$/, 'Hotmail and Outlook often put our email in Junk. Please check your Junk folder, and if it’s there, click “Not junk”.'],
+    [/^(yahoo|ymail|aol)\.(com|co\.uk)$/, 'Yahoo and AOL sometimes put our email in Spam. Please check your Spam folder, and if it’s there, click “Not spam”.']
+  ];
+  function inboxHelp(email){
+    var dom = String(email || '').split('@')[1] || '', b = $('inboxBtn'), j = $('junkTxt'), box = null, junk = null;
+    dom = dom.toLowerCase();
+    MAILBOXES.forEach(function(m){ if (!box && m[0].test(dom)) box = m; });
+    JUNK.forEach(function(m){ if (!junk && m[0].test(dom)) junk = m; });
+    b.hidden = !box; if (box){ b.textContent = box[1] + ' ↗'; b.href = box[2]; }
+    j.hidden = !junk; j.textContent = junk ? junk[1] : '';
+    $('notThere').hidden = !!junk;
   }
   cins.forEach(function(inp, k){
     inp.addEventListener('input', function(){
@@ -781,7 +811,7 @@ textarea:focus{outline:none;border-bottom-color:var(--gold)}
     SG.confirmed = true; clearTimeout(waitT);
     var n = d.number || 0;
     $('codeOkT').textContent = d.already ? 'You’ve already signed. Thank you, ' + me.first + '.' : n ? 'Confirmed. You’re signer number ' + fmt(n) + '.' : 'Confirmed. Thank you, ' + me.first + '.';
-    $('codeOk').classList.add('show'); $('code').hidden = true; $('codeMore').hidden = true; $('codeErr').textContent = ''; $('codeNote').textContent = '';
+    $('codeOk').classList.add('show'); $('code').hidden = true; $('codeMore').hidden = true; $('inboxBtn').hidden = true; $('junkTxt').hidden = true; $('codeErr').textContent = ''; $('codeNote').textContent = '';
     if (!d.already) feed();
     if (abroad) dropMp();
     unlock('code'); unlock('mp');
