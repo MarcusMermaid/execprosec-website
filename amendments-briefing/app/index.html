@@ -1,0 +1,836 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Amendments Briefing | ExecProsec</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#041440;--navy2:#0a1b52;--deep:#020a24;--gold:#ddbc66;--gold2:#e8cf8a;--red:#d64045;--green:#3fb67b;
+  --t1:rgba(255,255,255,.94);--t2:rgba(255,255,255,.68);--t3:rgba(255,255,255,.44);--hair:rgba(255,255,255,.13);--fill:rgba(255,255,255,.06);
+  --serif:'DM Serif Display',Georgia,serif;--sans:'DM Sans',system-ui,-apple-system,sans-serif;--ease:cubic-bezier(.2,.8,.2,1);--px:24px}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0;height:100%}
+body{background:var(--deep);color:var(--t1);font:400 17px/1.5 var(--sans);-webkit-font-smoothing:antialiased;overflow:hidden}
+button{font:inherit;color:inherit;cursor:pointer}
+a{color:var(--gold)}
+
+/* the card: full screen on phones, a phone-sized card on computers */
+.app{position:fixed;inset:0;background:var(--navy);display:flex;flex-direction:column;overflow:hidden}
+@media (min-width:640px) and (min-height:620px){
+  .app{inset:auto;left:50%;top:50%;width:440px;height:min(880px,calc(100vh - 56px));transform:translate(-50%,-50%);border-radius:22px;
+    box-shadow:0 40px 100px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.06)}
+}
+
+/* top: back, progress by chapter, skip */
+.top{flex:0 0 auto;display:grid;grid-template-columns:40px 1fr auto;align-items:center;gap:10px;padding:max(10px,env(safe-area-inset-top)) 14px 8px;min-height:58px;z-index:3}
+.top.bare .prog,.top.bare .back,.top.bare .skip{visibility:hidden}
+.back{all:unset;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;cursor:pointer;color:var(--t2)}
+.back:hover{background:var(--fill);color:#fff}
+.back svg{width:20px;height:20px}
+.prog{display:flex;flex-direction:column;gap:6px;min-width:0}
+.segs{display:flex;gap:4px}
+.segs i{flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,.16);overflow:hidden;position:relative}
+.segs i b{position:absolute;inset:0;width:0;background:var(--gold);transition:width .45s var(--ease)}
+.plabel{font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--t3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.skip{all:unset;cursor:pointer;font-size:12px;font-weight:600;color:var(--t3);padding:6px 4px}
+.skip:hover{color:var(--gold)}
+
+/* screens */
+.stage{position:relative;flex:1 1 auto;overflow:hidden;touch-action:pan-y}
+.scr{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;padding:6px var(--px) 24px;display:flex;flex-direction:column;scrollbar-width:none}
+.scr::-webkit-scrollbar{display:none}
+.scr .grow{flex:1 1 auto}
+.mid>:first-child{margin-top:auto}.mid>:last-child{margin-bottom:auto}
+.in-f{animation:inF .42s var(--ease) both}.in-b{animation:inB .42s var(--ease) both}
+@keyframes inF{from{opacity:0;transform:translateX(34px)}to{opacity:1;transform:none}}
+@keyframes inB{from{opacity:0;transform:translateX(-34px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.in-f,.in-b{animation:none}}
+
+/* foot: one main button */
+.foot{flex:0 0 auto;padding:10px var(--px) max(16px,env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:8px;align-items:stretch;
+  background:linear-gradient(180deg,rgba(4,20,64,0),var(--navy) 30%)}
+.btn{all:unset;box-sizing:border-box;cursor:pointer;text-align:center;height:52px;border-radius:12px;background:var(--gold);color:var(--navy);
+  font-weight:700;font-size:16px;letter-spacing:.01em;display:flex;align-items:center;justify-content:center;transition:transform .12s,opacity .2s,background .2s}
+.btn:hover{background:var(--gold2)}
+.btn:active{transform:scale(.985)}
+.btn[disabled]{opacity:.32;pointer-events:none}
+.btn.ghost{background:transparent;color:var(--t1);box-shadow:inset 0 0 0 1px var(--hair)}
+.btn.ghost:hover{background:var(--fill)}
+.link{all:unset;cursor:pointer;text-align:center;font-size:14px;font-weight:500;color:var(--t2);padding:4px}
+.link:hover{color:#fff;text-decoration:underline}
+
+/* type */
+.kick{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin:6px 0 10px}
+h1{font:400 34px/1.1 var(--serif);margin:0 0 14px;letter-spacing:-.005em}
+h2{font:400 27px/1.15 var(--serif);margin:0 0 14px}
+p{margin:0 0 14px;color:var(--t2)}
+p.lead{font-size:19px;color:var(--t1)}
+.small{font-size:13px;line-height:1.5;color:var(--t3)}
+.gold,p.lead.gold{color:var(--gold)}
+ul.ticks{list-style:none;padding:0;margin:4px 0 16px}
+ul.ticks li{position:relative;padding:12px 0 12px 32px;border-top:1px solid var(--hair);color:var(--t1);font-size:16px}
+ul.ticks li:last-child{border-bottom:1px solid var(--hair)}
+ul.ticks li::before{content:'';position:absolute;left:2px;top:17px;width:16px;height:9px;border-left:2px solid var(--gold);border-bottom:2px solid var(--gold);transform:rotate(-45deg)}
+.src{font-size:12px;color:var(--t3);margin-top:auto;padding-top:14px}
+.src a{color:var(--t3)}
+
+/* welcome */
+.hello{align-items:center;text-align:center}
+.portrait{width:168px;height:168px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 3px var(--navy),0 0 0 5px var(--gold),0 18px 50px rgba(0,0,0,.5);margin:10px auto 22px;background:var(--navy2)}
+.initials{width:150px;height:150px;border-radius:50%;display:grid;place-items:center;font:400 52px var(--serif);color:var(--navy);background:var(--gold);margin:10px auto 22px}
+.hname{font:400 32px/1.1 var(--serif);margin:0 0 8px}
+.hline{font-size:15px;color:var(--t2);margin:0 0 22px;max-width:320px}
+.hsay{font:400 22px/1.3 var(--serif);font-style:italic;color:var(--t1);margin:0 0 10px;max-width:330px}
+.hmins{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:18px}
+.fine{font-size:12px;line-height:1.5;color:var(--t3);max-width:340px;margin:0 auto}
+.credit{font-size:10px;color:rgba(255,255,255,.3);margin-top:8px}
+
+/* guess grid */
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:8px 0 6px}
+.tile{all:unset;box-sizing:border-box;cursor:pointer;position:relative;display:flex;align-items:center;gap:10px;padding:12px;border-radius:12px;background:var(--fill);
+  box-shadow:inset 0 0 0 1px var(--hair);min-height:62px;font-size:15px;font-weight:500;line-height:1.2;transition:box-shadow .2s,background .2s}
+.tile:hover{background:rgba(255,255,255,.09)}
+.tile .ic{flex:0 0 38px;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.08);color:var(--gold)}
+.tile .ic svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.tile .ic img{width:38px;height:38px;border-radius:50%;object-fit:cover}
+.tile.on{box-shadow:inset 0 0 0 2px var(--gold);background:rgba(221,188,102,.1)}
+.tile.you{grid-column:span 2;justify-content:center}
+.tile .ic{position:relative}
+.tile .mark{position:absolute;right:-6px;bottom:-6px;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:700;box-shadow:0 0 0 2px var(--navy)}
+.tile .mark.y{background:var(--green);color:#fff}.tile .mark.n{background:var(--red);color:#fff}
+.tile.res{cursor:default}
+.tile.res.no{box-shadow:inset 0 0 0 2px var(--red);background:rgba(214,64,69,.12)}
+.verdict{font-size:14px;font-weight:600;margin:6px 0 12px}
+.verdict.ok{color:var(--green)}.verdict.bad{color:var(--gold)}
+
+/* quotes and faces */
+.who{display:flex;align-items:center;gap:12px;margin:2px 0 10px}
+.face{flex:0 0 52px;width:52px;height:52px;border-radius:50%;object-fit:cover;background:var(--navy2);box-shadow:0 0 0 2px rgba(255,255,255,.12)}
+.face.ini{display:grid;place-items:center;font:400 20px var(--serif);color:var(--navy);background:var(--t2)}
+.who b{display:block;font-size:15px;font-weight:600;color:var(--t1);line-height:1.25}
+.who span{display:block;font-size:12.5px;color:var(--t3);line-height:1.35}
+blockquote{margin:0 0 16px;padding:0 0 0 16px;border-left:3px solid var(--gold);font:400 20px/1.35 var(--serif);font-style:italic;color:var(--t1)}
+blockquote.sm{font-size:16px;border-left-color:rgba(255,255,255,.25)}
+.fact{font:400 25px/1.18 var(--serif);color:var(--gold);margin:0 0 16px}
+.closer{font-weight:700;color:var(--gold);font-size:16px;margin:4px 0 16px}
+.label{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);margin:14px 0 8px}
+.card{background:var(--fill);border-radius:14px;padding:16px;box-shadow:inset 0 0 0 1px var(--hair);margin:0 0 12px}
+
+/* choices */
+.opts{display:flex;flex-direction:column;gap:9px;margin:8px 0 6px}
+.opt{all:unset;box-sizing:border-box;cursor:pointer;display:flex;align-items:center;gap:12px;min-height:52px;padding:12px 16px;border-radius:12px;background:var(--fill);
+  box-shadow:inset 0 0 0 1px var(--hair);font-size:16px;font-weight:500;line-height:1.3;transition:box-shadow .15s,background .15s}
+.opt:hover{background:rgba(255,255,255,.09)}
+.opt .dot{flex:0 0 20px;width:20px;height:20px;border-radius:50%;box-shadow:inset 0 0 0 2px var(--t3);transition:box-shadow .15s}
+.opt.sq .dot{border-radius:6px}
+.opt.on{box-shadow:inset 0 0 0 2px var(--gold);background:rgba(221,188,102,.1)}
+.opt.on .dot{box-shadow:inset 0 0 0 6px var(--gold)}
+.opt.sq.on .dot{box-shadow:none;background:var(--gold) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5 10.5l3.2 3L15 7' fill='none' stroke='%23041440' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/18px no-repeat}
+.opt .tag{margin-left:auto;font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--gold);text-transform:uppercase}
+.row3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:6px 0 10px}
+.row3 .opt{justify-content:center;padding:12px 6px;min-height:48px}
+.row3 .opt .dot{display:none}
+textarea,input[type=text]{width:100%;box-sizing:border-box;background:rgba(255,255,255,.07);border:1px solid var(--hair);border-radius:12px;color:#fff;font:inherit;font-size:16px;padding:12px 14px;resize:none;outline:none}
+textarea:focus,input[type=text]:focus{border-color:var(--gold)}
+textarea{min-height:110px}
+.count{font-size:12px;color:var(--t3);text-align:right;margin-top:4px}
+.consent{display:flex;gap:12px;align-items:flex-start;padding:16px;border-radius:12px;background:var(--fill);box-shadow:inset 0 0 0 1px var(--hair);cursor:pointer;margin:6px 0 12px}
+.consent.on{box-shadow:inset 0 0 0 2px var(--gold)}
+.consent .box{flex:0 0 24px;width:24px;height:24px;border-radius:6px;box-shadow:inset 0 0 0 2px var(--t3);margin-top:1px}
+.consent.on .box{box-shadow:none;background:var(--gold) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5 10.5l3.2 3L15 7' fill='none' stroke='%23041440' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/20px no-repeat}
+.consent span{font-size:16px;color:var(--t1);line-height:1.4}
+
+/* numbers and bars */
+.big{font:400 64px/1 var(--serif);color:var(--gold);margin:4px 0 6px;font-variant-numeric:tabular-nums}
+.bars{display:flex;flex-direction:column;gap:10px;margin:8px 0 14px}
+.bar{display:grid;grid-template-columns:110px 1fr 46px;align-items:center;gap:10px;font-size:14px}
+.bar .tr{height:10px;border-radius:5px;background:rgba(255,255,255,.1);overflow:hidden}
+.bar .tr b{display:block;height:100%;width:0;background:var(--gold);border-radius:5px;transition:width 1s var(--ease)}
+.bar .v{text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+.stmt{font:400 18px/1.35 var(--serif);font-style:italic;color:var(--t1);margin:0 0 6px}
+.voice{padding:12px 0;border-top:1px solid var(--hair)}
+.voice:last-child{border-bottom:1px solid var(--hair)}
+.voice p{color:var(--t1);margin:0 0 4px;font-size:15.5px}
+.voice span{font-size:12.5px;color:var(--t3)}
+
+/* concern list */
+.clist{display:flex;flex-direction:column;gap:8px;margin:6px 0 12px}
+.citem{all:unset;box-sizing:border-box;cursor:pointer;display:flex;align-items:center;gap:12px;padding:13px 14px;border-radius:12px;background:var(--fill);box-shadow:inset 0 0 0 1px var(--hair);font-size:15px;font-weight:500}
+.citem:hover{background:rgba(255,255,255,.09)}
+.citem .l{flex:0 0 26px;height:26px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:700;background:rgba(255,255,255,.1);color:var(--gold)}
+.citem.done{opacity:.5}
+.citem.on{box-shadow:inset 0 0 0 2px var(--gold);background:rgba(221,188,102,.1)}
+.citem.on .l{background:var(--gold);color:var(--navy)}
+
+/* side arrows on computers */
+.side{position:fixed;top:50%;width:44px;height:44px;margin-top:-22px;border-radius:50%;border:0;background:rgba(255,255,255,.92);color:var(--navy);display:none;place-items:center;
+  box-shadow:0 6px 20px rgba(0,0,0,.4);z-index:20;transition:opacity .2s,transform .15s}
+.side:hover{transform:scale(1.06)}
+.side svg{width:20px;height:20px}
+.side.gone{opacity:0;pointer-events:none}
+@media (min-width:640px) and (min-height:620px) and (hover:hover){.side{display:grid}.side.prev{left:calc(50% - 290px)}.side.next{right:calc(50% - 290px)}}
+
+/* preview-only controls */
+.pv{position:fixed;left:16px;top:16px;z-index:30;display:flex;gap:8px;align-items:center}
+.pvbtn{all:unset;cursor:pointer;font-size:12px;font-weight:600;color:var(--t2);background:rgba(255,255,255,.08);padding:8px 12px;border-radius:999px;box-shadow:inset 0 0 0 1px var(--hair)}
+.pvbtn:hover{color:#fff;background:rgba(255,255,255,.14)}
+@media not ((min-width:640px) and (min-height:620px)){.pv{left:auto;right:12px;top:max(12px,env(safe-area-inset-top))}.pv .pvbtn{background:rgba(2,10,36,.82);backdrop-filter:blur(6px)}}
+.sheet{position:fixed;inset:0;z-index:40;background:rgba(0,0,0,.55);display:flex;align-items:flex-end;justify-content:center}
+.sheet .in{width:100%;max-width:440px;background:#0b1a4d;border-radius:18px 18px 0 0;padding:20px 20px max(20px,env(safe-area-inset-bottom));max-height:86vh;overflow:auto;animation:up .3s var(--ease)}
+@media (min-width:640px){.sheet{align-items:center}.sheet .in{border-radius:18px}}
+@keyframes up{from{transform:translateY(30px);opacity:0}to{transform:none;opacity:1}}
+.sheet h3{margin:0 0 4px;font:400 22px var(--serif)}
+.sheet .opt{margin-bottom:8px;width:100%}
+.sheet .btn{width:100%}
+.rec{font-size:13.5px;color:var(--t2)}
+.rec div{display:flex;gap:10px;padding:7px 0;border-top:1px solid var(--hair)}
+.rec div b{flex:0 0 42%;color:var(--t1);font-weight:600}
+</style>
+</head>
+<body>
+<div class="pv" id="pv" hidden><button class="pvbtn" id="pvBtn">Preview as: …</button></div>
+<button class="side prev gone" id="sPrev" aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+<button class="side next" id="sNext" aria-label="Next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+
+<main class="app" id="app">
+  <div class="top bare" id="top">
+    <button class="back" id="back" aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <div class="prog"><div class="segs" id="segs"></div><div class="plabel" id="plabel"></div></div>
+    <button class="skip" id="skip">Skip to my answers</button>
+  </div>
+  <div class="stage" id="stage"></div>
+  <div class="foot" id="foot"></div>
+</main>
+
+<script>
+(function(){
+'use strict';
+
+/* ------------------------------------------------------------------ people (preview only) */
+var PEOPLE = {
+  mp: {kind:'mp', house:'commons', name:'Ian Byrne MP', short:'Ian Byrne', line:'Member of Parliament for Liverpool West Derby since 2019',
+       photo:'img/byrne.jpg', credit:'Photo: UK Parliament (CC BY 3.0)', gss:'E14001341', seat:'Liverpool West Derby', town:'Liverpool',
+       record:'You signed Luke Myer’s Commons amendments to include MPs and peers. Thank you.', key:'byrne'},
+  minister: {kind:'minister', house:'lords', name:'The Lord Lemos CMG CBE', short:'Lord Lemos', line:'Member of the House of Lords since 2025 · Minister, Ministry of Justice',
+       photo:'img/lemos.jpg', credit:'Photo: UK Parliament (CC BY 3.0)', key:'lemos'},
+  peer: {kind:'peer', house:'lords', name:'The Rt Hon. the Lord Knight of Weymouth', short:'Lord Knight', line:'Member of the House of Lords since 2010',
+       photo:'img/knight.jpg', credit:'Photo: UK Parliament (CC BY 3.0)', key:'knight'},
+  mla: {kind:'devolved', house:'nia', name:'Dr Steve Aiken OBE MLA', short:'Dr Aiken', line:'Member of the Northern Ireland Assembly for South Antrim',
+       photo:'img/aiken.jpg', credit:'Photo: Northern Ireland Assembly', nation:'Northern Ireland', parl:'the Northern Ireland Assembly', key:'aiken'},
+  journalist: {kind:'journalist', name:'Liam Thorp', short:'Liam', line:'Political Editor, Liverpool Echo', ini:'LT', outlet:'the Liverpool Echo'},
+  official: {kind:'official', name:'A sample official', short:'', line:'Bill team, Ministry of Justice', ini:'MoJ'}
+};
+var PEOPLE_ORDER = [['mp','Ian Byrne MP','MP'],['minister','Lord Lemos','Minister in the Lords'],['peer','Lord Knight of Weymouth','Peer'],
+  ['mla','Dr Steve Aiken MLA','Devolved member'],['journalist','Liam Thorp','Journalist'],['official','A sample official','Civil servant']];
+
+/* ------------------------------------------------------------------ live numbers (fallback = 12 Nov 2026) */
+var LIVE = {signers:21411, reached:650, seats:{E14001341:26}, nations:{'Northern Ireland':202,'Scotland':1550,'Wales':927,'England':18291},
+  s7:[10833,435,31,13,196],
+  parties:{1:[2276,2334],2:[576,590],3:[1741,1807],4:[582,598],5:[1852,1897],6:[258,260]}};
+var PARTY = {1:'Labour',2:'Conservative',3:'Reform UK',4:'Lib Dem',5:'Green',6:'SNP'};
+
+/* ------------------------------------------------------------------ the concerns */
+var CONCERNS = [
+ {id:'A', label:'It would breach parliamentary privilege', q:'q1', fact:'Nothing said in Parliament can be touched.',
+  says:[{k:'thomas-symonds', who:'Rt Hon Nick Thomas-Symonds MP', role:'Minister for the Cabinet Office', when:'Letter, 20 January 2026',
+         text:'Parliamentary privilege applies to what is said in the House and this is a long-standing constitutional principle to protect debate.'}],
+  why:['Our amendment covers only what lawmakers say outside Parliament, and expressly excludes proceedings in all four UK parliaments.',
+       'The Government has since confirmed the courts would not set Article 9 aside.'],
+  also:{k:'wolfson', who:'Lord Wolfson of Tredegar', role:'Conservative', when:'House of Lords, 12 October 2026', text:'True it is that the Amendment 66A excludes what’s said in Parliament.'},
+  close:'Privilege stays exactly as it is.'},
+ {id:'B', label:'Parliament already polices its own members', q:'q2', fact:'Parliament’s rules cover misleading the House, not misleading the public.',
+  says:[{k:'levitt', who:'Baroness Levitt', role:'Minister, Ministry of Justice', when:'House of Lords, 26 February 2026',
+         text:'Parliament has its own arrangements for ensuring accuracy and truthfulness in proceedings, including processes for determining whether MPs have misled the other place…'},
+        {k:'lemos', who:'Lord Lemos', role:'Minister, Ministry of Justice', when:'House of Lords, 12 October 2026',
+         text:'Parliament has its own arrangements for ensuring accuracy and truthfulness in proceedings, including processes for determining whether Members have misled the House.'}],
+  why:['Those processes deal with proceedings. None of them deals with a lie told on television.',
+       'Ministers have the Ministerial Code, civil servants the Civil Service Code, the police their standards, and all of them are still covered.',
+       'When MPs made false expenses claims, the courts tried them (R v Chaytor, Supreme Court, 2010).'],
+  close:'Parliament’s rules and the criminal law already work side by side.'},
+ {id:'C', label:'Backbenchers don’t take decisions for the state', q:'q5', fact:'You need no secret information to tell a lie.',
+  says:[{k:'lemos', who:'Lord Lemos', role:'Minister, Ministry of Justice', when:'House of Lords, 12 October 2026',
+         text:'Back-Benchers do not take decisions on behalf of the state, nor do they have access to the kind of information that would be available to Ministers.'},
+        {k:'levitt', who:'Baroness Levitt', role:'Minister, Ministry of Justice', when:'House of Lords, 26 February 2026',
+         text:'individual MPs and Peers do not directly take decisions on behalf of the state, nor do they have access to the kind of government information that would be available to Ministers.'}],
+  why:['The offence is about misleading the public, not about taking decisions (clause 12(1)).',
+       'Backbenchers and peers vote on every law and every budget, and speak to the public every week.',
+       'If only Ministers are bound, the Government becomes the only side the law makes tell the truth. A Minister could say: believe us, not the opposition, because only we can be prosecuted.'],
+  close:'One standard for government and opposition keeps the balance.'},
+ {id:'D', label:'They’re elected, so voters should judge them', q:'q21', fact:'Being elected has never put anyone above the criminal law.',
+  says:[{k:'weatherby', who:'Pete Weatherby KC', role:'Hillsborough Law Now', when:'Liverpool Echo interview, 9 November 2026',
+         text:'But the reason MPs and peers aren’t included is because they are elected.'}],
+  why:['Peers are appointed, not elected. And the Bill already covers people chosen by voters: the Mayor of London, the metro mayors and elected council mayors (Schedule 2, paragraph 3(8), (10) and (11)).',
+       'Elections decide who holds office. A jury decides whether a crime was committed. The MPs jailed over expenses were elected too.'],
+  close:'Voters keep the final word on seats: a sitting member faces a fine, not prison.'},
+ {id:'E', label:'It would criminalise opinions and mistakes', q:'q10', fact:'Opinions, honest mistakes and broken promises are expressly protected.',
+  says:[{k:'fox', who:'Baroness Fox of Buckley', role:'Non-affiliated', when:'House of Lords, 12 October 2026',
+         text:'this bill is going to end up as some sort of ministry of truth'}],
+  why:['Our amendment says an opinion is not dishonest “merely because it is mistaken, unpopular or disputed”. Only deliberate or reckless deceit on serious matters is covered, and every part must be proved.',
+       'A jury of the public decides, and the Director of Public Prosecutions must consent first. Courts already separate false facts from argument: an election court did exactly that in the Woolas case in 2010.'],
+  close:'If you say what you believe, this law never touches you.'},
+ {id:'F', label:'It would be weaponised and chill debate', q:'q16', fact:'No case can even start without the Director of Public Prosecutions.',
+  says:[{k:'fox', who:'Baroness Fox of Buckley', role:'Non-affiliated', when:'House of Lords, 19 October 2026',
+         text:'I am worried that the provisions in Clause 12 will be weaponised'}],
+  why:['Every prosecution needs the DPP’s consent (Schedule 3, paragraph 2) and evidence of deliberate or reckless deceit. Nothing said in Parliament can be touched.',
+       'Some peers want the Attorney General, a political appointment, to approve each case instead. That would let a government protect its own.',
+       'Every other public official covered by this law lives with the same possibility of investigation.'],
+  close:'The safeguard is the evidence, tested by a jury, after an independent prosecutor agrees.'},
+ {id:'G', label:'It’s meant for cover-ups, not politics', q:'q12', fact:'Clause 12 is not limited to cover-ups.',
+  says:[{k:'thomas-symonds', who:'Rt Hon Nick Thomas-Symonds MP', role:'Minister for the Cabinet Office', when:'Letter, January 2026',
+         text:'It is intended to deter and punish state cover-ups.'}],
+  why:['Nothing in clause 12 limits it to disasters. The Government already accepts that lying to hide the cause of deaths should be a crime.',
+       'Lying to take the country to war, or to swing a referendum, does harm on the same scale.'],
+  close:'Serious deception of the public is serious, whoever does it.'},
+ {id:'H', label:'MPs can already be prosecuted for misconduct', q:'q26', fact:'This Bill abolishes the offence MPs could be prosecuted under.',
+  says:[{k:'levitt', who:'Baroness Levitt', role:'Minister, Ministry of Justice', when:'House of Lords, 26 February 2026',
+         text:'Both those two very broad offences do apply to MPs and Peers, as well as to a number of other public office holders, including judges.'}],
+  why:['The Bill replaces misconduct in public office with two new offences, and the Government confirms they cover MPs and peers (Schedule 4, paragraph 6(1)) with privilege untouched.',
+       'So clause 12 can cover them in exactly the same way. The one offence written for lying to the public is the one lawmakers are left out of.'],
+  close:'If the misconduct offences can include you safely, so can this one.'},
+ {id:'I', label:'Sometimes lying is necessary, as in war', q:'q30', fact:'The Bill already lets the armed forces and intelligence services deceive when their work requires it.',
+  says:[{k:'liddle', ini:'RL', who:'The late Rod Liddle', role:'Columnist', when:'The Times, headline of his column',
+         text:'Honest politicians by law? That might have lost Britain the war',
+         href:'https://www.thetimes.com/comment/columnists/article/honest-politicians-by-law-that-might-have-lost-britain-the-war-m6g2v9g0s'}],
+  why:['Clause 12 gives a defence for the intelligence services’ functions and the armed forces on active service, and a reasonable-excuse defence (clause 12(6) and (7)).',
+       'Our amendment also protects withholding information to safeguard national security. What it does not allow is a false statement to the public to take the country to war.'],
+  close:'Deceiving an enemy is protected. Deceiving the public into a war is not.'}
+];
+var CBY = {}; CONCERNS.forEach(function(c){ CBY[c.id] = c; });
+
+/* colleagues on record (live on the petition page, each from Hansard or given to us on the record) */
+var COLLEAGUES = [
+ {k:'knight', who:'Lord Knight of Weymouth', role:'Labour', when:'House of Lords, 26 February 2026', photo:'img/knight.jpg',
+  text:'In my view, this is about leading by example. We cannot credibly legislate for honesty in public life while exempting ourselves.'},
+ {k:'dannatt', who:'Lord Dannatt', role:'Crossbench, former Chief of the General Staff', when:'Given on the record, October 2026', photo:'https://members-api.parliament.uk/api/Members/4220/Thumbnail',
+  text:'Parliamentary Privilege is a longstanding pillar of our Parliamentary process. However, it should not be a shield behind which individuals hide when there are important issues at stake.'},
+ {k:'bowles', who:'Baroness Bowles of Berkhamsted', role:'Liberal Democrat', when:'House of Lords, 12 October 2026', photo:'https://members-api.parliament.uk/api/Members/4562/Thumbnail',
+  text:'Basically, if you are knowingly misleading then there should be consequences. Why should the consequences be any less in this House than elsewhere?'},
+ {k:'myer', who:'Luke Myer MP', role:'Labour', when:'House of Commons, 14 July 2026', photo:'https://members-api.parliament.uk/api/Members/5147/Thumbnail',
+  text:'I therefore support clause 11, but I also feel strongly that it ought to apply to all of us as politicians, and I am grateful to the more than 30 Members on both sides of the House who supported my amendments 13 to 18 to that effect.'}
+];
+
+var VOICES = {
+  Liverpool:[['B','Liverpool','This is an important and very much needed law. It is important that all those involved in Government & law making are included to ensure honesty, fairness and accountability.'],
+             ['Chris','Liverpool','No publicly elected official who makes the law should be above the scrutiny of the law'],
+             ['Robyn','Liverpool','It destroys the whole intention of establishing trust in our public servants.']],
+  'Northern Ireland':[['Jasmin','Belfast','It doesn’t sound like a democracy if lawmakers leave themselves out. Clearly creating an imbalance of power and hierarchy.'],
+             ['Samantha','Belfast','If lawmakers have no intention of lying to the public then this shouldn’t even be a debate or discussion, making this law should be a natural next step to ensure accountability and public safety.']],
+  UK:[['Kym','Swansea','MPs, as people honoured by the public vote to represent the public, integrity should be paramount; If MPs are omitted from this bill, how can we trust anything they say or do?'],
+      ['Chris','Southend','We expect and need lawmakers to be truthful for democracy to function. They are not above the law and need to be held accountable, if not public confidence in the system is undermined.'],
+      ['Clover','Guildford','Why should the government be protected from lying? They shouldn’t be lying in the first place. I work in the nhs, and I’m not scared about this bill and my career, why are you?']]
+};
+
+/* ------------------------------------------------------------------ icons */
+var IC = {
+  nurse:'<svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M12 8v8M8 12h8"/></svg>',
+  police:'<svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 5-3.5 8-7 10-3.5-2-7-5-7-10V6z"/><path d="M9.5 12l2 2 3-4"/></svg>',
+  soldier:'<svg viewBox="0 0 24 24"><path d="M4 15a8 8 0 0116 0"/><path d="M2.5 15.5h19M8 19h8"/></svg>',
+  civil:'<svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5h6v2M3 12.5h18"/></svg>',
+  pm:'<svg viewBox="0 0 24 24"><path d="M6 21V5a2 2 0 012-2h8a2 2 0 012 2v16M4 21h16"/><circle cx="14.5" cy="12" r="1"/></svg>',
+  mayor:'<svg viewBox="0 0 24 24"><circle cx="12" cy="15" r="5"/><path d="M7.5 3l4.5 7 4.5-7M12 13v4"/></svg>',
+  mp:'<svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0013 0M12 17.5V21"/></svg>',
+  peer:'<svg viewBox="0 0 24 24"><path d="M6 4v9h12V4M4 13h16M6 13v7M18 13v7"/></svg>',
+  bench:'<svg viewBox="0 0 24 24"><path d="M6 4v9h12V4M4 13h16M6 13v7M18 13v7"/></svg>'
+};
+
+/* ------------------------------------------------------------------ state */
+var qs = new URLSearchParams(location.search);
+var DEMO = true; /* this draft records nothing */
+var P, S, cur = 'welcome', dirFwd = true, startAt = Date.now();
+function fresh(){
+  return {staff:false, guess:{}, picks:[], extra:[], other:'', seen:{}, resp:{}, missing:{}, cases:null, permit:null, a:{}, quote:'', willing:{},
+          call:null, staffOwn:null, journo:{}, official:{}, log:[], reached:{}};
+}
+function setPerson(k){ P = PEOPLE[k] || PEOPLE.mp; P.id = k in PEOPLE ? k : 'mp'; S = fresh(); cur = 'welcome'; startAt = Date.now(); }
+setPerson(qs.get('demo') || 'mp');
+
+var isParl = function(){ return ['mp','minister','peer','devolved'].indexOf(P.kind) > -1; };
+var esc = function(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); };
+var pct = function(a, b){ return b ? Math.round(a * 100 / b) : 0; };
+var fmt = function(n){ return Number(n).toLocaleString('en-GB'); };
+var addressed = function(){ return P.short || 'you'; };
+
+/* ------------------------------------------------------------------ the flow */
+var CH = ['You', 'Who’s covered', 'The amendment', 'Your concerns', 'Real cases', 'The public', 'Your view'];
+function flow(){
+  var f = ['welcome'];
+  if (S.staff) f.push('staff');
+  f.push('guess', 'reveal', 'ask', 'hillsborough');
+  if (P.kind === 'devolved') f.push('devolved');
+  f.push('changed', 'pick');
+  S.picks.forEach(function(id){ f.push('c:' + id); });
+  S.extra.forEach(function(id){ if (S.picks.indexOf(id) < 0) f.push('c:' + id); });
+  f.push('others', 'cases');
+  if (S.cases) f.push('case1', 'case2', 'case3');
+  f.push('public', 'local', 'colleagues');
+  if (isParl()){
+    f.push('permit');
+    if (S.permit){
+      f.push('q1', 'q2', 'q3', 'q4');
+      if (P.kind !== 'devolved') f.push('q5');
+      f.push('q6');
+      if (S.a.q1 === 'Yes' || S.a.q1 === 'Yes, with changes') f.push('quote'); else f.push('call');
+      if (S.staff) f.push('staffcheck');
+    }
+  } else if (P.kind === 'journalist'){ f.push('j1', 'j2'); }
+  else { f.push('o1'); }
+  f.push('thanks');
+  return f;
+}
+function chapterOf(id){
+  if (id === 'welcome' || id === 'staff') return 0;
+  if (id === 'guess' || id === 'reveal') return 1;
+  if (id === 'ask' || id === 'hillsborough' || id === 'devolved' || id === 'changed') return 2;
+  if (id === 'pick' || id.indexOf('c:') === 0 || id === 'others') return 3;
+  if (id.indexOf('case') === 0) return 4;
+  if (id === 'public' || id === 'local' || id === 'colleagues') return 5;
+  return 6;
+}
+
+/* ------------------------------------------------------------------ screens */
+function tile(key, label, extra){
+  var ic = key === 'you' ? '<img src="' + esc(P.photo || '') + '" alt="">' : IC[key] || IC.bench;
+  if (key === 'you' && !P.photo) ic = IC.civil;
+  return '<button class="tile' + (extra || '') + '" data-tile="' + key + '"><span class="ic">' + ic + '</span>' + label + '</button>';
+}
+function tilesFor(){
+  if (P.kind === 'journalist') return [['nurse','A nurse'],['police','A police officer'],['soldier','A soldier'],['civil','A civil servant'],['pm','The Prime Minister'],['mayor','The Mayor of London'],['mp','An MP'],['peer','A peer']];
+  if (P.kind === 'official') return [['you','You'],['nurse','A nurse'],['police','A police officer'],['soldier','A soldier'],['pm','The Prime Minister'],['mayor','The Mayor of London'],['mp','An MP'],['peer','A peer']];
+  var t = [['nurse','A nurse'],['police','A police officer'],['soldier','A soldier'],['civil','A civil servant'],['pm','The Prime Minister'],['mayor','The Mayor of London']];
+  if (P.kind === 'minister') t.push(['bench','A backbench peer']);
+  t.push(['you','You']);
+  return t;
+}
+function covered(key){
+  if (key === 'mp' || key === 'peer' || key === 'bench') return false;
+  if (key === 'you') return P.kind === 'minister' || P.kind === 'official';
+  return true;
+}
+function whoBlock(q, big){
+  var face = q.ini ? '<span class="face ini">' + esc(q.ini) + '</span>' :
+    '<img class="face" src="' + esc(q.photo || ('img/' + q.k + '.jpg')) + '" alt="">';
+  var when = q.href ? '<a href="' + esc(q.href) + '" target="_blank" rel="noopener">' + esc(q.when) + '</a>' : esc(q.when);
+  return '<div class="who">' + face + '<div><b>' + esc(q.who) + '</b><span>' + esc(q.role) + ' · ' + when + '</span></div></div>' +
+    '<blockquote' + (big ? '' : ' class="sm"') + '>“' + esc(q.text) + '”</blockquote>';
+}
+function opts(name, list, multi, store){
+  var val = store[name];
+  return '<div class="opts">' + list.map(function(o){
+    var on = multi ? (val && val.indexOf(o) > -1) : val === o;
+    return '<button class="opt' + (multi ? ' sq' : '') + (on ? ' on' : '') + '" data-opt="' + esc(name) + '" data-val="' + esc(o) + '" data-multi="' + (multi ? 1 : 0) + '"><span class="dot"></span>' + esc(o) + '</button>';
+  }).join('') + '</div>';
+}
+
+var SCREENS = {
+  welcome: function(){
+    var face = P.photo ? '<img class="portrait" src="' + esc(P.photo) + '" alt="' + esc(P.name) + '">' : '<div class="initials">' + esc(P.ini) + '</div>';
+    var say = P.kind === 'official' ? 'A five-minute briefing on the Hillsborough Law’s exemption for lawmakers. There are no questions about your views.'
+            : P.kind === 'journalist' ? 'We made this for you, and we’d love to know what you think.'
+            : 'We made this for you, and we want to hear what you think.';
+    var staffBtn = isParl() ? '<button class="link" data-act="staff">I’m reading this for ' + esc(P.short) + '</button>' : '';
+    return {cls:'hello mid', html:
+      face + '<div class="hname">' + esc(P.name) + '</div><div class="hline">' + esc(P.line) + '</div>' +
+      '<div class="hsay">' + esc(say) + '</div><div class="hmins">About 5 minutes</div>' +
+      '<p class="fine">A briefing from ExecProsec, the campaign to include lawmakers in the Hillsborough Law' + (isParl() ? ', for everyone who will vote on it. ' : '. ') +
+      (P.kind === 'official' ? 'This link is personal to you: we record how far you get.'
+        : P.kind === 'journalist' ? 'This link is personal to you: we record how far you get and your answers, which we never publish.'
+        : 'This link is personal to you: we record how far you get and your answers. We never publish your name without your permission.') + '</p>' +
+      (P.credit ? '<div class="credit">' + esc(P.credit) + '</div>' : ''),
+      btn:'Start', below: staffBtn};
+  },
+  staff: function(){
+    return {cls:'mid', html:'<div class="kick">Thank you</div><h2>Please go through it as you would for ' + esc(P.short) + '.</h2>' +
+      '<p>At the end we’ll ask whether the answers are ' + esc(P.short) + '’s own, or your understanding of their view.</p>', btn:'Continue'};
+  },
+  guess: function(){
+    var t = tilesFor();
+    return {html:'<div class="kick">A quick question</div><h2>When the Hillsborough Law passes, who could be prosecuted for deliberately lying to the public on TV?</h2>' +
+      '<p>Tap everyone you think it covers.</p><div class="grid">' +
+      t.map(function(x){ return tile(x[0], x[1], (S.guess[x[0]] ? ' on' : '') + (x[0] === 'you' && t.length % 2 ? ' you' : '')); }).join('') + '</div>',
+      btn:'Check my answer'};
+  },
+  reveal: function(){
+    var t = tilesFor(), right = t.every(function(x){ return !!S.guess[x[0]] === covered(x[0]); });
+    var head = {mp:'All of them, except you.', peer:'All of them, except you.', devolved:'All of them, except you.',
+      minister:'All of them, including you. But only while you’re a Minister.', journalist:'All of them, except MPs and peers.',
+      official:'All of them, including you. Except MPs and peers.'}[P.kind];
+    var sub = P.kind === 'minister' ? 'The day you leave office, you’re not covered. Nor is any backbencher, any peer without a ministerial role, or anyone in opposition.'
+      : P.kind === 'devolved' ? 'The offence of misleading the public covers Ministers, mayors and nearly every public official. It leaves out every MP and peer, and every member of the Scottish Parliament, the Senedd and the Northern Ireland Assembly.'
+      : 'The offence of misleading the public covers Ministers, mayors and nearly every public official. It leaves out every MP and every peer.';
+    return {html:'<div class="kick">The answer</div><h1>' + head + '</h1>' +
+      '<div class="verdict ' + (right ? 'ok' : 'bad') + '">' + (right ? 'You got it right.' : 'Not quite. Here’s the answer.') + '</div>' +
+      '<div class="grid">' + t.map(function(x){
+        var c = covered(x[0]);
+        return '<div class="tile res' + (c ? '' : ' no') + (x[0] === 'you' && t.length % 2 ? ' you' : '') + '"><span class="ic">' + (x[0] === 'you' && P.photo ? '<img src="' + esc(P.photo) + '" alt="">' : (IC[x[0]] || IC.civil)) +
+          '<span class="mark ' + (c ? 'y' : 'n') + '">' + (c ? '✓' : '✕') + '</span></span>' + x[1] + '</div>';
+      }).join('') + '</div><p>' + sub + '</p><div class="src">Public Office (Accountability) Bill, clause 12 and Schedule 2.</div>', btn:'Next'};
+  },
+  ask: function(){
+    return {html:'<div class="kick">What we’re asking for</div><h2>Include lawmakers, for what they say outside Parliament.</h2>' +
+      '<ul class="ticks"><li>Only on TV, radio, social media and at events. Never anything said in any UK parliament.</li>' +
+      '<li>Only deliberate or reckless lies, and only to take the country to war, swing a referendum, hide the causes of deaths, hide a risk to public health or safety, or hide serious wrongdoing or misuse of public money.</li>' +
+      '<li>Never opinions, honest mistakes or broken promises.</li>' +
+      '<li>While a member sits: a fine, not prison. Their seat stays a matter for Parliament and the voters.</li></ul>' +
+      '<button class="link" data-act="page" data-anchor="amendment-one-of-two" style="text-align:left;color:var(--gold)">Read the amendment</button>', btn:'Next'};
+  },
+  hillsborough: function(){
+    return {cls:'mid', html:'<div class="kick">Hillsborough, 1989</div><h2>A backbench MP passed false police claims about Liverpool fans to the press.</h2>' +
+      '<p class="lead">In 2012 the Hillsborough Independent Panel named him as a source.</p>' +
+      '<p class="lead">If that happened after this law passes, <span class="gold">the police officers could be prosecuted. The MP could not.</span></p>' +
+      '<div class="src">Irvine Patnick, MP for Sheffield Hallam. The law will not apply to the past.</div>', btn:'Next'};
+  },
+  devolved: function(){
+    return {html:'<div class="kick">Your parliament</div><h2>' + esc(cap(P.parl)) + ' has no Article 9.</h2>' +
+      '<p>Article 9 of the Bill of Rights protects what is said in proceedings at Westminster. The Scottish Parliament, the Senedd and the Northern Ireland Assembly have only limited protection, mainly against defamation.</p>' +
+      '<p class="lead">Yet the offence covers your Ministers and applies across the UK. As the Bill stands, a Minister could be prosecuted for what they say in your chamber. A Minister saying the same at Westminster could not.</p>' +
+      '<p class="lead gold">We are changing our amendment so that it protects everything said and done in every UK parliament, including yours.</p>' +
+      '<div class="src">Scotland Act 1998 s.41; Government of Wales Act 2006 s.42; Northern Ireland Act 1998 s.50.</div>', btn:'Next'};
+  },
+  changed: function(){
+    return {html:'<div class="kick">What has changed</div><h2>On 21 October the Government confirmed that nothing said in Parliament can be caught.</h2>' +
+      whoBlock({k:'anderson', who:'Baroness Anderson of Stoke-on-Trent', role:'Deputy Chief Whip, for the Government', when:'House of Lords, 21 October 2026',
+        text:'We are also confident that the courts would not construe … the misleading the public offence in this Bill as sitting aside from the Article IX protections against proceedings in Parliament.'}, false) +
+      '<p class="lead">So the question is now only about what lawmakers say outside Parliament.</p>', btn:'Next'};
+  },
+  pick: function(){
+    return {html:'<div class="kick">Your concerns</div><h2>What concerns you most?</h2><p>Pick up to three. We’ll start with those.</p>' +
+      '<div class="clist">' + CONCERNS.map(function(c){
+        return '<button class="citem' + (S.picks.indexOf(c.id) > -1 ? ' on' : '') + '" data-pick="' + c.id + '"><span class="l">' + c.id + '</span>' + esc(c.label) + '</button>';
+      }).join('') + '</div><input type="text" id="otherIn" placeholder="Something else? Tell us (optional)" maxlength="200" value="' + esc(S.other) + '">',
+      btn: S.picks.length ? 'Continue' : 'Continue without picking'};
+  },
+  others: function(){
+    var left = CONCERNS.filter(function(c){ return S.picks.indexOf(c.id) < 0 && S.extra.indexOf(c.id) < 0; });
+    return {html:'<div class="kick">Your concerns</div><h2>' + (S.picks.length ? 'Any other concerns?' : 'The concerns people raise') + '</h2>' +
+      '<p>Tap any to read our answer.</p><div class="clist">' + left.map(function(c){
+        return '<button class="citem" data-more="' + c.id + '"><span class="l">' + c.id + '</span>' + esc(c.label) + '</button>';
+      }).join('') + '</div><button class="link" data-act="page" data-anchor="every-objection-answered" style="text-align:left;color:var(--gold)">All 38 answers on the briefing page</button>',
+      btn:'Continue'};
+  },
+  cases: function(){
+    return {cls:'mid', html:'<div class="kick">Real cases</div><h2>What is this law for?</h2><p class="lead">Three real cases. About a minute.</p>',
+      btn:'Show me', below:'<button class="link" data-act="nocases">Skip the cases</button>'};
+  },
+  case1: function(){
+    return {cls:'mid', html:'<div class="big" style="font-size:48px">2003</div><div class="kick">Iraq</div>' +
+      '<p class="lead">The Prime Minister said the remains of 300,000 people had been found in mass graves in Iraq.</p>' +
+      '<p class="lead">Asked how many bodies had been exhumed through official procedures, the head of the coalition’s own mass graves action plan said:</p>' +
+      '<blockquote>“Through official procedures? None.”</blockquote><div class="src">White House, 16 April 2004 · The Guardian, July 2004</div>', btn:'Next'};
+  },
+  case2: function(){
+    return {cls:'mid', html:'<div class="big" style="font-size:48px">2016</div><div class="kick">The EU referendum</div>' +
+      '<p class="lead">£350 million a week, on the side of a bus. Asked whether Vote Leave would have won without it, its campaign director wrote:</p>' +
+      '<blockquote>“All our research and the close result strongly suggests No.”</blockquote><div class="src">Dominic Cummings, January 2017</div>', btn:'Next'};
+  },
+  case3: function(){
+    return {cls:'mid', html:'<div class="big" style="font-size:48px">2020</div><div class="kick">PPE Medpro</div>' +
+      '<p class="lead">Baroness Mone, a member of the House of Lords, admitted on the BBC she had “made an error in saying to the press that I wasn’t involved”.</p>' +
+      '<p class="lead">She said lying to the media is “not a crime”.</p><p class="lead gold">That is the gap this amendment closes.</p>', btn:'Next'};
+  },
+  public: function(){
+    var c = LIVE.s7, tot = c.reduce(function(a, b){ return a + (b || 0); }, 0), ag = (c[0] || 0) + (c[1] || 0);
+    var bars = Object.keys(PARTY).map(function(k){ var v = LIVE.parties[k]; return v && v[1] >= 50 ? [PARTY[k], pct(v[0], v[1])] : null; }).filter(Boolean);
+    return {html:'<div class="kick">What the public think · live</div><div class="big" data-count="' + LIVE.signers + '">' + fmt(LIVE.signers) + '</div>' +
+      '<p class="lead">people have signed the petition to include all lawmakers, each confirmed by email. Signers in all ' + LIVE.reached + ' constituencies.</p>' +
+      '<div class="label">Agree with our answers to the Government’s reasons, by how they voted in 2024</div><div class="bars">' +
+      bars.map(function(b){ return '<div class="bar"><span>' + b[0] + '</span><span class="tr"><b data-w="' + b[1] + '"></b></span><span class="v">' + b[1] + '%</span></div>'; }).join('') +
+      '</div><div class="label">They were asked</div><p class="stmt">“Elections and criminal courts do different jobs: being elected should not put a lawmaker above the criminal law.”</p>' +
+      '<p><b class="gold">' + pct(ag, tot) + '%</b> agree, of ' + fmt(tot) + ' who answered.</p><div class="src">execprosec.org/petition · updated live</div>', btn:'Next'};
+  },
+  local: function(){
+    var head, list;
+    if (P.kind === 'mp' && P.gss){
+      var n = LIVE.seats[P.gss];
+      head = n ? 'In ' + esc(P.seat) + ', <span class="gold">' + fmt(n) + ' people</span> have signed.' : 'People in ' + esc(P.seat) + ' have signed.';
+      list = VOICES[P.town] || VOICES.UK;
+    } else if (P.kind === 'devolved'){
+      var m = LIVE.nations[P.nation];
+      head = 'In ' + esc(P.nation) + ', <span class="gold">' + fmt(m) + ' people</span> have signed.';
+      list = VOICES[P.nation] || VOICES.UK;
+    } else { head = 'In their own words'; list = VOICES.UK; }
+    return {html:'<div class="kick">' + (P.kind === 'mp' ? 'Your constituents' : 'The public') + '</div><h2>' + head + '</h2>' +
+      (P.kind === 'mp' ? '<div class="label">In their words</div>' : '') +
+      list.map(function(v){ return '<div class="voice"><p>“' + esc(v[2]) + '”</p><span>' + esc(v[0]) + ', ' + esc(v[1]) + '</span></div>'; }).join(''), btn:'Next'};
+  },
+  colleagues: function(){
+    var mine = COLLEAGUES.filter(function(c){ return c.k === P.key; })[0];
+    var others = COLLEAGUES.filter(function(c){ return c.k !== P.key; }).slice(0, 3);
+    var top = '';
+    if (mine) top = '<div class="card"><div class="label" style="margin-top:0">Your own words</div>' + whoBlock(mine, false) + '</div>';
+    else if (P.record) top = '<div class="card"><p class="lead" style="margin:0">' + esc(P.record) + '</p></div>';
+    return {html:'<div class="kick">Colleagues on record</div><h2>What members of both Houses have said</h2>' + top +
+      others.map(function(c){ return whoBlock(c, false); }).join('') +
+      '<p class="small">And 34 MPs signed Luke Myer’s Commons amendments to include MPs and peers.</p>', btn:'Next'};
+  },
+  permit: function(){
+    return {html:'<div class="kick">Your view</div><h2>' + (P.kind === 'devolved' ? 'Five' : 'Six') + ' quick questions.</h2>' +
+      '<p>Your answers help us report accurately to Parliament and the press.</p>' +
+      '<div class="consent' + (S.permit ? ' on' : '') + '" data-act="permit" role="checkbox" aria-checked="' + (S.permit ? 'true' : 'false') + '" tabindex="0"><span class="box"></span>' +
+      '<span>I agree that ExecProsec may record and publish my answers, including my name.</span></div>',
+      btn:'Continue', need: function(){ return !!S.permit; }, below:'<button class="link" data-act="nopermit">Skip to the end</button>'};
+  },
+  q1: function(){
+    var q = P.kind === 'devolved' ? 'Should lawmakers, including members of ' + P.parl + ', come under the offence of misleading the public, for what they say and do outside their parliaments?'
+      : 'Should MPs and peers come under the offence of misleading the public, for what they say and do outside Parliament?';
+    return {html:'<div class="kick">' + qn(1) + '</div><h2>' + esc(q) + '</h2>' + opts('q1', ['Yes', 'Yes, with changes', 'Undecided', 'No', 'Prefer not to say'], false, S.a),
+      btn:'Next', need: function(){ return !!S.a.q1; }};
+  },
+  q2: function(){
+    return {html:'<div class="kick">' + qn(2) + '</div><h2>Which lawmakers should it include?</h2><p>Tick any.</p>' +
+      opts('q2', ['House of Commons', 'House of Lords', 'Scottish Parliament', 'Senedd', 'Northern Ireland Assembly'], true, S.a),
+      btn:'Next', skippable:true};
+  },
+  q3: function(){
+    return {html:'<div class="kick">' + qn(3) + '</div><h2>Should candidates at elections be included too?</h2>' +
+      '<p>When Parliament is dissolved, MPs become candidates but Ministers stay Ministers. As the Bill stands, only Ministers would be covered during an election.</p>' +
+      '<div class="row3">' + ['Yes', 'No', 'Not sure'].map(function(o){ return '<button class="opt' + (S.a.q3 === o ? ' on' : '') + '" data-opt="q3" data-val="' + o + '" data-multi="0"><span class="dot"></span>' + o + '</button>'; }).join('') + '</div>',
+      btn:'Next', skippable:true};
+  },
+  q4: function(){
+    return {html:'<div class="kick">' + qn(4) + '</div><h2>And the duty of candour, which the Bill places on public officials?</h2>' +
+      opts('q4', ['Yes, include lawmakers', 'No', 'Not sure'], false, S.a), btn:'Next', skippable:true};
+  },
+  q5: function(){
+    var q = P.house === 'commons' ? 'If it comes back to the Commons, how do you expect to vote on including lawmakers?' : 'How do you expect to vote on including lawmakers at Report stage?';
+    return {html:'<div class="kick">' + qn(5) + '</div><h2>' + q + '</h2>' + opts('q5', ['For', 'Against', 'Abstain', 'Undecided', 'Prefer not to say'], false, S.a),
+      btn:'Next', skippable:true};
+  },
+  q6: function(){
+    var yes = S.a.q1 === 'Yes';
+    return {html:'<div class="kick">' + qn(P.kind === 'devolved' ? 5 : 6) + '</div><h2>' + (yes ? 'Anything you would add?' : 'What would the amendment need to change for you to support it?') + '</h2>' +
+      '<textarea id="q6In" maxlength="600" placeholder="Optional">' + esc(S.a.q6 || '') + '</textarea>', btn:'Next'};
+  },
+  quote: function(){
+    var w = ['Meet Marcus J Ball', 'Speak to a journalist', 'Add your name in support'];
+    if (P.house === 'lords') w.push('Act as a teller in a division');
+    return {html:'<div class="kick">Your words</div><h2>Would you give us a sentence we can quote?</h2>' +
+      '<textarea id="quoteIn" maxlength="300" placeholder="Optional, up to 300 characters">' + esc(S.quote) + '</textarea><div class="count" id="qc">' + (S.quote.length) + ' / 300</div>' +
+      '<div class="label">Would you be willing to</div>' + opts('willing', w, true, S.willing), btn:'Next'};
+  },
+  call: function(){
+    return {cls:'mid', html:'<div class="kick">Thank you</div><h2>Would you like a short briefing or a call with Marcus J Ball?</h2>' +
+      opts('call', ['Yes, please', 'No, thank you'], false, S), btn:'Next', skippable:true};
+  },
+  staffcheck: function(){
+    return {cls:'mid', html:'<div class="kick">One last thing</div><h2>Are these answers ' + esc(P.short) + '’s own, or your understanding of their view?</h2>' +
+      opts('staffOwn', ['Their own, checked with them', 'My understanding', 'Not sure'], false, S), btn:'Next', skippable:true};
+  },
+  j1: function(){
+    return {html:'<div class="kick">For ' + esc(P.outlet || 'you') + '</div><h2>Would you write about this?</h2>' +
+      '<p class="lead">Parliament is about to make it a crime for nearly everyone in public life to lie to the public, except the people voting on it.</p>' +
+      '<div class="label">Three ways in</div><ul class="ticks"><li>Who’s in, who’s out: the nurse is covered, the MP is not.</li>' +
+      '<li>' + fmt(LIVE.signers) + ' people in all ' + LIVE.reached + ' constituencies: the live numbers.</li><li>Members on record: what MPs and peers tell us.</li></ul>' +
+      '<p>Ask us for the data, the amendments, Parliament clips and interviews.</p><p class="lead">Marcus J Ball · <a href="mailto:mjb@execprosec.com">mjb@execprosec.com</a></p>', btn:'Next'};
+  },
+  j2: function(){
+    return {html:'<div class="kick">Your view</div><h2>Will you cover it?</h2>' +
+      '<div class="row3">' + ['Yes', 'Maybe', 'No'].map(function(o){ return '<button class="opt' + (S.journo.cover === o ? ' on' : '') + '" data-opt="cover" data-val="' + o + '" data-multi="0" data-store="journo"><span class="dot"></span>' + o + '</button>'; }).join('') + '</div>' +
+      '<div class="label">What would you need?</div><textarea id="jNeed" maxlength="400" placeholder="Optional">' + esc(S.journo.need || '') + '</textarea>' +
+      '<div class="label">Can we send you updates as the vote approaches?</div>' +
+      '<div class="row3" style="grid-template-columns:1fr 1fr">' + ['Yes', 'No'].map(function(o){ return '<button class="opt' + (S.journo.updates === o ? ' on' : '') + '" data-opt="updates" data-val="' + o + '" data-multi="0" data-store="journo"><span class="dot"></span>' + o + '</button>'; }).join('') + '</div>',
+      btn:'Next'};
+  },
+  o1: function(){
+    return {html:'<div class="kick">Thank you for reading</div><h2>Was anything unclear?</h2>' +
+      '<textarea id="oUnclear" maxlength="400" placeholder="Optional">' + esc(S.official.unclear || '') + '</textarea>' +
+      '<div class="label">Would you like the amendment text or a call with Marcus J Ball?</div>' +
+      '<div class="row3" style="grid-template-columns:1fr 1fr">' + ['Yes', 'No, thank you'].map(function(o){ return '<button class="opt' + (S.official.more === o ? ' on' : '') + '" data-opt="more" data-val="' + o + '" data-multi="0" data-store="official"><span class="dot"></span>' + o + '</button>'; }).join('') + '</div>',
+      btn:'Finish'};
+  },
+  thanks: function(){
+    var name = P.short ? 'Thank you, ' + esc(P.short) + '.' : 'Thank you.';
+    var line = isParl() ? (S.permit ? 'Your answers are with us. We’ll send you the results before the vote.' : 'Thank you for reading. We’ll send you the results before the vote.')
+      : P.kind === 'journalist' ? 'We’ll be in touch with the numbers as they come in.' : 'Thank you for taking the time.';
+    return {cls:'hello mid', html:(P.photo ? '<img class="portrait" style="width:120px;height:120px" src="' + esc(P.photo) + '" alt="">' : '') +
+      '<div class="hname">' + name + '</div><p class="lead" style="max-width:330px">' + line + '</p>' +
+      '<p class="small">Marcus J Ball · <a href="mailto:mjb@execprosec.com">mjb@execprosec.com</a></p>' +
+      '<button class="link" data-act="page" data-anchor="">Read the full briefing page</button>' +
+      (DEMO ? '<button class="link" data-act="record" style="margin-top:10px;color:var(--gold)">Preview only: see what we would record</button>' : ''),
+      btn: null};
+  }
+};
+CONCERNS.forEach(function(c){
+  SCREENS['c:' + c.id] = function(){
+    var mineSaid = c.says.filter(function(q){ return q.k !== P.key; });
+    var q = mineSaid[0] || c.says[0];
+    var n = S.picks.indexOf(c.id), lbl = n > -1 ? 'Concern ' + (n + 1) + ' of ' + S.picks.length : 'Concern ' + c.id;
+    var r = S.resp[c.id];
+    return {html:'<div class="kick">' + lbl + '</div><div class="fact">' + esc(c.fact) + '</div>' +
+      '<div class="label" style="margin-top:4px">What was said</div>' + whoBlock(q, true) +
+      '<div class="label">Why it doesn’t apply</div>' + c.why.map(function(w){ return '<p>' + esc(w) + '</p>'; }).join('') +
+      (c.also ? whoBlock(c.also, false) : '') + '<div class="closer">' + esc(c.close) + '</div>' +
+      '<div class="label">Does this answer your concern?</div><div class="row3">' + ['Yes', 'Partly', 'No'].map(function(o){
+        return '<button class="opt' + (r === o ? ' on' : '') + '" data-resp="' + c.id + '" data-val="' + o + '"><span class="dot"></span>' + o + '</button>'; }).join('') + '</div>' +
+      (r === 'Partly' || r === 'No' ? '<input type="text" id="miss" data-miss="' + c.id + '" maxlength="200" placeholder="What’s missing? (optional)" value="' + esc(S.missing[c.id] || '') + '">' : ''),
+      btn:'Next'};
+  };
+});
+function qn(n){ return 'Question ' + n + ' of ' + (P.kind === 'devolved' ? 5 : 6); }
+function cap(s){ return s.charAt(0).toUpperCase() + s.slice(1); }
+
+/* ------------------------------------------------------------------ rendering */
+var stage = document.getElementById('stage'), foot = document.getElementById('foot'), top = document.getElementById('top');
+var segs = document.getElementById('segs'), plabel = document.getElementById('plabel');
+segs.innerHTML = CH.map(function(){ return '<i><b></b></i>'; }).join('');
+var spec;
+
+function render(){
+  var f = flow(); if (f.indexOf(cur) < 0) cur = f[0];
+  spec = SCREENS[cur]();
+  S.reached[cur] = S.reached[cur] || Math.round((Date.now() - startAt) / 1000);
+  var el = document.createElement('section');
+  el.className = 'scr ' + (spec.cls || '') + ' ' + (dirFwd ? 'in-f' : 'in-b');
+  el.innerHTML = spec.html;
+  stage.innerHTML = ''; stage.appendChild(el);
+  /* foot */
+  var need = canGo();
+  foot.innerHTML = (spec.btn ? '<button class="btn" id="go"' + (need ? '' : ' disabled') + '>' + spec.btn + '</button>' : '') +
+    (spec.below || '') + (spec.skippable && !answered() ? '<button class="link" data-act="skipq">Skip this question</button>' : '');
+  /* top */
+  var ch = chapterOf(cur), inCh = f.filter(function(id){ return chapterOf(id) === ch; }), pos = inCh.indexOf(cur);
+  top.classList.toggle('bare', cur === 'welcome' || cur === 'thanks');
+  document.getElementById('skip').hidden = ch >= 6 || !(isParl() || P.kind === 'journalist');
+  segs.querySelectorAll('b').forEach(function(b, i){ b.style.width = i < ch ? '100%' : i > ch ? '0' : Math.round((pos + 1) * 100 / inCh.length) + '%'; });
+  var lbl = CH[ch];
+  if (cur.indexOf('c:') === 0 && S.picks.indexOf(cur.slice(2)) > -1) lbl += ' · ' + (S.picks.indexOf(cur.slice(2)) + 1) + ' of ' + S.picks.length;
+  plabel.textContent = lbl;
+  document.getElementById('sPrev').classList.toggle('gone', f.indexOf(cur) === 0);
+  document.getElementById('sNext').classList.toggle('gone', !spec.btn || !need);
+  document.getElementById('pv').hidden = !DEMO || (window.innerWidth < 640 && cur !== 'welcome' && cur !== 'thanks');
+  /* animate bars */
+  requestAnimationFrame(function(){ setTimeout(function(){ el.querySelectorAll('[data-w]').forEach(function(b){ b.style.width = b.getAttribute('data-w') + '%'; }); }, 80); });
+  var q = document.getElementById('quoteIn');
+  if (q) q.addEventListener('input', function(){ S.quote = q.value; document.getElementById('qc').textContent = q.value.length + ' / 300'; });
+  el.scrollTop = 0;
+}
+function answered(){
+  if (cur.indexOf('c:') === 0) return !!S.resp[cur.slice(2)];
+  if (cur === 'q2') return !!(S.a.q2 && S.a.q2.length); if (cur === 'call') return !!S.call; if (cur === 'staffcheck') return !!S.staffOwn;
+  return !!S.a[cur];
+}
+function saveInputs(){
+  var o = document.getElementById('otherIn'); if (o) S.other = o.value;
+  var q6 = document.getElementById('q6In'); if (q6) S.a.q6 = q6.value;
+  var m = document.getElementById('miss'); if (m) S.missing[m.getAttribute('data-miss')] = m.value;
+  var j = document.getElementById('jNeed'); if (j) S.journo.need = j.value;
+  var u = document.getElementById('oUnclear'); if (u) S.official.unclear = u.value;
+}
+function go(id, fwd){ saveInputs(); dirFwd = fwd !== false; cur = id; S.log.push([id, Math.round((Date.now() - startAt) / 1000)]); render(); }
+function canGo(){ return spec.need ? spec.need() : spec.skippable ? !!answered() : true; }
+function next(force){
+  if (!force && spec && !canGo()) return;
+  var f = flow(), i = f.indexOf(cur); if (i < f.length - 1) go(f[i + 1], true);
+}
+function prev(){ var f = flow(), i = f.indexOf(cur); if (i > 0) go(f[i - 1], false); }
+function toPage(anchor){
+  if (window.parent !== window){ window.parent.postMessage({type:'brief-close', anchor:anchor || ''}, location.origin); }
+  else { location.href = '/amendments-briefing/' + (anchor ? '#' + anchor : ''); }
+}
+
+/* ------------------------------------------------------------------ events */
+document.addEventListener('click', function(e){
+  var t = e.target.closest('button,[data-act]'); if (!t) return;
+  if (t.id === 'go'){ if (cur === 'guess' && !Object.keys(S.guess).some(function(k){ return S.guess[k]; })) {} next(); return; }
+  if (t.id === 'back' || t.id === 'sPrev'){ prev(); return; }
+  if (t.id === 'sNext'){ next(); return; }
+  if (t.id === 'skip'){ var f = flow(); var tgt = f.filter(function(id){ return chapterOf(id) === 6; })[0]; if (tgt) go(tgt, true); return; }
+  if (t.id === 'pvBtn'){ openSwitcher(); return; }
+  var d = t.dataset;
+  if (d.tile && !t.classList.contains('res')){ S.guess[d.tile] = !S.guess[d.tile]; t.classList.toggle('on', S.guess[d.tile]); return; }
+  if (d.pick){
+    var i = S.picks.indexOf(d.pick);
+    if (i > -1) S.picks.splice(i, 1); else if (S.picks.length < 3) S.picks.push(d.pick);
+    saveInputs(); render(); return;
+  }
+  if (d.more){ saveInputs(); S.extra.push(d.more); go('c:' + d.more, true); return; }
+  if (d.resp){ saveInputs(); S.resp[d.resp] = d.val; var keep = stage.firstChild.scrollTop; render(); stage.firstChild.scrollTop = keep; stage.firstChild.classList.remove('in-f', 'in-b'); return; }
+  if (d.opt){
+    saveInputs();
+    var store = d.store === 'journo' ? S.journo : d.store === 'official' ? S.official : (d.opt === 'call' || d.opt === 'staffOwn') ? S : d.opt === 'willing' ? S.willing : S.a;
+    if (d.opt === 'willing'){ store = S.willing; var arr = S.willing.willing || (S.willing.willing = []); var k = arr.indexOf(d.val); if (k > -1) arr.splice(k, 1); else arr.push(d.val); }
+    else if (d.multi === '1'){ var a = store[d.opt] || (store[d.opt] = []); var j = a.indexOf(d.val); if (j > -1) a.splice(j, 1); else a.push(d.val); }
+    else store[d.opt] = d.val;
+    var keep2 = stage.firstChild.scrollTop; render(); stage.firstChild.scrollTop = keep2; stage.firstChild.classList.remove('in-f', 'in-b'); return;
+  }
+  switch (d.act){
+    case 'staff': S.staff = true; go('staff', true); break;
+    case 'nocases': S.cases = false; go('public', true); break;
+    case 'permit': S.permit = !S.permit; render(); stage.firstChild.classList.remove('in-f', 'in-b'); break;
+    case 'nopermit': S.permit = false; go('thanks', true); break;
+    case 'skipq': next(true); break;
+    case 'page': toPage(d.anchor); break;
+    case 'record': showRecord(); break;
+  }
+});
+/* "Show me" on the cases screen turns the cases on */
+var _next = next;
+next = function(force){ if (cur === 'cases') S.cases = true; _next(force); };
+
+document.addEventListener('keydown', function(e){
+  if (/^(INPUT|TEXTAREA)$/.test(document.activeElement.tagName)) return;
+  if (e.key === 'ArrowRight') next(); else if (e.key === 'ArrowLeft') prev();
+  else if ((e.key === ' ' || e.key === 'Enter') && document.activeElement.getAttribute('data-act') === 'permit'){ e.preventDefault(); document.activeElement.click(); }
+});
+/* swipe: left for next, right for back; never from the screen's left edge (the browser's own back gesture) */
+var sx = null, sy = 0;
+stage.addEventListener('pointerdown', function(e){ if (e.pointerType === 'mouse' || e.clientX < 24) { sx = null; return; } sx = e.clientX; sy = e.clientY; });
+stage.addEventListener('pointerup', function(e){
+  if (sx === null) return; var dx = e.clientX - sx, dy = Math.abs(e.clientY - sy); sx = null;
+  if (dy > 50 || Math.abs(dx) < 60) return; if (dx < 0) next(); else prev();
+});
+
+/* ------------------------------------------------------------------ preview-only: switch person, see the record */
+function sheet(html){
+  var s = document.createElement('div'); s.className = 'sheet'; s.innerHTML = '<div class="in">' + html + '</div>';
+  s.addEventListener('click', function(e){ if (e.target === s || e.target.closest('[data-close]')) s.remove(); });
+  document.body.appendChild(s); return s;
+}
+function openSwitcher(){
+  var s = sheet('<h3>Preview as</h3><p class="small">Nothing is recorded in the preview.</p>' + PEOPLE_ORDER.map(function(p){
+    return '<button class="opt' + (P.id === p[0] ? ' on' : '') + '" data-who="' + p[0] + '"><span class="dot"></span><span>' + esc(p[1]) + '<br><span class="small">' + esc(p[2]) + '</span></span></button>';
+  }).join('') + '<button class="btn ghost" data-close style="margin-top:6px">Close</button>');
+  s.addEventListener('click', function(e){
+    var b = e.target.closest('[data-who]'); if (!b) return;
+    setPerson(b.getAttribute('data-who')); s.remove(); dirFwd = true; label(); render();
+    history.replaceState(null, '', '?demo=' + P.id);
+  });
+}
+function label(){ document.getElementById('pvBtn').textContent = 'Preview as: ' + PEOPLE_ORDER.filter(function(p){ return p[0] === P.id; })[0][1] + ' ▾'; }
+function showRecord(){
+  var rows = [];
+  var add = function(k, v){ if (v === undefined || v === null || v === '' || (Array.isArray(v) && !v.length)) return; rows.push('<div><b>' + esc(k) + '</b><span>' + esc(Array.isArray(v) ? v.join(', ') : v) + '</span></div>'); };
+  add('Person', P.name); add('Reading for them', S.staff ? 'Yes, a member of staff' : 'No');
+  add('Screens reached', Object.keys(S.reached).length + ' of ' + flow().length);
+  add('Time taken', Math.round((Date.now() - startAt) / 1000) + ' seconds');
+  add('Quiz: who is covered', Object.keys(S.guess).filter(function(k){ return S.guess[k]; }).join(', ') || 'nothing ticked');
+  add('Concerns picked', S.picks); add('Something else', S.other);
+  Object.keys(S.resp).forEach(function(id){ add('Concern ' + id + ': answered?', S.resp[id] + (S.missing[id] ? ' (' + S.missing[id] + ')' : '')); });
+  add('Real cases', S.cases === true ? 'Read' : S.cases === false ? 'Skipped' : '');
+  add('Permission to record and publish', S.permit === true ? 'Given' : S.permit === false ? 'Not given' : '');
+  ['q1','q2','q3','q4','q5','q6'].forEach(function(k, i){ add('Question ' + (i + 1), S.a[k]); });
+  add('Quote', S.quote); add('Willing to', S.willing.willing); add('Briefing or call', S.call); add('Staff: whose answers', S.staffOwn);
+  add('Will cover it', S.journo.cover); add('Needs', S.journo.need); add('Updates', S.journo.updates);
+  add('Unclear', S.official.unclear); add('Wants more', S.official.more);
+  sheet('<h3>What we would record</h3><p class="small">Preview only. In the real version this goes to Central, against this person’s personal link. Nothing here was saved.</p><div class="rec">' + rows.join('') + '</div><button class="btn ghost" data-close style="margin-top:14px">Close</button>');
+}
+
+/* ------------------------------------------------------------------ live numbers from Central (read only) */
+fetch('https://central-2-mcp-production.up.railway.app/public/petition/insights', {credentials:'omit'}).then(function(r){ return r.json(); }).then(function(d){
+  if (!d || !d.ok) return;
+  LIVE.signers = d.signers || LIVE.signers; LIVE.reached = d.constituencies_reached || LIVE.reached;
+  if (d.constituencies) LIVE.seats = d.constituencies; if (d.nations) LIVE.nations = d.nations;
+  if (d.statements && d.statements.s7) LIVE.s7 = d.statements.s7.counts;
+  if (d.parties){ Object.keys(PARTY).forEach(function(k){ var p = d.parties[k]; if (p && p.answers) LIVE.parties[k] = [p.agree || 0, p.answers]; }); }
+  if (cur === 'public' || cur === 'local' || cur === 'j1'){ var keep = stage.firstChild.scrollTop; render(); stage.firstChild.scrollTop = keep; }
+}).catch(function(){});
+
+label(); render();
+})();
+</script>
+</body>
+</html>

@@ -487,6 +487,10 @@ header#nav > span:empty{ display:none; }
     var href=el.getAttribute('href')||''; send('click',{label:label,href:href}); },true);
 })();
 </script>
+<script>
+/* Briefing app (draft): a personal link (?brief=CODE) or a preview link (?demo=mp) opens the app over this page. */
+(function(){var q=location.search;if(!/[?&](demo|brief)=/.test(q))return;var f=document.createElement('iframe');f.src='/amendments-briefing/app/'+q;f.title='Briefing';f.setAttribute('allow','clipboard-write');f.style.cssText='position:fixed;inset:0;width:100%;height:100%;border:0;z-index:9999;background:#020a24';document.body.appendChild(f);document.documentElement.style.overflow='hidden';window.addEventListener('message',function(e){if(e.origin!==location.origin)return;var d=e.data||{};if(d.type==='brief-close'){f.remove();document.documentElement.style.overflow='';if(d.anchor){location.hash=d.anchor;}else{window.scrollTo(0,0);}}});})();
+</script>
 <!-- reading measurement: scroll, time on page -->
 <script src="/_web/engagement.js" defer></script>
 </body>
