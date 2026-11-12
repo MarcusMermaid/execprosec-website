@@ -583,8 +583,8 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       <p class="alt"><button class="link" type="button" id="lkBack" hidden>Back</button></p>
       <div class="f after-lk">
         <label for="quote">In a sentence or two, how do you feel about lawmakers leaving themselves out?</label>
-        <textarea id="quote" class="short" maxlength="200" rows="3" placeholder="Say it the way you'd say it to your MP."></textarea>
-        <div class="qfoot"><span><span class="err" id="quoteErr" aria-live="polite"></span><span class="hint" id="quoteHint" aria-live="polite"></span></span><span class="counter" id="qCount">200</span></div>
+        <textarea id="quote" class="short" maxlength="280" rows="3" placeholder="Say it the way you'd say it to your MP."></textarea>
+        <div class="qfoot"><span><span class="err" id="quoteErr" aria-live="polite"></span><span class="hint" id="quoteHint" aria-live="polite"></span></span><span class="counter" id="qCount">280</span></div>
       </div>
       <p class="fine after-lk">No swearing, abuse or threats. We may share your words with your first name and town, including with journalists.</p>
       <button class="btn navy after-lk" type="submit">Next</button>
@@ -1738,7 +1738,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   // ---------------------------------------------------------------- 2: one statement and their own words
   var qTimer;
   $('quote').addEventListener('input', function () {
-    var left = 200 - this.value.length, v = this.value;
+    var left = 280 - this.value.length, v = this.value;   // 280 from 12 Nov 2026 (Marcus: 40% more room)
     $('qCount').textContent = left;
     $('qCount').classList.toggle('low', left <= 20);
     clearTimeout(qTimer);
@@ -2181,7 +2181,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     fresh();
     ['p1', 'p2', 'p4'].forEach(function (id) { $(id).reset(); });
     ['first', 'last', 'email', 'pc', 'cty', 'otherAmt', 'mpMsg', 'quote'].forEach(function (id) { setErr(id); });
-    $('quoteHint').textContent = ''; $('qCount').textContent = '200';
+    $('quoteHint').textContent = ''; $('qCount').textContent = '280';
     $('consentErr').textContent = ''; $('emailFix').hidden = true; setConsent('');
     $('pcWrap').hidden = false; $('ctyWrap').hidden = true; $('otherWrap').hidden = true; $('abroadBtn').textContent = 'Not in the UK?';
     fundLabel();

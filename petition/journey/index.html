@@ -379,7 +379,7 @@ textarea:focus{outline:none;border-bottom-color:var(--gold)}
     <section class="s mid" id="sQuote" hidden data-gate="code">
       <p class="k a">In your own words</p>
       <h2 class="a">How do you feel about lawmakers leaving themselves out?</h2>
-      <label class="f a"><textarea id="quote" maxlength="200" rows="3" placeholder="Say it the way you’d say it to your MP." aria-label="In your own words"></textarea><span class="qcount" id="qCount">200</span></label>
+      <label class="f a"><textarea id="quote" maxlength="280" rows="3" placeholder="Say it the way you’d say it to your MP." aria-label="In your own words"></textarea><span class="qcount" id="qCount">280</span></label>
       <span class="err" id="quoteErr"></span>
       <button class="btn gold a" id="quoteBtn">Add my words</button>
       <p class="small a" style="margin-top:12px">Optional. No swearing, abuse or threats. We may share your words with your first name and town, including with journalists.</p>
@@ -891,7 +891,7 @@ textarea:focus{outline:none;border-bottom-color:var(--gold)}
     return { ok: true, hold: NAMES.test(p) };
   }
   var quoteSent = false;
-  $('quote').addEventListener('input', function(){ $('qCount').textContent = 200 - this.value.length; $('quoteErr').textContent = ''; });
+  $('quote').addEventListener('input', function(){ $('qCount').textContent = 280 - this.value.length; $('quoteErr').textContent = ''; });
   $('quoteBtn').addEventListener('click', function(){
     var qi = S.indexOf($('sQuote')), t = $('quote').value.trim().replace(/\s+/g, ' ');
     if (!t || quoteSent) return go(qi + 1);
