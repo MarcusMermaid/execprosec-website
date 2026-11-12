@@ -1862,7 +1862,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   }
   $('shareCopy').addEventListener('click', function () { copyLink(this); });
   $('doneShare').addEventListener('click', function () { copyLink(this); });
-  $('shareDone').addEventListener('click', function () { S.fundSeen ? finish() : toFund(); });
+  $('shareDone').addEventListener('click', function () { fundOrFinish(false); });
 
   // How far each signer gets, for the funnel in the morning report. Sent in the background, never waited for.
   function track(step, detail) {
@@ -1985,9 +1985,15 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r);
     toast('Selected. Copy it with your phone or keyboard.');
   }
-  // after the MP email, funding is offered once (unless they have already been through it)
-  $('mpDone').addEventListener('click', function () { track('mp_done'); S.fundSeen ? finish() : toFund(true); });
-  $('mpSkip').addEventListener('click', function () { track('mp_skip'); S.fundSeen ? finish() : toFund(); });
+  // after the MP email (or sharing), funding is offered. Marcus, 12 Nov 2026: everyone who has not given is asked
+  // once more here, even if they said "Not now" earlier. Never a third time, and never after they have paid.
+  function fundOrFinish(afterMp) {
+    if (S.paid || S.fundAgain) return finish();
+    if (S.fundSeen) { S.fundAgain = true; track('fund_again'); }
+    toFund(afterMp);
+  }
+  $('mpDone').addEventListener('click', function () { track('mp_done'); fundOrFinish(true); });
+  $('mpSkip').addEventListener('click', function () { track('mp_skip'); fundOrFinish(false); });
 
   // ---------------------------------------------------------------- 4: fund
   // Their videos travel further than any graphic would, so after the MP email it is straight to
@@ -2084,6 +2090,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   }
   // The card form says it is finished: check with Stripe that the money really moved, then say so.
   function showPaid(id) {
+    S.paid = true;
     if (S.checkout) { try { S.checkout.destroy(); } catch (e) {} S.checkout = null; }
     document.querySelectorAll('.me-first').forEach(function (el) { el.textContent = S.me.first; });
     $('doneTick').hidden = true;
