@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Reply to your MP</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="/_web/brand/favicon.ico">
+<meta name="theme-color" content="#041440">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Reply to your MP (approved by Marcus 8 Nov 2026, live 12 Nov 2026). Reached only from a signer's own link in the email to people who
+   emailed their MP. Shows their MP's email address and the letter from the petition page's MP step,
+   word for word, with one button to copy each. They paste and send from their own email: nothing is
+   sent from here. Same look as the petition page. */
+:root{
+  --navy:#041440; --navy-3:#142a6b; --gold:#ddbc66; --gold-ink:#8a6b1f; --ok:#1f7a45;
+  --paper:#ffffff; --paper-2:#f5f3ec; --ink:#141b33; --muted:#5a6075; --rule:#e2ddcf;
+  --f-display:'DM Serif Display', Georgia, 'Times New Roman', serif;
+  --f-body:'DM Sans', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  --gl:max(16px, env(safe-area-inset-left, 0px)); --gr:max(16px, env(safe-area-inset-right, 0px));
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--navy);color:var(--paper);font:400 16px/1.55 var(--f-body);-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+button{font:inherit}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+[hidden]{display:none!important}
+.top{max-width:620px;margin:0 auto;padding:16px var(--gr) 4px var(--gl)}
+.top img{height:40px;width:auto}
+.page{max-width:620px;margin:0 auto;padding:16px var(--gr) 48px var(--gl)}
+.card{background:var(--paper);color:var(--ink);border-top:4px solid var(--gold);border-radius:4px;box-shadow:0 24px 60px rgba(0,0,0,.38);overflow:hidden}
+.head{padding:22px 20px 6px}
+.kicker{font:700 12px/1.4 var(--f-body);letter-spacing:.16em;text-transform:uppercase;color:var(--gold-ink);margin:0 0 8px}
+h1{font:400 clamp(28px,6.4vw,36px)/1.08 var(--f-display);color:var(--navy);margin:0 0 12px;text-wrap:balance}
+.lede{margin:0 0 6px;font-size:16px;line-height:1.5}
+.steps{margin:14px 0 4px;padding:0;list-style:none;counter-reset:s}
+.steps li{counter-increment:s;display:flex;gap:10px;align-items:flex-start;margin:0 0 8px;font-size:15px;line-height:1.45}
+.steps li::before{content:counter(s);flex:0 0 24px;height:24px;border-radius:50%;background:var(--navy);color:#fff;font:700 13px/24px var(--f-body);text-align:center}
+.body{padding:10px 20px 22px}
+.mp{display:flex;align-items:center;gap:12px;padding:12px 14px;margin:0 0 12px;border:1.5px solid var(--rule);border-radius:4px;background:var(--paper-2)}
+.mp-dot{flex:0 0 44px;width:44px;height:44px;border-radius:50%;overflow:hidden;display:grid;place-items:center;font:700 14px/1 var(--f-body);color:#fff;background:var(--muted)}
+.mp-dot img{width:100%;height:100%;object-fit:cover}
+.mp-who{display:flex;flex-direction:column;min-width:0;font-size:13.5px;color:var(--muted);line-height:1.35}
+.mp-who b{font-size:16px;color:var(--ink)}
+.box{margin:0 0 12px;border:1.5px solid var(--rule);border-radius:4px;overflow:hidden}
+.box-top{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;background:var(--paper-2);border-bottom:1.5px solid var(--rule)}
+.box-l{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.box-v{padding:12px;font-size:15px;line-height:1.5;color:var(--ink);overflow-wrap:anywhere;white-space:pre-wrap}
+.letter .box-v{font-size:14.5px;max-height:420px;overflow:auto}
+.subj{padding:0 12px 12px;font-size:13.5px;color:var(--muted)}
+.subj b{color:var(--ink);font-weight:600}
+.copy{min-height:40px;padding:0 16px;border:0;border-radius:3px;background:var(--navy);color:#fff;font:700 14px/1 var(--f-body);cursor:pointer;white-space:nowrap}
+.copy:hover{background:var(--navy-3)}
+.copy.done{background:var(--ok)}
+.copy:disabled{opacity:.4;cursor:default}
+.fine{margin:14px 0 0;font-size:12.5px;line-height:1.5;color:var(--muted)}
+.fine a{color:var(--navy)}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:4px;font-size:14px;box-shadow:0 8px 24px rgba(0,0,0,.3)}
+.err{padding:22px 20px;font-size:16px;line-height:1.5}
+</style>
+</head>
+<body>
+<div class="top"><a href="https://execprosec.org/"><img src="/_web/brand/logo-nav.png" alt="ExecProsec" width="73" height="40"></a></div>
+<main class="page">
+  <div class="card" id="card">
+    <div class="head">
+      <p class="kicker">Reply to your MP</p>
+      <h1>Send this back to your MP</h1>
+    </div>
+    <div class="body">
+      <div class="mp">
+        <div class="mp-dot" id="mpDot">MP</div>
+        <div class="mp-who"><span>Your MP</span><b id="mpName">Finding your MP...</b><span id="mpSeat"></span></div>
+      </div>
+      <div class="box">
+        <div class="box-top"><span class="box-l">Your MP's email address</span><button class="copy" type="button" id="cpMail" disabled>Copy email address</button></div>
+        <div class="box-v" id="mpMail">Finding your MP's email address...</div>
+        <div class="subj">Subject: <b id="mpSubj"></b></div>
+      </div>
+      <div class="box letter">
+        <div class="box-top"><span class="box-l">The email to your MP</span><button class="copy" type="button" id="cpMsg">Copy email content</button></div>
+        <div class="box-v" id="mpMsg"></div>
+      </div>
+      <p class="fine">It goes from your own email, in your name. We never send anything to your MP for you. Every other objection is answered in our <a href="https://execprosec.org/amendments-briefing/" target="_blank" rel="noopener">briefing</a>.</p>
+    </div>
+  </div>
+</main>
+<script>
+(function () {
+  var API = 'https://central-2-mcp-production.up.railway.app/public/';
+  var SUBJECT = 'Include all lawmakers under the Hillsborough Law';
+  var q = new URLSearchParams(location.search);
+  var S = { sig: q.get('s') || '', key: q.get('k') || '', me: null, mp: null };
+  function $(id) { return document.getElementById(id); }
+  function esc(x) { return String(x).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function toast(t) { var d = document.createElement('div'); d.className = 'toast'; d.textContent = t; document.body.appendChild(d); setTimeout(function () { d.remove(); }, 2600); }
+  function track(step, detail) {
+    if (!S.sig || !S.key) return;
+    try {
+      var b = JSON.stringify({ sig: S.sig, key: S.key, step: step, detail: detail || '' });
+      if (navigator.sendBeacon) navigator.sendBeacon(API + 'petition/step', new Blob([b], { type: 'text/plain' }));
+    } catch (e) {}
+  }
+
+  // The six points and the conclusion are the petition page's MP letter, word for word (Marcus, 8 Nov 2026:
+  // "use the words from that precisely"). Only the greeting and the sign-off carry their own names.
+  var POINTS = [
+    ['1. Parliamentary privilege is not a barrier to including legislators',
+     'The Government says parliamentary privilege protects what is said in Parliament. It still would. Our amendment does not threaten parliamentary privilege; it respects it completely. It only covers what legislators say to the public outside their parliaments.\n\n' +
+     'In fact, it goes further. The Senedd, the Scottish Parliament and the Northern Ireland Assembly do not have parliamentary privilege; they only have limited protection against claims of slander. As it is written, the Bill gives no immunity from prosecution for what is said in those parliaments. So at present, a government minister could be prosecuted for misleading the public if they chose to lie in the Senedd, the Scottish Parliament or the Northern Ireland Assembly. That is a major oversight in the Bill. Our amendment applies an immunity from prosecution for the new offences to proceedings in all of the UK\'s other parliaments, something the Government and the Bill have not even thought to do.'],
+    ['2. Parliament\'s existing procedures are no barrier to including legislators either',
+     'The Government says Parliament regulates its own affairs. But Parliament\'s own rules only deal with what is said inside Parliament. They do not deal with lies told to the public outside Parliament. When a police officer or civil servant lies to the public, a jury decides. MPs and peers should be no different.'],
+    ['3. Legislators do not need executive power to be held to these offences',
+     'The Government says backbench MPs and peers do not take decisions on behalf of the state. They do not need to. Backbenchers scrutinise the Government, vote on laws and public spending, and influence decisions of national importance. Most are elected by the public and trusted to report back on what the Government is doing, and when they speak to the public about it, the public must be able to trust them to tell the truth. Under our system, executive power is nothing without scrutiny from the opposition and the backbenches. If government ministers can be prosecuted for lying but shadow ministers and scrutinisers cannot, the system of checks and balances is thrown completely off balance when legislators communicate with the public.'],
+    ['4. Lying does not depend on access to secret government information',
+     'The Government says backbench MPs and peers do not have access to the kind of information ministers have. That shows a complete misunderstanding of what lying is. A lie does not depend on access to the truth; it is the opposite of the truth. All it takes is a willingness to make things up.'],
+    ['5. Elections and prosecutions do two completely different things',
+     'The Government says elected members are accountable to the public at elections. But elections decide who holds office, and they reflect the popularity of a party, its leader or its policies. A prosecution decides something else entirely: whether one person deliberately deceived the public. Only a jury, under careful analysis of the evidence at trial, can decide that. No election can.\n\n' +
+     'The parliamentary expenses scandal proves the point. Elected politicians went to prison for false expense claims. Being elected did not put them above the law; they faced justice, as everyone should. And peers never face an election at all.'],
+    ['6. The Government says this offence is targeting Hillsborough-style cover-ups, and it is not right to criminalise political speech',
+     'Firstly, we are not attempting to criminalise political speech. Our aim is to make sure normal political debate, opinions, honest mistakes and broken promises can never be prosecuted.\n\n' +
+     'Secondly, nothing written in the Bill limits it to Hillsborough-style cover-ups. It should rightly cover cover-ups like Hillsborough, but it should equally cover lying to start a war or lying to manipulate the result of a referendum. The bar for a criminal conviction is high, but the range of situations the offence can cover is very broad, as it should be.'],
+    ['Conclusion:',
+     'If Parliament votes to exempt its own members, I will feel angry and betrayed. A law for everyone else but not for the people who make it is a law for thee, but not for me. Such an act would destroy public trust in the UK\'s parliaments, as you would be telling us that you wanted the freedom to lie to us.\n\n' +
+     'It would show the public that you have not learnt your lesson after years of lying in politics, which we have endured from Iraq to the Brexit referendum to the scandals of the COVID-19 pandemic, and countless others. There is a reason politicians are among the least trusted professions in the whole country. Do you seriously want to do this? It would be the most damaging, reputationally self-harming thing imaginable for Parliament.\n\n' +
+     'The House of Lords votes next on this amendment. So far, more peers have spoken in favour of it than against it, so it seems likely the Lords will add it to the Bill. It will then come back to the Commons for final approval. Please tell me how you will vote when it does.\n\n' +
+     'Please do not send me lines written by the Cabinet Office: as set out above, they are meaningless. Every other objection the campaign has heard is answered in its briefing below. If your reply repeats one of them, I will take it that you have no real answer, and I will assume the worst.']
+  ];
+  function letter(html) {
+    var T = function (x) { return html ? esc(x) : x; };
+    var B = function (x) { return html ? '<b>' + esc(x) + '</b>' : x; };
+    var mp = S.mp, me = S.me || {};
+    var out = T('Dear ' + (mp ? mp.name + ' MP' : '[your MP]') + ',\n\n');
+    POINTS.forEach(function (p) { out += B(p[0]) + T('\n' + p[1] + '\n\n'); });
+    out += T('Detailed briefing: https://execprosec.org/amendments-briefing/\n\n' +
+      'Yours sincerely,\n' + ((me.first || '') + ' ' + (me.last || '')).trim() + (me.pc ? '\n' + me.pc : ''));
+    return out;
+  }
+  function render() {
+    var mp = S.mp;
+    $('mpName').textContent = mp ? mp.name + ' MP' : 'Your MP';
+    $('mpSeat').textContent = mp ? mp.seat + ' · ' + mp.party : '';
+    if (mp && mp.photo) $('mpDot').innerHTML = '<img src="' + esc(mp.photo) + '" alt="">';
+    $('mpMail').textContent = mp && mp.email ? mp.email : (mp ? 'Find it at members.parliament.uk' : 'Finding your MP\'s email address...');
+    $('cpMail').disabled = !(mp && mp.email);
+    $('mpSubj').textContent = SUBJECT;
+    $('mpMsg').innerHTML = letter(true);
+  }
+  // Their MP from their postcode, through Parliament's own service, as the petition page does.
+  function findMp(pc) {
+    var api = 'https://members-api.parliament.uk/api/';
+    fetch(api + 'Location/Constituency/Search?searchText=' + encodeURIComponent(pc) + '&skip=0&take=1').then(function (r) { return r.json(); })
+      .then(function (r) {
+        var v = r.items[0].value, mem = v.currentRepresentation.member.value;
+        S.mp = { seat: v.name, name: mem.nameDisplayAs, party: mem.latestParty.name, email: '', photo: mem.thumbnailUrl || '' };
+        render();
+        return fetch(api + 'Members/' + mem.id + '/Contact').then(function (c) { return c.json(); });
+      })
+      .then(function (c) {
+        var e = c.value.filter(function (x) { return x.typeId === 1 && x.email; })[0] || c.value.filter(function (x) { return x.email; })[0];
+        if (e && S.mp) S.mp.email = e.email.trim();
+        render();
+      })
+      .catch(function () { if (!S.mp) S.mp = { seat: '', name: 'Your MP', party: '', email: '' }; render(); });
+  }
+  function copyText(btn, label, plain, html) {
+    var done = function () { btn.classList.add('done'); btn.textContent = 'Copied'; track('reply_copied', label);
+      setTimeout(function () { btn.classList.remove('done'); btn.textContent = label === 'email' ? 'Copy email address' : 'Copy email content'; }, 2500); };
+    var fallback = function () {
+      var r = document.createRange(); r.selectNodeContents(label === 'email' ? $('mpMail') : $('mpMsg'));
+      var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r);
+      toast('Selected. Copy it with your phone or keyboard.');
+    };
+    if (html && window.ClipboardItem && navigator.clipboard && navigator.clipboard.write) {
+      navigator.clipboard.write([new ClipboardItem({
+        'text/html': new Blob(['<div>' + html.replace(/\n/g, '<br>') + '</div>'], { type: 'text/html' }),
+        'text/plain': new Blob([plain], { type: 'text/plain' })
+      })]).then(done, function () { navigator.clipboard.writeText(plain).then(done, fallback); });
+    } else if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(plain).then(done, fallback);
+    else fallback();
+  }
+  $('cpMail').addEventListener('click', function () { copyText(this, 'email', S.mp.email); });
+  $('cpMsg').addEventListener('click', function () { copyText(this, 'letter', letter(false), letter(true)); });
+
+  render();
+  if (q.get('demo')) {   // preview only: a made-up signer at a sample postcode
+    S.me = { first: 'Sarah', last: 'Jones', pc: 'NR2 2PW' };
+    render(); findMp(S.me.pc);
+    return;
+  }
+  // Their name and postcode come from Central by their own link (never in the address itself).
+  fetch(API + 'petition/reply?s=' + encodeURIComponent(S.sig) + '&k=' + encodeURIComponent(S.key))
+    .then(function (r) { return r.json(); })
+    .then(function (d) {
+      if (!d || !d.ok) throw 0;
+      S.me = { first: d.first, last: d.last, pc: d.postcode };
+      track('reply_open');
+      // the MP named in their email (looked up from the same postcode); Parliament fills in the photo
+      if (d.mp && d.mp.name) {
+        S.mp = { seat: d.mp.seat, name: d.mp.name, party: d.mp.party, email: d.mp.email || '', photo: '' };
+        render();
+        if (d.mp.id) fetch('https://members-api.parliament.uk/api/Members/' + d.mp.id).then(function (r) { return r.json(); })
+          .then(function (r) { if (r && r.value && r.value.thumbnailUrl) { S.mp.photo = r.value.thumbnailUrl; render(); } }).catch(function () {});
+        if (!S.mp.email) findMp(d.postcode);
+      } else { render(); findMp(d.postcode); }
+    })
+    .catch(function () {
+      $('card').innerHTML = '<div class="err">This link has not worked. Please use the button in your email again, or copy the letter from the email itself.</div>';
+    });
+})();
+</script>
+</body>
+</html>
