@@ -503,6 +503,10 @@ body.pr-off .promise{display:none}
 .rk-card h3{margin:0 0 6px;font:400 30px/1.1 var(--f-display);color:#fff}
 .rk-card p{margin:0;font-size:14px;color:var(--on-navy)}
 .cert{display:block;width:100%;max-width:340px;margin:0 auto 14px;border-radius:4px;box-shadow:0 8px 24px rgba(4,20,64,.25)}
+.poster{margin:0 0 18px}
+.poster img{display:block;width:100%;height:auto;aspect-ratio:1100/619;object-fit:cover;border-radius:6px;background:#e6e9f0}
+.poster figcaption{font-size:13px;color:#5b6475;margin-top:6px;text-align:center}
+#certShare{margin-top:10px}
 .rk-ups{margin:18px 0 0;padding-top:12px;border-top:1px solid var(--rule)}
 .rk-ups h3{margin:0 0 8px;font:700 12.5px/1.3 var(--f-body);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
 .rk-up{display:flex;align-items:center;gap:12px;width:100%;margin:0 0 8px;padding:12px 14px;border:1.5px solid var(--rule);border-left:5px solid var(--gold);border-radius:4px;background:#fff;color:var(--ink);font:inherit;text-align:left;cursor:pointer}
@@ -681,6 +685,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       <p class="rankup" hidden><i aria-hidden="true">&#10003;</i> <span></span></p>
       <h2 id="fundH">Your voice has been heard. Now help us be heard everywhere.</h2>
       <p class="why">Our poster at Westminster Tube station is booked and paid for. Next come newspaper adverts, billboards and a rally on the day of the vote. We take no money from any party. It all comes from people like you.</p>
+      <figure class="poster"><img src="westminster-poster.webp" srcset="westminster-poster-640.webp 640w, westminster-poster.webp 1100w" sizes="(max-width:520px) 92vw, 480px" width="1100" height="619" loading="lazy" decoding="async" alt="Our poster on the platform at Westminster Tube station: Politicians are making lying to the public criminally illegal for nearly every official apart from themselves."><figcaption>How our poster will look at Westminster station.</figcaption></figure>
       <fieldset>
         <legend id="fundLegend">Back the campaign every month</legend>
         <div class="opts freq" role="radiogroup" aria-label="How often">
@@ -725,7 +730,8 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       <h2 id="doneH">Thank you, <span class="me-first"></span>.</h2>
       <div class="rk-card"><p class="k">Your rank</p><h3 id="endRank">Signatory</h3><p id="endLeft"></p></div>
       <img class="cert" id="cert" alt="Your certificate, with your name and rank">
-      <button class="btn" type="button" id="certShare">Share my certificate</button>
+      <button class="btn" type="button" id="certSave">Download my certificate</button>
+      <button class="btn navy" type="button" id="certShare">Share my certificate</button>
       <p class="fine below" id="doneS"></p>
       <div class="rk-ups" id="rkUps" hidden><h3>Rank up</h3><div id="rkUpList"></div></div>
     </div>
@@ -2234,6 +2240,26 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       $('cert').src = c.toDataURL('image/png');
     });
   }
+  // Download (Marcus, 12 Nov 2026): saves the certificate as a picture file, and counts how many people
+  // value it enough to keep it. Instagram's and Facebook's own browsers can't save files, so there it
+  // says to press and hold the picture instead (counted separately, as 'hold').
+  $('certSave').addEventListener('click', function () {
+    if (!S.cert) return;
+    if (/Instagram|FBAN|FBAV|FB_IAB/.test(navigator.userAgent)) {
+      track('cert_download', 'hold');
+      toast('Press and hold your certificate, then choose Save to Photos.');
+      return;
+    }
+    S.cert.toBlob(function (blob) {
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'hillsborough-law-certificate-' + (S.me.first || 'mine').toLowerCase().replace(/[^a-z]+/g, '') + '.png';
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function () { URL.revokeObjectURL(a.href); }, 60000);
+      track('cert_download', 'file');
+      toast('Certificate saved to your downloads.');
+    }, 'image/png');
+  });
   // On a phone the share sheet takes the image itself; on a laptop it is saved, and the words copied.
   $('certShare').addEventListener('click', function () {
     var words = 'My rank: ' + rankName() + ', in the campaign to include all lawmakers under the Hillsborough Law. Sign the petition: https://execprosec.org/petition/?ref=share';
