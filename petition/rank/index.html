@@ -638,8 +638,8 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       <p class="alt"><button class="link" type="button" id="lkBack" hidden>Back</button></p>
       <div class="f after-lk">
         <label for="quote">In a sentence or two, how do you feel about lawmakers leaving themselves out?</label>
-        <textarea id="quote" class="short" maxlength="200" rows="3" placeholder="Say it the way you'd say it to your MP."></textarea>
-        <div class="qfoot"><span><span class="err" id="quoteErr" aria-live="polite"></span><span class="hint" id="quoteHint" aria-live="polite"></span></span><span class="counter" id="qCount">200</span></div>
+        <textarea id="quote" class="short" maxlength="280" rows="3" placeholder="Say it the way you'd say it to your MP."></textarea>
+        <div class="qfoot"><span><span class="err" id="quoteErr" aria-live="polite"></span><span class="hint" id="quoteHint" aria-live="polite"></span></span><span class="counter" id="qCount">280</span></div>
       </div>
       <p class="fine after-lk">No swearing, abuse or threats. We may share your words with your first name and town, including with journalists.</p>
       <button class="btn navy after-lk" type="submit">Next</button>
@@ -662,7 +662,8 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
         <a class="btn navy" id="mpOutlook" href="#" target="_blank" rel="noopener">Send from Outlook or Hotmail</a>
         <a class="btn navy" id="mpApp" href="#">Use my email app</a>
       </div>
-      <p class="fine">Each one opens an email from your own address with your MP’s address, the subject and the letter already filled in. Read it, then press send.</p>
+      <p class="notice gold" id="mpCopied" hidden></p>
+      <p class="fine">Each one opens a new email from your own address, to your MP, with the subject filled in. The same tap copies the letter, ready to paste in.</p>
       <details class="copyit" id="copyit"><summary>Or copy and paste it yourself</summary>
       <div class="cp"><span class="cp-l">To</span><span class="cp-v" id="mpMail"></span><button class="cp-b" type="button" data-copy="mpMail">Copy</button></div>
       <div class="cp"><span class="cp-l">Subject</span><span class="cp-v" id="mpSubj"></span><button class="cp-b" type="button" data-copy="mpSubj">Copy</button></div>
@@ -1804,7 +1805,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   // ---------------------------------------------------------------- 2: one statement and their own words
   var qTimer;
   $('quote').addEventListener('input', function () {
-    var left = 200 - this.value.length, v = this.value;
+    var left = 280 - this.value.length, v = this.value;
     $('qCount').textContent = left;
     $('qCount').classList.toggle('low', left <= 20);
     clearTimeout(qTimer);
@@ -1930,10 +1931,14 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     document.querySelector('[data-copy="mpMail"]').disabled = !(mp && mp.email);
     $('mpSubj').textContent = MP_SUBJECT;
     $('mpMsg').innerHTML = mpLetter(true);
-    var to = mp && mp.email ? mp.email : '', body = mpLetter(false);
-    $('mpGmail').href = 'https://mail.google.com/mail/?view=cm&fs=1&to=' + enc(to) + '&su=' + enc(MP_SUBJECT) + '&body=' + enc(body);
-    $('mpOutlook').href = 'https://outlook.live.com/mail/0/deeplink/compose?to=' + enc(to) + '&subject=' + enc(MP_SUBJECT) + '&body=' + enc(body);
-    $('mpApp').href = 'mailto:' + to + '?subject=' + enc(MP_SUBJECT) + '&body=' + enc(body);
+    // 12 Nov 2026: the letter is too long to go inside a Gmail or Outlook link (about 8,700
+    // characters once encoded; Gmail answered 404), so those two open with the address and subject
+    // only, and the tap copies the letter for them to paste. Phone email apps take the whole letter.
+    var to = mp && mp.email ? mp.email : '';
+    $('mpGmail').href = 'https://mail.google.com/mail/?view=cm&fs=1&to=' + enc(to) + '&su=' + enc(MP_SUBJECT);
+    $('mpOutlook').href = 'https://outlook.live.com/mail/0/deeplink/compose?to=' + enc(to) + '&subject=' + enc(MP_SUBJECT);
+    $('mpApp').href = 'mailto:' + to + '?subject=' + enc(MP_SUBJECT) + '&body=' + enc(mpLetter(false));
+    $('mpCopied').hidden = true;
     // their own email service comes first, in red
     var dom = ((S.me.email || '').split('@')[1] || '').toLowerCase();
     var first = /^(gmail|googlemail)\.com$/.test(dom) ? 'mpGmail' : /^(hotmail|outlook|live|msn)\.(com|co\.uk)$/.test(dom) ? 'mpOutlook' : 'mpApp';
@@ -1946,8 +1951,35 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     go(3);
   }
   ['mpGmail', 'mpOutlook', 'mpApp'].forEach(function (id) {
-    $(id).addEventListener('click', function () { S.mpOpened = true; track('mp_compose', id.slice(2).toLowerCase()); });
+    $(id).addEventListener('click', function () {
+      S.mpOpened = true;
+      track('mp_compose', id.slice(2).toLowerCase());
+      // copied in the same tap, before the new email opens and this page loses focus
+      var ok = copyLetter();
+      if (ok) S.mpCopied = true;
+      $('mpCopied').textContent = ok
+        ? (id === 'mpApp' ? 'The letter should already be in the email. If it isn’t, it’s copied: tap the message box and paste it in.'
+          : 'Your letter is copied. In the new email, tap the message box and paste it in, then press send.')
+        : 'Use “Or copy and paste it yourself” below to copy the letter into the email.';
+      $('mpCopied').hidden = false;
+      if (!ok) $('copyit').open = true;
+    });
   });
+  // The old way of copying works in the same tap on every phone and browser, keeping the bold titles.
+  function copyLetter() {
+    var box = document.createElement('div'), ok = false, sel = window.getSelection();
+    box.contentEditable = 'true';
+    box.style.cssText = 'position:fixed;left:-9999px;top:0;width:600px;white-space:normal';
+    box.innerHTML = mpLetter(true).replace(/\n/g, '<br>');
+    document.body.appendChild(box);
+    var r = document.createRange();
+    r.selectNodeContents(box);
+    sel.removeAllRanges(); sel.addRange(r);
+    try { ok = document.execCommand('copy'); } catch (e) {}
+    sel.removeAllRanges();
+    box.remove();
+    return ok;
+  }
 
   document.querySelectorAll('.cp-b').forEach(function (b) {
     b.addEventListener('click', function () {
@@ -2249,7 +2281,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     fresh();
     ['p1', 'p2', 'p4'].forEach(function (id) { $(id).reset(); });
     ['first', 'last', 'email', 'pc', 'cty', 'otherAmt', 'mpMsg', 'quote'].forEach(function (id) { setErr(id); });
-    $('quoteHint').textContent = ''; $('qCount').textContent = '200';
+    $('quoteHint').textContent = ''; $('qCount').textContent = '280';
     $('consentErr').textContent = ''; $('emailFix').hidden = true; setConsent('');
     $('pcWrap').hidden = false; $('ctyWrap').hidden = true; $('otherWrap').hidden = true; $('abroadBtn').textContent = 'Not in the UK?';
     fundLabel();
