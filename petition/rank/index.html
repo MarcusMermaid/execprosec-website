@@ -496,6 +496,7 @@ body.pr-off .promise{display:none}
 .follow .btn{text-decoration:none}
 .btn.ig{background:linear-gradient(45deg,#f09433,#dc2743 50%,#bc1888)}
 .btn.fb{background:#1877f2}
+.btn.xx{background:#000}
 .btn.ig:hover,.btn.fb:hover{filter:brightness(.92)}
 /* the end: their rank and certificate */
 .rk-card{margin:0 0 14px;padding:16px;border-radius:6px;background:var(--navy);color:#fff;text-align:center}
@@ -719,8 +720,9 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       <div class="follow">
         <a class="btn ig" id="fIg" href="https://www.instagram.com/marcusjball/" target="_blank" rel="noopener">Follow on Instagram</a>
         <a class="btn fb" id="fFb" href="https://www.facebook.com/101805467849694" target="_blank" rel="noopener">Follow on Facebook</a>
+        <a class="btn xx" id="fX" href="https://x.com/MarcusJBall" target="_blank" rel="noopener">Follow on X</a>
       </div>
-      <button class="btn navy" type="button" id="fDone" hidden>See my rank</button>
+      <button class="btn navy" type="button" id="fDone">I’ve followed. Now show me my rank</button>
       <button class="link skip" type="button" id="fSkip">Skip</button>
     </div>
 
@@ -1406,7 +1408,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
 
   // ---------------------------------------------------------------- ranks (Marcus, 12 Nov 2026)
   // One rank for each step, in the order of the bar; Champion of Democracy is all of them. Following
-  // can't be checked (Instagram and Facebook don't say who followed), so that rank comes with the tap.
+  // can't be checked (Instagram, Facebook and X don't say who followed), so that rank comes with the tap.
   var RANKS = [['signed', 'Signatory'], ['record', 'On the Record'], ['backer', 'Backer'], ['mp', 'Campaigner'], ['follow', 'Amplifier']];
   var CHAMPION = 'Champion of Democracy';
   function rankSteps() { return RANKS.filter(function (r) { return !(r[0] === 'mp' && S.abroad); }); }   // no MP to write to from abroad
@@ -2015,21 +2017,25 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
 
   // ---------------------------------------------------------------- 5: follow
   function toFollow() {
-    $('fDone').hidden = !S.ranks.follow;
+    // Marcus, 12 Nov 2026: the main button says they've followed, to nudge them to follow before the certificate
     $('fSkip').hidden = !!S.ranks.follow;
     track('follow_seen');
     go('f');
   }
-  ['fIg', 'fFb'].forEach(function (id) {
+  ['fIg', 'fFb', 'fX'].forEach(function (id) {
     $(id).addEventListener('click', function () {
-      track('follow', id === 'fIg' ? 'ig' : 'fb');
+      track('follow', { fIg: 'ig', fFb: 'fb', fX: 'x' }[id]);
       earn('follow');
       showChip($('pf'));
-      $('fDone').hidden = false;
       $('fSkip').hidden = true;
     });
   });
-  $('fDone').addEventListener('click', finish);
+  // Pressed without tapping a follow button here: most likely they follow us already, so the rank is theirs
+  // on their word, as with "I've sent it" for the MP email. Counted apart ('said') so we can tell.
+  $('fDone').addEventListener('click', function () {
+    if (!S.ranks.follow) { track('follow', 'said'); earn('follow'); }
+    finish();
+  });
   $('fSkip').addEventListener('click', function () { track('follow_skip'); finish(); });
 
   // ---------------------------------------------------------------- 4: fund
@@ -2167,7 +2173,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     record: ['On the Record', 'Answer six quick questions'],
     backer: ['Backer', 'Back the campaign, from \u00a310'],
     mp: ['Campaigner', 'Email your MP: it\u2019s written for you'],
-    follow: ['Amplifier', 'Follow on Instagram or Facebook']
+    follow: ['Amplifier', 'Follow on Instagram, Facebook or X']
   };
   function finish() {
     S.fromEnd = true;
