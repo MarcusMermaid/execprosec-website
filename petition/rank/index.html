@@ -1805,7 +1805,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   // ---------------------------------------------------------------- 2: one statement and their own words
   var qTimer;
   $('quote').addEventListener('input', function () {
-    var left = 280 - this.value.length, v = this.value;
+    var left = 280 - this.value.length, v = this.value;   // 280 from 12 Nov 2026 (Marcus: 40% more room)
     $('qCount').textContent = left;
     $('qCount').classList.toggle('low', left <= 20);
     clearTimeout(qTimer);
