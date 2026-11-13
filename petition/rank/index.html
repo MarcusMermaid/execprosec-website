@@ -1840,7 +1840,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
 
   // The order (Marcus, 12 Nov 2026): give, then the MP email, then follow, because the last two send
   // people into another app and many never come back. A rank up from the last screen returns there.
-  function afterStatements() { if (S.fromEnd) finish(); else toFund(); }
+  function afterStatements() { loadLetters(); if (S.fromEnd) finish(); else toFund(); }
 
   // How far each signer gets, for the funnel in the morning report. Sent in the background, never waited for.
   function track(step, detail) {
@@ -1885,7 +1885,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     var n = (S.count || 0) - 1;   // exact, and it goes up as people sign (Marcus, 7 Nov 2026)
     return n >= 100 ? fmt(n) : '';
   }
-  function mpLetter(html) {
+  function mpLetterOld(html) {
     var mp = S.mp, me = S.me;
     var T = function (x) { return html ? esc(x) : x; };
     var B = function (x) { return html ? '<b>' + esc(x) + '</b>' : x; };
@@ -1937,15 +1937,8 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     $('mpDot').style.color = mp && mp.party === 'Scottish National Party' ? '#041440' : '';
     $('mpMail').textContent = mp && mp.email ? mp.email : "Your MP's email address appears here";
     document.querySelector('[data-copy="mpMail"]').disabled = !(mp && mp.email);
-    $('mpSubj').textContent = MP_SUBJECT;
-    $('mpMsg').innerHTML = mpLetter(true);
-    // 12 Nov 2026: the letter is too long to go inside a Gmail or Outlook link (about 8,700
-    // characters once encoded; Gmail answered 404), so those two open with the address and subject
-    // only, and the tap copies the letter for them to paste. Phone email apps take the whole letter.
-    var to = mp && mp.email ? mp.email : '';
-    $('mpGmail').href = 'https://mail.google.com/mail/?view=cm&fs=1&to=' + enc(to) + '&su=' + enc(MP_SUBJECT);
-    $('mpOutlook').href = 'https://outlook.live.com/mail/0/deeplink/compose?to=' + enc(to) + '&subject=' + enc(MP_SUBJECT);
-    $('mpApp').href = 'mailto:' + to + '?subject=' + enc(MP_SUBJECT) + '&body=' + enc(mpLetter(false));
+    fillLetter();
+    pickLetter();
     $('mpCopied').hidden = true;
     // their own email service comes first, in red
     var dom = ((S.me.email || '').split('@')[1] || '').toLowerCase();
@@ -1966,13 +1959,69 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       var ok = copyLetter();
       if (ok) S.mpCopied = true;
       $('mpCopied').textContent = ok
-        ? (id === 'mpApp' ? 'The letter should already be in the email. If it isn’t, it’s copied: tap the message box and paste it in.'
+        ? (id === 'mpApp' || (id === 'mpGmail' && S.gmailFull) ? 'The letter should already be in the email. If it isn’t, it’s copied: tap the message box and paste it in.'
           : 'Your letter is copied. In the new email, tap the message box and paste it in, then press send.')
         : 'Use “Or copy and paste it yourself” below to copy the letter into the email.';
       $('mpCopied').hidden = false;
       if (!ok) $('copyit').open = true;
     });
   });
+  // Marcus, 13 Nov 2026: 20 versions of the letter and 100 subject lines (petition/mp-letters.json).
+  // Central gives each MP's constituents the next one in turn; the test version picks one at random.
+  // Until they arrive, the approved original letter is shown.
+  var LETTERS = null, lettersAsked = null;
+  function loadLetters() {
+    if (!lettersAsked) lettersAsked = fetch('/petition/mp-letters.json').then(function (r) { return r.json(); })
+      .then(function (d) { if (d && d.letters && d.letters.length && d.subjects && d.subjects.length) LETTERS = d; })
+      .catch(function () {});
+    return lettersAsked;
+  }
+  function pickLetter() {
+    loadLetters().then(function () {
+      if (!LETTERS || S.pick || !S.mp || !S.mp.email) return;
+      var local = { letter: Math.floor(Math.random() * LETTERS.letters.length), subject: Math.floor(Math.random() * LETTERS.subjects.length) };
+      if (DEMO || !S.sig || !S.key) { S.pick = local; fillLetter(); return; }
+      fetch(API + 'petition/mp-letter', { method: 'POST', headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify({ sig: S.sig, key: S.key, mp: S.mp.email }) })
+        .then(function (r) { return r.json(); })
+        .then(function (d) { S.pick = d && d.ok && LETTERS.letters[d.letter] && LETTERS.subjects[d.subject] ? d : local; })
+        .catch(function () { S.pick = local; })
+        .then(fillLetter);
+    });
+  }
+  function mpSubject() { return LETTERS && S.pick ? LETTERS.subjects[S.pick.subject] : MP_SUBJECT; }
+  function mpLetter(html) {
+    if (!LETTERS || !S.pick) return mpLetterOld(html);
+    var mp = S.mp, me = S.me, others = othersSigned();
+    var T = function (x) { return html ? esc(x) : x; };
+    var B = function (x) { return html ? '<b>' + esc(x) + '</b>' : x; };
+    var out = T('Dear ' + (mp ? mp.name + ' MP' : '[your MP]') + ',\n\n' +
+      'I am your constituent' + (me.pc ? ' (' + me.pc + ')' : '') + '. ' +
+      (others ? 'Along with ' + others + ' other people, I have signed the petition' : 'I have signed the petition') +
+      ' to include all lawmakers under the Hillsborough Law, and I back the campaign behind it.\n\n');
+    LETTERS.letters[S.pick.letter].split('\n\n').forEach(function (p) {
+      var lines = p.split('\n');
+      if (/^## /.test(lines[0])) out += B(lines.shift().slice(3)) + T('\n');
+      out += T(lines.join(' ') + '\n\n');
+    });
+    return out + T('Yours sincerely,\n' + me.first + ' ' + me.last + (me.pc ? '\n' + me.pc : ''));
+  }
+  // Gmail opens the whole letter when the link fits (Gmail refuses links over about 8,200 characters;
+  // the 20 letters come to about 8,000 at most). If it ever doesn't fit, it opens with the address and
+  // subject and the tap copies the letter. Outlook's limit could not be tested, so Outlook always works
+  // the copy-and-paste way. Phone email apps take the whole letter.
+  var GMAIL_MAX = 8100;
+  function fillLetter() {
+    var mp = S.mp, to = mp && mp.email ? mp.email : '', subj = mpSubject();
+    $('mpSubj').textContent = subj;
+    $('mpMsg').innerHTML = mpLetter(true);
+    var g = 'https://mail.google.com/mail/?view=cm&fs=1&to=' + enc(to) + '&su=' + enc(subj);
+    var gFull = g + '&body=' + enc(mpLetter(false));
+    S.gmailFull = gFull.length <= GMAIL_MAX;
+    $('mpGmail').href = S.gmailFull ? gFull : g;
+    $('mpOutlook').href = 'https://outlook.live.com/mail/0/deeplink/compose?to=' + enc(to) + '&subject=' + enc(subj);
+    $('mpApp').href = 'mailto:' + to + '?subject=' + enc(subj) + '&body=' + enc(mpLetter(false));
+  }
   // The old way of copying works in the same tap on every phone and browser, keeping the bold titles.
   function copyLetter() {
     var box = document.createElement('div'), ok = false, sel = window.getSelection();
