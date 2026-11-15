@@ -507,7 +507,7 @@ body.pr-off .promise{display:none}
 .poster{margin:0 0 18px}
 .poster img{display:block;width:100%;height:auto;aspect-ratio:1100/619;object-fit:cover;border-radius:6px;background:#e6e9f0}
 .poster figcaption{font-size:13px;color:#5b6475;margin-top:6px;text-align:center}
-.share{margin:22px 0 4px}.share h3{font-size:18px;margin:0 0 10px;text-align:center}.share-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px}.share-btns .btn{text-decoration:none;margin:0;font-size:15px;padding-left:8px;padding-right:8px}.btn.wa{background:#1fa855}.share-msg{margin:0 0 12px;padding:14px 16px;border-left:4px solid #ddbc66;background:#f6f1e4;border-radius:4px;font-size:16px;line-height:1.45;color:#0b1f4d}.share-msg a{color:#0b1f4d;word-break:break-all}.share .btn.ghost{margin-top:10px;background:#fff;color:var(--navy);border:2px solid var(--navy);box-shadow:none}.cert-link{display:block;margin:22px auto 0;font-size:14px}
+.share{margin:22px 0 4px}.share h3{font-size:18px;margin:0 0 10px;text-align:center}.share-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px}.share-btns .btn{text-decoration:none;margin:0;font-size:15px;padding-left:8px;padding-right:8px}.btn.wa{background:#1fa855}.share-msg{margin:0 0 12px;padding:14px 16px;border-left:4px solid #ddbc66;background:#f6f1e4;border-radius:4px;font-size:16px;line-height:1.45;color:#0b1f4d}.share-msg a{color:#0b1f4d;word-break:break-all}.share .btn.ghost{margin-top:10px;background:#fff;color:var(--navy);border:2px solid var(--navy);box-shadow:none}.cert-link{display:block;margin:22px auto 0;font-size:14px}.to-data{margin-top:22px}
 .rk-ups{margin:18px 0 0;padding-top:12px;border-top:1px solid var(--rule)}
 .rk-ups h3{margin:0 0 8px;font:700 12.5px/1.3 var(--f-body);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
 .rk-up{display:flex;align-items:center;gap:12px;width:100%;margin:0 0 8px;padding:12px 14px;border:1.5px solid var(--rule);border-left:5px solid var(--gold);border-radius:4px;background:#fff;color:var(--ink);font:inherit;text-align:left;cursor:pointer}
@@ -736,6 +736,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       <div class="rk-ups" id="rkUps" hidden><h3>Rank up</h3><div id="rkUpList"></div></div>
       <img class="cert" id="cert" alt="Your certificate, with your name and rank" hidden>
       <button class="link cert-link" type="button" id="certSave">Download your certificate</button>
+      <button class="btn navy to-data" type="button" id="toData">Close and look at the data</button>
     </div>
   </div>
  </div>
@@ -2347,6 +2348,16 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   $('shCopy').addEventListener('click', function () {
     copyText(shareText('copy'), 'Copied. Paste it anywhere: your stories, groups, chats and emails.');
     track('share_tap', 'copy');
+  });
+  // Close and look at the data (Marcus, 15 Nov 2026): the last button takes them to the petition's live
+  // data page. Inside the box on /petition/ it just closes the box, so the page behind it is there with its
+  // running count; opened on its own it goes to /petition/ without the box (?ab=a).
+  $('toData').addEventListener('click', function () {
+    track('to_data');
+    if (document.documentElement.classList.contains('embed')) {
+      try { parent.postMessage({ wtpt: 'close' }, location.origin); return; } catch (e) {}
+    }
+    location.href = '/petition/?ab=a';
   });
   $('shMore').addEventListener('click', function () {
     track('share_tap', 'more');
