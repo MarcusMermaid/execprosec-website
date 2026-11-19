@@ -5521,6 +5521,16 @@ document.addEventListener('keydown', function(e){
    The amounts are fixed tiers in Stripe: the page asks Central for a checkout by name
    ("monthly_20"), never by amount, so nothing here can change what somebody is charged. */
 var EP_DONATE_API = 'https://central-2-mcp-production.up.railway.app';
+/* The link that brought this visit (an ad's ?ref=fbad... above all), kept for the visit so a gift
+   made a few pages later is still counted against that ad. */
+var EP_REF = (function(){
+  try{
+    var m = location.search.match(/[?&](?:ref|utm_source)=([\w.\-]{1,40})/);
+    var r = m ? m[1].toLowerCase() : '';
+    if(r){ sessionStorage.setItem('ep_ref', r); return r; }
+    return sessionStorage.getItem('ep_ref') || '';
+  }catch(e){ return ''; }
+})();
 var EP_TIERS = [
   {k:'monthly_10',  amt:10,  label:'\u00a310'},
   {k:'monthly_20',  amt:20,  label:'\u00a320'},
@@ -5700,7 +5710,7 @@ function epDonateStart(which){
   try{ epTrack('donate_start', tier, 'donate'); }catch(e){}
   fetch(EP_DONATE_API+'/public/donate/session', {
     method:'POST', headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({tier:tier, amount:(tier==='monthly_custom'?EP_OTHER:(tier==='one_off_custom'?onceAmt:undefined)), return_url:location.origin+location.pathname})
+    body:JSON.stringify({tier:tier, amount:(tier==='monthly_custom'?EP_OTHER:(tier==='one_off_custom'?onceAmt:undefined)), return_url:location.origin+location.pathname, ref:EP_REF})
   }).then(function(r){ return r.json(); }).then(function(d){
     if(d && d.ok && d.client_secret && d.publishable_key){ epDonatePay(tier, d); }
     else { epDonateFallback(tier); }
