@@ -2046,7 +2046,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     $('fundNote').hidden = true;
     // Stripe sends them back to this page when they have paid; this is what it needs to say thank you.
     try { sessionStorage.setItem('ep_petition_me', JSON.stringify({ first: S.me.first, number: S.myNumber, emailOk: S.me.emailOk })); } catch (e) {}
-    post('donate/session', { tier: fundOnce() ? 'one_off_custom' : 'monthly_custom', amount: a, return_url: location.origin + location.pathname, in_place: true }).then(function (d) {
+    post('donate/session', { tier: fundOnce() ? 'one_off_custom' : 'monthly_custom', amount: a, return_url: location.origin + location.pathname, in_place: true, ref: REF }).then(function (d) {
       if (!d || !d.ok || !d.client_secret) throw new Error('no checkout');
       return stripeJs().then(function () {
         return Stripe(d.publishable_key).initEmbeddedCheckout({ clientSecret: d.client_secret, onComplete: function () { showPaid(d.session_id); } });
