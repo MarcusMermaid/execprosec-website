@@ -2107,7 +2107,7 @@ body.ticker-on .foot{padding-bottom:90px}
       if (e.data.wtpt === 'close'){ close(); return; }
       if (e.data.wtpt !== 'h') return;
       if (!(+e.data.h > 200)) return;
-      fr.style.height = Math.min(4000, +e.data.h) + 'px';
+      fr.style.height = Math.min(12000, +e.data.h) + 'px';   /* was 4,000: the MP step on a phone is taller (Marcus, 19 Nov 2026) */
       if (!ready){ ready = true; $('spLoad').hidden = true; fr.style.visibility = ''; }
     });
     /* every sign button opens the pop-up instead of leaving the page (after the sound tag is added) */
@@ -2115,7 +2115,11 @@ body.ticker-on .foot{padding-bottom:90px}
       var a = e.target && e.target.closest ? e.target.closest('a[href*="/petition/sign/?ref=results"]') : null; if (!a) return;
       e.preventDefault(); open(TAG, a.getAttribute('href').split('ref=')[1] || 'results');
     });
-    if (arm === 'b' || /[?&]popup=1/.test(q)) setTimeout(function(){ open(TAG, 'arrival'); }, 700);
+    /* back from their email app with the MP letter unfinished: open the box straight away, at the letter (Marcus, 19 Nov 2026) */
+    var resume = false;
+    try { var mk = JSON.parse(localStorage.getItem('ep_petition_mp') || 'null'); resume = !!(mk && Date.now() - mk.at < 12 * 3600e3); } catch (e) {}
+    if (resume) setTimeout(function(){ open(TAG, 'resume'); }, 300);
+    else if (arm === 'b' || /[?&]popup=1/.test(q)) setTimeout(function(){ open(TAG, 'arrival'); }, 700);
     else setTimeout(function(){ preload(TAG); }, 1500);
   })();
 

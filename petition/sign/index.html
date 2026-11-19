@@ -349,7 +349,11 @@ legend{padding:0;margin:0 0 8px;font-size:14px;font-weight:600;line-height:1.4;c
   border:1.5px solid var(--rule);border-radius:4px}
 .cp-l{grid-area:l;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
 .cp-v{grid-area:v;font-size:15px;line-height:1.45;color:var(--ink);overflow-wrap:anywhere;white-space:pre-wrap}
-.cp-msg .cp-v{font-size:14px}
+.cp-msg .cp-v{font-size:14px;max-height:340px;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:8px 10px;margin:4px 0 0;border:1px solid var(--line, #d9dce6);border-radius:4px;background:#fff}
+/* Marcus, 19 Nov 2026: on a phone the whole letter made the step 4,300px tall and the pop-up stopped at 4,000, so the end of
+   the letter and the Done button were cut off. The letter now scrolls in its own box; Copy still copies all of it. */
+.mp-hint{font-size:12.5px;color:var(--muted);margin:-4px 0 12px}
+.mp-back{margin:0 0 12px}
 .cp-b{grid-area:b;min-height:32px;padding:0 14px;border:0;border-radius:3px;background:var(--navy);color:#fff;font:700 13px/1 var(--f-body);cursor:pointer}
 .cp-b.done{background:var(--ok)}
 .cp-b:disabled{opacity:.4;cursor:default}
@@ -638,6 +642,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       <button class="way way-fund" type="button" id="wayFund"><b>Fund the campaign</b><span>Newspaper adverts, billboards and a rally on the day of the vote. Monthly or one-off, from £10.</span></button>
       <button class="way way-mp" type="button" id="wayMp"><img id="wayMpPhoto" alt="" hidden><span><b id="wayMpTitle">Email your MP</b><span class="way-from" id="wayMpFrom" hidden></span><span>About two minutes, from your own email address. We've written it for you.</span></span></button>
       <button class="way way-share" type="button" id="wayShare"><b>Share the petition</b><span>Copy the link and paste it wherever you talk to people. Every share brings more signatures.</span></button>
+      <p class="alt"><button class="link" type="button" id="choiceSkip">No thanks, I'm done. My signature is counted.</button></p>
     </div>
 
     <!-- 3b: share the link -->
@@ -660,7 +665,9 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       <p class="sub">Copy these into an email from your own address. It takes a minute.</p>
       <div class="cp"><span class="cp-l">To</span><span class="cp-v" id="mpMail"></span><button class="cp-b" type="button" data-copy="mpMail">Copy</button></div>
       <div class="cp"><span class="cp-l">Subject</span><span class="cp-v" id="mpSubj"></span><button class="cp-b" type="button" data-copy="mpSubj">Copy</button></div>
-      <div class="cp cp-msg"><span class="cp-l">Message</span><span class="cp-v" id="mpMsg"></span><button class="cp-b" type="button" data-copy="mpMsg">Copy</button></div>
+      <p class="notice gold mp-back" id="mpBack" hidden>Welcome back. Your letter is still here, ready to copy.</p>
+      <div class="cp cp-msg"><span class="cp-l">Message</span><span class="cp-v" id="mpMsg" tabindex="0"></span><button class="cp-b" type="button" data-copy="mpMsg">Copy</button></div>
+      <p class="mp-hint">Scroll the box to read it all. Copy copies the whole letter. If you leave to paste it, this page keeps it for you.</p>
       <button class="btn navy" type="button" id="mpDone">Done, next</button>
       <p class="alt"><button class="link" type="button" id="mpSkip">Skip</button></p>
     </div>
@@ -1791,6 +1798,8 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   $('wayFund').addEventListener('click', function () { track('chose_fund'); toFund(); });
   $('wayMp').addEventListener('click', function () { track('chose_mp'); toMp(); });
   $('wayShare').addEventListener('click', function () { track('chose_share'); toShare(); });
+  // Marcus, 19 Nov 2026: a signer thought she could not sign without picking one of the three. 3 in 10 left here.
+  $('choiceSkip').addEventListener('click', function () { track('choice_skip'); finish(); });
 
   // ---------------------------------------------------------------- 2b: the money pitch (Marcus, 6 Nov 2026)
   // Two slides, swiped or moved on with Next: what the campaign has done, then what the money pays
@@ -1941,7 +1950,29 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       'Detailed briefing: https://execprosec.org/amendments-briefing/\n\n' +
       'Yours sincerely,\n' + me.first + ' ' + me.last + (me.pc ? '\n' + me.pc : ''));
   }
-  function toMp() {
+  // Marcus, 19 Nov 2026: a signer copied the address, went to his email app, came back and the page had reloaded
+  // with the letter gone (phones close pages in the background). The MP step is kept on the phone for 12 hours
+  // and comes back by itself, on this page or in the pop-up on the big page. Nothing leaves the phone.
+  var MP_KEEP = 'ep_petition_mp';
+  function keepMp() {
+    if (DEMO) return;
+    try { localStorage.setItem(MP_KEEP, JSON.stringify({ at: Date.now(), me: { first: S.me.first, last: S.me.last, pc: S.me.pc, town: S.me.town, emailOk: S.me.emailOk },
+      mp: S.mp, count: S.count, sig: S.sig, key: S.key, backer: !!S.backer, fundSeen: !!S.fundSeen, paid: !!S.paid, shareSeen: !!S.shareSeen, myNumber: S.myNumber })); } catch (e) {}
+  }
+  function dropMp() { try { localStorage.removeItem(MP_KEEP); } catch (e) {} }
+  function resumeMp() {
+    var k = null;
+    try { k = JSON.parse(localStorage.getItem(MP_KEEP) || 'null'); } catch (e) {}
+    if (!k || !k.me || !(Date.now() - k.at < 12 * 3600e3)) { dropMp(); return false; }
+    S.me = k.me; S.mp = k.mp; S.count = Math.max(S.count || 0, k.count || 0); S.sig = k.sig || 0; S.key = k.key || '';
+    S.backer = k.backer; S.fundSeen = k.fundSeen; S.paid = k.paid; S.shareSeen = k.shareSeen; S.myNumber = k.myNumber || 0;
+    S.abroad = false; S.signed = true;
+    updateSticky();
+    document.querySelectorAll('.me-first').forEach(function (el) { el.textContent = S.me.first; });
+    toMp(true);
+    return true;
+  }
+  function toMp(resumed) {
     if (S.abroad) { toFund(); return; }
     var mp = S.mp;
     $('mpFrom').innerHTML = mp
@@ -1959,7 +1990,9 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     $('mpMsg').innerHTML = mpLetter(true);
     document.querySelectorAll('.cp-b').forEach(function (b) { b.classList.remove('done'); b.textContent = 'Copy'; });
     S.mpSeen = true;
-    track('mp_seen');
+    $('mpBack').hidden = !resumed;
+    track(resumed ? 'mp_resumed' : 'mp_seen');
+    keepMp();
     go(3);
   }
   document.querySelectorAll('.cp-b').forEach(function (b) {
@@ -1992,8 +2025,8 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     if (S.fundSeen) { S.fundAgain = true; track('fund_again'); }
     toFund(afterMp);
   }
-  $('mpDone').addEventListener('click', function () { track('mp_done'); fundOrFinish(true); });
-  $('mpSkip').addEventListener('click', function () { track('mp_skip'); fundOrFinish(false); });
+  $('mpDone').addEventListener('click', function () { track('mp_done'); dropMp(); fundOrFinish(true); });
+  $('mpSkip').addEventListener('click', function () { track('mp_skip'); dropMp(); fundOrFinish(false); });
 
   // ---------------------------------------------------------------- 4: fund
   // Their videos travel further than any graphic would, so after the MP email it is straight to
@@ -2192,6 +2225,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     var paid = (q.match(/[?&]session_id=(cs_[A-Za-z0-9_]+)/) || [])[1];
     if (token) confirmFromLink(token);
     else if (paid) backFromStripe(paid);
+    else if (!DEMO && resumeMp()) { /* back from their email app: the MP step again */ }
     else if (DEMO && /[?&]pitch=1(?![0-9])/.test(q)) {
       S.signed = true; S.me = { first: 'Sam', last: 'Taylor', email: '', emailOk: true, town: 'Norwich', pc: 'NR2 2PW' };
       S.mp = { seat: 'Your constituency', name: 'Jane Smith', party: 'Labour', email: 'your.mp@parliament.uk' };
