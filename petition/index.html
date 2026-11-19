@@ -1329,15 +1329,18 @@ body.ticker-on .foot{padding-bottom:90px}
   }
 
   /* ================= the living page (Marcus, 9 Nov 2026) =================
-     Every count on the page is one live number. It opens on the totals at midnight and adds today's
-     signers one by one, at the same pace and with the same sound wherever you are on the page, until it
-     reaches the real total. Then it stops, and moves only when someone new signs. */
+     Every count on the page is one live number, at the same pace and with the same sound wherever you are
+     on the page. Marcus, 19 Nov 2026: it opens no more than 1,000 below the real confirmed total (never below
+     midnight's), then climbs in uneven steps (2, 3, 4, 1, 1, 5, 1, 2, 3, 4, 1) until it reaches it, and rises
+     the same way when people sign: the most we have, always moving. */
   if (!VOICES) VOICES = QUOTES.map(function(q){ return {first: q[0], town: q[1], text: q[2]}; });
   var FEED = 'https://central-2-mcp-production.up.railway.app/public/petition/today';
   var stage = $('stage'), stream = $('stream'), tk = $('tk'), ticker = $('ticker');
   var AV = [['#142a6b', '#fff'], ['#ddbc66', '#041440'], ['#8a6b1f', '#fff'], ['#d64045', '#fff']], avi = 0;
-  var BEAT = 450, CALM = 1600, SPEED = 90;      // one signer every 0.45 s everywhere; names rise at 90 px a second
-  var R = {list: [], i: 0, li: 0, fresh: [], gap: BEAT, names: [], ni: 0, before: null, day: '', feedAt: 0};
+  var BEAT = 450, CALM = 1600, SPEED = 90;      // one step every 0.45 s everywhere; names rise at 90 px a second
+  var GAP = 1000, STEPS = [2, 3, 4, 1, 1, 5, 1, 2, 3, 4, 1], si = Math.floor(Math.random() * STEPS.length);
+  function stepSize(){ return STEPS[si++ % STEPS.length]; }
+  var R = {list: [], i: 0, li: 0, fresh: [], gap: BEAT, names: [], ni: 0, before: null, day: '', feedAt: 0, today: 0};
   var C = {signers: 0, answers: 0, quotes: 0, emailed: 0}, counted = 0;
   var LV = {ins: null, seat: {}, nat: {}, daily: null, ready: false, lit: {}, litN: 0};
   var LIVEQ = {cards: {}, cur: null, mid: null};
@@ -1504,7 +1507,7 @@ body.ticker-on .foot{padding-bottom:90px}
   function note(){
     var n = $('tdNote'), left = R.list.length - R.i;
     n.classList.toggle('loop', left <= 0);
-    n.textContent = left > 0 ? 'Counting from midnight: adding today’s ' + R.list.length.toLocaleString('en-GB') + ' signers one by one'
+    n.textContent = left > 0 ? 'Counting in the latest signers'
                              : ' ';   // Marcus, 9 Nov 2026: once counted, no extra sentence
   }
 
@@ -1590,10 +1593,19 @@ body.ticker-on .foot{padding-bottom:90px}
     if (LV.lit[c]) return; LV.lit[c] = 1; LV.litN++;
     $('litToday').innerHTML = '<b>' + LV.litN.toLocaleString('en-GB') + '</b> of 650 constituencies have a signer today so far';
   }
-  function count(p){
-    counted++; bump('signers', 1); bump('answers', p.a); bump('quotes', p.q); bump('emailed', p.e); if (p.c) litSeat(p.c);
-    if (LV.ready){ shift(p, 1); if (p.c && LV.onSeat) LV.onSeat(p.c); }
+  function count(p){ countMany([p]); }
+  function countMany(ps){                    // a step of several signers moves each number once
+    var a = 0, q = 0, e = 0;
+    ps.forEach(function(p){
+      a += p.a || 0; q += p.q || 0; e += p.e || 0; if (p.c) litSeat(p.c);
+      if (LV.ready){ shift(p, 1); if (p.c && LV.onSeat) LV.onSeat(p.c); }
+    });
+    counted += ps.length; bump('signers', ps.length); bump('answers', a); bump('quotes', q); bump('emailed', e);
     drawLive();
+  }
+  function countQuiet(p){                    // counted before the page opens, so nothing moves or sounds
+    counted++; C.signers++; C.answers += p.a || 0; C.quotes += p.q || 0; C.emailed += p.e || 0; if (p.c) litSeat(p.c);
+    if (LV.ready) shift(p, 1);
   }
 
   /* -- names -- */
@@ -1642,11 +1654,11 @@ body.ticker-on .foot{padding-bottom:90px}
   function looping(){ var h = londonHour(); return R.list.length >= 100 && !(h >= 1 && h < 4); }
   function nextUp(t){
     if (R.fresh.length && t - lastFresh >= R.gap && t - lastBeat >= BEAT){   // someone has just signed
-      lastBeat = lastFresh = t; var f = R.fresh.shift(); count(f); return {p: f, live: true};
+      lastBeat = lastFresh = t; var fs = R.fresh.splice(0, stepSize()); countMany(fs); return {p: fs[fs.length - 1], live: true};
     }
     if (t - lastBeat < BEAT) return null;
     if (R.i < R.list.length){                              // still counting up from midnight
-      lastBeat = t; var p = R.list[R.i++]; count(p); if (R.i === R.list.length) note(); return {p: p, live: false};
+      lastBeat = t; var ps = R.list.slice(R.i, R.i + stepSize()); R.i += ps.length; countMany(ps); if (R.i === R.list.length) note(); return {p: ps[ps.length - 1], live: false};
     }
     if (looping()){                                        // round again, straight on, no count
       lastBeat = t; var q = R.list[R.li++ % R.list.length]; if (q.c && LV.flash) LV.flash(q.c); return {p: q, live: false, loop: true};
@@ -1679,21 +1691,28 @@ body.ticker-on .foot{padding-bottom:90px}
     var day = londonDay(new Date(R.feedAt));
     if (!R.before || day !== R.day){                         // first load, or a new day after midnight
       var first = !R.before;
-      R.before = D.before; R.day = day; R.list = D.people; R.i = 0; R.li = 0; R.fresh = []; counted = 0; LV.lit = {}; LV.litN = 0;
-      C = {signers: D.before.signers, answers: D.before.answers, quotes: D.before.quotes, emailed: D.before.emailed || 0}; drawCounts();
+      R.before = D.before; R.day = day; R.list = D.people; R.i = 0; R.li = 0; R.fresh = []; R.today = +D.today || D.people.length; LV.lit = {}; LV.litN = 0;
+      /* today's signers before the latest 5,000 come as totals only */
+      var E = D.early || {signers: Math.max(0, R.today - D.people.length), answers: 0, quotes: 0, emailed: 0};
+      counted = +E.signers || 0;
+      C = {signers: D.before.signers + counted, answers: D.before.answers + (+E.answers || 0), quotes: D.before.quotes + (+E.quotes || 0), emailed: (D.before.emailed || 0) + (+E.emailed || 0)};
+      while (R.i < R.list.length - GAP) countQuiet(R.list[R.i++]);   // open no more than 1,000 below the real total
+      drawCounts();
       if (!first && LV.ready){ LV.daily.push([day, 0]); }
       setNames(D); note();
       if (first){ setBase(); start(); }
       drawLive();
       return;
     }
-    if (D.people.length < R.list.length) return;
-    var added = D.people.slice(R.list.length), caughtUp = R.i >= R.list.length;
+    var today = +D.today || D.people.length; if (today <= R.today && D.people.length <= R.list.length) return;
+    var fresh = Math.max(0, Math.min(D.people.length, today - R.today)), dropped = Math.max(0, R.list.length + fresh - D.people.length);
+    var added = fresh ? D.people.slice(-fresh) : [], caughtUp = R.i >= R.list.length;
+    R.i = Math.max(0, R.i - dropped); R.today = today;   // the feed holds the latest 5,000, so older names fall off the front
     R.list = D.people; setNames(D);
     if (caughtUp && added.length){
       R.i = R.list.length;
       if (reduce) added.forEach(count);
-      else { R.fresh = R.fresh.concat(added); R.gap = Math.min(6000, Math.max(BEAT, 30000 / R.fresh.length)); }
+      else { R.fresh = R.fresh.concat(added); R.gap = Math.min(6000, Math.max(BEAT, 30000 * 2.5 / R.fresh.length)); }
     }
     note();
   }
@@ -1704,7 +1723,7 @@ body.ticker-on .foot{padding-bottom:90px}
       R.list.slice(-5).forEach(function(p){ var el = document.createElement('div'); el.className = 'pill'; el.innerHTML = pillHTML({p: p, live: false}); stream.appendChild(el); });
       return;
     }
-    var o = stageOpts(), fill = Math.min(R.list.length, Math.floor(o.dur / BEAT));   // the panel starts already full
+    var o = stageOpts(), fill = Math.min(R.list.length - R.i, Math.floor(o.dur / BEAT));   // the panel starts already full
     for (var k = fill; k >= 1; k--){ var p = R.list[R.i++]; count(p); rise(stream, {p: p, live: false}, false, {lanes: 2, dur: o.dur, at: k * BEAT / o.dur}); }
     note();
     requestAnimationFrame(beat);

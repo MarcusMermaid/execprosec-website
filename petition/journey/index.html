@@ -632,21 +632,21 @@ textarea:focus{outline:none;border-bottom-color:var(--gold)}
     draw(at);
   }
 
-  /* ---- live signatures: open on the midnight total, add today's signers one by one, then rise as people sign ---- */
-  var shown = null, target = 0, running = false, people = [], pi = 0;
+  /* ---- live signatures (Marcus, 19 Nov 2026): open no more than 1,000 below the real total, then climb in uneven steps ---- */
+  var shown = null, target = 0, running = false, people = [], pi = 0, STEPS = [2, 3, 4, 1, 1, 5, 1, 2, 3, 4, 1], si = Math.floor(Math.random() * 11);
   function drawN(){
     [].forEach.call(document.querySelectorAll('[data-n="signers"]'), function(el){
       el.textContent = fmt(shown);
       if (!reduce){ el.classList.remove('tick'); void el.offsetWidth; el.classList.add('tick'); }
     });
   }
-  function step(){ if (shown < target){ shown++; drawN(); setTimeout(step, 450); } else running = false; }
+  function step(){ if (shown < target){ shown = Math.min(target, shown + STEPS[si++ % STEPS.length]); drawN(); setTimeout(step, 450); } else running = false; }
   function feed(){
     fetch(API + 'petition/today', {cache: 'no-store'}).then(function(r){ return r.ok ? r.json() : null; }).then(function(D){
       if (!D || !D.ok || !D.before) return;
       people = (D.people || []).slice().reverse();
       var total = (+D.before.signers || 0) + (+D.today || 0);
-      if (shown === null){ shown = reduce ? total : +D.before.signers; drawN(); }
+      if (shown === null){ shown = reduce ? total : Math.max(+D.before.signers || 0, total - 1000); drawN(); }
       if (total > target) target = total;
       if (!running && shown < target){ running = true; setTimeout(step, 450); }
     }).catch(function(){});
