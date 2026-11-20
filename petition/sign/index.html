@@ -364,11 +364,15 @@ legend{padding:0;margin:0 0 8px;font-size:14px;font-weight:600;line-height:1.4;c
 .gv-lead{font-size:15px;line-height:1.45;color:var(--on-navy);margin:0 0 14px}
 .gv-lead b{color:#fff}
 .gv-days{display:inline-block;background:var(--red);color:#fff;font-weight:700;border-radius:3px;padding:1px 7px;margin-right:2px}
-.gv-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 0 16px}
+.gv-grid{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin:0 -16px 6px;padding:0 16px 4px;overscroll-behavior-x:contain}
+.gv-grid::-webkit-scrollbar{display:none}
+.gv-it{flex:0 0 72%;scroll-snap-align:start}
+@media(min-width:520px){.gv-it{flex-basis:46%}}
+.gv-swipe{font-size:11.5px;color:var(--on-navy-2);margin:0 0 14px;text-align:right}
 .gv-it{background:rgba(255,255,255,.06);border:1px solid var(--line-navy);border-radius:6px;overflow:hidden;display:flex;flex-direction:column}
 .gv-it img{display:block;width:100%;aspect-ratio:3/2;object-fit:cover;background:#0b1a4a}
-.gv-it.poster img{object-fit:cover;object-position:62% 50%}
-.gv-tx{padding:8px 9px 10px;font-size:12.5px;line-height:1.35;color:var(--on-navy)}
+.gv-it.poster img{object-fit:cover;object-position:66% 50%}
+.gv-tx{padding:8px 10px 10px;font-size:13px;line-height:1.35;color:var(--on-navy)}
 .gv-tag{display:block;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin:0 0 3px}
 .gv-tag.done{color:#7ee2a8}
 .gv-soc{aspect-ratio:3/2;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:2px;background:linear-gradient(150deg,#1d3a8a,#0b1a4a);text-align:center}
@@ -634,13 +638,14 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
      <div class="gv">
       <p class="ok-kick" id="gvOk"><i aria-hidden="true">✓</i><span id="gvOkTxt">Signature confirmed</span></p>
       <h2>The vote is on <em>7 December</em>. Help us win it.</h2>
-      <p class="gv-lead"><span class="gv-days" id="gvDays">17 days</span> left. Every MP and peer needs to see that the public is watching. <b>This is what your money pays for:</b></p>
+      <p class="gv-lead"><span class="gv-days" id="gvDays">17 days</span> left to make every MP and peer see the public is watching. <b>Your money pays for:</b></p>
       <div class="gv-grid">
-        <div class="gv-it poster"><img src="/_web/pitch/tube-poster.webp" alt="Our poster: politicians are making lying to the public criminally illegal for nearly every official apart from themselves" loading="lazy" decoding="async"><div class="gv-tx"><span class="gv-tag done">Booked</span>Our poster at Westminster station, 30 Nov to 13 Dec, where MPs and peers pass every day.</div></div>
-        <div class="gv-it"><img src="/_web/pitch/letters.webp" alt="Mock-up: envelopes addressed to the House of Commons and the House of Lords, with our leaflet" loading="lazy" decoding="async"><div class="gv-tx"><span class="gv-tag">Next</span>A printed letter on the desk of every MP and peer before they vote.</div></div>
-        <div class="gv-it"><img src="/_web/pitch/newspaper.webp" alt="Mock-up: our advert in a national newspaper" loading="lazy" decoding="async"><div class="gv-tx"><span class="gv-tag">Next</span>Adverts in national newspapers in the week of the vote.</div></div>
-        <div class="gv-it"><div class="gv-soc"><b id="gvFollow">100,000+</b><span>followers on our social media</span><span class="up" id="gvWeek"></span></div><div class="gv-tx"><span class="gv-tag">Growing fast</span><span id="gvViews">Millions of views.</span> Paid adverts put our videos in front of millions more.</div></div>
+        <div class="gv-it poster"><img src="/_web/pitch/tube-poster.webp" alt="Our poster: politicians are making lying to the public criminally illegal for nearly every official apart from themselves" decoding="async"><div class="gv-tx"><span class="gv-tag done">Booked</span>Our poster at Westminster station, where MPs and peers pass, 30 Nov to 13 Dec.</div></div>
+        <div class="gv-it"><img src="/_web/pitch/letters.webp" alt="Mock-up: envelopes addressed to the House of Commons and the House of Lords, with our leaflet" decoding="async"><div class="gv-tx"><span class="gv-tag">Next</span>A letter on the desk of every MP and peer before they vote.</div></div>
+        <div class="gv-it"><img src="/_web/pitch/newspaper.webp" alt="Mock-up: our advert in a national newspaper" decoding="async"><div class="gv-tx"><span class="gv-tag">Next</span>Adverts in national newspapers in the week of the vote.</div></div>
+        <div class="gv-it"><div class="gv-soc"><b id="gvFollow">100,000+</b><span>followers on our social media</span><span class="up" id="gvWeek"></span></div><div class="gv-tx"><span class="gv-tag">Growing fast</span><span id="gvViews">Millions of views.</span> Adverts put our videos in front of millions more.</div></div>
       </div>
+      <p class="gv-swipe" aria-hidden="true">Swipe for more &rarr;</p>
       <p class="gv-ask">Give now</p>
       <div class="gv-freq" role="group" aria-label="How often"><button type="button" data-freq="once" aria-pressed="true">One-off</button><button type="button" data-freq="monthly" aria-pressed="false">Monthly</button></div>
       <div class="gv-amts" role="group" aria-label="Amount">
