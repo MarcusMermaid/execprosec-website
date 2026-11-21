@@ -1911,19 +1911,25 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     if (!g) return;
     if (window.matchMedia && matchMedia('(hover:hover) and (pointer:fine)').matches) $('gvSwipe').innerHTML = 'More with the arrows &rarr;';
     function step() { var c = g.querySelector('.gv-it'); return c ? c.offsetWidth + 8 : g.clientWidth * 0.8; }
-    function ends() { pv.hidden = g.scrollLeft < 8; nx.hidden = g.scrollLeft + g.clientWidth > g.scrollWidth - 8; }
-    var at = 0;
+    function ends() { if (busy) return; pv.hidden = g.scrollLeft < 8; nx.hidden = g.scrollLeft + g.clientWidth > g.scrollWidth - 8; }
+    var at = 0, busy = 0;
+    function stops() {
+      var c = g.querySelectorAll('.gv-it'), max = g.scrollWidth - g.clientWidth, out = [];
+      for (var k = 0; k < c.length; k++) { var x = Math.min(max, Math.max(0, c[k].offsetLeft - c[0].offsetLeft)); if (!out.length || x - out[out.length - 1] > 8) out.push(x); }
+      return out;
+    }
+    function nearest() { var st = stops(), b = 0; st.forEach(function (x, k) { if (Math.abs(x - g.scrollLeft) < Math.abs(st[b] - g.scrollLeft)) b = k; }); return b; }
     function go(d) {
-      var w = step(), n = g.querySelectorAll('.gv-it').length, max = g.scrollWidth - g.clientWidth;
-      at = Math.max(0, Math.min(n - 1, Math.round(g.scrollLeft / w) + d));
-      if (d > 0 && at * w >= max - 8) at = n - 1;
-      var left = Math.min(max, at * w);
-      g.scrollTo({ left: left, behavior: reduced ? 'auto' : 'smooth' });
-      pv.hidden = left < 8; nx.hidden = left > max - 8;
+      var st = stops();
+      if (!busy) at = nearest();
+      at = Math.max(0, Math.min(st.length - 1, at + d));
+      busy = Date.now();
+      g.scrollTo({ left: st[at], behavior: reduced ? 'auto' : 'smooth' });
+      pv.hidden = at === 0; nx.hidden = at === st.length - 1;
     }
     pv.addEventListener('click', function () { go(-1); });
     nx.addEventListener('click', function () { go(1); });
-    g.addEventListener('scroll', function () { clearTimeout(g._t); g._t = setTimeout(ends, 120); }, { passive: true });
+    g.addEventListener('scroll', function () { clearTimeout(g._t); g._t = setTimeout(function () { busy = 0; ends(); }, 150); }, { passive: true });
     window.addEventListener('resize', ends);
     if (window.ResizeObserver) new ResizeObserver(ends).observe(g);
     var down = false, x0 = 0, s0 = 0, moved = false;
