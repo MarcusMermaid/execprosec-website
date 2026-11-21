@@ -2138,7 +2138,7 @@ header#nav > span:empty{ display:none; }
 
     <!-- CROWD -->
     <div class="crowd-wrap2" id="crowd-wrap2">
-      <div class="crowd-lbl" id="crowd-count-label"><span id="crowd-count-num" class="crowd-count-num">19,085</span><span class="crowd-lbl-rest"> people have funded ExecProsec so far since June 2016</span></div>
+      <div class="crowd-lbl" id="crowd-count-label"><span id="crowd-count-num" class="crowd-count-num">20,000</span><span class="crowd-lbl-rest"> people have funded ExecProsec so far since June 2016</span></div>
       <div class="crowd-viewport">
         <div class="crowd-belt" id="crowd-belt"><div class="cp" data-op="0.56"><img src="/_web/people/w_g15.png" alt="" style="height:49.2px;width:20.3px;display:block" decoding="async"></div>
 <div class="cp" data-op="0.57"><img src="/_web/people/w_g40.png" alt="" style="height:49.9px;width:17.9px;display:block" decoding="async"></div>
@@ -4727,7 +4727,7 @@ document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
     var el=document.getElementById('crowd-count-label');
     if(el) el.textContent=n.toLocaleString('en-GB')+' people have funded ExecProsec so far since June 2016';
   }
-  updateCount(19241);
+  updateCount(20000);
   fetch('https://central-2-mcp-production.up.railway.app/public/backers')
     .then(function(r){return r.json();})
     .then(function(d){ if(d && typeof d.backers==='number' && d.backers>0) updateCount(d.backers); })

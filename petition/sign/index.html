@@ -66,6 +66,15 @@ a{color:inherit}
 .page{max-width:580px;margin:0 auto;padding-block:16px 48px;padding-left:var(--gl);padding-right:var(--gr);display:flex;flex-direction:column;gap:22px}
 .side,.press{min-width:0}
 .card-head{padding:20px 20px 16px}
+/* the running count at the top, for half of visitors (Marcus, 21 Nov 2026) */
+.sigtop{display:flex;align-items:center;gap:9px;margin:0 0 12px;font-size:14.5px;line-height:1.2;color:var(--ink)}
+.sigtop[hidden]{display:none}
+.sigtop b{font:400 30px/1 var(--f-display);color:var(--navy);font-variant-numeric:tabular-nums;letter-spacing:.005em}
+.sigtop .sdot{width:9px;height:9px;border-radius:50%;background:#2fa36b;flex:0 0 9px;box-shadow:0 0 0 0 rgba(47,163,107,.6);animation:sdot 1.6s infinite}
+.sigtop b.tick{animation:stick .5s ease-out}
+@keyframes sdot{0%{box-shadow:0 0 0 0 rgba(47,163,107,.6)}70%{box-shadow:0 0 0 9px rgba(47,163,107,0)}100%{box-shadow:0 0 0 0 rgba(47,163,107,0)}}
+@keyframes stick{0%{color:#2fa36b}100%{color:var(--navy)}}
+@media(prefers-reduced-motion:reduce){.sigtop .sdot,.sigtop b.tick{animation:none}}
 .card-head .kicker{color:var(--gold-ink);margin:0 0 8px}
 .card-head h1{font:400 clamp(28px,6.4vw,36px)/1.08 var(--f-display);letter-spacing:-.01em;color:var(--navy);margin:0 0 10px;text-wrap:balance}
 .card-head h1 em{font-style:normal;color:var(--gold-ink)}
@@ -512,6 +521,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
  <div class="side" id="side">
   <div class="card" id="card">
     <div class="card-head">
+      <p class="sigtop" id="sigTop" hidden><i class="sdot" aria-hidden="true"></i><span><b id="sigTopN">&nbsp;</b> people have signed</span></p>
       <p class="kicker">Petition to Press &amp; Parliament</p>
       <h1>Include all lawmakers under the <em>Hillsborough&nbsp;Law</em></h1>
       <p class="explain-fast">Parliament is about to make lying to the public a crime for ministers, police, nurses and civil servants, but not for MPs and peers themselves. Sign to put them under their own law.</p>
@@ -550,7 +560,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       <span class="err" id="consentErr" aria-live="polite"></span>
       <div class="hp" aria-hidden="true"><label>Leave this empty <input id="website" name="website" tabindex="-1" autocomplete="off"></label></div>
       <p class="fine">By signing, you agree to our <a href="https://execprosec.org/terms/#petitions" target="_blank" rel="noopener">Terms</a> and <a href="https://execprosec.org/terms/#privacy" target="_blank" rel="noopener">Privacy Policy</a>.</p>
-      <p class="promise"><b>Parliament votes on this in December (expected).</b> Parliamentarians and journalists will be sent the data from this petition in advance of that showdown vote.</p>
+      <p class="promise"><b>Parliament votes on this on 7 December.</b> Parliamentarians and journalists will be sent the data from this petition in advance of that showdown vote.</p>
       <p class="explain">End the carve-out for lawmakers (MPs, peers, MSPs, MSs and MLAs) from the duty of candour and the offence of misleading the public in the <a class="bill-link" href="https://bills.parliament.uk/bills/4019" target="_blank" rel="noopener">Public Office (Accountability) Bill</a>,<sup class="ref"><a href="https://bills.parliament.uk/publications/68275/documents/8957#sched_2__para_2__subpara_4__intro" target="_blank" rel="noopener" title="Source 1">1</a></sup> for reckless or intentionally deceitful acts outside the proceedings of their parliaments:<sup class="ref"><a href="https://www.legislation.gov.uk/aep/WillandMarSess2/1/2/introduction" target="_blank" rel="noopener" title="Source 2">2</a></sup> on TV and radio, on social media, at events, etc.</p>
       <button class="btn" type="submit" id="signBtn">Sign the petition</button>
     </form>
@@ -603,8 +613,8 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
           <div class="pt-body">
             <p class="pt-kick pt-a"><i aria-hidden="true">✓</i> Signature confirmed</p>
             <h2 class="pt-a">Now let's make sure <em>Parliament</em> can't ignore it.</h2>
-            <p class="pt-a">The vote is expected in early December. Between now and then, every MP and peer needs to know the public is watching. Here's how far we've come:</p>
-            <ul class="pt-proof pt-a"><li>Debated in both Houses of Parliament</li><li>Covered by the BBC, ITV, Sky, the Telegraph and the Express</li><li>Our videos are watched hundreds of thousands of times each week on our social media channels</li></ul>
+            <p class="pt-a">The vote is on 7 December. Between now and then, every MP and peer needs to know the public is watching. Here's how far we've come:</p>
+            <ul class="pt-proof pt-a"><li>Debated in both Houses of Parliament</li><li>Covered by the BBC, ITV, Sky, the Telegraph and the Express</li><li>Our videos have been watched millions of times on our social media channels</li></ul>
           </div>
         </section>
         <section class="pt-slide" id="ptS2" aria-roledescription="slide" aria-label="2 of 2">
@@ -680,8 +690,8 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       <p class="notice gold" id="fundBacker" hidden>You've backed this campaign before. Thank you: it's why we've got this far.</p>
       <h2 class="pitch-only">Thank you, <span class="me-first"></span>. How would you like to give?</h2>
       <h2 class="no-pitch">Make sure Parliament knows we're watching.</h2>
-      <p class="sub no-pitch">The vote is expected in early December. Your money puts this campaign in front of millions more people before then, so every MP and peer knows the public is watching.</p>
-      <ul class="proof no-pitch"><li>Debated in both Houses of Parliament</li><li>Covered by the BBC, ITV, Sky, the Telegraph and the Express</li><li>Our videos are watched hundreds of thousands of times each week on our social media channels</li></ul>
+      <p class="sub no-pitch">The vote is on 7 December. Your money puts this campaign in front of millions more people before then, so every MP and peer knows the public is watching.</p>
+      <ul class="proof no-pitch"><li>Debated in both Houses of Parliament</li><li>Covered by the BBC, ITV, Sky, the Telegraph and the Express</li><li>Our videos have been watched millions of times on our social media channels</li></ul>
       <p class="sub no-pitch">Next, we want to pay for newspaper, billboard, and other paid adverts but we need funding to take this to that level.</p>
       <fieldset>
         <legend id="fundLegend">Back the campaign every month</legend>
@@ -950,10 +960,9 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   // Signatures, answers and quotes go to Central, and the count and the recent signers come back
   // from it. Nothing is sent to an MP for anyone: signers email their MP from their own address.
   var API = 'https://central-2-mcp-production.up.railway.app/public/';
-  // The day of the vote. Not announced yet, so this is our estimate (a Wednesday in early December,
-  // when the Lords usually takes its big Report stage votes); set VOTE_ESTIMATED to false once it is confirmed.
-  var VOTE_DATE = '2026-12-02';
-  var VOTE_ESTIMATED = true;
+  // The day of the vote: Monday 7 December 2026 (Marcus, 21 Nov 2026).
+  var VOTE_DATE = '2026-12-07';
+  var VOTE_ESTIMATED = false;
   // Where the visitor came from (?ref=ig on a link, or the site that sent them), kept with the signature.
   var REF = ((location.search.match(/[?&](?:ref|utm_source)=([\w.\-]{1,40})/) || [])[1] ||
     (function () { try { return new URL(document.referrer).hostname; } catch (e) { return ''; } })()).slice(0, 40);
@@ -1022,13 +1031,18 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
              // 8 Nov 2026 (Marcus): the code won its test (81 against 79 in 100 visitors confirmed), so
              // everyone gets it now; ?conf=link still shows the old link-only screen for comparison.
              promise: pick('promise', PROMISES, 4), conf: /[?&]conf=link(?![a-z])/.test(location.search) ? 'link' : 'code',
-             qs: qsForced || (mix(5) % 2 === 0 ? 'new' : 'money') };
+             qs: qsForced || (mix(5) % 2 === 0 ? 'new' : 'money'),
+             // Marcus, 21 Nov 2026, past 50,000 confirmed: half see how many have signed at the top of
+             // the form, rising as people sign, half do not. Central emails him the winner 24 hours in;
+             // he decides whether everyone gets it. ?sigs=count or ?sigs=quiet forces a side.
+             sigs: pick('sigs', ['count', 'quiet'], 6) };
   })();
   var LAY = DRAW.lay, PROOF = DRAW.proof, PROMISE = DRAW.promise, CONF = DRAW.conf;
   // ?demo=1 is us looking at the versions next to each other: it records nothing at all, so the
   // looking does not land in the numbers the test is read from.
   var DEMO = /[?&]demo=1\b/.test(location.search);
-  var AB = LAY + '-' + PROOF + '-' + PROMISE + '-' + CONF;
+  var SIGS = DRAW.sigs;
+  var AB = LAY + '-' + PROOF + '-' + PROMISE + '-' + CONF + '-' + SIGS;
   try { document.body.classList.add('l-' + LAY, 'p-' + PROOF, 'pr-' + PROMISE, 'c-' + CONF); } catch (e) {}
 
   // One page view to the site's own analytics, so the morning report can say how many visited and
@@ -1080,7 +1094,25 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   // No page shows the running count. Tested 28 to 31 October against showing it: showing it was
   // very slightly worse, so the feed of people signing carries the momentum instead.
   function countShown(n) { return false; }
+  // The count at the top (the count side of the 21 Nov test): the confirmed total, exact, and it goes
+  // up one at a time as people sign, spread over the 30 seconds until Central's next count.
+  var sigShown = 0, sigTimer = 0;
+  function sigTop() {
+    if (SIGS !== 'count' || !(S.count > 0)) return;
+    var el = $('sigTopN');
+    $('sigTop').hidden = false;
+    if (!sigShown || reduced || S.count - sigShown > 400) { sigShown = S.count; el.textContent = fmt(sigShown); return; }
+    if (sigTimer || S.count <= sigShown) return;
+    (function step() {
+      if (S.count <= sigShown) { sigTimer = 0; return; }
+      sigShown++;
+      el.textContent = fmt(sigShown);
+      el.classList.remove('tick'); void el.offsetWidth; el.classList.add('tick');
+      sigTimer = setTimeout(step, Math.max(450, Math.min(6000, 28000 / (S.count - sigShown + 1))));
+    })();
+  }
   function renderMeter(animate) {
+    sigTop();
     var quiet = !countShown(S.count);
     document.querySelector('.m-top').hidden = quiet;
     $('bar').hidden = quiet;
