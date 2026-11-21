@@ -370,6 +370,31 @@ legend{padding:0;margin:0 0 8px;font-size:14px;font-weight:600;line-height:1.4;c
 @media(min-width:520px){.gv-it{flex-basis:46%}}
 .gv-swipe{font-size:11.5px;color:var(--on-navy-2);margin:0 0 14px;text-align:right}
 .gv-wrap{position:relative}
+.gv-it img{-webkit-user-drag:none;user-select:none;-webkit-user-select:none;pointer-events:none}
+.gv-grid{-webkit-user-select:none;user-select:none;touch-action:pan-x pan-y}
+.rw{display:none;margin:0 0 14px}
+.card.after .rw.show{display:block}
+.rw-row{display:flex;justify-content:space-between;gap:4px}
+.rw-i{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:10.5px;font-weight:700;letter-spacing:.03em;color:var(--muted);text-transform:uppercase}
+.rw-b{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;border:1.5px dashed var(--rule);background:var(--paper-2);color:var(--muted);font-size:15px;transition:background .3s,border-color .3s,transform .3s}
+.rw-i.on .rw-b{background:var(--gold);border:1.5px solid var(--gold);color:var(--navy)}
+.rw-i.on{color:var(--gold-ink)}
+.rw-i.now .rw-b{border:2px solid var(--navy);color:var(--navy);background:#fff}
+.rw-i.now{color:var(--navy)}
+.rw-i.new .rw-b{animation:rwpop .7s cubic-bezier(.2,1.6,.4,1)}
+@keyframes rwpop{0%{transform:scale(.4)}60%{transform:scale(1.25)}100%{transform:scale(1)}}
+.rw-pop{display:flex;align-items:center;gap:10px;margin:12px 0 0;padding:10px 12px;border-radius:6px;background:var(--navy);color:#fff;font-size:13.5px;line-height:1.35;animation:rwin .5s ease-out}
+.rw-pop[hidden]{display:none}
+.rw-pop i{flex:0 0 32px;width:32px;height:32px;border-radius:50%;background:var(--gold);color:var(--navy);font-style:normal;font-size:17px;line-height:32px;text-align:center}
+.rw-pop b{color:var(--gold)}
+@keyframes rwin{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.rw-i.new .rw-b,.rw-pop{animation:none}}
+.why{margin:0 0 14px;padding:10px 12px;border-left:3px solid var(--gold);background:#fbf5e3;font-size:14px;line-height:1.45;color:var(--ink,#1a1a1a)}
+.why b{display:block;margin:0 0 2px;font-size:11.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--gold-ink)}
+.pp-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 0 6px}
+.pp-grid button{min-height:46px;padding:6px 8px;border:1.5px solid var(--rule);border-radius:4px;background:#fff;color:var(--navy);font:600 14px/1.2 var(--f-body);cursor:pointer}
+.pp-grid button:hover,.pp-grid button:focus-visible{border-color:var(--navy)}
+.news-dot{background:var(--navy)!important;font-size:11px!important}
 .gv-grid.drag{cursor:grabbing;scroll-snap-type:none;user-select:none}
 .gv-grid.glide{scroll-snap-type:none}
 .gv-grid.drag img{pointer-events:none}
@@ -574,7 +599,17 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       <p class="sq" id="sq" hidden></p>
       <p class="deadline"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/></svg><span id="deadlineTxt"></span></p>
     </div>
-    <div class="stephead"><ol class="steps" id="dots" aria-hidden="true"><li class="on"></li><li></li><li></li><li></li></ol><span id="stepLbl">Step 1 of 4</span></div>
+    <div class="stephead"><ol class="steps" id="dots" aria-hidden="true"><li class="on"></li><li></li><li></li><li></li><li></li><li></li></ol><span id="stepLbl">Step 1 of 6</span></div>
+    <div class="rw" id="rw" aria-live="polite">
+      <div class="rw-row">
+        <span class="rw-i" data-rw="mp"><span class="rw-b" aria-hidden="true">&#9733;</span>MP</span>
+        <span class="rw-i" data-rw="peer"><span class="rw-b" aria-hidden="true">&#9733;</span>Lords</span>
+        <span class="rw-i" data-rw="press"><span class="rw-b" aria-hidden="true">&#9733;</span>Press</span>
+        <span class="rw-i" data-rw="min"><span class="rw-b" aria-hidden="true">&#9733;</span>Minister</span>
+        <span class="rw-i" data-rw="give"><span class="rw-b" aria-hidden="true">&#9733;</span>Backer</span>
+      </div>
+      <p class="rw-pop" id="rwPop" hidden><i aria-hidden="true">&#9733;</i><span id="rwPopTxt"></span></p>
+    </div>
 
     <!-- 1: sign -->
     <form class="panel" id="p1" novalidate>
@@ -652,9 +687,9 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       <button type="button" class="gv-arr prev" id="gvPrev" aria-label="Previous" hidden>&lsaquo;</button>
       <button type="button" class="gv-arr next" id="gvNext" aria-label="Next">&rsaquo;</button>
       <div class="gv-grid" id="gvGrid">
-        <div class="gv-it poster"><img src="/_web/pitch/tube-poster.webp" alt="Our poster: politicians are making lying to the public criminally illegal for nearly every official apart from themselves" decoding="async"><div class="gv-tx"><span class="gv-tag done">Booked</span>Our poster at Westminster station, where MPs and peers pass, 30 Nov to 13 Dec.</div></div>
-        <div class="gv-it"><img src="/_web/pitch/letters.webp" alt="Mock-up: envelopes addressed to the House of Commons and the House of Lords, with our leaflet" decoding="async"><div class="gv-tx"><span class="gv-tag">Next</span>A letter on the desk of every MP and peer before they vote.</div></div>
-        <div class="gv-it"><img src="/_web/pitch/newspaper.webp" alt="Mock-up: our advert in a national newspaper" decoding="async"><div class="gv-tx"><span class="gv-tag">Next</span>Adverts in national newspapers in the week of the vote.</div></div>
+        <div class="gv-it poster"><img src="/_web/pitch/tube-poster.webp" alt="Our poster: politicians are making lying to the public criminally illegal for nearly every official apart from themselves" decoding="async" draggable="false"><div class="gv-tx"><span class="gv-tag done">Booked</span>Our poster at Westminster station, where MPs and peers pass, 30 Nov to 13 Dec.</div></div>
+        <div class="gv-it"><img src="/_web/pitch/letters.webp" alt="Mock-up: envelopes addressed to the House of Commons and the House of Lords, with our leaflet" decoding="async" draggable="false"><div class="gv-tx"><span class="gv-tag">Next</span>A letter on the desk of every MP and peer before they vote.</div></div>
+        <div class="gv-it"><img src="/_web/pitch/newspaper.webp" alt="Mock-up: our advert in a national newspaper" decoding="async" draggable="false"><div class="gv-tx"><span class="gv-tag">Next</span>Adverts in national newspapers in the week of the vote.</div></div>
         <div class="gv-it"><div class="gv-soc"><b id="gvFollow">100,000+</b><span>followers on our social media</span><span class="up" id="gvWeek"></span></div><div class="gv-tx"><span class="gv-tag">Growing fast</span><span id="gvViews">Millions of views.</span> Adverts put our videos in front of millions more.</div></div>
       </div>
       </div>
@@ -695,6 +730,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     <div class="panel" id="p3" hidden>
       <p class="ok-kick" id="mpOk" hidden><i aria-hidden="true">✓</i><span id="mpOkTxt">Signature confirmed</span></p>
       <h2>Now email your MP.</h2>
+      <div class="why"><b>Why this matters</b>Your MP is the one vote in the Commons that answers to you. If the Lords change the Bill, it goes back to MPs, and they have the final say.</div>
       <p class="mp-from" id="mpFrom"></p>
       <div class="mp">
         <span class="mp-dot" id="mpDot" aria-hidden="true"></span>
@@ -710,10 +746,17 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       <p class="alt"><button class="link" type="button" id="mpSkip">Skip</button></p>
     </div>
 
-    <!-- 3c: a member of the House of Lords (Marcus, 20 Nov 2026) -->
+    <!-- 3c: a member of the House of Lords, from the party they voted for (Marcus, 21 Nov 2026) -->
     <div class="panel" id="ppeer" hidden>
       <h2>Now email a member of the House of Lords.</h2>
-      <p class="mp-from">Peers vote on this too. We give each person a different peer, so every one of them hears from the public. Yours is:</p>
+      <div class="why"><b>Why this matters</b>Peers vote on this on 7 December. They have no constituents, so a letter from a member of the public stands out, most of all from someone who votes for their party.</div>
+      <div id="peerPick">
+        <p class="sub">Which party did you vote for in 2024? We'll match you with a peer from that party.</p>
+        <div class="pp-grid" id="ppGrid" role="group" aria-label="Which party did you vote for in 2024?"></div>
+        <p class="alt"><button class="link" type="button" id="peerSkip0">Skip</button></p>
+      </div>
+      <div id="peerShow" hidden>
+      <p class="mp-from" id="peerFrom">We share the letters out evenly, so every peer hears from the public. Yours is:</p>
       <div class="mp">
         <span class="mp-dot" id="peerDot" aria-hidden="true"></span>
         <span class="mp-who"><b id="peerName"></b><span id="peerParty"></span></span>
@@ -725,6 +768,42 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       <p class="mp-hint">Scroll the box to read it all. Copy copies the whole letter. If you leave to paste it, this page keeps it for you.</p>
       <button class="btn navy" type="button" id="peerDone">Done, next</button>
       <p class="alt"><button class="link" type="button" id="peerSkip">Skip</button></p>
+      </div>
+    </div>
+
+    <!-- 3d: a newsroom's tips address, shared out evenly (Marcus, 21 Nov 2026) -->
+    <div class="panel" id="ppress" hidden>
+      <h2>Now tip off a newsroom.</h2>
+      <div class="why"><b>Why this matters</b>Newsrooms pick stories partly from what the public sends in. Coverage before 7 December puts every MP and peer under pressure at once, and reaches millions who haven't heard about this yet.</div>
+      <p class="mp-from">We give each person a different newsroom, so every big outlet hears it. Yours is:</p>
+      <div class="mp">
+        <span class="mp-dot news-dot" id="newsDot" aria-hidden="true"></span>
+        <span class="mp-who"><b id="newsName"></b><span id="newsType"></span></span>
+      </div>
+      <p class="sub">Copy these into an email from your own address. It takes a minute.</p>
+      <div class="cp"><span class="cp-l">To</span><span class="cp-v" id="newsMail"></span><button class="cp-b" type="button" data-copy="newsMail">Copy</button></div>
+      <div class="cp"><span class="cp-l">Subject</span><span class="cp-v" id="newsSubj"></span><button class="cp-b" type="button" data-copy="newsSubj">Copy</button></div>
+      <div class="cp cp-msg"><span class="cp-l">Message</span><span class="cp-v" id="newsMsg" tabindex="0"></span><button class="cp-b" type="button" data-copy="newsMsg">Copy</button></div>
+      <p class="mp-hint">Scroll the box to read it all. Copy copies the whole message. If you leave to paste it, this page keeps it for you.</p>
+      <button class="btn navy" type="button" id="newsDone">Done, next</button>
+      <p class="alt"><button class="link" type="button" id="newsSkip">Skip</button></p>
+    </div>
+
+    <!-- 3e: the minister responsible for the Bill (Marcus, 21 Nov 2026) -->
+    <div class="panel" id="pmin" hidden>
+      <h2>Last email: the minister.</h2>
+      <div class="why"><b>Why this matters</b>Alex Davies-Jones is the Justice minister responsible for this Bill. If the Government agrees to include all lawmakers, the change goes through without a fight.</div>
+      <div class="mp">
+        <span class="mp-dot" aria-hidden="true"><img src="https://members-api.parliament.uk/api/Members/4849/Thumbnail" alt="" onerror="this.remove()"></span>
+        <span class="mp-who"><b>Alex Davies-Jones MP</b><span>Minister, Ministry of Justice</span></span>
+      </div>
+      <p class="sub">Copy these into an email from your own address. It goes to her and to her department's ministerial post room.</p>
+      <div class="cp"><span class="cp-l">To</span><span class="cp-v" id="minMail"></span><button class="cp-b" type="button" data-copy="minMail">Copy</button></div>
+      <div class="cp"><span class="cp-l">Subject</span><span class="cp-v" id="minSubj"></span><button class="cp-b" type="button" data-copy="minSubj">Copy</button></div>
+      <div class="cp cp-msg"><span class="cp-l">Message</span><span class="cp-v" id="minMsg" tabindex="0"></span><button class="cp-b" type="button" data-copy="minMsg">Copy</button></div>
+      <p class="mp-hint">Scroll the box to read it all. Copy copies the whole letter. If you leave to paste it, this page keeps it for you.</p>
+      <button class="btn navy" type="button" id="minDone">Done, next</button>
+      <p class="alt"><button class="link" type="button" id="minSkip">Skip</button></p>
     </div>
 
     <!-- 4: fund -->
@@ -1463,23 +1542,28 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     var sh = n === 's';                                 // the share-the-link screen
     var pt = n === 'pitch';                             // the money pitch
     var pe = n === 'peer';                              // the House of Lords email
+    var pr = n === 'press';                             // a newsroom
+    var mi = n === 'min';                               // the minister
     $('ppitch').hidden = !pt;
     $('ppeer').hidden = !pe;
+    $('ppress').hidden = !pr;
+    $('pmin').hidden = !mi;
     $('pw').hidden = !w;
     $('pchoice').hidden = !c;
     $('pshare').hidden = !sh;
     if (w) waitStart(); else waitStop();
     for (var i = 1; i <= 5; i++) $('p' + i).hidden = i !== n;
-    // four steps (Marcus, 20 Nov 2026): sign, your MP, a peer, then give
-    var at = n === 3 ? 2 : pe ? 3 : (pt || n === 4 || c || sh) ? 4 : n;
+    // six steps (Marcus, 21 Nov 2026): sign, your MP, a peer, a newsroom, the minister, then give
+    var at = n === 3 ? 2 : pe ? 3 : pr ? 4 : mi ? 5 : (pt || n === 4 || c || sh) ? 6 : n;
     var dots = $('dots').children;
     for (var j = 0; j < dots.length; j++) dots[j].classList.toggle('on', j < at);
-    $('stepLbl').textContent = at <= 4 ? 'Step ' + at + ' of 4' : 'Done';
+    $('stepLbl').textContent = at <= 6 ? 'Step ' + at + ' of 6' : 'Done';
+    rwShow(n === 3 ? 'mp' : pe ? 'peer' : pr ? 'press' : mi ? 'min' : (pt || n === 4) ? 'give' : n === 5 ? 'end' : '');
     $('card').classList.toggle('first', n === 1 || w);   // the step bar appears once they have confirmed
-    $('card').classList.toggle('after', c || sh || pt || pe || (!w && n >= 2));   // and the title, explainer and meter go
+    $('card').classList.toggle('after', c || sh || pt || pe || pr || mi || (!w && n >= 2));   // and the title, explainer and meter go
     pinCard();
     if (quiet) return;
-    var h = [].filter.call($(w ? 'pw' : c ? 'pchoice' : sh ? 'pshare' : pt ? 'ppitch' : pe ? 'ppeer' : 'p' + n).querySelectorAll('h2'), function (x) { return x.offsetParent; })[0];
+    var h = [].filter.call($(w ? 'pw' : c ? 'pchoice' : sh ? 'pshare' : pt ? 'ppitch' : pe ? 'ppeer' : pr ? 'ppress' : mi ? 'pmin' : 'p' + n).querySelectorAll('h2'), function (x) { return x.offsetParent; })[0];
     if (h) { h.setAttribute('tabindex', '-1'); h.focus({ preventScroll: true }); }
     var top = $('card').getBoundingClientRect().top;
     if (top < 0 || top > window.innerHeight * 0.5) $('card').scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
@@ -1869,8 +1953,8 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     setTimeout(function () { if (window.gvEnds) gvEnds(); }, 60);
     var days = Math.max(1, Math.ceil((VOTE - Date.now()) / 864e5));
     $('gvDays').textContent = days === 1 ? '1 day' : days + ' days';
-    var wrote = S.mpDone || S.peerDone || S.mpCopied || S.peerCopied;
-    $('gvOkTxt').textContent = wrote ? "You've signed and written to Parliament" : 'Signature confirmed';
+    var sent = ['mp', 'peer', 'press', 'min'].filter(function (k) { return S.done && S.done[k]; }).length;
+    $('gvOkTxt').textContent = sent ? "You've signed and sent " + (sent === 1 ? 'one email' : sent + ' emails') + '.' + (sent === 4 ? ' Earn your last star here.' : '') : 'Signature confirmed';
     getJson('social/summary').then(function (d) {
       var f = d && d.followers; if (!f || !f.now) return;
       $('gvFollow').textContent = fmt(f.now);
@@ -2055,7 +2139,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   var MP_KEEP = 'ep_petition_mp';
   function keepMp(step) {
     if (DEMO) return;
-    try { localStorage.setItem(MP_KEEP, JSON.stringify({ at: Date.now(), step: step || 'mp', peer: S.peer || null, mpDone: !!S.mpDone, me: { first: S.me.first, last: S.me.last, pc: S.me.pc, town: S.me.town, emailOk: S.me.emailOk },
+    try { localStorage.setItem(MP_KEEP, JSON.stringify({ at: Date.now(), step: step || 'mp', peer: S.peer || null, peerParty: S.peerParty || 0, done: S.done || {}, mpDone: !!S.mpDone, me: { first: S.me.first, last: S.me.last, pc: S.me.pc, town: S.me.town, emailOk: S.me.emailOk },
       mp: S.mp, count: S.count, sig: S.sig, key: S.key, backer: !!S.backer, fundSeen: !!S.fundSeen, paid: !!S.paid, shareSeen: !!S.shareSeen, myNumber: S.myNumber })); } catch (e) {}
   }
   function dropMp() { try { localStorage.removeItem(MP_KEEP); } catch (e) {} }
@@ -2065,10 +2149,10 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     if (!k || !k.me || !(Date.now() - k.at < 12 * 3600e3)) { dropMp(); return false; }
     S.me = k.me; S.mp = k.mp; S.count = Math.max(S.count || 0, k.count || 0); S.sig = k.sig || 0; S.key = k.key || '';
     S.backer = k.backer; S.fundSeen = k.fundSeen; S.paid = k.paid; S.shareSeen = k.shareSeen; S.myNumber = k.myNumber || 0;
-    S.abroad = false; S.signed = true; S.peer = k.peer || null; S.mpDone = !!k.mpDone;
+    S.abroad = false; S.signed = true; S.peer = k.peer || null; S.peerParty = k.peerParty || 0; S.done = k.done || {}; S.mpDone = !!k.mpDone;
     updateSticky();
     document.querySelectorAll('.me-first').forEach(function (el) { el.textContent = S.me.first; });
-    if (k.step === 'peer') toPeer(true); else toMp(true);
+    if (k.step === 'peer') toPeer(true); else if (k.step === 'press') toPress(true); else if (k.step === 'min') toMin(true); else toMp(true);
     return true;
   }
   function toMp(resumed) {
@@ -2098,12 +2182,13 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   }
   document.querySelectorAll('.cp-b').forEach(function (b) {
     b.addEventListener('click', function () {
-      var id = b.getAttribute('data-copy'), text = $(id).textContent, peer = id.indexOf('peer') === 0;
+      var id = b.getAttribute('data-copy'), text = $(id).textContent, kind = (id.match(/^(mp|peer|news|min)/) || ['', 'mp'])[1];
       var shown = function () {
         b.classList.add('done'); b.textContent = 'Copied';
-        if (peer) { S.peerCopied = true; track('peer_copied', id + ' ' + pickPeer().id); } else { S.mpCopied = true; track('mp_copied', id); }
+        S[kind + 'Copied'] = true;
+        track(kind + '_copied', id + (kind === 'peer' ? ' ' + pickPeer().id : kind === 'news' ? ' ' + pickNews().n : ''));
       };
-      var letter = id === 'mpMsg' ? mpLetter : id === 'peerMsg' ? peerLetter : null;
+      var letter = { mpMsg: mpLetter, peerMsg: peerLetter, newsMsg: newsLetter, minMsg: minLetter }[id] || null;
       // the letter goes as rich text too, so its bold titles stay bold when pasted into an email
       if (letter && window.ClipboardItem && navigator.clipboard && navigator.clipboard.write) {
         var html = '<div>' + letter(true).replace(/\n/g, '<br>') + '</div>';
@@ -2123,12 +2208,25 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   // 294 peers whose @parliament.uk address has taken our own emails without bouncing (Central, 20 Nov 2026), minus the
   // Lord Speaker, the Greens (already with us), and anyone who asked us to stop, is unwell or is paused. Signature
   // numbers go up one at a time, so taking the peer by signature number shares the letters out evenly.
-  var PEERS = '14|Lord Redwood|C|redwoodj~56|Lord Arbuthnot of Edrom|C|arbuthnotj~57|Lord Young of Cookham|C|youngg~68|Lord Lilley|C|lilleyp~82|Lord Howard of Lympne|C|howardm~100|Lord Hamilton of Epsom|C|hamiltona~105|Lord Hammond of Runnymede|C|hammondp~116|Lord Soames of Fletching|C|soamesn~123|Lord Lansley|C|lansleya~147|Lord Boateng|L|boatengp~150|Baroness Harman|L|harmanh~181|Lord Cryer|L|cryerj~209|Lord Randall of Uxbridge|C|randallj~214|Lord Foster of Bath|D|fosterdon~269|Baroness Smith of Malvern|L|smithjq~276|Lord Grocott|L|grocottb~281|Baroness Golding|L|goldingll~296|Baroness Stuart of Edgbaston|X|stuartg~302|Lord Rooker|L|rookerj~305|Baroness Morris of Yardley|L|morrise~315|Lord Fowler|X|fowlern~318|Lord Spellar|L|spellarj~333|Lord McLoughlin|C|mcloughlinp~347|Baroness Merron|L|merrong~384|Baroness McIntosh of Pickering|C|mcintoshac~390|Baroness Winterton of Doncaster|L|wintertonr~397|Lord Allan of Hallam|O|allanr~407|Baroness Taylor of Bolton|L|taylora~435|Lord Brady of Altrincham|C|bradyg~452|Lord Bradley|L|bradleykj~499|Lord Campbell-Savours|L|campbellsavours~525|Lord Clark of Windermere|L|clarkd~533|Lord Hanson of Flint|L|hansond~542|Lord Touhig|L|touhigjd~546|Lord Murphy of Torfaen|L|murphypp~573|Baroness Liddell of Coatdyke|L|liddellh~657|Lord Kilclooney|X|kilclooneyj~672|Lord Robertson of Port Ellen|L|robertsong~693|Lord Kinnock|L|kinnockn~738|Lord Alton of Liverpool|X|altond~919|Lord McNally|D|mcnallyt~965|Lord Wrigglesworth|D|wrigglesworthi~993|Lord Howell of Guildford|C|howelld~994|Lord Hunt of Wirral|C|huntd~1091|Lord Bates|C|batesm~1138|Lord Carlile of Berriew|X|carlilea~1206|Lord Carrington of Fulham|C|carringtonm~1241|Lord Watson of Invergowrie|L|watsonm~1387|Lord Mann|L|mannjl~1388|Lord Dodds of Duncairn|O|doddsn~1438|Lord Beamish|L|beamish~1531|Baroness Featherstone|D|featherstonel~1547|Lord Benyon|X|benyonr~1551|Lord Jackson of Peterborough|C|jacksonsj~1557|Baroness Kramer|D|kramers~1571|Lord Gove|C|govem~1580|Lord Vaizey of Didcot|C|vaizeye~1588|Baroness Keeley|L|keeleyb~1649|Baroness Hayman|X|haymanh~1703|Lord Tope|D|topeg~1705|Lord Tugendhat|C|tugendhatc~1755|Baroness Young of Old Scone|O|youngb~1782|Baroness Thornton|L|thorntong~1796|Lord Taylor of Warwick|O|taylorjdb~1816|Lord Wallace of Saltaire|D|wallacew~1846|Baroness Mallalieu|L|mallalieua~1867|Baroness Ludford|D|ludfords~1916|Lord Newby|D|newbyr~1934|Baroness Miller of Chilthorne Domer|D|millers~2004|Lord Hope of Craighead|X|hopejad~2024|Lord Hunt of Kings Heath|L|huntp~2097|Baroness Seccombe|C|seccombej~2166|Baroness Greenfield|X|greenfieldsu~2168|Baroness Morgan of Huyton|L|morgan~2202|Lord De Mauley|C|demauley~2227|Lord Stevens of Ludgate|O|stevensdavid~2443|Lord Patel|X|patelnb~2444|Lord Whitty|L|whittyl~2476|Baroness Prashar|X|prasharu~2483|Lord Bradshaw|D|bradshaww~2484|Lord Rennard|D|rennardc~2490|Lord Goldsmith|L|goldsmithp~2496|Lord Grabiner|X|grabinera~2501|Baroness Barker|D|barkere~2503|Baroness Gale|L|galea~2506|Baroness McIntosh of Hudnall|L|mcintoshg~2534|Baroness Andrews|L|andrewse~2539|Baroness Northover|D|northoverl~2542|Baroness Scott of Needham Market|D|scottrc~2547|Baroness Walmsley|D|walmsleyj~2570|Lord Mitchell|L|parrym~2594|Lord Cromwell|X|cromwellg~2671|Lord Harris of Haringey|L|harrist~2685|Lord Dholakia|D|dholakian~3179|Baroness Pitkeathley|L|pitkeathleyj~3187|Lord Norton of Louth|C|nortonp~3278|Baroness Rawlings|C|rawlingspe~3385|Lord Craig of Radley|X|craigd~3396|Lord Clement-Jones|D|clementjonest~3453|Lord Addington|D|addingtond~3474|Baroness Anelay of St Johns|C|anelayj~3477|Baroness Amos|L|amosv~3478|Lord Alderdice|D|alderdicej~3482|Lord Alli|L|alliw~3504|Lord Bassam of Brighton|L|bassams~3526|Lord Berkeley|L|berkeleyafg~3561|Baroness Blackstone|L|blackstonet~3577|Lord Grantchester|L|grantchesterj~3605|Lord Best|X|best~3609|Baroness Finlay of Llandaff|X|finlayi~3652|Baroness Hale of Richmond|X|haleb~3669|Lord Drayson|L|draysonp~3670|Baroness Falkner of Margravine|X|falknerk~3684|Baroness Prosser|L|prosserm~3688|Lord Giddens|L|giddensa~3690|Baroness Neuberger|X|neubergerj~3692|Baroness Murphy|X|murphyel~3696|Baroness Young of Hornsey|X|younglo~3703|Baroness Royall of Blaisdon|L|royallj~3705|Lord Cameron of Dillington|X|camerone~3707|Lord Griffiths of Burry Port|L|griffithslj~3743|Lord Adonis|L|adonisa~3756|Baroness Deech|X|deechr~3765|Lord Hall of Birkenhead|X|halla~3783|Lord Crisp|X|crisp~3787|Lord Taylor of Holbeach|C|taylorjl~3788|Baroness Kingsmill|L|kingsmilldp~3789|Lord Teverson|D|teversonr~3792|Baroness Jones of Whitchurch|L|jonesmag~3795|Lord Morrow|O|morrowm~3797|Lord Marland|C|marland~3798|Lord Patel of Bradford|O|patelkk~3801|Lord Browne of Belmont|O|brownew~3804|Baroness Butler-Sloss|X|butlerslosse~3808|Lord Dear|X|deargj~3818|Lord Jay of Ewelme|X|jaymh~3829|Baroness Coussins|X|coussinsj~3831|Baroness Campbell of Surbiton|X|campbelljs~3832|Lord Bew|X|bewp~3834|Lord West of Spithead|L|westaa~3839|Baroness Warsi|O|warsis~3842|Baroness Garden of Frognal|D|gardens~3893|Lord Freud|C|freudd~3902|Baroness O\'Loan|X|oloann~3944|Lord Hart of Tenby|C|harts~4014|Lord Sharma|C|alok.sharma~4027|Baroness Morgan of Cotes|O|morganna~4036|Baroness Berger|L|bergerl~4068|Lord Harrington of Watford|O|harringtonr~4127|Baroness Elliott of Whitburn Bay|L|elliottj~4130|Baroness Ritchie of Downpatrick|L|ritchiem~4147|Baroness Sherlock|L|sherlockm~4150|Baroness Armstrong of Hill Top|L|armstrongh~4151|Lord Willis of Knaresborough|D|willisg~4153|Lord Kennedy of Southwark|L|kennedyro~4156|Lord Liddle|L|liddler~4159|Baroness Hayter of Kentish Town|L|hayterd~4160|Lord Knight of Weymouth|L|knightja~4163|Lord German|D|germanm~4164|Baroness Hussein-Ece|D|ecem~4166|Baroness Donaghy|L|donaghyr~4167|Baroness Benjamin|D|benjaminf~4168|Lord McConnell of Glenscorrodale|L|mcconnellj~4171|Lord Black of Brentwood|C|blackgv~4173|Lord Popat|C|popatd~4175|Lord Stevenson of Balmacara|L|stevensonw~4176|Lord Shipley|D|shipleyj~4178|Baroness Parminter|D|parminterk~4179|Baroness Healy of Primrose Hill|L|healyab~4184|Baroness Eaton|C|eatonm~4186|Lord Monks|L|monksj~4190|Baroness Hollins|X|hollinss~4196|Lord Sharkey|D|sharkeyjk~4202|Lord Lexden|C|lexdena~4205|Baroness Stowell of Beeston|C|stowellt~4206|Lord Marks of Henley-on-Thames|D|marksj~4210|Lord Ahmad of Wimbledon|C|ahmadt~4214|Lord Palmer of Childs Hill|D|palmerm~4216|Lord Empey|O|empeyr~4217|Lord Wood of Anfield|L|stewart.wood~4220|Lord Dannatt|X|dannattr~4222|Lord Collins of Highbury|L|collinsr~4225|Lord Kestenbaum|L|kestenbaumj~4231|Baroness Tyler of Enfield|D|tylerc~4238|Lord Storey|D|storeym~4239|Lord Stephen|D|stephenn~4248|Viscount Colville of Culross|X|colvillec~4251|Lord Singh of Wimbledon|X|singhia~4258|Baroness Kidron|X|kidronb~4284|Baroness Neville-Rolfe|C|nevillerolfel~4285|Baroness Bakewell of Hardington Mandeville|D|bakewellc~4288|Lord Paddick|O|paddickb~4294|Lord Holmes of Richmond|C|holmesc~4301|Baroness Hodgson of Abinger|C|hodgsonf~4302|Lord Balfe|C|richard.balfe~4303|Baroness Kennedy of Cradley|L|alicia.kennedy~4304|Lord Allen of Kensington|L|allenc~4309|Lord Thomas of Cwmgiedd|X|thomasjl~4323|Baroness Smith of Newnham|D|jes42~4327|Lord Cooper of Windrush|O|cooperac~4334|Lord Goddard of Stockport|D|goddardd~4335|Baroness Mobarik|C|mobarikn~4339|Baroness Brady|C|bradyk~4340|Lord Cashman|O|cashmanm~4341|Baroness Pinnock|D|pinnockk~4347|Baroness Wolf of Dulwich|X|wolfa~4354|The Earl of Kinnoull|X|kinnoull~4367|Lord Elliott of Ballinamallard|O|tom.elliott~4395|Baroness Hayman of Ullock|L|haymans~4401|Baroness Prentis of Banbury|C|prentisv~4508|Baroness Anderson of Stoke-on-Trent|L|andersonr~4529|Lord Mackinlay of Richborough|C|mackinlayc~4533|Baroness Altmann|O|altmannr~4542|Lord Smith of Hindhead|C|smithpr~4543|Lord Gilbert of Panteg|C|gilberts~4545|Lord O\'Shaughnessy|C|oshaughnessyj~4546|Baroness Stroud|C|stroudp~4550|Lord Lupton|O|luptonj~4551|Baroness Redfern|C|redferne~4552|Baroness Pidding|C|piddinge~4564|Lord Bird|X|birdja~4565|Baroness Brown of Cambridge|X|kingjb~4566|Baroness Watkins of Tavistock|X|watkinsm~4570|Lord Price|C|dewdneyherbertl~4576|Lord McInnes of Kilwinning|C|mcinnesm~4579|Baroness Chakrabarti|L|chakrabartis~4580|Baroness Vere of Norbiton|C|verec~4582|Baroness Bloomfield of Hinton Waldrist|C|bloomfieldo~4668|Baroness Maclean of Redditch|C|macleanr~4686|Lord Duncan of Springbank|C|duncani~4689|Lord Agnew of Oulton|C|agnewt~4699|Baroness Meyer|C|meyerc~4702|Lord McNicol of West Kilbride|L|mcnicoli~4703|Baroness Barran|C|barrand~4705|Lord Anderson of Ipswich|X|andersondw~4724|Baroness Blower|L|blowerc~4725|Baroness Hunt of Bethnal Green|X|huntr~4732|Lord Carter of Haslemere|X|carterh~4733|Lord Choudrey|C|choudreyz~4876|Lord Grimstone of Boscobel|C|grimstoneg~4877|Lord Greenhalgh|C|greenhalghs~4878|The Lord Bishop of Manchester|B|walkerdb~4879|Lord Frost|O|frostd~4882|Lord Sarfraz|C|lordsarfrazoffice~4883|Lord Moylan|C|moyland~4887|Baroness Fox of Buckley|O|foxcr~4888|Lord Sharpe of Epsom|C|sharpea~4890|Lord Mendoza|C|mendozan~4893|Lord Davies of Brixton|L|daviesofbrixton~4898|Lord Udny-Lister|C|listere~4901|Lord Wolfson of Tredegar|C|wolfsond~4906|Baroness Fraser of Craigmaddie|C|frasers~4914|Lord Morse|X|morsea~4951|Lord Hampton|X|pakingtonj~4953|Lord Roborough|C|roboroughm~4956|Baroness Taylor of Stevenage|L|taylors~4962|Lord Verdirame|O|verdirameg~4967|Baroness O\'Neill of Bexley|C|oneillta~4969|Baroness Foster of Aghadrumsee|O|fosterab~4970|Lord Weir of Ballyholme|O|weirp~4972|Lord Hendy of Richmond Hill|L|hendyp~4974|Lord Prentis of Leeds|L|prentisd~4980|The Lord Bishop of Sheffield|B|wilcoxp~4984|Lord Mott|C|mottd~4996|The Lord Bishop of Newcastle|B|hartleyh~5007|Lord Moynihan of Chelsea|C|moynihanj~5014|Lord Banner|C|bannerc~5017|Lord Fuller|C|fullerj~5019|Lord Jamieson|C|jamiesonj~5020|Baroness Monckton of Dallington Forest|C|moncktonr~5023|Baroness Smith of Llanfaes|O|carmen.smith~5026|Baroness Freeman of Steventon|X|freemana~5027|Lord Tarassenko|X|tarassenkol~5366|Baroness Pidgeon|D|pidgeonc~5368|Lord Booth-Smith|C|boothsmithl~5369|Baroness Cass|X|rivisn~5375|Baroness Griffin of Princethorpe|L|griffint~5380|Lord Biggar|C|biggarn~5383|Lord Jones of Penybont|L|jonesch~5391|Baroness Caine of Kentish Town|L|cainede~5392|Baroness Longfield|O|longfielda~5394|Baroness Alexander of Cleveden|L|alexanderw~5395|Baroness Mattinson|L|mattinsond~5400|Baroness Rafferty|L|raffertya~5404|Baroness Spielman|C|spielmana~5409|Baroness White of Tufnell Park|X|whitesb~5416|Baroness Neate|X|neatep~5418|Lord John of Southwark|L|johnp~5430|Lord Pitt-Watson|L|pittwatsond~5431|Baroness Davies of Devonport|C|daviesse~5434|Lord Isaac|L|isaacd~5438|Lord Barber of Chittlehampton|L|barbermb~5439|Baroness Nargund|L|nargundg~5440|Lord Blackwater|C|blackwater'.split('~').map(function (r) { var a = r.split('|'); return { id: +a[0], name: a[1], party: a[2], email: a[3] + '@parliament.uk' }; });
-  var PARTY_NAME = { L: 'Labour', C: 'Conservative', X: 'Crossbench', D: 'Liberal Democrat', B: 'Bishop', O: '' };
+  var PEERS = '14|Lord Redwood|C|redwoodj~56|Lord Arbuthnot of Edrom|C|arbuthnotj~57|Lord Young of Cookham|C|youngg~68|Lord Lilley|C|lilleyp~82|Lord Howard of Lympne|C|howardm~100|Lord Hamilton of Epsom|C|hamiltona~105|Lord Hammond of Runnymede|C|hammondp~116|Lord Soames of Fletching|C|soamesn~123|Lord Lansley|C|lansleya~147|Lord Boateng|L|boatengp~150|Baroness Harman|L|harmanh~181|Lord Cryer|L|cryerj~209|Lord Randall of Uxbridge|C|randallj~214|Lord Foster of Bath|D|fosterdon~269|Baroness Smith of Malvern|L|smithjq~276|Lord Grocott|L|grocottb~281|Baroness Golding|L|goldingll~296|Baroness Stuart of Edgbaston|X|stuartg~302|Lord Rooker|L|rookerj~305|Baroness Morris of Yardley|L|morrise~315|Lord Fowler|X|fowlern~318|Lord Spellar|L|spellarj~333|Lord McLoughlin|C|mcloughlinp~347|Baroness Merron|L|merrong~384|Baroness McIntosh of Pickering|C|mcintoshac~390|Baroness Winterton of Doncaster|L|wintertonr~397|Lord Allan of Hallam|N|allanr~407|Baroness Taylor of Bolton|L|taylora~435|Lord Brady of Altrincham|C|bradyg~452|Lord Bradley|L|bradleykj~499|Lord Campbell-Savours|L|campbellsavours~525|Lord Clark of Windermere|L|clarkd~533|Lord Hanson of Flint|L|hansond~542|Lord Touhig|L|touhigjd~546|Lord Murphy of Torfaen|L|murphypp~573|Baroness Liddell of Coatdyke|L|liddellh~657|Lord Kilclooney|X|kilclooneyj~672|Lord Robertson of Port Ellen|L|robertsong~693|Lord Kinnock|L|kinnockn~738|Lord Alton of Liverpool|X|altond~919|Lord McNally|D|mcnallyt~965|Lord Wrigglesworth|D|wrigglesworthi~993|Lord Howell of Guildford|C|howelld~994|Lord Hunt of Wirral|C|huntd~1091|Lord Bates|C|batesm~1138|Lord Carlile of Berriew|X|carlilea~1206|Lord Carrington of Fulham|C|carringtonm~1241|Lord Watson of Invergowrie|L|watsonm~1387|Lord Mann|L|mannjl~1388|Lord Dodds of Duncairn|U|doddsn~1438|Lord Beamish|L|beamish~1531|Baroness Featherstone|D|featherstonel~1547|Lord Benyon|X|benyonr~1551|Lord Jackson of Peterborough|C|jacksonsj~1557|Baroness Kramer|D|kramers~1571|Lord Gove|C|govem~1580|Lord Vaizey of Didcot|C|vaizeye~1588|Baroness Keeley|L|keeleyb~1649|Baroness Hayman|X|haymanh~1703|Lord Tope|D|topeg~1705|Lord Tugendhat|C|tugendhatc~1755|Baroness Young of Old Scone|N|youngb~1782|Baroness Thornton|L|thorntong~1796|Lord Taylor of Warwick|N|taylorjdb~1816|Lord Wallace of Saltaire|D|wallacew~1846|Baroness Mallalieu|L|mallalieua~1867|Baroness Ludford|D|ludfords~1916|Lord Newby|D|newbyr~1934|Baroness Miller of Chilthorne Domer|D|millers~2004|Lord Hope of Craighead|X|hopejad~2024|Lord Hunt of Kings Heath|L|huntp~2097|Baroness Seccombe|C|seccombej~2166|Baroness Greenfield|X|greenfieldsu~2168|Baroness Morgan of Huyton|L|morgan~2202|Lord De Mauley|C|demauley~2227|Lord Stevens of Ludgate|N|stevensdavid~2443|Lord Patel|X|patelnb~2444|Lord Whitty|L|whittyl~2476|Baroness Prashar|X|prasharu~2483|Lord Bradshaw|D|bradshaww~2484|Lord Rennard|D|rennardc~2490|Lord Goldsmith|L|goldsmithp~2496|Lord Grabiner|X|grabinera~2503|Baroness Gale|L|galea~2506|Baroness McIntosh of Hudnall|L|mcintoshg~2539|Baroness Northover|D|northoverl~2542|Baroness Scott of Needham Market|D|scottrc~2547|Baroness Walmsley|D|walmsleyj~2570|Lord Mitchell|L|parrym~2594|Lord Cromwell|X|cromwellg~2671|Lord Harris of Haringey|L|harrist~2685|Lord Dholakia|D|dholakian~3179|Baroness Pitkeathley|L|pitkeathleyj~3187|Lord Norton of Louth|C|nortonp~3278|Baroness Rawlings|C|rawlingspe~3385|Lord Craig of Radley|X|craigd~3396|Lord Clement-Jones|D|clementjonest~3478|Lord Alderdice|D|alderdicej~3504|Lord Bassam of Brighton|L|bassams~3526|Lord Berkeley|L|berkeleyafg~3561|Baroness Blackstone|L|blackstonet~3577|Lord Grantchester|L|grantchesterj~3605|Lord Best|X|best~3609|Baroness Finlay of Llandaff|X|finlayi~3652|Baroness Hale of Richmond|X|haleb~3669|Lord Drayson|L|draysonp~3670|Baroness Falkner of Margravine|X|falknerk~3684|Baroness Prosser|L|prosserm~3688|Lord Giddens|L|giddensa~3690|Baroness Neuberger|X|neubergerj~3692|Baroness Murphy|X|murphyel~3696|Baroness Young of Hornsey|X|younglo~3703|Baroness Royall of Blaisdon|L|royallj~3705|Lord Cameron of Dillington|X|camerone~3707|Lord Griffiths of Burry Port|L|griffithslj~3743|Lord Adonis|L|adonisa~3756|Baroness Deech|X|deechr~3765|Lord Hall of Birkenhead|X|halla~3783|Lord Crisp|X|crisp~3787|Lord Taylor of Holbeach|C|taylorjl~3788|Baroness Kingsmill|L|kingsmilldp~3789|Lord Teverson|D|teversonr~3792|Baroness Jones of Whitchurch|L|jonesmag~3795|Lord Morrow|U|morrowm~3797|Lord Marland|C|marland~3798|Lord Patel of Bradford|N|patelkk~3801|Lord Browne of Belmont|U|brownew~3804|Baroness Butler-Sloss|X|butlerslosse~3808|Lord Dear|X|deargj~3818|Lord Jay of Ewelme|X|jaymh~3829|Baroness Coussins|X|coussinsj~3831|Baroness Campbell of Surbiton|X|campbelljs~3832|Lord Bew|X|bewp~3834|Lord West of Spithead|L|westaa~3839|Baroness Warsi|N|warsis~3842|Baroness Garden of Frognal|D|gardens~3893|Lord Freud|C|freudd~3902|Baroness O\'Loan|X|oloann~3944|Lord Hart of Tenby|C|harts~4014|Lord Sharma|C|alok.sharma~4027|Baroness Morgan of Cotes|N|morganna~4036|Baroness Berger|L|bergerl~4068|Lord Harrington of Watford|N|harringtonr~4127|Baroness Elliott of Whitburn Bay|L|elliottj~4130|Baroness Ritchie of Downpatrick|L|ritchiem~4147|Baroness Sherlock|L|sherlockm~4150|Baroness Armstrong of Hill Top|L|armstrongh~4151|Lord Willis of Knaresborough|D|willisg~4153|Lord Kennedy of Southwark|L|kennedyro~4156|Lord Liddle|L|liddler~4159|Baroness Hayter of Kentish Town|L|hayterd~4160|Lord Knight of Weymouth|L|knightja~4163|Lord German|D|germanm~4164|Baroness Hussein-Ece|D|ecem~4166|Baroness Donaghy|L|donaghyr~4167|Baroness Benjamin|D|benjaminf~4168|Lord McConnell of Glenscorrodale|L|mcconnellj~4171|Lord Black of Brentwood|C|blackgv~4173|Lord Popat|C|popatd~4175|Lord Stevenson of Balmacara|L|stevensonw~4176|Lord Shipley|D|shipleyj~4178|Baroness Parminter|D|parminterk~4179|Baroness Healy of Primrose Hill|L|healyab~4184|Baroness Eaton|C|eatonm~4186|Lord Monks|L|monksj~4190|Baroness Hollins|X|hollinss~4196|Lord Sharkey|D|sharkeyjk~4202|Lord Lexden|C|lexdena~4205|Baroness Stowell of Beeston|C|stowellt~4210|Lord Ahmad of Wimbledon|C|ahmadt~4214|Lord Palmer of Childs Hill|D|palmerm~4216|Lord Empey|V|empeyr~4217|Lord Wood of Anfield|L|stewart.wood~4220|Lord Dannatt|X|dannattr~4222|Lord Collins of Highbury|L|collinsr~4225|Lord Kestenbaum|L|kestenbaumj~4231|Baroness Tyler of Enfield|D|tylerc~4238|Lord Storey|D|storeym~4239|Lord Stephen|D|stephenn~4248|Viscount Colville of Culross|X|colvillec~4251|Lord Singh of Wimbledon|X|singhia~4258|Baroness Kidron|X|kidronb~4284|Baroness Neville-Rolfe|C|nevillerolfel~4285|Baroness Bakewell of Hardington Mandeville|D|bakewellc~4288|Lord Paddick|N|paddickb~4294|Lord Holmes of Richmond|C|holmesc~4301|Baroness Hodgson of Abinger|C|hodgsonf~4302|Lord Balfe|C|richard.balfe~4303|Baroness Kennedy of Cradley|L|alicia.kennedy~4304|Lord Allen of Kensington|L|allenc~4309|Lord Thomas of Cwmgiedd|X|thomasjl~4323|Baroness Smith of Newnham|D|jes42~4327|Lord Cooper of Windrush|N|cooperac~4334|Lord Goddard of Stockport|D|goddardd~4335|Baroness Mobarik|C|mobarikn~4339|Baroness Brady|C|bradyk~4340|Lord Cashman|N|cashmanm~4341|Baroness Pinnock|D|pinnockk~4347|Baroness Wolf of Dulwich|X|wolfa~4354|The Earl of Kinnoull|X|kinnoull~4367|Lord Elliott of Ballinamallard|V|tom.elliott~4395|Baroness Hayman of Ullock|L|haymans~4401|Baroness Prentis of Banbury|C|prentisv~4508|Baroness Anderson of Stoke-on-Trent|L|andersonr~4529|Lord Mackinlay of Richborough|C|mackinlayc~4533|Baroness Altmann|N|altmannr~4542|Lord Smith of Hindhead|C|smithpr~4543|Lord Gilbert of Panteg|C|gilberts~4545|Lord O\'Shaughnessy|C|oshaughnessyj~4546|Baroness Stroud|C|stroudp~4550|Lord Lupton|N|luptonj~4551|Baroness Redfern|C|redferne~4552|Baroness Pidding|C|piddinge~4564|Lord Bird|X|birdja~4565|Baroness Brown of Cambridge|X|kingjb~4566|Baroness Watkins of Tavistock|X|watkinsm~4570|Lord Price|C|dewdneyherbertl~4576|Lord McInnes of Kilwinning|C|mcinnesm~4579|Baroness Chakrabarti|L|chakrabartis~4580|Baroness Vere of Norbiton|C|verec~4582|Baroness Bloomfield of Hinton Waldrist|C|bloomfieldo~4668|Baroness Maclean of Redditch|C|macleanr~4686|Lord Duncan of Springbank|C|duncani~4699|Baroness Meyer|C|meyerc~4702|Lord McNicol of West Kilbride|L|mcnicoli~4705|Lord Anderson of Ipswich|X|andersondw~4724|Baroness Blower|L|blowerc~4725|Baroness Hunt of Bethnal Green|X|huntr~4732|Lord Carter of Haslemere|X|carterh~4733|Lord Choudrey|C|choudreyz~4876|Lord Grimstone of Boscobel|C|grimstoneg~4877|Lord Greenhalgh|C|greenhalghs~4878|The Lord Bishop of Manchester|B|walkerdb~4879|Lord Frost|N|frostd~4882|Lord Sarfraz|C|lordsarfrazoffice~4883|Lord Moylan|C|moyland~4887|Baroness Fox of Buckley|N|foxcr~4888|Lord Sharpe of Epsom|C|sharpea~4890|Lord Mendoza|C|mendozan~4893|Lord Davies of Brixton|L|daviesofbrixton~4898|Lord Udny-Lister|C|listere~4901|Lord Wolfson of Tredegar|C|wolfsond~4906|Baroness Fraser of Craigmaddie|C|frasers~4914|Lord Morse|X|morsea~4951|Lord Hampton|X|pakingtonj~4953|Lord Roborough|C|roboroughm~4956|Baroness Taylor of Stevenage|L|taylors~4962|Lord Verdirame|N|verdirameg~4967|Baroness O\'Neill of Bexley|C|oneillta~4969|Baroness Foster of Aghadrumsee|N|fosterab~4970|Lord Weir of Ballyholme|U|weirp~4972|Lord Hendy of Richmond Hill|L|hendyp~4974|Lord Prentis of Leeds|L|prentisd~4980|The Lord Bishop of Sheffield|B|wilcoxp~4984|Lord Mott|C|mottd~4996|The Lord Bishop of Newcastle|B|hartleyh~5007|Lord Moynihan of Chelsea|C|moynihanj~5014|Lord Banner|C|bannerc~5017|Lord Fuller|C|fullerj~5019|Lord Jamieson|C|jamiesonj~5020|Baroness Monckton of Dallington Forest|C|moncktonr~5023|Baroness Smith of Llanfaes|P|carmen.smith~5026|Baroness Freeman of Steventon|X|freemana~5027|Lord Tarassenko|X|tarassenkol~5366|Baroness Pidgeon|D|pidgeonc~5368|Lord Booth-Smith|C|boothsmithl~5369|Baroness Cass|X|rivisn~5375|Baroness Griffin of Princethorpe|L|griffint~5380|Lord Biggar|C|biggarn~5383|Lord Jones of Penybont|L|jonesch~5391|Baroness Caine of Kentish Town|L|cainede~5392|Baroness Longfield|N|longfielda~5394|Baroness Alexander of Cleveden|L|alexanderw~5395|Baroness Mattinson|L|mattinsond~5400|Baroness Rafferty|L|raffertya~5404|Baroness Spielman|C|spielmana~5409|Baroness White of Tufnell Park|X|whitesb~5416|Baroness Neate|X|neatep~5418|Lord John of Southwark|L|johnp~5430|Lord Pitt-Watson|L|pittwatsond~5431|Baroness Davies of Devonport|C|daviesse~5434|Lord Isaac|L|isaacd~5438|Lord Barber of Chittlehampton|L|barbermb~5439|Baroness Nargund|L|nargundg~5440|Lord Blackwater|C|blackwater'.split('~').map(function (r) { var a = r.split('|'); return { id: +a[0], name: a[1], party: a[2], email: a[3] + '@parliament.uk' }; });
+  var PARTY_NAME = { L: 'Labour', C: 'Conservative', X: 'Crossbench', D: 'Liberal Democrat', B: 'Bishop', O: '', N: 'Non-affiliated',
+    U: 'Democratic Unionist Party', V: 'Ulster Unionist Party', P: 'Plaid Cymru' };
+  // Marcus, 21 Nov 2026: each voter writes to a peer of the party they voted for, shared out evenly within that party.
+  // Reform, Green, SNP, other parties, non-voters and "prefer not to say" go to the crossbenchers (no Reform or SNP
+  // peers; the two Green peers already back the change). Only addresses that have answered us or are published and
+  // delivered: never a guess.
+  var VOTE_TO_PEERS = { 1: 'L', 2: 'C', 3: 'X', 4: 'D', 5: 'X', 6: 'X', 7: 'P', 8: 'X', 9: 'X', 10: 'X', 11: 'U', 12: 'V' };
+  var VOTED_AS = { L: 'Labour', C: 'Conservative', D: 'Liberal Democrat', P: 'Plaid Cymru', U: 'for the DUP', V: 'for the UUP' };
+  function peerGroup() {
+    var code = VOTE_TO_PEERS[S.peerParty] || 'X';
+    var g = PEERS.filter(function (p) { return p.party === code; });
+    return g.length ? g : PEERS.filter(function (p) { return p.party === 'X'; });
+  }
   function pickPeer() {
     if (S.peer) return S.peer;
-    var i = S.sig ? S.sig % PEERS.length : Math.floor(Math.random() * PEERS.length);
-    S.peer = PEERS[i];
+    var g = peerGroup();
+    var i = S.sig ? S.sig % g.length : Math.floor(Math.random() * g.length);
+    S.peer = g[i];
     return S.peer;
   }
   // the same form of address Central uses for peers (lords.greeting): "Dear Baroness Bowles", "Dear Lord Howe", "Dear Bishop"
@@ -2143,15 +2241,35 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     var pr = pickPeer(), me = S.me || {}, others = othersSigned();
     var T = function (x) { return html ? esc(x) : x; };
     var town = me.town && me.town !== 'the UK' ? me.town : '';
+    var voted = S.peerParty && VOTED_AS[VOTE_TO_PEERS[S.peerParty]] && pr.party === VOTE_TO_PEERS[S.peerParty] ? VOTED_AS[pr.party] : '';
     return T(peerGreeting(pr.name) + ',\n\n' +
-      'I am a member of the public' + (town ? ' from ' + town : '') + ', and one of ' + (others ? others + ' people' : 'the people') + ' who have signed the petition to include all lawmakers under the Hillsborough Law.\n\n' +
+      'I am a member of the public' + (town ? ' from ' + town : '') + (voted ? '. I voted ' + voted + ' in 2024, and I am one of ' : ', and one of ') + (others ? others + ' people' : 'the people') + ' who have signed the petition to include all lawmakers under the Hillsborough Law.\n\n' +
       'The Public Office (Accountability) Bill will make it a crime for police officers, civil servants, soldiers and ministers to intentionally or recklessly mislead the public. But MPs, peers, MSPs, MSs and MLAs have left themselves out.\n\n' +
       'I am asking you to vote to include them. The offence would only apply to things said and done outside Parliamentary proceedings: on TV and radio, online and at public events. Nothing said in Parliament would be affected, and honest mistakes, opinions and broken promises could never be prosecuted.\n\n' +
       'A law for everyone except the people who make it would do lasting damage to trust in Parliament. Please tell me how you will vote.\n\n' +
       'The campaign\'s briefing answers every objection the Government has raised: https://execprosec.org/amendments-briefing/\n\n' +
       'Yours sincerely,\n' + (me.first || '') + ' ' + (me.last || '') + (town ? '\n' + town : ''));
   }
+  function peerPick() {
+    var list = PARTIES.slice();
+    if (/^BT/i.test((S.me && S.me.pc) || '')) list.splice(7, 0, ['DUP', 11], ['UUP', 12]);
+    $('ppGrid').innerHTML = list.map(function (p) { return '<button type="button" data-v="' + p[1] + '">' + esc(p[0]) + '</button>'; }).join('');
+    $('peerPick').hidden = false; $('peerShow').hidden = true;
+    S.peerSeen = true;
+    track('peer_ask');
+    keepMp('peer');
+    go('peer');
+  }
+  $('ppGrid').addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-v]'); if (!b) return;
+    S.peerParty = +b.getAttribute('data-v'); S.peer = null;
+    track('peer_party', String(S.peerParty));
+    toPeer();
+  });
+  $('peerSkip0').addEventListener('click', function () { track('peer_skip'); toPress(); });
   function toPeer(resumed) {
+    if (!S.peerParty && !S.peer) { peerPick(); return; }
+    $('peerPick').hidden = true; $('peerShow').hidden = false;
     var pr = pickPeer();
     $('peerName').textContent = pr.name;
     $('peerParty').textContent = PARTY_NAME[pr.party] || 'Member of the House of Lords';
@@ -2166,8 +2284,117 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     go('peer');
     if (resumed) toast('Welcome back. Your letter is still here, ready to copy.');
   }
-  $('peerDone').addEventListener('click', function () { track('peer_done', String(pickPeer().id)); S.peerDone = true; dropMp(); toPitch(); });
-  $('peerSkip').addEventListener('click', function () { track('peer_skip'); dropMp(); toPitch(); });
+  $('peerDone').addEventListener('click', function () { track('peer_done', String(pickPeer().id)); S.peerDone = true; earn('peer'); toPress(); });
+  $('peerSkip').addEventListener('click', function () { track('peer_skip'); toPress(); });
+
+  // ---------------------------------------------------------------- 3d: a newsroom (Marcus, 21 Nov 2026)
+  // Public tips and newsdesk addresses only, each published by the outlet itself; shared out evenly by signature number.
+  var NEWS = [{"n": "BBC News", "t": "TV", "d": "BBC News, TV and online", "e": "haveyoursay@bbc.co.uk"}, {"n": "BBC Radio 4 Today", "t": "Radio", "d": "BBC Radio 4", "e": "today@bbc.co.uk"}, {"n": "BBC Newsnight", "t": "TV", "d": "BBC Two", "e": "newsnight@bbc.co.uk"}, {"n": "Channel 4 News", "t": "TV", "d": "Channel 4", "e": "C4Nstories@itn.co.uk"}, {"n": "ITV News", "t": "TV", "d": "ITV national newsroom", "e": "itvplanning@itn.co.uk"}, {"n": "GB News", "t": "TV", "d": "TV and radio", "e": "newstips@gbnews.com"}, {"n": "Sky News", "t": "TV", "d": "Sky News", "e": "news@skynews.com"}, {"n": "LBC", "t": "Radio", "d": "Radio", "e": "contact@lbc.co.uk"}, {"n": "Times Radio", "t": "Radio", "d": "Radio", "e": "stories@times.radio"}, {"n": "PA Media", "t": "Agency", "d": "The national news agency", "e": "lobby@pa.media"}, {"n": "Daily Mail", "t": "Paper", "d": "National newspaper", "e": "news@dailymail.co.uk"}, {"n": "Daily Mirror", "t": "Paper", "d": "National newspaper", "e": "mirrornews@mirror.co.uk"}, {"n": "Sunday Mirror", "t": "Paper", "d": "National newspaper", "e": "scoops@sundaymirror.co.uk"}, {"n": "Daily Express", "t": "Paper", "d": "National newspaper", "e": "tips@express.co.uk"}, {"n": "Sunday Express", "t": "Paper", "d": "National newspaper", "e": "sunday@express.co.uk"}, {"n": "The Independent", "t": "Paper", "d": "National news", "e": "newsdesk@independent.co.uk"}, {"n": "The Times", "t": "Paper", "d": "National newspaper", "e": "home.news@thetimes.co.uk"}, {"n": "Evening Standard", "t": "Paper", "d": "London newspaper", "e": "newsroom@standard.co.uk"}, {"n": "PoliticsHome", "t": "Online", "d": "Political news", "e": "news@politicshome.com"}, {"n": "Private Eye", "t": "Paper", "d": "Magazine", "e": "strobes@private-eye.co.uk"}, {"n": "openDemocracy", "t": "Online", "d": "Online news", "e": "editors@opendemocracy.net"}, {"n": "Byline Times", "t": "Online", "d": "Online and print", "e": "news@bylinetimes.com"}, {"n": "The Big Issue", "t": "Paper", "d": "Magazine", "e": "editorial@bigissue.com"}, {"n": "Liverpool Echo", "t": "Paper", "d": "Liverpool newspaper", "e": "news@liverpool.com"}, {"n": "Manchester Evening News", "t": "Paper", "d": "Manchester newspaper", "e": "newsdesk@men-news.co.uk"}, {"n": "The Yorkshire Post", "t": "Paper", "d": "Yorkshire newspaper", "e": "yp.newsdesk@ypn.co.uk"}, {"n": "The Scotsman", "t": "Paper", "d": "Scottish newspaper", "e": "newsdeskts@scotsman.com"}, {"n": "The Herald", "t": "Paper", "d": "Scottish newspaper", "e": "news@theherald.co.uk"}, {"n": "WalesOnline", "t": "Online", "d": "Welsh news", "e": "newsdesk@mediawales.co.uk"}, {"n": "Belfast Telegraph", "t": "Paper", "d": "Northern Ireland newspaper", "e": "newseditor@belfasttelegraph.co.uk"}];
+  var AUDIENCE = { TV: 'viewers', Radio: 'listeners' };
+  function pickNews() {
+    if (S.news == null || !NEWS[S.news]) S.news = S.sig ? S.sig % NEWS.length : Math.floor(Math.random() * NEWS.length);
+    return NEWS[S.news];
+  }
+  function newsSubject() {
+    var n = (S.sig || 0) % 3, all = (S.count || 0) >= 1000 ? fmt(S.count) : '';
+    return n === 0 ? 'News tip: MPs and peers have left themselves out of the Hillsborough Law'
+      : n === 1 || !all ? 'Story tip before the 7 December vote on the Hillsborough Law'
+      : all + ' people want MPs and peers included in the Hillsborough Law';
+  }
+  function newsLetter(html) {
+    var o = pickNews(), me = S.me || {}, n = (S.sig || 0) % 3, aud = AUDIENCE[o.t] || 'readers';
+    var T = function (x) { return html ? esc(x) : x; };
+    var town = me.town && me.town !== 'the UK' ? me.town : '';
+    var all = (S.count || 0) >= 1000 ? fmt(S.count) : '';
+    var open = n === 0 ? "I'd like to send you a story your " + aud + ' should hear about before Parliament votes on 7 December.'
+      : n === 1 ? 'Here is a story I think deserves coverage before Parliament votes on 7 December.'
+      : 'As one of your ' + aud + ', I want to make sure you have seen this before the vote on 7 December.';
+    return T('Hello,\n\n' + open + '\n\n' +
+      'The Public Office (Accountability) Bill, known as the Hillsborough Law, will make it a crime for police officers, civil servants, soldiers and ministers to intentionally or recklessly mislead the public. MPs, peers, MSPs, MSs and MLAs have left themselves out.\n\n' +
+      (all ? all + ' people have' : 'Thousands of people have') + ' signed a petition asking Parliament to include all lawmakers. I am one of them' + (town ? ', from ' + town : '') + '. The offence would only apply to things said and done outside Parliamentary proceedings, and honest mistakes and opinions could never be prosecuted.\n\n' +
+      'The campaign is led by Marcus J Ball, who has campaigned since 2016 to make lying in politics a crime. He can be reached at mjb@execprosec.com.\n\n' +
+      'The petition: https://execprosec.org/petition/\n' +
+      "The campaign's briefing: https://execprosec.org/amendments-briefing/\n\n" +
+      'Please cover it before the vote.\n\n' + (me.first || '') + ' ' + (me.last || '') + (town ? '\n' + town : ''));
+  }
+  function toPress(resumed) {
+    var o = pickNews();
+    $('newsName').textContent = o.n;
+    $('newsType').textContent = o.d || '';
+    $('newsDot').textContent = o.n.replace(/^The /, '').split(/\s+/).map(function (w) { return w.charAt(0); }).join('').slice(0, 3).toUpperCase();
+    $('newsMail').textContent = o.e;
+    $('newsSubj').textContent = newsSubject();
+    $('newsMsg').innerHTML = newsLetter(true);
+    document.querySelectorAll('#ppress .cp-b').forEach(function (b) { b.classList.remove('done'); b.textContent = 'Copy'; });
+    track(resumed ? 'news_resumed' : 'news_seen', o.n);
+    keepMp('press');
+    go('press');
+    if (resumed) toast('Welcome back. Your message is still here, ready to copy.');
+  }
+  $('newsDone').addEventListener('click', function () { track('news_done', pickNews().n); S.newsDone = true; earn('press'); toMin(); });
+  $('newsSkip').addEventListener('click', function () { track('news_skip'); toMin(); });
+
+  // ---------------------------------------------------------------- 3e: the minister (Marcus, 21 Nov 2026)
+  // Her Commons address is the one Parliament publishes; her own Ministry of Justice address is not published, so the
+  // department's ministerial correspondence unit (which answered us on 10 Nov 2026) goes alongside it.
+  var MIN_TO = 'alex.daviesjones.mp@parliament.uk, MinisterialCorrespondence@justice.gov.uk';
+  var MIN_SUBJECT = 'Please include all lawmakers under the Hillsborough Law';
+  function minLetter(html) {
+    var me = S.me || {}, others = othersSigned();
+    var T = function (x) { return html ? esc(x) : x; };
+    var town = me.town && me.town !== 'the UK' ? me.town : '';
+    return T('Dear Minister,\n\n' +
+      'I am writing to you as the minister responsible for the Public Office (Accountability) Bill. I am a member of the public' + (town ? ' from ' + town : '') + ', and one of ' + (others ? others + ' people' : 'the people') + ' who have signed the petition to include all lawmakers under the Hillsborough Law.\n\n' +
+      'The Bill will make it a crime for police officers, civil servants, soldiers and ministers to intentionally or recklessly mislead the public. But MPs, peers, MSPs, MSs and MLAs have left themselves out, and ministers are covered only while they act as ministers.\n\n' +
+      'The offence would only apply to things said and done outside Parliamentary proceedings: on TV and radio, online and at public events. Nothing said in Parliament would be affected, and honest mistakes, opinions and broken promises could never be prosecuted.\n\n' +
+      'Please change the Bill to include all lawmakers before the vote on 7 December. A law for everyone except the people who make it would do lasting damage to trust in Parliament.\n\n' +
+      "The campaign's briefing answers every objection the Government has raised: https://execprosec.org/amendments-briefing/\n\n" +
+      'Yours sincerely,\n' + (me.first || '') + ' ' + (me.last || '') + (town ? '\n' + town : ''));
+  }
+  function toMin(resumed) {
+    $('minMail').textContent = MIN_TO;
+    $('minSubj').textContent = MIN_SUBJECT;
+    $('minMsg').innerHTML = minLetter(true);
+    document.querySelectorAll('#pmin .cp-b').forEach(function (b) { b.classList.remove('done'); b.textContent = 'Copy'; });
+    track(resumed ? 'min_resumed' : 'min_seen');
+    keepMp('min');
+    go('min');
+    if (resumed) toast('Welcome back. Your letter is still here, ready to copy.');
+  }
+  $('minDone').addEventListener('click', function () { track('min_done'); S.minDone = true; earn('min'); dropMp(); toPitch(); });
+  $('minSkip').addEventListener('click', function () { track('min_skip'); dropMp(); toPitch(); });
+
+  // ---------------------------------------------------------------- rewards: a gold star for every step done
+  var RW_TXT = {
+    mp: '<b>Star earned.</b> Your MP has heard from you.',
+    peer: '<b>Star earned.</b> The House of Lords has heard from you.',
+    press: '<b>Star earned.</b> A newsroom has heard from you.',
+    min: '<b>Star earned.</b> The Government has heard from you.',
+    give: '<b>Star earned.</b> You are backing the campaign.'
+  };
+  function earn(k) {
+    S.done = S.done || {};
+    if (S.done[k]) return;
+    S.done[k] = true;
+    S.justEarned = k;
+  }
+  function rwShow(now) {
+    var box = $('rw'); if (!box) return;
+    S.done = S.done || {};
+    box.classList.toggle('show', !!now);
+    var got = 0;
+    box.querySelectorAll('.rw-i').forEach(function (el) {
+      var k = el.getAttribute('data-rw'), on = !!S.done[k];
+      if (on) got++;
+      el.classList.toggle('on', on);
+      el.classList.toggle('now', k === now && !on);
+      el.classList.toggle('new', k === S.justEarned);
+    });
+    var j = S.justEarned;
+    $('rwPop').hidden = !j;
+    if (j) $('rwPopTxt').innerHTML = RW_TXT[j] + ' ' + got + (got === 1 ? ' star' : ' stars') + ' of 5.';
+    S.justEarned = '';
+  }
   function selectText(el) {
     var r = document.createRange(); r.selectNodeContents(el);
     var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r);
@@ -2180,7 +2407,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     if (S.fundSeen) { S.fundAgain = true; track('fund_again'); }
     toFund(afterMp);
   }
-  $('mpDone').addEventListener('click', function () { track('mp_done'); S.mpDone = true; toPeer(); });
+  $('mpDone').addEventListener('click', function () { track('mp_done'); S.mpDone = true; earn('mp'); toPeer(); });
   $('mpSkip').addEventListener('click', function () { track('mp_skip'); toPeer(); });
 
   // ---------------------------------------------------------------- 4: fund
@@ -2279,6 +2506,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   // The card form says it is finished: check with Stripe that the money really moved, then say so.
   function showPaid(id) {
     S.paid = true;
+    earn('give');
     if (S.checkout) { try { S.checkout.destroy(); } catch (e) {} S.checkout = null; }
     document.querySelectorAll('.me-first').forEach(function (el) { el.textContent = S.me.first; });
     $('doneTick').hidden = true;
@@ -2386,7 +2614,8 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       S.mp = { seat: 'Your constituency', name: 'Jane Smith', party: 'Labour', email: 'your.mp@parliament.uk' };
       document.querySelectorAll('.me-first').forEach(function (el) { el.textContent = S.me.first; });
       S.okTxt = 'Confirmed. Thank you, Sam.';
-      if (/[?&]step=mp\b/.test(q)) toMp(); else if (/[?&]step=peer\b/.test(q)) toPeer(); else toPitch();
+      S.sig = 40000 + Math.floor(Math.random() * 999); S.count = Math.max(S.count || 0, 40814);
+      if (/[?&]step=mp\b/.test(q)) toMp(); else if (/[?&]step=peer\b/.test(q)) toPeer(); else if (/[?&]step=press\b/.test(q)) toPress(); else if (/[?&]step=min\b/.test(q)) toMin(); else toPitch();
     }
     loadStats(true);
   }
