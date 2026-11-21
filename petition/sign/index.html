@@ -253,7 +253,7 @@ button.press-item{background:none;border:0;cursor:pointer;position:relative}
 .notice.gold{background:#fbf5e4;border-color:#e8d49a;color:#5c4512}
 /* The money pitch (Marcus, 6 Nov 2026): two slides between confirming and the fund screen, for half of signers. */
 #ppitch{padding-top:6px}
-.pt-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;border-radius:6px;margin:0 -4px;padding:0 4px;gap:8px;overscroll-behavior-x:contain}
+.pt-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-inline:16px;scrollbar-width:none;border-radius:6px;margin:0 -4px;padding:0 4px;gap:8px;overscroll-behavior-x:contain}
 .pt-track::-webkit-scrollbar{display:none}
 .pt-slide{flex:0 0 100%;scroll-snap-align:center;scroll-snap-stop:always;background:var(--navy);color:#fff;border-radius:6px;overflow:hidden;position:relative;display:flex;flex-direction:column}
 .pt-photo{position:relative;height:clamp(120px,19vh,190px);background:#0b1a4a center 38%/cover no-repeat}
@@ -364,7 +364,7 @@ legend{padding:0;margin:0 0 8px;font-size:14px;font-weight:600;line-height:1.4;c
 .gv-lead{font-size:15px;line-height:1.45;color:var(--on-navy);margin:0 0 14px}
 .gv-lead b{color:#fff}
 .gv-days{display:inline-block;background:var(--red);color:#fff;font-weight:700;border-radius:3px;padding:1px 7px;margin-right:2px}
-.gv-grid{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin:0 -16px 6px;padding:0 16px 4px;overscroll-behavior-x:contain}
+.gv-grid{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-inline:16px;scrollbar-width:none;margin:0 -16px 6px;padding:0 16px 4px;overscroll-behavior-x:contain}
 .gv-grid::-webkit-scrollbar{display:none}
 .gv-it{flex:0 0 72%;scroll-snap-align:start}
 @media(min-width:520px){.gv-it{flex-basis:46%}}
