@@ -369,6 +369,14 @@ legend{padding:0;margin:0 0 8px;font-size:14px;font-weight:600;line-height:1.4;c
 .gv-it{flex:0 0 72%;scroll-snap-align:start}
 @media(min-width:520px){.gv-it{flex-basis:46%}}
 .gv-swipe{font-size:11.5px;color:var(--on-navy-2);margin:0 0 14px;text-align:right}
+.gv-wrap{position:relative}
+.gv-grid.drag{cursor:grabbing;scroll-snap-type:none;user-select:none}
+.gv-grid.drag img{pointer-events:none}
+.gv-arr{position:absolute;top:calc(50% - 22px);width:40px;height:40px;border-radius:50%;border:0;background:#fff;color:var(--navy);font-size:22px;line-height:40px;text-align:center;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.35);z-index:2;padding:0}
+.gv-arr:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.gv-arr.prev{left:-8px}.gv-arr.next{right:-8px}
+.gv-arr[hidden]{display:none}
+@media(hover:hover) and (pointer:fine){.gv-grid{cursor:grab}}
 .gv-it{background:rgba(255,255,255,.06);border:1px solid var(--line-navy);border-radius:6px;overflow:hidden;display:flex;flex-direction:column}
 .gv-it img{display:block;width:100%;aspect-ratio:3/2;object-fit:cover;background:#0b1a4a}
 .gv-it.poster img{object-fit:cover;object-position:66% 50%}
@@ -639,13 +647,17 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       <p class="ok-kick" id="gvOk"><i aria-hidden="true">✓</i><span id="gvOkTxt">Signature confirmed</span></p>
       <h2>The vote is on <em>7 December</em>. Help us win it.</h2>
       <p class="gv-lead"><span class="gv-days" id="gvDays">17 days</span> left to make every MP and peer see the public is watching. <b>Your money pays for:</b></p>
-      <div class="gv-grid">
+      <div class="gv-wrap">
+      <button type="button" class="gv-arr prev" id="gvPrev" aria-label="Previous" hidden>&lsaquo;</button>
+      <button type="button" class="gv-arr next" id="gvNext" aria-label="Next">&rsaquo;</button>
+      <div class="gv-grid" id="gvGrid">
         <div class="gv-it poster"><img src="/_web/pitch/tube-poster.webp" alt="Our poster: politicians are making lying to the public criminally illegal for nearly every official apart from themselves" decoding="async"><div class="gv-tx"><span class="gv-tag done">Booked</span>Our poster at Westminster station, where MPs and peers pass, 30 Nov to 13 Dec.</div></div>
         <div class="gv-it"><img src="/_web/pitch/letters.webp" alt="Mock-up: envelopes addressed to the House of Commons and the House of Lords, with our leaflet" decoding="async"><div class="gv-tx"><span class="gv-tag">Next</span>A letter on the desk of every MP and peer before they vote.</div></div>
         <div class="gv-it"><img src="/_web/pitch/newspaper.webp" alt="Mock-up: our advert in a national newspaper" decoding="async"><div class="gv-tx"><span class="gv-tag">Next</span>Adverts in national newspapers in the week of the vote.</div></div>
         <div class="gv-it"><div class="gv-soc"><b id="gvFollow">100,000+</b><span>followers on our social media</span><span class="up" id="gvWeek"></span></div><div class="gv-tx"><span class="gv-tag">Growing fast</span><span id="gvViews">Millions of views.</span> Adverts put our videos in front of millions more.</div></div>
       </div>
-      <p class="gv-swipe" aria-hidden="true">Swipe for more &rarr;</p>
+      </div>
+      <p class="gv-swipe" id="gvSwipe" aria-hidden="true">Swipe for more &rarr;</p>
       <p class="gv-ask">Give now</p>
       <div class="gv-freq" role="group" aria-label="How often"><button type="button" data-freq="once" aria-pressed="true">One-off</button><button type="button" data-freq="monthly" aria-pressed="false">Monthly</button></div>
       <div class="gv-amts" role="group" aria-label="Amount">
@@ -1853,6 +1865,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   var VOTE = Date.UTC(2026, 11, 7);
   function toPitch() {
     S.pitchSeen = true;
+    setTimeout(function () { if (window.gvEnds) gvEnds(); }, 60);
     var days = Math.max(1, Math.ceil((VOTE - Date.now()) / 864e5));
     $('gvDays').textContent = days === 1 ? '1 day' : days + ' days';
     var wrote = S.mpDone || S.peerDone || S.mpCopied || S.peerCopied;
@@ -1892,6 +1905,23 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     fundLabel();
   }
   // one tap from the pitch to the card form: no second screen asking the same thing again
+  // the row of what the money pays for: arrows and click-and-drag, so it moves on a laptop as well as a phone
+  (function () {
+    var g = $('gvGrid'), pv = $('gvPrev'), nx = $('gvNext');
+    if (!g) return;
+    if (window.matchMedia && matchMedia('(hover:hover) and (pointer:fine)').matches) $('gvSwipe').innerHTML = 'More with the arrows &rarr;';
+    function step() { var c = g.querySelector('.gv-it'); return c ? c.offsetWidth + 8 : g.clientWidth * 0.8; }
+    function ends() { pv.hidden = g.scrollLeft < 8; nx.hidden = g.scrollLeft + g.clientWidth > g.scrollWidth - 8; }
+    pv.addEventListener('click', function () { g.scrollBy({ left: -step(), behavior: reduced ? 'auto' : 'smooth' }); });
+    nx.addEventListener('click', function () { g.scrollBy({ left: step(), behavior: reduced ? 'auto' : 'smooth' }); });
+    g.addEventListener('scroll', ends, { passive: true });
+    window.addEventListener('resize', ends);
+    var down = false, x0 = 0, s0 = 0, moved = false;
+    g.addEventListener('pointerdown', function (e) { if (e.pointerType !== 'mouse') return; down = true; moved = false; x0 = e.clientX; s0 = g.scrollLeft; });
+    window.addEventListener('pointermove', function (e) { if (!down) return; var dx = e.clientX - x0; if (Math.abs(dx) > 4) { moved = true; g.classList.add('drag'); } if (moved) g.scrollLeft = s0 - dx; });
+    window.addEventListener('pointerup', function () { if (!down) return; down = false; if (moved) { g.classList.remove('drag'); var w = step(); g.scrollTo({ left: Math.round(g.scrollLeft / w) * w, behavior: reduced ? 'auto' : 'smooth' }); } });
+    window.gvEnds = ends;
+  })();
   $('ptGive').addEventListener('click', function () {
     track('pitch_fund', ptFreq + ' ' + ptAmt);
     S.pitchGive = true;
