@@ -1912,10 +1912,20 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     if (window.matchMedia && matchMedia('(hover:hover) and (pointer:fine)').matches) $('gvSwipe').innerHTML = 'More with the arrows &rarr;';
     function step() { var c = g.querySelector('.gv-it'); return c ? c.offsetWidth + 8 : g.clientWidth * 0.8; }
     function ends() { pv.hidden = g.scrollLeft < 8; nx.hidden = g.scrollLeft + g.clientWidth > g.scrollWidth - 8; }
-    pv.addEventListener('click', function () { g.scrollBy({ left: -step(), behavior: reduced ? 'auto' : 'smooth' }); });
-    nx.addEventListener('click', function () { g.scrollBy({ left: step(), behavior: reduced ? 'auto' : 'smooth' }); });
-    g.addEventListener('scroll', ends, { passive: true });
+    var at = 0;
+    function go(d) {
+      var w = step(), n = g.querySelectorAll('.gv-it').length, max = g.scrollWidth - g.clientWidth;
+      at = Math.max(0, Math.min(n - 1, Math.round(g.scrollLeft / w) + d));
+      if (d > 0 && at * w >= max - 8) at = n - 1;
+      var left = Math.min(max, at * w);
+      g.scrollTo({ left: left, behavior: reduced ? 'auto' : 'smooth' });
+      pv.hidden = left < 8; nx.hidden = left > max - 8;
+    }
+    pv.addEventListener('click', function () { go(-1); });
+    nx.addEventListener('click', function () { go(1); });
+    g.addEventListener('scroll', function () { clearTimeout(g._t); g._t = setTimeout(ends, 120); }, { passive: true });
     window.addEventListener('resize', ends);
+    if (window.ResizeObserver) new ResizeObserver(ends).observe(g);
     var down = false, x0 = 0, s0 = 0, moved = false;
     g.addEventListener('pointerdown', function (e) { if (e.pointerType !== 'mouse') return; down = true; moved = false; x0 = e.clientX; s0 = g.scrollLeft; });
     window.addEventListener('pointermove', function (e) { if (!down) return; var dx = e.clientX - x0; if (Math.abs(dx) > 4) { moved = true; g.classList.add('drag'); } if (moved) g.scrollLeft = s0 - dx; });
