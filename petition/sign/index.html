@@ -436,6 +436,12 @@ legend{padding:0;margin:0 0 8px;font-size:14px;font-weight:600;line-height:1.4;c
 
 .cp-b{grid-area:b;min-height:32px;padding:0 14px;border:0;border-radius:3px;background:var(--navy);color:#fff;font:700 13px/1 var(--f-body);cursor:pointer}
 .cp-b.done{background:var(--ok)}
+/* 22 Nov 2026: labels and button words are drawn by CSS so they can never be copied with an address. A signer selected
+   the address by hand and got "morrowm@parliament.ukCopy", so their letters bounced. Tapping an address or subject
+   now selects exactly that. */
+.cp-l::before,.cp-b::before{content:attr(data-l)}
+.cp-l,.cp-b{-webkit-user-select:none;user-select:none}
+.cp:not(.cp-msg) .cp-v{-webkit-user-select:all;user-select:all}
 .cp-b:disabled{opacity:.4;cursor:default}
 .notice{display:flex;gap:10px;align-items:flex-start;margin:0 0 16px;padding:12px 14px;background:#eef6f0;border:1px solid #b9dcc5;border-radius:4px;font-size:14px;line-height:1.45;color:#174b30}
 .notice svg{flex:0 0 20px;width:20px;height:20px;margin-top:1px}
@@ -745,10 +751,10 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
         <span class="mp-who"><b id="mpName">Your MP</b><span id="mpSeat"></span></span>
       </div>
       <p class="sub">Copy these into an email from your own address. It takes a minute.</p>
-      <div class="cp"><span class="cp-l">To</span><span class="cp-v" id="mpMail"></span><button class="cp-b" type="button" data-copy="mpMail">Copy</button></div>
-      <div class="cp"><span class="cp-l">Subject</span><span class="cp-v" id="mpSubj"></span><button class="cp-b" type="button" data-copy="mpSubj">Copy</button></div>
+      <div class="cp"><span class="cp-l" data-l="To"></span><span class="cp-v" id="mpMail"></span><button class="cp-b" type="button" data-copy="mpMail" data-l="Copy" aria-label="Copy"></button></div>
+      <div class="cp"><span class="cp-l" data-l="Subject"></span><span class="cp-v" id="mpSubj"></span><button class="cp-b" type="button" data-copy="mpSubj" data-l="Copy" aria-label="Copy"></button></div>
       <p class="notice gold mp-back" id="mpBack" hidden>Welcome back. Your letter is still here, ready to copy.</p>
-      <div class="cp cp-msg"><span class="cp-l">Message</span><span class="cp-v" id="mpMsg" tabindex="0"></span><button class="cp-b" type="button" data-copy="mpMsg">Copy</button></div>
+      <div class="cp cp-msg"><span class="cp-l" data-l="Message"></span><span class="cp-v" id="mpMsg" tabindex="0"></span><button class="cp-b" type="button" data-copy="mpMsg" data-l="Copy" aria-label="Copy"></button></div>
       <p class="mp-hint">Scroll the box to read it all. Copy copies the whole letter. If you leave to paste it, this page keeps it for you.</p>
       <button class="btn navy" type="button" id="mpDone">Done, next</button>
       <p class="alt"><button class="link" type="button" id="mpSkip">Skip</button></p>
@@ -771,9 +777,9 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
         <span class="mp-who"><b id="peerName"></b><span id="peerParty"></span></span>
       </div>
       <p class="sub">Copy these into an email from your own address. It takes a minute.</p>
-      <div class="cp"><span class="cp-l">To</span><span class="cp-v" id="peerMail"></span><button class="cp-b" type="button" data-copy="peerMail">Copy</button></div>
-      <div class="cp"><span class="cp-l">Subject</span><span class="cp-v" id="peerSubj"></span><button class="cp-b" type="button" data-copy="peerSubj">Copy</button></div>
-      <div class="cp cp-msg"><span class="cp-l">Message</span><span class="cp-v" id="peerMsg" tabindex="0"></span><button class="cp-b" type="button" data-copy="peerMsg">Copy</button></div>
+      <div class="cp"><span class="cp-l" data-l="To"></span><span class="cp-v" id="peerMail"></span><button class="cp-b" type="button" data-copy="peerMail" data-l="Copy" aria-label="Copy"></button></div>
+      <div class="cp"><span class="cp-l" data-l="Subject"></span><span class="cp-v" id="peerSubj"></span><button class="cp-b" type="button" data-copy="peerSubj" data-l="Copy" aria-label="Copy"></button></div>
+      <div class="cp cp-msg"><span class="cp-l" data-l="Message"></span><span class="cp-v" id="peerMsg" tabindex="0"></span><button class="cp-b" type="button" data-copy="peerMsg" data-l="Copy" aria-label="Copy"></button></div>
       <p class="mp-hint">Scroll the box to read it all. Copy copies the whole letter. If you leave to paste it, this page keeps it for you.</p>
       <button class="btn navy" type="button" id="peerDone">Done, next</button>
       <p class="alt"><button class="link" type="button" id="peerSkip">Skip</button></p>
@@ -789,9 +795,9 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
         <span class="mp-who"><b>Alex Davies-Jones MP</b><span>Minister, Ministry of Justice</span></span>
       </div>
       <p class="sub">Copy these into an email from your own address. It goes to her and to her department's ministerial post room.</p>
-      <div class="cp"><span class="cp-l">To</span><span class="cp-v" id="minMail"></span><button class="cp-b" type="button" data-copy="minMail">Copy</button></div>
-      <div class="cp"><span class="cp-l">Subject</span><span class="cp-v" id="minSubj"></span><button class="cp-b" type="button" data-copy="minSubj">Copy</button></div>
-      <div class="cp cp-msg"><span class="cp-l">Message</span><span class="cp-v" id="minMsg" tabindex="0"></span><button class="cp-b" type="button" data-copy="minMsg">Copy</button></div>
+      <div class="cp"><span class="cp-l" data-l="To"></span><span class="cp-v" id="minMail"></span><button class="cp-b" type="button" data-copy="minMail" data-l="Copy" aria-label="Copy"></button></div>
+      <div class="cp"><span class="cp-l" data-l="Subject"></span><span class="cp-v" id="minSubj"></span><button class="cp-b" type="button" data-copy="minSubj" data-l="Copy" aria-label="Copy"></button></div>
+      <div class="cp cp-msg"><span class="cp-l" data-l="Message"></span><span class="cp-v" id="minMsg" tabindex="0"></span><button class="cp-b" type="button" data-copy="minMsg" data-l="Copy" aria-label="Copy"></button></div>
       <p class="mp-hint">Scroll the box to read it all. Copy copies the whole letter. If you leave to paste it, this page keeps it for you.</p>
       <button class="btn navy" type="button" id="minDone">Done, next</button>
       <p class="alt"><button class="link" type="button" id="minSkip">Skip</button></p>
@@ -2223,7 +2229,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     document.querySelector('[data-copy="mpMail"]').disabled = !(mp && mp.email);
     $('mpSubj').textContent = MP_SUBJECT;
     $('mpMsg').innerHTML = mpLetter(true);
-    document.querySelectorAll('.cp-b').forEach(function (b) { b.classList.remove('done'); b.textContent = 'Copy'; });
+    document.querySelectorAll('.cp-b').forEach(function (b) { b.classList.remove('done'); b.setAttribute('data-l', 'Copy'); b.setAttribute('aria-label', 'Copy'); });
     S.mpSeen = true;
     $('mpBack').hidden = !resumed;
     track(resumed ? 'mp_resumed' : 'mp_seen');
@@ -2234,7 +2240,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     b.addEventListener('click', function () {
       var id = b.getAttribute('data-copy'), text = $(id).textContent, kind = (id.match(/^(mp|peer|min)/) || ['', 'mp'])[1];
       var shown = function () {
-        b.classList.add('done'); b.textContent = 'Copied';
+        b.classList.add('done'); b.setAttribute('data-l', 'Copied'); b.setAttribute('aria-label', 'Copied');
         S[kind + 'Copied'] = true;
         track(kind + '_copied', id + (kind === 'peer' ? ' ' + pickPeer().id : ''));
       };
@@ -2330,7 +2336,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     $('peerMail').textContent = pr.email;
     $('peerSubj').textContent = PEER_SUBJECT;
     $('peerMsg').innerHTML = peerLetter(true);
-    document.querySelectorAll('#ppeer .cp-b').forEach(function (b) { b.classList.remove('done'); b.textContent = 'Copy'; });
+    document.querySelectorAll('#ppeer .cp-b').forEach(function (b) { b.classList.remove('done'); b.setAttribute('data-l', 'Copy'); b.setAttribute('aria-label', 'Copy'); });
     S.peerSeen = true;
     track(resumed ? 'peer_resumed' : 'peer_seen', String(pr.id));
     keepMp('peer');
@@ -2386,7 +2392,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     $('minMail').textContent = MIN_TO;
     $('minSubj').textContent = MIN_SUBJECT;
     $('minMsg').innerHTML = minLetter(true);
-    document.querySelectorAll('#pmin .cp-b').forEach(function (b) { b.classList.remove('done'); b.textContent = 'Copy'; });
+    document.querySelectorAll('#pmin .cp-b').forEach(function (b) { b.classList.remove('done'); b.setAttribute('data-l', 'Copy'); b.setAttribute('aria-label', 'Copy'); });
     track(resumed ? 'min_resumed' : 'min_seen');
     keepMp('min');
     go('min');
