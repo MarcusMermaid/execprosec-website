@@ -1155,7 +1155,9 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
              // Marcus, 22 Nov 2026: a third are asked to email one peer (e1), a third a peer and their MP (e2),
              // a third a peer, their MP and the minister (e3). Central counts emails copied and money given on
              // each side. ?mails=1, 2 or 3 forces a side.
-             mails: 'e' + ((location.search.match(/[?&]mails=([123])(?![0-9])/) || [])[1] || String(mix(7) % 3 + 1)) };
+             // Marcus, 22 Nov 2026: three emails won (85 letters per 100 signers against 51 for one, money level),
+             // so everyone is now asked for all three
+             mails: 'e' + ((location.search.match(/[?&]mails=([123])(?![0-9])/) || [])[1] || '3') };
   })();
   var LAY = DRAW.lay, PROOF = DRAW.proof, PROMISE = DRAW.promise, CONF = DRAW.conf;
   // ?demo=1 is us looking at the versions next to each other: it records nothing at all, so the
