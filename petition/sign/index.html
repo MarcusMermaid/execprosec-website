@@ -403,7 +403,6 @@ legend{padding:0;margin:0 0 8px;font-size:14px;font-weight:600;line-height:1.4;c
 .pp-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 0 6px}
 .pp-grid button{min-height:46px;padding:6px 8px;border:1.5px solid var(--rule);border-radius:4px;background:#fff;color:var(--navy);font:600 14px/1.2 var(--f-body);cursor:pointer}
 .pp-grid button:hover,.pp-grid button:focus-visible{border-color:var(--navy)}
-.news-dot{background:var(--navy)!important;font-size:11px!important}
 .gv-grid.drag{cursor:grabbing;scroll-snap-type:none;user-select:none}
 .gv-grid.glide{scroll-snap-type:none}
 .gv-grid.drag img{pointer-events:none}
@@ -614,7 +613,6 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       <div class="rw-row">
         <span class="rw-i" data-rw="mp"><span class="rw-b" aria-hidden="true">&#9733;</span>MP</span>
         <span class="rw-i" data-rw="peer"><span class="rw-b" aria-hidden="true">&#9733;</span>Lords</span>
-        <span class="rw-i" data-rw="press"><span class="rw-b" aria-hidden="true">&#9733;</span>Press</span>
         <span class="rw-i" data-rw="min"><span class="rw-b" aria-hidden="true">&#9733;</span>Minister</span>
         <span class="rw-i" data-rw="give"><span class="rw-b" aria-hidden="true">&#9733;</span>Backer</span>
       </div>
@@ -758,6 +756,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
 
     <!-- 3c: a member of the House of Lords, from the party they voted for (Marcus, 21 Nov 2026) -->
     <div class="panel" id="ppeer" hidden>
+      <p class="ok-kick" id="peerOk" hidden><i aria-hidden="true">✓</i><span id="peerOkTxt">Signature confirmed</span></p>
       <h2>Now email a member of the House of Lords.</h2>
       <div class="why"><b>Why this matters</b>Peers vote on this on 7 December. They have no constituents, so a letter from a member of the public stands out, most of all from someone who votes for their party.</div>
       <div id="peerPick">
@@ -779,24 +778,6 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       <button class="btn navy" type="button" id="peerDone">Done, next</button>
       <p class="alt"><button class="link" type="button" id="peerSkip">Skip</button></p>
       </div>
-    </div>
-
-    <!-- 3d: a newsroom's tips address, shared out evenly (Marcus, 21 Nov 2026) -->
-    <div class="panel" id="ppress" hidden>
-      <h2>Now tip off a newsroom.</h2>
-      <div class="why"><b>Why this matters</b>Newsrooms pick stories partly from what the public sends in. Coverage before 7 December puts every MP and peer under pressure at once, and reaches millions who haven't heard about this yet.</div>
-      <p class="mp-from">We give each person a different newsroom, so every big outlet hears it. Yours is:</p>
-      <div class="mp">
-        <span class="mp-dot news-dot" id="newsDot" aria-hidden="true"></span>
-        <span class="mp-who"><b id="newsName"></b><span id="newsType"></span></span>
-      </div>
-      <p class="sub">Copy these into an email from your own address. It takes a minute.</p>
-      <div class="cp"><span class="cp-l">To</span><span class="cp-v" id="newsMail"></span><button class="cp-b" type="button" data-copy="newsMail">Copy</button></div>
-      <div class="cp"><span class="cp-l">Subject</span><span class="cp-v" id="newsSubj"></span><button class="cp-b" type="button" data-copy="newsSubj">Copy</button></div>
-      <div class="cp cp-msg"><span class="cp-l">Message</span><span class="cp-v" id="newsMsg" tabindex="0"></span><button class="cp-b" type="button" data-copy="newsMsg">Copy</button></div>
-      <p class="mp-hint">Scroll the box to read it all. Copy copies the whole message. If you leave to paste it, this page keeps it for you.</p>
-      <button class="btn navy" type="button" id="newsDone">Done, next</button>
-      <p class="alt"><button class="link" type="button" id="newsSkip">Skip</button></p>
     </div>
 
     <!-- 3e: the minister responsible for the Bill (Marcus, 21 Nov 2026) -->
@@ -1170,14 +1151,30 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
              // Marcus, 21 Nov 2026, past 50,000 confirmed: half see how many have signed at the top of
              // the form, rising as people sign, half do not. Central emails him the winner 24 hours in;
              // he decides whether everyone gets it. ?sigs=count or ?sigs=quiet forces a side.
-             sigs: pick('sigs', ['count', 'quiet'], 6) };
+             sigs: pick('sigs', ['count', 'quiet'], 6),
+             // Marcus, 22 Nov 2026: a third are asked to email one peer (e1), a third a peer and their MP (e2),
+             // a third a peer, their MP and the minister (e3). Central counts emails copied and money given on
+             // each side. ?mails=1, 2 or 3 forces a side.
+             mails: 'e' + ((location.search.match(/[?&]mails=([123])(?![0-9])/) || [])[1] || String(mix(7) % 3 + 1)) };
   })();
   var LAY = DRAW.lay, PROOF = DRAW.proof, PROMISE = DRAW.promise, CONF = DRAW.conf;
   // ?demo=1 is us looking at the versions next to each other: it records nothing at all, so the
   // looking does not land in the numbers the test is read from.
   var DEMO = /[?&]demo=1\b/.test(location.search);
   var SIGS = DRAW.sigs;
-  var AB = LAY + '-' + PROOF + '-' + PROMISE + '-' + CONF + '-' + SIGS;
+  var MAILS = DRAW.mails;
+  var AB = LAY + '-' + PROOF + '-' + PROMISE + '-' + CONF + '-' + SIGS + '-' + MAILS;
+  // the emails this signer is asked for, in order; the peer comes first on every side
+  function mailSeq() {
+    var q = MAILS === 'e1' ? ['peer'] : MAILS === 'e2' ? ['peer', 'mp'] : ['peer', 'mp', 'min'];
+    return S.abroad ? q.filter(function (k) { return k !== 'mp'; }) : q;
+  }
+  function nextMail(after) {
+    var q = mailSeq(), k = q[q.indexOf(after) + 1];
+    if (k === 'mp') return toMp();
+    if (k === 'min') return toMin();
+    dropMp(); toPitch();
+  }
   try { document.body.classList.add('l-' + LAY, 'p-' + PROOF, 'pr-' + PROMISE, 'c-' + CONF); } catch (e) {}
 
   // One page view to the site's own analytics, so the morning report can say how many visited and
@@ -1574,28 +1571,27 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     var sh = n === 's';                                 // the share-the-link screen
     var pt = n === 'pitch';                             // the money pitch
     var pe = n === 'peer';                              // the House of Lords email
-    var pr = n === 'press';                             // a newsroom
     var mi = n === 'min';                               // the minister
     $('ppitch').hidden = !pt;
     $('ppeer').hidden = !pe;
-    $('ppress').hidden = !pr;
     $('pmin').hidden = !mi;
     $('pw').hidden = !w;
     $('pchoice').hidden = !c;
     $('pshare').hidden = !sh;
     if (w) waitStart(); else waitStop();
     for (var i = 1; i <= 5; i++) $('p' + i).hidden = i !== n;
-    // six steps (Marcus, 21 Nov 2026): sign, your MP, a peer, a newsroom, the minister, then give
-    var at = n === 3 ? 2 : pe ? 3 : pr ? 4 : mi ? 5 : (pt || n === 4 || c || sh) ? 6 : n;
+    // sign, then the one, two or three emails this signer is asked for (22 Nov 2026), then give
+    var q = mailSeq(), all = q.length + 2, k = n === 3 ? 'mp' : pe ? 'peer' : mi ? 'min' : '';
+    var at = k ? 2 + Math.max(0, q.indexOf(k)) : (pt || n === 4 || c || sh) ? all : n;
     var dots = $('dots').children;
-    for (var j = 0; j < dots.length; j++) dots[j].classList.toggle('on', j < at);
-    $('stepLbl').textContent = at <= 6 ? 'Step ' + at + ' of 6' : 'Done';
-    rwShow(n === 3 ? 'mp' : pe ? 'peer' : pr ? 'press' : mi ? 'min' : (pt || n === 4) ? 'give' : n === 5 ? 'end' : '');
+    for (var j = 0; j < dots.length; j++) { dots[j].hidden = j >= all; dots[j].classList.toggle('on', j < at); }
+    $('stepLbl').textContent = at <= all ? 'Step ' + at + ' of ' + all : 'Done';
+    rwShow(k || ((pt || n === 4) ? 'give' : n === 5 ? 'end' : ''));
     $('card').classList.toggle('first', n === 1 || w);   // the step bar appears once they have confirmed
-    $('card').classList.toggle('after', c || sh || pt || pe || pr || mi || (!w && n >= 2));   // and the title, explainer and meter go
+    $('card').classList.toggle('after', c || sh || pt || pe || mi || (!w && n >= 2));   // and the title, explainer and meter go
     pinCard();
     if (quiet) return;
-    var h = [].filter.call($(w ? 'pw' : c ? 'pchoice' : sh ? 'pshare' : pt ? 'ppitch' : pe ? 'ppeer' : pr ? 'ppress' : mi ? 'pmin' : 'p' + n).querySelectorAll('h2'), function (x) { return x.offsetParent; })[0];
+    var h = [].filter.call($(w ? 'pw' : c ? 'pchoice' : sh ? 'pshare' : pt ? 'ppitch' : pe ? 'ppeer' : mi ? 'pmin' : 'p' + n).querySelectorAll('h2'), function (x) { return x.offsetParent; })[0];
     if (h) { h.setAttribute('tabindex', '-1'); h.focus({ preventScroll: true }); }
     var top = $('card').getBoundingClientRect().top;
     if (top < 0 || top > window.innerHeight * 0.5) $('card').scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
@@ -1910,10 +1906,10 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       $('thanksH').textContent = countShown(number) ? "Confirmed. You're signature number " + fmt(number) + '.' : 'Confirmed. Thank you, ' + S.me.first + '.';
       $('thanksS').textContent = more;
     }
-    // Marcus, 20 Nov 2026: the statements have their 10,000 answers each, so they end. Everyone goes from
-    // confirming to their MP, then a peer, then the money pitch.
+    // Marcus, 20 Nov 2026: the statements have their 10,000 answers each, so they end. From 22 Nov everyone goes
+    // from confirming to a peer, then the MP and the minister if their side of the test asks for them, then the pitch.
     S.okTxt = $('thanksH').textContent;
-    toMp();
+    toPeer();
   }
 
   // ---------------------------------------------------------------- 2: one statement and their own words
@@ -1985,8 +1981,8 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     setTimeout(function () { if (window.gvEnds) gvEnds(); }, 60);
     var days = Math.max(1, Math.ceil((VOTE - Date.now()) / 864e5));
     $('gvDays').textContent = days === 1 ? '1 day' : days + ' days';
-    var sent = ['mp', 'peer', 'press', 'min'].filter(function (k) { return S.done && S.done[k]; }).length;
-    $('gvOkTxt').textContent = sent ? "You've signed and sent " + (sent === 1 ? 'one email' : sent + ' emails') + '.' + (sent === 4 ? ' Earn your last star here.' : '') : 'Signature confirmed';
+    var sent = ['mp', 'peer', 'min'].filter(function (k) { return S.done && S.done[k]; }).length;
+    $('gvOkTxt').textContent = sent ? "You've signed and sent " + (sent === 1 ? 'an email' : sent + ' emails') + '.' + (sent >= mailSeq().length ? ' Earn your last star here.' : '') : 'Signature confirmed';
     getJson('social/summary').then(function (d) {
       var f = d && d.followers; if (!f || !f.now) return;
       $('gvFollow').textContent = fmt(f.now);
@@ -2184,12 +2180,12 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     S.abroad = false; S.signed = true; S.peer = k.peer || null; S.peerParty = k.peerParty || 0; S.done = k.done || {}; S.mpDone = !!k.mpDone;
     updateSticky();
     document.querySelectorAll('.me-first').forEach(function (el) { el.textContent = S.me.first; });
-    if (k.step === 'peer') toPeer(true); else if (k.step === 'press') toPress(true); else if (k.step === 'min') toMin(true); else toMp(true);
+    if (k.step === 'min') toMin(true); else if (k.step === 'mp') toMp(true); else toPeer(true);
     return true;
   }
   function toMp(resumed) {
-    if (S.abroad) { toPeer(); return; }
-    $('mpOk').hidden = !S.okTxt || !!resumed;
+    if (S.abroad) { nextMail('mp'); return; }
+    $('mpOk').hidden = true;
     $('mpOkTxt').textContent = S.okTxt || '';
     var mp = S.mp;
     $('mpFrom').innerHTML = mp
@@ -2214,13 +2210,13 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   }
   document.querySelectorAll('.cp-b').forEach(function (b) {
     b.addEventListener('click', function () {
-      var id = b.getAttribute('data-copy'), text = $(id).textContent, kind = (id.match(/^(mp|peer|news|min)/) || ['', 'mp'])[1];
+      var id = b.getAttribute('data-copy'), text = $(id).textContent, kind = (id.match(/^(mp|peer|min)/) || ['', 'mp'])[1];
       var shown = function () {
         b.classList.add('done'); b.textContent = 'Copied';
         S[kind + 'Copied'] = true;
-        track(kind + '_copied', id + (kind === 'peer' ? ' ' + pickPeer().id : kind === 'news' ? ' ' + pickNews().n : ''));
+        track(kind + '_copied', id + (kind === 'peer' ? ' ' + pickPeer().id : ''));
       };
-      var letter = { mpMsg: mpLetter, peerMsg: peerLetter, newsMsg: newsLetter, minMsg: minLetter }[id] || null;
+      var letter = { mpMsg: mpLetter, peerMsg: peerLetter, minMsg: minLetter }[id] || null;
       // the letter goes as rich text too, so its bold titles stay bold when pasted into an email
       if (letter && window.ClipboardItem && navigator.clipboard && navigator.clipboard.write) {
         var html = '<div>' + letter(true).replace(/\n/g, '<br>') + '</div>';
@@ -2298,9 +2294,12 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     track('peer_party', String(S.peerParty));
     toPeer();
   });
-  $('peerSkip0').addEventListener('click', function () { track('peer_skip'); toPress(); });
+  $('peerSkip0').addEventListener('click', function () { track('peer_skip'); nextMail('peer'); });
   function toPeer(resumed) {
+    $('peerOk').hidden = !S.okTxt || !!resumed || !!S.peerOkShown;
+    $('peerOkTxt').textContent = S.okTxt || '';
     if (!S.peerParty && !S.peer) { peerPick(); return; }
+    S.peerOkShown = true;
     $('peerPick').hidden = true; $('peerShow').hidden = false;
     var pr = pickPeer();
     $('peerName').textContent = pr.name;
@@ -2316,71 +2315,49 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     go('peer');
     if (resumed) toast('Welcome back. Your letter is still here, ready to copy.');
   }
-  $('peerDone').addEventListener('click', function () { track('peer_done', String(pickPeer().id)); S.peerDone = true; earn('peer'); toPress(); });
-  $('peerSkip').addEventListener('click', function () { track('peer_skip'); toPress(); });
+  $('peerDone').addEventListener('click', function () { track('peer_done', String(pickPeer().id)); S.peerDone = true; earn('peer'); nextMail('peer'); });
+  $('peerSkip').addEventListener('click', function () { track('peer_skip'); nextMail('peer'); });
 
-  // ---------------------------------------------------------------- 3d: a newsroom (Marcus, 21 Nov 2026)
-  // Public tips and newsdesk addresses only, each published by the outlet itself; shared out evenly by signature number.
-  var NEWS = [{"n": "BBC News", "t": "TV", "d": "BBC News, TV and online", "e": "haveyoursay@bbc.co.uk"}, {"n": "BBC Radio 4 Today", "t": "Radio", "d": "BBC Radio 4", "e": "today@bbc.co.uk"}, {"n": "BBC Newsnight", "t": "TV", "d": "BBC Two", "e": "newsnight@bbc.co.uk"}, {"n": "Channel 4 News", "t": "TV", "d": "Channel 4", "e": "C4Nstories@itn.co.uk"}, {"n": "ITV News", "t": "TV", "d": "ITV national newsroom", "e": "itvplanning@itn.co.uk"}, {"n": "GB News", "t": "TV", "d": "TV and radio", "e": "newstips@gbnews.com"}, {"n": "Sky News", "t": "TV", "d": "Sky News", "e": "news@skynews.com"}, {"n": "LBC", "t": "Radio", "d": "Radio", "e": "contact@lbc.co.uk"}, {"n": "Times Radio", "t": "Radio", "d": "Radio", "e": "stories@times.radio"}, {"n": "PA Media", "t": "Agency", "d": "The national news agency", "e": "lobby@pa.media"}, {"n": "Daily Mail", "t": "Paper", "d": "National newspaper", "e": "news@dailymail.co.uk"}, {"n": "Daily Mirror", "t": "Paper", "d": "National newspaper", "e": "mirrornews@mirror.co.uk"}, {"n": "Sunday Mirror", "t": "Paper", "d": "National newspaper", "e": "scoops@sundaymirror.co.uk"}, {"n": "Daily Express", "t": "Paper", "d": "National newspaper", "e": "tips@express.co.uk"}, {"n": "Sunday Express", "t": "Paper", "d": "National newspaper", "e": "sunday@express.co.uk"}, {"n": "The Independent", "t": "Paper", "d": "National news", "e": "newsdesk@independent.co.uk"}, {"n": "The Times", "t": "Paper", "d": "National newspaper", "e": "home.news@thetimes.co.uk"}, {"n": "Evening Standard", "t": "Paper", "d": "London newspaper", "e": "newsroom@standard.co.uk"}, {"n": "PoliticsHome", "t": "Online", "d": "Political news", "e": "news@politicshome.com"}, {"n": "Private Eye", "t": "Paper", "d": "Magazine", "e": "strobes@private-eye.co.uk"}, {"n": "openDemocracy", "t": "Online", "d": "Online news", "e": "editors@opendemocracy.net"}, {"n": "Byline Times", "t": "Online", "d": "Online and print", "e": "news@bylinetimes.com"}, {"n": "The Big Issue", "t": "Paper", "d": "Magazine", "e": "editorial@bigissue.com"}, {"n": "Liverpool Echo", "t": "Paper", "d": "Liverpool newspaper", "e": "news@liverpool.com"}, {"n": "Manchester Evening News", "t": "Paper", "d": "Manchester newspaper", "e": "newsdesk@men-news.co.uk"}, {"n": "The Yorkshire Post", "t": "Paper", "d": "Yorkshire newspaper", "e": "yp.newsdesk@ypn.co.uk"}, {"n": "The Scotsman", "t": "Paper", "d": "Scottish newspaper", "e": "newsdeskts@scotsman.com"}, {"n": "The Herald", "t": "Paper", "d": "Scottish newspaper", "e": "news@theherald.co.uk"}, {"n": "WalesOnline", "t": "Online", "d": "Welsh news", "e": "newsdesk@mediawales.co.uk"}, {"n": "Belfast Telegraph", "t": "Paper", "d": "Northern Ireland newspaper", "e": "newseditor@belfasttelegraph.co.uk"}];
-  var AUDIENCE = { TV: 'viewers', Radio: 'listeners' };
-  function pickNews() {
-    if (S.news == null || !NEWS[S.news]) S.news = S.sig ? S.sig % NEWS.length : Math.floor(Math.random() * NEWS.length);
-    return NEWS[S.news];
-  }
-  function newsSubject() {
-    var n = (S.sig || 0) % 3, all = (S.count || 0) >= 1000 ? fmt(S.count) : '';
-    return n === 0 ? 'News tip: MPs and peers have left themselves out of the Hillsborough Law'
-      : n === 1 || !all ? 'Story tip before the 7 December vote on the Hillsborough Law'
-      : all + ' people want MPs and peers included in the Hillsborough Law';
-  }
-  function newsLetter(html) {
-    var o = pickNews(), me = S.me || {}, n = (S.sig || 0) % 3, aud = AUDIENCE[o.t] || 'readers';
-    var T = function (x) { return html ? esc(x) : x; };
-    var town = me.town && me.town !== 'the UK' ? me.town : '';
-    var all = (S.count || 0) >= 1000 ? fmt(S.count) : '';
-    var open = n === 0 ? "I'd like to send you a story your " + aud + ' should hear about before Parliament votes on 7 December.'
-      : n === 1 ? 'Here is a story I think deserves coverage before Parliament votes on 7 December.'
-      : 'As one of your ' + aud + ', I want to make sure you have seen this before the vote on 7 December.';
-    return T('Hello,\n\n' + open + '\n\n' +
-      'The Public Office (Accountability) Bill, known as the Hillsborough Law, will make it a crime for police officers, civil servants, soldiers and ministers to intentionally or recklessly mislead the public. MPs, peers, MSPs, MSs and MLAs have left themselves out.\n\n' +
-      (all ? all + ' people have' : 'Thousands of people have') + ' signed a petition asking Parliament to include all lawmakers. I am one of them' + (town ? ', from ' + town : '') + '. The offence would only apply to things said and done outside Parliamentary proceedings, and honest mistakes and opinions could never be prosecuted.\n\n' +
-      'The campaign is led by Marcus J Ball, who has campaigned since 2016 to make lying in politics a crime. He can be reached at mjb@execprosec.com.\n\n' +
-      'The petition: https://execprosec.org/petition/\n' +
-      "The campaign's briefing: https://execprosec.org/amendments-briefing/\n\n" +
-      'Please cover it before the vote.\n\n' + (me.first || '') + ' ' + (me.last || '') + (town ? '\n' + town : ''));
-  }
-  function toPress(resumed) {
-    var o = pickNews();
-    $('newsName').textContent = o.n;
-    $('newsType').textContent = o.d || '';
-    $('newsDot').textContent = o.n.replace(/^The /, '').split(/\s+/).map(function (w) { return w.charAt(0); }).join('').slice(0, 3).toUpperCase();
-    $('newsMail').textContent = o.e;
-    $('newsSubj').textContent = newsSubject();
-    $('newsMsg').innerHTML = newsLetter(true);
-    document.querySelectorAll('#ppress .cp-b').forEach(function (b) { b.classList.remove('done'); b.textContent = 'Copy'; });
-    track(resumed ? 'news_resumed' : 'news_seen', o.n);
-    keepMp('press');
-    go('press');
-    if (resumed) toast('Welcome back. Your message is still here, ready to copy.');
-  }
-  $('newsDone').addEventListener('click', function () { track('news_done', pickNews().n); S.newsDone = true; earn('press'); toMin(); });
-  $('newsSkip').addEventListener('click', function () { track('news_skip'); toMin(); });
 
   // ---------------------------------------------------------------- 3e: the minister (Marcus, 21 Nov 2026)
   // Her Commons address is the one Parliament publishes; her own Ministry of Justice address is not published, so the
   // department's ministerial correspondence unit (which answered us on 10 Nov 2026) goes alongside it.
   var MIN_TO = 'alex.daviesjones.mp@parliament.uk, MinisterialCorrespondence@justice.gov.uk';
-  var MIN_SUBJECT = 'Please include all lawmakers under the Hillsborough Law';
+  var MIN_SUBJECT = 'Include all lawmakers under the Hillsborough Law before 7 December';
+  // Marcus, 22 Nov 2026: the first minister letter was too polite and did not take on the Government's objections;
+  // this one is built on the letter to MPs, answering the Government's lines one by one.
   function minLetter(html) {
     var me = S.me || {}, others = othersSigned();
     var T = function (x) { return html ? esc(x) : x; };
+    var B = function (x) { return html ? '<b>' + esc(x) + '</b>' : x; };
     var town = me.town && me.town !== 'the UK' ? me.town : '';
     return T('Dear Minister,\n\n' +
-      'I am writing to you as the minister responsible for the Public Office (Accountability) Bill. I am a member of the public' + (town ? ' from ' + town : '') + ', and one of ' + (others ? others + ' people' : 'the people') + ' who have signed the petition to include all lawmakers under the Hillsborough Law.\n\n' +
-      'The Bill will make it a crime for police officers, civil servants, soldiers and ministers to intentionally or recklessly mislead the public. But MPs, peers, MSPs, MSs and MLAs have left themselves out, and ministers are covered only while they act as ministers.\n\n' +
-      'The offence would only apply to things said and done outside Parliamentary proceedings: on TV and radio, online and at public events. Nothing said in Parliament would be affected, and honest mistakes, opinions and broken promises could never be prosecuted.\n\n' +
-      'Please change the Bill to include all lawmakers before the vote on 7 December. A law for everyone except the people who make it would do lasting damage to trust in Parliament.\n\n' +
-      "The campaign's briefing answers every objection the Government has raised: https://execprosec.org/amendments-briefing/\n\n" +
+      'I am writing to you as the minister responsible for the Public Office (Accountability) Bill. I am a member of the public' + (town ? ' from ' + town : '') + '. ' +
+      (others ? 'Along with ' + others + ' other people, I have signed the petition' : 'I have signed the petition') +
+      ' to include all lawmakers under the Hillsborough Law, and I back the campaign behind it.\n\n' +
+      'The Bill will make it a crime for police officers, civil servants, soldiers, ministers and even the intelligence services to intentionally or recklessly mislead the public. But MPs, MSPs, MSs, MLAs and peers have a carve-out from their own law, and ministers are covered only while they act as ministers. I am asking the Government to end that carve-out for lies told to the public outside their parliaments: on TV and radio, on social media and at public events. Please accept the amendment to include all lawmakers when the House of Lords votes on 7 December, or put forward the Government\'s own.\n\n' +
+      'I do not want a reply that repeats the lines the Cabinet Office has written for MPs. The ExecProsec campaign, which is leading this petition, has read them all and concluded that none of them stands up, as the below makes clear:\n\n') +
+      B('1. Parliamentary privilege is not a barrier to including legislators') + T('\n' +
+      'The Government says parliamentary privilege protects what is said in Parliament. It still would. Our amendment does not threaten parliamentary privilege; it respects it completely. It only covers what legislators say to the public outside their parliaments.\n\n' +
+      'In fact, it goes further. The Senedd, the Scottish Parliament and the Northern Ireland Assembly do not have parliamentary privilege; they only have limited protection against claims of slander. As it is written, the Bill gives no immunity from prosecution for what is said in those parliaments. So at present, a government minister could be prosecuted for misleading the public if they chose to lie in the Senedd, the Scottish Parliament or the Northern Ireland Assembly. That is a major oversight in your Bill. Our amendment applies an immunity from prosecution for the new offences to proceedings in all of the UK\'s other parliaments, and so closes a gap the Government has not yet addressed.\n\n') +
+      B('2. Parliament\'s existing procedures are no barrier to including legislators either') + T('\n' +
+      'The Government says Parliament regulates its own affairs. But Parliament\'s own rules only deal with what is said inside Parliament. They do not deal with lies told to the public outside Parliament. When a police officer or civil servant lies to the public, a jury decides. MPs and peers should be no different.\n\n') +
+      B('3. Legislators do not need executive power to be held to these offences') + T('\n' +
+      'The Government says backbench MPs and peers do not take decisions on behalf of the state. They do not need to. Backbenchers scrutinise the Government, vote on laws and public spending, and influence decisions of national importance. Most are elected by the public and trusted to report back on what the Government is doing, and when they speak to the public about it, the public must be able to trust them to tell the truth. Under our system, executive power is nothing without scrutiny from the opposition and the backbenches. If government ministers can be prosecuted for lying but shadow ministers and scrutinisers cannot, the system of checks and balances is thrown completely off balance when legislators communicate with the public.\n\n') +
+      B('4. Lying does not depend on access to secret government information') + T('\n' +
+      'The Government says backbench MPs and peers do not have access to the kind of information ministers have. That shows a complete misunderstanding of what lying is. A lie does not depend on access to the truth; it is the opposite of the truth. All it takes is a willingness to make things up.\n\n') +
+      B('5. Elections and prosecutions do two completely different things') + T('\n' +
+      'The Government says elected members are accountable to the public at elections. But elections decide who holds office, and they reflect the popularity of a party, its leader or its policies. A prosecution decides something else entirely: whether one person deliberately deceived the public. Only a jury, under careful analysis of the evidence at trial, can decide that. No election can.\n\n' +
+      'The parliamentary expenses scandal proves the point. Elected politicians went to prison for false expense claims. Being elected did not put them above the law; they faced justice, as everyone should. And peers never face an election at all.\n\n') +
+      B('6. The Government says this offence is targeting Hillsborough-style cover-ups, and it is not right to criminalise political speech') + T('\n' +
+      'Firstly, we are not attempting to criminalise political speech. Our aim is to make sure normal political debate, opinions, honest mistakes and broken promises can never be prosecuted.\n\n' +
+      'Secondly, nothing written in the Bill limits it to Hillsborough-style cover-ups. It should rightly cover cover-ups like Hillsborough, but it should equally cover lying to start a war or lying to manipulate the result of a referendum. The bar for a criminal conviction is high, but the range of situations the offence can cover is very broad, as it should be.\n\n') +
+      B('Conclusion:') + T('\n' +
+      'If the Government lets Parliament exempt its own members, I will feel angry and betrayed. A law for everyone else but not for the people who make it is a law for thee, but not for me. It would destroy public trust in the UK\'s parliaments, because it would tell the public that lawmakers want the freedom to lie to us.\n\n' +
+      'It would show the public that politics has not learnt its lesson after years of lying, which we have endured from Iraq to the Brexit referendum to the scandals of the COVID-19 pandemic, and countless others. There is a reason politicians are among the least trusted professions in the whole country. Does the Government seriously want to be responsible for this? It would be the most damaging, reputationally self-harming thing imaginable for Parliament.\n\n' +
+      'The House of Lords votes on this amendment on 7 December. So far, more peers have spoken in favour of it than against it, so it seems likely the Lords will add it to the Bill. The Government can accept it now, rather than fight it in both Houses. Please tell me what the Government will do.\n\n' +
+      'Please do not send me lines written by the Cabinet Office: as set out above, they are meaningless. Every other objection the campaign has heard is answered in its briefing below. If your reply repeats one of them, I will take it that the Government has no real answer, and I will assume the worst.\n\n' +
+      'Detailed briefing: https://execprosec.org/amendments-briefing/\n\n' +
       'Yours sincerely,\n' + (me.first || '') + ' ' + (me.last || '') + (town ? '\n' + town : ''));
   }
   function toMin(resumed) {
@@ -2393,14 +2370,13 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     go('min');
     if (resumed) toast('Welcome back. Your letter is still here, ready to copy.');
   }
-  $('minDone').addEventListener('click', function () { track('min_done'); S.minDone = true; earn('min'); dropMp(); toPitch(); });
-  $('minSkip').addEventListener('click', function () { track('min_skip'); dropMp(); toPitch(); });
+  $('minDone').addEventListener('click', function () { track('min_done'); S.minDone = true; earn('min'); nextMail('min'); });
+  $('minSkip').addEventListener('click', function () { track('min_skip'); nextMail('min'); });
 
   // ---------------------------------------------------------------- rewards: a gold star for every step done
   var RW_TXT = {
     mp: '<b>Star earned.</b> Your MP has heard from you.',
     peer: '<b>Star earned.</b> The House of Lords has heard from you.',
-    press: '<b>Star earned.</b> A newsroom has heard from you.',
     min: '<b>Star earned.</b> The Government has heard from you.',
     give: '<b>Star earned.</b> You are backing the campaign.'
   };
@@ -2414,9 +2390,10 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     var box = $('rw'); if (!box) return;
     S.done = S.done || {};
     box.classList.toggle('show', !!now);
-    var got = 0;
+    var got = 0, q = mailSeq();
     box.querySelectorAll('.rw-i').forEach(function (el) {
       var k = el.getAttribute('data-rw'), on = !!S.done[k];
+      el.style.display = k === 'give' || q.indexOf(k) >= 0 ? '' : 'none';
       if (on) got++;
       el.classList.toggle('on', on);
       el.classList.toggle('now', k === now && !on);
@@ -2424,7 +2401,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     });
     var j = S.justEarned;
     $('rwPop').hidden = !j;
-    if (j) $('rwPopTxt').innerHTML = RW_TXT[j] + ' ' + got + (got === 1 ? ' star' : ' stars') + ' of 5.';
+    if (j) $('rwPopTxt').innerHTML = RW_TXT[j] + ' ' + got + (got === 1 ? ' star' : ' stars') + ' of ' + (q.length + 1) + '.';
     S.justEarned = '';
   }
   function selectText(el) {
@@ -2439,8 +2416,8 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     if (S.fundSeen) { S.fundAgain = true; track('fund_again'); }
     toFund(afterMp);
   }
-  $('mpDone').addEventListener('click', function () { track('mp_done'); S.mpDone = true; earn('mp'); toPeer(); });
-  $('mpSkip').addEventListener('click', function () { track('mp_skip'); toPeer(); });
+  $('mpDone').addEventListener('click', function () { track('mp_done'); S.mpDone = true; earn('mp'); nextMail('mp'); });
+  $('mpSkip').addEventListener('click', function () { track('mp_skip'); nextMail('mp'); });
 
   // ---------------------------------------------------------------- 4: fund
   // Their videos travel further than any graphic would, so after the MP email it is straight to
@@ -2647,7 +2624,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       document.querySelectorAll('.me-first').forEach(function (el) { el.textContent = S.me.first; });
       S.okTxt = 'Confirmed. Thank you, Sam.';
       S.sig = 40000 + Math.floor(Math.random() * 999); S.count = Math.max(S.count || 0, 40814);
-      if (/[?&]step=mp\b/.test(q)) toMp(); else if (/[?&]step=peer\b/.test(q)) toPeer(); else if (/[?&]step=press\b/.test(q)) toPress(); else if (/[?&]step=min\b/.test(q)) toMin(); else toPitch();
+      if (/[?&]step=mp\b/.test(q)) toMp(); else if (/[?&]step=peer\b/.test(q)) toPeer(); else if (/[?&]step=min\b/.test(q)) toMin(); else toPitch();
     }
     loadStats(true);
   }
