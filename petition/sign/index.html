@@ -1169,13 +1169,19 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   // the emails this signer is asked for, in order; the peer comes first on every side
   function mailSeq() {
     var q = MAILS === 'e1' ? ['peer'] : MAILS === 'e2' ? ['peer', 'mp'] : ['peer', 'mp', 'min'];
+    // back from a thank-you email (?w=): only the letters they have not sent yet
+    if (S.write && S.sentBefore) q = q.filter(function (k) { return S.sentBefore.indexOf(k) < 0; });
     return S.abroad ? q.filter(function (k) { return k !== 'mp'; }) : q;
   }
   function nextMail(after) {
     var q = mailSeq(), k = q[q.indexOf(after) + 1];
+    if (k === 'peer') return toPeer();
     if (k === 'mp') return toMp();
     if (k === 'min') return toMin();
-    dropMp(); toPitch();
+    dropMp();
+    // Marcus, 22 Nov 2026: someone who came back from a thank-you email and has already given is not asked again
+    if (S.noAsk) return toShare();
+    toPitch();
   }
   try { document.body.classList.add('l-' + LAY, 'p-' + PROOF, 'pr-' + PROMISE, 'c-' + CONF); } catch (e) {}
 
@@ -1872,6 +1878,13 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       S.key = d.key || '';
       S.abroad = !!d.country;
       S.backer = !!d.backer;
+      if (S.write) {
+        S.paid = S.paid || !!d.paid;
+        S.noAsk = !!(d.paid || d.backer);
+        S.sentBefore = d.sent || [];
+        S.done = S.done || {};
+        S.sentBefore.forEach(function (k) { S.done[k] = true; });
+      }
       S.me = { first: d.first, last: d.last, email: d.email, emailOk: !!d.email_ok, town: d.town || d.country || 'the UK', pc: d.pc || '' };
       findMp(S.abroad ? '' : (d.pc || '').replace(/\s+/g, ''));
       confirmed(d);
@@ -1911,6 +1924,12 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     // Marcus, 20 Nov 2026: the statements have their 10,000 answers each, so they end. From 22 Nov everyone goes
     // from confirming to a peer, then the MP and the minister if their side of the test asks for them, then the pitch.
     S.okTxt = $('thanksH').textContent;
+    if (S.write) {
+      // back from a thank-you email: straight to the first letter they have not sent
+      S.okTxt = 'Welcome back, ' + S.me.first + '. Your signature is counted.';
+      track('write_back', (S.sentBefore || []).join(' '));
+      return nextMail('');
+    }
     toPeer();
   }
 
@@ -2414,7 +2433,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   // after the MP email (or sharing), funding is offered. Marcus, 12 Nov 2026: everyone who has not given is asked
   // once more here, even if they said "Not now" earlier. Never a third time, and never after they have paid.
   function fundOrFinish(afterMp) {
-    if (S.paid || S.fundAgain) return finish();
+    if (S.paid || S.fundAgain || S.noAsk) return finish();
     if (S.fundSeen) { S.fundAgain = true; track('fund_again'); }
     toFund(afterMp);
   }
@@ -2616,8 +2635,10 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     renderDeadline();
     var q = location.search;
     var token = (q.match(/[?&]c=([A-Za-z0-9_-]{20,64})/) || [])[1];
+    var wtok = (q.match(/[?&]w=([A-Za-z0-9_-]{20,64})/) || [])[1];   // the write-again link (22 Nov 2026)
     var paid = (q.match(/[?&]session_id=(cs_[A-Za-z0-9_]+)/) || [])[1];
-    if (token) confirmFromLink(token);
+    if (wtok) { S.write = true; confirmFromLink(wtok); }
+    else if (token) confirmFromLink(token);
     else if (paid) backFromStripe(paid);
     else if (!DEMO && resumeMp()) { /* back from their email app: the MP step again */ }
     else if (DEMO && /[?&]pitch=1(?![0-9])/.test(q)) {
