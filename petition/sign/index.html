@@ -1927,7 +1927,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     if (S.write) {
       // back from a thank-you email: straight to the first letter they have not sent
       S.okTxt = 'Welcome back, ' + S.me.first + '. Your signature is counted.';
-      track('write_back', (S.sentBefore || []).join(' '));
+      track('write_back', ((/^ty[1-5]/.test(REF) ? REF + ' ' : '') + (S.sentBefore || []).join(' ')).trim());
       toast('Welcome back, ' + S.me.first + '. Your signature is counted.');
       return nextMail('');
     }
