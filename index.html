@@ -4727,7 +4727,7 @@ document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
     var el=document.getElementById('crowd-count-label');
     if(el) el.textContent=n.toLocaleString('en-GB')+' people have funded ExecProsec so far since June 2016';
   }
-  updateCount(20000);
+  updateCount(20369);            /* the last real reading, replaced by /public/backers below */
   fetch('https://central-2-mcp-production.up.railway.app/public/backers')
     .then(function(r){return r.json();})
     .then(function(d){ if(d && typeof d.backers==='number' && d.backers>0) updateCount(d.backers); })
