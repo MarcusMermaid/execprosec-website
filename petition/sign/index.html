@@ -1157,7 +1157,9 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
              // Marcus, 21 Nov 2026, past 50,000 confirmed: half see how many have signed at the top of
              // the form, rising as people sign, half do not. Central emails him the winner 24 hours in;
              // he decides whether everyone gets it. ?sigs=count or ?sigs=quiet forces a side.
-             sigs: pick('sigs', ['count', 'quiet'], 6),
+             // Marcus, 24 Nov 2026: no count won (47.1 against 45.5 confirmed per 100 visitors, 98% sure), so
+             // nobody sees the count at the top now; ?sigs=count still shows it, for comparison.
+             sigs: /[?&]sigs=count(?![a-z])/.test(location.search) ? 'count' : 'quiet',
              // Marcus, 22 Nov 2026: a third are asked to email one peer (e1), a third a peer and their MP (e2),
              // a third a peer, their MP and the minister (e3). Central counts emails copied and money given on
              // each side. ?mails=1, 2 or 3 forces a side.
