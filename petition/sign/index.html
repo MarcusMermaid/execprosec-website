@@ -8,7 +8,7 @@
 <meta name="description" content="Petition to Press and Parliament: include every MP, peer and UK legislator under the Hillsborough Law's duty of candour and offence of misleading the public.">
 <link rel="canonical" href="https://execprosec.org/petition/">
 <script>/* Marcus, 9 Nov 2026: ?embed=1 shows only the signing card, for the pop-up on /what-the-public-think/ */
-if (/[?&]embed=1(?![0-9])/.test(location.search) && window.parent !== window) document.documentElement.className += ' embed';</script>
+if ((/[?&]embed=1(?![0-9])/.test(location.search) || /[?&]session_id=/.test(location.search)) && window.parent !== window) document.documentElement.className += ' embed';</script>
 <link rel="icon" href="/_web/brand/favicon.ico">
 <link rel="icon" type="image/png" sizes="32x32" href="/_web/brand/icon-32.png">
 <link rel="apple-touch-icon" href="/_web/brand/icon-180.png">
@@ -595,10 +595,11 @@ html.dk-open,html.dk-open body{overflow:hidden}
   background:#0c163b;container-type:inline-size;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent}
 .dk-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .22s ease;pointer-events:none;-webkit-user-drag:none}
 .dk-img.on{opacity:1}
-.dk-bars{position:absolute;left:3cqw;right:3cqw;top:2.4cqw;display:flex;gap:1cqw;z-index:3;pointer-events:none}
+.dk-bars{position:absolute;left:3cqw;right:14cqw;top:2.4cqw;display:flex;gap:1cqw;z-index:3;pointer-events:none}
 .dk-bars i{flex:1;height:max(3px,.8cqw);border-radius:2px;background:rgba(128,132,150,.45);overflow:hidden}
 .dk-bars i.done,.dk-bars i.now{background:#d6b76a}
-.dk-skip{position:absolute;right:1cqw;top:5.5cqw;z-index:3;background:none;border:0;color:#0c163b;cursor:pointer;
+.dk-stage.dk-dark .dk-skip{color:#d6b76a}
+.dk-skip{position:absolute;left:1cqw;top:4.6cqw;z-index:3;background:none;border:0;color:#0c163b;cursor:pointer;
   font:700 max(13px,3.6cqw)/1 'Barlow',system-ui,sans-serif;padding:2.4cqw 3cqw;letter-spacing:.01em}
 .dk-nav{position:absolute;left:0;right:0;bottom:0;height:17%;display:flex;align-items:center;justify-content:center;gap:3.5cqw;
   padding:0 5cqw;z-index:3}
@@ -614,7 +615,7 @@ html.dk-open,html.dk-open body{overflow:hidden}
 .dk-ask[hidden]{display:none}
 .dk-ask{scrollbar-width:none}.dk-ask::-webkit-scrollbar{display:none}
 .dk-hero{position:relative;flex:none;min-height:70cqw;margin:0 -6cqw;padding:9cqw 0 0 6cqw}
-.dk-panel{position:absolute;top:0;right:0;bottom:0;width:27cqw;background:#d6b76a url(/_web/fund/panel.webp) 58% 0/auto 150% no-repeat}
+.dk-panel{position:absolute;top:0;right:0;bottom:0;width:27cqw;background:#d6b76a url(/_web/fund/panel.webp) 58% 13cqw/auto 150% no-repeat}
 .dk-me{position:absolute;right:0;bottom:0;height:48cqw;width:auto;pointer-events:none}
 .dk-me.casual{right:-8cqw}
 .dk-kick{position:relative;margin:0 0 2cqw;font:700 max(12px,3.4cqw)/1.1 'Barlow',system-ui,sans-serif;letter-spacing:.06em;color:#d6b76a}
@@ -648,7 +649,7 @@ html.dk-open,html.dk-open body{overflow:hidden}
   <div class="dk-stage" id="dkStage">
     <div class="dk-slides" id="dkSlides"></div>
     <div class="dk-bars" id="dkBars" aria-hidden="true"></div>
-    <button class="dk-skip" type="button" id="dkSkip" aria-label="Skip to how you can help">Skip &rsaquo;</button>
+    <button class="dk-skip" type="button" id="dkSkip">Skip to how you can help &rsaquo;</button>
     <div class="dk-nav" id="dkNav">
       <button class="dk-back" type="button" id="dkBack" aria-label="Back">&lsaquo;</button>
       <button class="dk-next" type="button" id="dkNext">Next</button>
@@ -664,10 +665,10 @@ html.dk-open,html.dk-open body{overflow:hidden}
       <ol class="dk-steps" aria-label="Three steps">
         <li class="on"><b>1</b>Back the campaign</li><li><b>2</b>Sign the petition</li><li><b>3</b>Email your MP</li>
       </ol>
-      <div class="dk-freq" role="group" aria-label="How often"><button type="button" data-dkfreq="monthly" aria-pressed="true">Monthly</button><button type="button" data-dkfreq="once" aria-pressed="false">One-off</button></div>
-      <div class="dk-amts" role="group" aria-label="Amount"><button type="button" data-dkamt="10" aria-pressed="false">&pound;10</button><button type="button" data-dkamt="20" aria-pressed="true">&pound;20</button><button type="button" data-dkamt="50" aria-pressed="false">&pound;50</button><button type="button" id="dkOther">Other</button></div>
-      <button class="dk-give" type="button" id="dkGive">Back us with &pound;20 a month</button>
-      <p class="dk-fine" id="dkFine">Cancel any time. Secure payment by Stripe.</p>
+      <div class="dk-freq" role="group" aria-label="How often"><button type="button" data-dkfreq="once" aria-pressed="true">One-off</button><button type="button" data-dkfreq="monthly" aria-pressed="false">Monthly</button></div>
+      <div class="dk-amts" role="group" aria-label="Amount"><button type="button" data-dkamt="10" aria-pressed="true">&pound;10</button><button type="button" data-dkamt="20" aria-pressed="false">&pound;20</button><button type="button" data-dkamt="50" aria-pressed="false">&pound;50</button><button type="button" id="dkOther">Other</button></div>
+      <button class="dk-give" type="button" id="dkGive">Give &pound;10 once</button>
+      <p class="dk-fine" id="dkFine">Secure payment by Stripe.</p>
       <button class="dk-sign" type="button" id="dkSign">Not now, just sign the petition</button>
       <button class="dk-askback" type="button" id="dkAskBack">&lsaquo; Back to the story</button>
     </section>
@@ -1274,7 +1275,7 @@ html.dk-open,html.dk-open body{overflow:hidden}
   // browser within a day of starting it carries on the same way, so a giver is never asked again.
   var MONEY = /^\/fund(\/|$)/.test(location.pathname) || /[?&]first=money(?![a-z])/.test(location.search);
   try {
-    if (!MONEY && /[?&]c=/.test(location.search) && Date.now() - (+localStorage.getItem('ep_fund_first') || 0) < 864e5) MONEY = true;
+    if (!MONEY && /[?&](c|session_id)=/.test(location.search) && Date.now() - (+localStorage.getItem('ep_fund_first') || 0) < 864e5) MONEY = true;
     if (MONEY && !DEMO) localStorage.setItem('ep_fund_first', String(Date.now()));
   } catch (e) {}
   var SIGS = DRAW.sigs;
@@ -2245,7 +2246,7 @@ html.dk-open,html.dk-open body{overflow:hidden}
   // can see where people who came from an advert stop.
   function moneyEv(step, detail) {
     if (!MONEY || S.signed || DEMO) return;
-    S.moneyAt = step;
+    S.moneyAt = step + (detail ? ' ' + detail : '');
     if (step === 'pitch_skip' || step === 'fund_skip') S.moneyDone = true;   // on to the signing form, which has its own
     formEv('money', step, detail);
   }
@@ -2913,7 +2914,22 @@ html.dk-open,html.dk-open body{overflow:hidden}
     'What your money pays for. Booked: a PR firm, to get our campaign into the national press before the vote. Next: a leaflet sent to the address of every MP and peer before they vote. In progress: more of our videos, to make this campaign as big as possible.',
     'What your money can do. The more we raise, the more MPs and peers see us before they vote. Win the vote on 7 December, and our amendment goes into the Bill: the people who make our laws would be included in them. Lose, and lawmakers write themselves out of their own law.'
   ];
-  var dk = { at: 0, most: 0, n: 0, freq: 'monthly', amt: 20, open: false };
+  var dk = { at: 0, most: 0, n: 0, freq: 'once', amt: 10, open: false };   // a £10 one-off first (Marcus, 25 Nov 2026)
+  // On /fund/ the pitch sits in the petition page's box (Marcus, 25 Nov 2026: "a box overlay over the top of the
+  // petitions page"): the box is told when the cards show, so it takes their shape, and crossing it off counts as leaving.
+  var EMBED = document.documentElement.classList.contains('embed');
+  function dkTell(open) { if (EMBED) try { parent.postMessage({ wtpt: 'deck', open: !!open }, location.origin); } catch (e) {} }
+  window.addEventListener('message', function (e) {
+    if (e.origin !== location.origin || !e.data) return;
+    if (e.data.wtpt === 'closed') moneyLeave();
+    else if (e.data.wtpt === 'opened') S.moneyLeft = false;
+  });
+  // the last button closes the box, showing the petition page underneath
+  $('doneSee').addEventListener('click', function (e) {
+    if (!EMBED) return;
+    e.preventDefault();
+    try { parent.postMessage({ wtpt: 'close' }, location.origin); } catch (x) {}
+  });
   function deckOn() {
     if (!MONEY) return false;
     var q = location.search;
@@ -2947,6 +2963,7 @@ html.dk-open,html.dk-open body{overflow:hidden}
     dk.n = cards.length + 1;   // the ask is the last card
     dk.most = 0;
     $('dkBars').innerHTML = new Array(dk.n + 1).join('<i></i>');
+    dkTell(true);
     $('deck').hidden = false;
     dk.open = true;
     document.documentElement.classList.add('dk-open');
@@ -2957,6 +2974,7 @@ html.dk-open,html.dk-open body{overflow:hidden}
   function closeDeck() {
     $('deck').hidden = true;
     dk.open = false;
+    dkTell(false);
     document.documentElement.classList.remove('dk-open');
     window.scrollTo(0, 0);
   }
@@ -2972,6 +2990,7 @@ html.dk-open,html.dk-open body{overflow:hidden}
     $('dkAsk').hidden = !ask;
     $('dkNav').hidden = ask;
     $('dkSkip').hidden = ask;
+    $('dkStage').classList.toggle('dk-dark', i % 2 === 1);   // the story cards alternate navy and white
     $('dkBack').style.visibility = i === 0 ? 'hidden' : 'visible';
     $('dkNext').textContent = i === 0 ? 'See the full story' : i === dk.n - 2 ? 'How you can help' : 'Next';
     if (ask) { $('dkAsk').scrollTop = 0; dkLabel(); }
@@ -3169,6 +3188,7 @@ html.dk-open,html.dk-open body{overflow:hidden}
     loadStats(true);
   }
   start();
+  if (EMBED && !dk.open) dkTell(false);
   updateSticky();
   setInterval(playFeed, 5200);
   nextStats();

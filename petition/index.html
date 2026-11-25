@@ -9,7 +9,8 @@
    form's own test links still need the form itself, so they go to /petition/sign/. */
 (function(){
   var q = location.search.replace(/^\?/, ''); if (!q) return;
-  var ours = q.split('&').every(function(p){ return !p || /^(ref|utm_[a-z]+|fbclid|gclid|ab|popup|sounds|sound|snap|journey)=/.test(p); });
+  var fund = /^\/fund(\/|$)/.test(location.pathname);   /* /fund/: this page with the pitch in the box (Marcus, 25 Nov 2026) */
+  var ours = q.split('&').every(function(p){ return !p || /^(ref|utm_[a-z]+|fbclid|gclid|ab|popup|sounds|sound|snap|journey)=/.test(p) || (fund && /^(demo|ad|deck)=/.test(p)); });
   if (!ours) location.replace('/petition/sign/' + location.search + location.hash);
 })();
 </script>
@@ -176,6 +177,15 @@ html.sp-journey #spFrame{border-radius:14px}
 html.sp-journey .sp-x{top:12px;right:12px;background:rgba(4,20,64,.6);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
 @media(max-width:560px){html.sp-journey .sp-modal{padding:0}html.sp-journey .sp-box{border-radius:0;box-shadow:none}html.sp-journey #spFrame{border-radius:0}}
 @media(max-width:560px){.sp-modal{padding:0}.sp-box{border-radius:0;min-height:100%;border:0;padding:12px 10px}}
+/* /fund/: the pitch in the box (Marcus, 25 Nov 2026: "a box overlay over the top of the petitions page"). While the
+   cards show, the box is the card's own shape; after them it is the usual signing box. */
+html.sp-fund .sp-top,html.sp-fund .sp-skip{display:none}
+html.sp-fund .sp-box{max-width:560px;padding:50px 14px 14px}
+html.sp-fund.sp-deck .sp-modal{align-items:center;padding:24px 14px}
+html.sp-fund.sp-deck .sp-box{padding:0;background:#0c163b;border:0;border-radius:14px;overflow:hidden}
+html.sp-fund.sp-deck #spFrame{border-radius:0}
+html.sp-fund .sp-x{top:10px;right:10px;width:34px;height:34px;background:rgba(4,20,64,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+@media(max-width:560px){html.sp-fund.sp-deck .sp-modal{padding:0}html.sp-fund.sp-deck .sp-box{border-radius:0}html.sp-fund .sp-box{padding:48px 10px 12px}}
 /* sign and share bands between the sections (Marcus, 9 Nov 2026) */
 section.band{padding:8px 0}
 .shareband{background:linear-gradient(120deg,#0f2a6e,#0a1d55);border-color:rgba(221,188,102,.45)}
@@ -2053,6 +2063,9 @@ body.ticker-on .foot{padding-bottom:90px}
        People who have already signed are left out of the test: no box on arrival, and their own source. */
     var m = $('spModal'), fr = $('spFrame'); if (!m) return;
     var q = location.search, arm = (q.match(/[?&]ab=([ab])(?![\w])/) || [])[1], signed = '';
+    /* /fund/ (Marcus, 25 Nov 2026): the box holds the pitch for people who tapped an advert, then the money, the
+       signature and the emails. Crossing it off shows this page. Outside the petition's own tests; the ad's tag is kept as it is. */
+    var FUND = /^\/fund(\/|$)/.test(location.pathname);
     try { signed = localStorage.getItem('ep_petition_key') || ''; } catch (e) {}
     /* Test ended 10 Nov 2026 (Marcus, "Yes, do it"): the box on arrival won (42 confirmed per 100 visitors against 36),
        so everyone who has not signed gets it. ?ab=a still shows the page without it. Signatures keep "-pb". */
@@ -2072,9 +2085,11 @@ body.ticker-on .foot{padding-bottom:90px}
     try { localStorage.setItem('ep_pet_box', box); } catch (e) {}
     if (signed && !/[?&]journey=/.test(q)) box = 'o';
     var SRC = ((q.match(/[?&](?:ref|utm_source)=([\w.\-]{1,34})/) || [])[1] || 'direct').replace(/(-p[ab])?(-j[on])?$/, '');
-    var TAG = arm ? SRC + '-p' + arm + '-j' + box : SRC;
-    track('petition_ab', {label: (arm || 'signed') + ' ' + SRC});
-    if (arm) track('petition_box', {label: box + ' ' + SRC});
+    var TAG = FUND ? SRC : arm ? SRC + '-p' + arm + '-j' + box : SRC;
+    if (!FUND){
+      track('petition_ab', {label: (arm || 'signed') + ' ' + SRC});
+      if (arm) track('petition_box', {label: box + ' ' + SRC});
+    }
     var timer = null;
     function count(){ var el = document.querySelector('[data-t="signers"]'); $('spN').textContent = el && el.textContent.trim() ? el.textContent : 'thousands of'; }
     var ready = false, firstRef = '';
@@ -2084,9 +2099,11 @@ body.ticker-on .foot{padding-bottom:90px}
       fr.style.visibility = 'hidden';
     }
     /* the form loads quietly in the background soon after arrival, so it is ready the moment anyone opens the box */
-    var JOURNEY = box === 'n';
+    var JOURNEY = !FUND && box === 'n';
     if (JOURNEY) document.documentElement.classList.add('sp-journey');
-    function preload(ref){ if (!fr.getAttribute('src')){ firstRef = ref; fr.src = (JOURNEY ? '/petition/journey/?embed=1&vh=' + window.innerHeight + '&vw=' + window.innerWidth + '&ref=' : '/petition/sign/?embed=1&ref=') + encodeURIComponent(ref); } }
+    if (FUND) document.documentElement.classList.add('sp-fund');
+    var PASS = (q.match(/[?&](demo|ad|deck)=\w+/g) || []).map(function(p){ return '&' + p.slice(1); }).join('');
+    function preload(ref){ if (!fr.getAttribute('src')){ firstRef = ref; fr.src = FUND ? '/petition/sign/?embed=1&first=money' + PASS + '&ref=' + encodeURIComponent(ref) : (JOURNEY ? '/petition/journey/?embed=1&vh=' + window.innerHeight + '&vw=' + window.innerWidth + '&ref=' : '/petition/sign/?embed=1&ref=') + encodeURIComponent(ref); } }
     var waiting = false;
     function open(ref, from){
       preload(ref);
@@ -2094,20 +2111,39 @@ body.ticker-on .foot{padding-bottom:90px}
       m.hidden = false; document.documentElement.classList.add('sp-open'); m.scrollTop = 0;
       count(); clearInterval(timer); timer = setInterval(count, 1000);
       track('popup_open', {label: (from || '') + ' ' + ref});
+      if (ready) try { fr.contentWindow.postMessage({wtpt: 'opened'}, location.origin); } catch (e) {}
     }
     function close(){
       m.hidden = true; document.documentElement.classList.remove('sp-open'); clearInterval(timer);
       track('popup_close', {label: 'popup'});
+      try { fr.contentWindow.postMessage({wtpt: 'closed'}, location.origin); } catch (e) {}   /* /fund/: counted as leaving the money screen */
     }
+    /* /fund/: while the cards show, the box is the card's shape (9 by 16), as big as the screen allows */
+    var deckOpen = false, deckKnown = false, lastH = 0;
+    function fit(){
+      var bx = m.querySelector('.sp-box');
+      if (!deckOpen){ bx.style.maxWidth = ''; if (lastH) fr.style.height = lastH + 'px'; return; }
+      var small = window.innerWidth <= 560;
+      var w = Math.floor(Math.min(540, window.innerWidth - (small ? 0 : 28), (window.innerHeight - (small ? 0 : 48)) * 9 / 16));
+      bx.style.maxWidth = w + 'px'; fr.style.height = Math.round(w * 16 / 9) + 'px';
+    }
+    window.addEventListener('resize', fit);
     [].forEach.call(m.querySelectorAll('[data-close]'), function(b){ b.addEventListener('click', close); });
     document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && !m.hidden) close(); });
     window.addEventListener('message', function(e){
       if (e.origin !== location.origin || !e.data) return;
       if (e.data.wtpt === 'top'){ var bt = m.querySelector('.sp-box').offsetTop; if (m.scrollTop > bt) m.scrollTop = bt; return; }
       if (e.data.wtpt === 'close'){ close(); return; }
+      if (e.data.wtpt === 'deck'){
+        deckKnown = true; deckOpen = !!e.data.open; document.documentElement.classList.toggle('sp-deck', deckOpen); fit();
+        if (!ready){ ready = true; $('spLoad').hidden = true; fr.style.visibility = ''; }
+        return;
+      }
       if (e.data.wtpt !== 'h') return;
       if (!(+e.data.h > 200)) return;
-      fr.style.height = Math.min(12000, +e.data.h) + 'px';   /* was 4,000: the MP step on a phone is taller (Marcus, 19 Nov 2026) */
+      lastH = Math.min(12000, +e.data.h);
+      if (deckOpen || (FUND && !deckKnown)) return;   /* /fund/: the box waits to hear whether the cards are showing */
+      fr.style.height = lastH + 'px';   /* was 4,000: the MP step on a phone is taller (Marcus, 19 Nov 2026) */
       if (!ready){ ready = true; $('spLoad').hidden = true; fr.style.visibility = ''; }
     });
     /* every sign button opens the pop-up instead of leaving the page (after the sound tag is added) */
@@ -2119,6 +2155,7 @@ body.ticker-on .foot{padding-bottom:90px}
     var resume = false;
     try { var mk = JSON.parse(localStorage.getItem('ep_petition_mp') || 'null'); resume = !!(mk && Date.now() - mk.at < 12 * 3600e3); } catch (e) {}
     if (resume) setTimeout(function(){ open(TAG, 'resume'); }, 300);
+    else if (FUND) setTimeout(function(){ open(TAG, 'arrival'); }, 150);
     else if (arm === 'b' || /[?&]popup=1/.test(q)) setTimeout(function(){ open(TAG, 'arrival'); }, 700);
     else setTimeout(function(){ preload(TAG); }, 1500);
   })();
