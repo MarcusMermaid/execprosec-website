@@ -1192,8 +1192,12 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   var MAILS = DRAW.mails;
   var AB = LAY + '-' + PROOF + '-' + PROMISE + '-' + CONF + '-' + SIGS + '-' + MAILS;
   // the emails this signer is asked for, in order; the peer comes first on every side
+  // Marcus, 25 Nov 2026: "Let's pause the emails that we're sending to members of the House of Lords". The peer step
+  // is left out for everyone; set PEER_PAUSED to false to bring it back.
+  var PEER_PAUSED = true;
   function mailSeq() {
     var q = MAILS === 'e1' ? ['peer'] : MAILS === 'e2' ? ['peer', 'mp'] : ['peer', 'mp', 'min'];
+    if (PEER_PAUSED) q = q.filter(function (k) { return k !== 'peer'; });
     // back from a thank-you email (?w=): only the letters they have not sent yet
     if (S.write && S.sentBefore) q = q.filter(function (k) { return S.sentBefore.indexOf(k) < 0; });
     return S.abroad ? q.filter(function (k) { return k !== 'mp'; }) : q;
@@ -2321,6 +2325,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   });
   $('peerSkip0').addEventListener('click', function () { track('peer_skip'); nextMail('peer'); });
   function toPeer(resumed) {
+    if (PEER_PAUSED) return nextMail('peer');   // straight on to the next email
     $('peerOk').hidden = !S.okTxt || !!resumed || !!S.peerOkShown;
     $('peerOkTxt').textContent = S.okTxt || '';
     if (!S.peerParty && !S.peer) { peerPick(); return; }
