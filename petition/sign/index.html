@@ -417,6 +417,10 @@ legend{padding:0;margin:0 0 8px;font-size:14px;font-weight:600;line-height:1.4;c
 .gv-tx{padding:8px 10px 10px;font-size:13px;line-height:1.35;color:var(--on-navy)}
 .gv-tag{display:block;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin:0 0 3px}
 .gv-tag.done{color:#7ee2a8}
+.gv-tag.prog{color:#9cc3ff}
+.gv-soc .eng{margin-top:6px;padding:0 12px;color:#fff;font-size:11.5px;line-height:1.4;letter-spacing:0}
+.gv-press b{font-family:var(--f-display);font-weight:400;font-size:26px}
+.gv-press .pr-line{margin-top:6px;color:#fff;font-size:12px;letter-spacing:.06em;text-transform:uppercase}
 .gv-soc{aspect-ratio:3/2;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:2px;background:linear-gradient(150deg,#1d3a8a,#0b1a4a);text-align:center}
 .gv-soc b{font:700 26px/1 var(--f-body);color:#fff}
 .gv-soc span{font-size:11px;color:var(--on-navy-2);letter-spacing:.04em}
@@ -848,7 +852,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       <p class="sub" id="doneS"></p>
       <p class="sub" id="doneNext" hidden><b>Next, add your name to our petition.</b> It takes 30 seconds.</p>
       <button class="btn" type="button" id="doneSign" hidden>Sign our petition</button>
-      <a class="btn" id="doneSee" href="/petition/" style="text-decoration:none" hidden>See what the public think</a>
+      <a class="btn" id="doneSee" href="/petition/" style="text-decoration:none;padding:14px 18px;line-height:1.3;height:auto" hidden>Done. Now show me the data from everyone who has signed</a>
       <button class="btn" type="button" id="doneMonthly" hidden>Back us monthly too: £10 a month</button>
       <button class="btn" type="button" id="doneMp" hidden>Email your MP as well</button>
       <button class="btn navy" type="button" id="doneShare" hidden>Copy the petition link</button>
@@ -1617,7 +1621,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     var dots = $('dots').children;
     for (var j = 0; j < dots.length; j++) { dots[j].hidden = j >= all; dots[j].classList.toggle('on', j < at); }
     $('stepLbl').textContent = at <= all ? 'Step ' + at + ' of ' + all : 'Done';
-    rwShow(k || ((pt || n === 4) ? 'give' : n === 5 ? 'end' : ''));
+    rwShow(k || ((pt || n === 4) ? 'give' : n === 5 ? (MONEY && !S.signed ? 'sign' : 'end') : ''));
     $('card').classList.toggle('first', (n === 1 || w) && !MONEY);   // the step bar appears once they have confirmed
     $('card').classList.toggle('after', c || sh || pt || pe || mi || (!w && n >= 2));   // and the title, explainer and meter go
     pinCard();
@@ -1947,7 +1951,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     // Marcus, 20 Nov 2026: the statements have their 10,000 answers each, so they end. From 22 Nov everyone goes
     // from confirming to a peer, then the MP and the minister if their side of the test asks for them, then the pitch.
     S.okTxt = $('thanksH').textContent;
-    if (MONEY) track('money_first', S.paid ? 'paid' : 'not paid');
+    if (MONEY) { track('money_first', S.paid ? 'paid' : 'not paid'); earn('sign'); }
     if (S.write) {
       // back from a thank-you email: straight to the first letter they have not sent
       S.okTxt = 'Welcome back, ' + S.me.first + '. Your signature is counted.';
@@ -2424,7 +2428,8 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     mp: '<b>Star earned.</b> Your MP has heard from you.',
     peer: '<b>Star earned.</b> The House of Lords has heard from you.',
     min: '<b>Star earned.</b> The Government has heard from you.',
-    give: '<b>Star earned.</b> You are backing the campaign.'
+    give: '<b>Star earned.</b> You are backing the campaign.',
+    sign: '<b>Star earned.</b> You have signed our petition.'
   };
   function earn(k) {
     S.done = S.done || {};
@@ -2439,7 +2444,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     var got = 0, q = mailSeq();
     box.querySelectorAll('.rw-i').forEach(function (el) {
       var k = el.getAttribute('data-rw'), on = !!S.done[k];
-      el.style.display = k === 'give' || q.indexOf(k) >= 0 ? '' : 'none';
+      el.style.display = k === 'give' || (k === 'sign' && MONEY) || q.indexOf(k) >= 0 ? '' : 'none';
       if (on) got++;
       el.classList.toggle('on', on);
       el.classList.toggle('now', k === now && !on);
@@ -2447,7 +2452,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     });
     var j = S.justEarned;
     $('rwPop').hidden = !j;
-    if (j) $('rwPopTxt').innerHTML = RW_TXT[j] + ' ' + got + (got === 1 ? ' star' : ' stars') + ' of ' + (q.length + 1) + '.';
+    if (j) $('rwPopTxt').innerHTML = RW_TXT[j] + ' ' + got + (got === 1 ? ' star' : ' stars') + ' of ' + (q.length + (MONEY ? 2 : 1)) + '.';
     S.justEarned = '';
   }
   function selectText(el) {
@@ -2607,6 +2612,21 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     $('gvOk').hidden = true;
     var give = document.querySelector('.rw-i[data-rw="give"]');   // the Backer star comes first here
     if (give && give.parentNode.firstElementChild !== give) give.parentNode.insertBefore(give, give.parentNode.firstElementChild);
+    if (give && !document.querySelector('.rw-i[data-rw="sign"]')) {   // then the petition, then the three emails
+      var sg = document.createElement('span');
+      sg.className = 'rw-i'; sg.setAttribute('data-rw', 'sign');
+      sg.innerHTML = '<span class="rw-b" aria-hidden="true">&#9733;</span>Petition';
+      give.parentNode.insertBefore(sg, give.nextSibling);
+    }
+    // Marcus, 25 Nov 2026: the poster and a PR firm are booked, the leaflet is next, the videos are in progress
+    $('gvGrid').innerHTML = MONEY_SLIDES;
+    getJson('social/summary').then(function (d) {
+      var t = d && d.today && d.today.start, f = d && d.followers;
+      if (!t || !t.views || !f || !f.since) return;
+      var k = function (n) { return fmt(Math.floor(n / 1000) * 1000); };
+      var since = new Date(f.since + 'T12:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'long' });
+      $('gvEng').textContent = (Math.floor(t.views / 1e5) / 10) + ' million views, ' + k(t.likes) + ' likes and ' + k(t.shares) + ' shares since ' + since + '.';
+    }).catch(function () {});
     $('gvH').textContent = 'Fund our campaign and sign our petition.';
     $('gvLead').innerHTML = 'Become part of the campaign to criminalise lying in politics. The vote is on <b>7 December</b>, '
       + '<span class="gv-days" id="gvDays"></span> from now. <b>Your money pays for:</b>';
@@ -2614,6 +2634,15 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     $('skipFund').textContent = 'Not now, just sign the petition';
     toPitch();
   }
+  var MONEY_SLIDES =
+    '<div class="gv-it poster"><img src="/_web/pitch/tube-poster.webp" alt="Our poster: politicians are making lying to the public criminally illegal for nearly every official apart from themselves" decoding="async" draggable="false">'
+    + '<div class="gv-tx"><span class="gv-tag done">Booked</span>Our poster at Westminster station, where MPs and peers pass, 30 Nov to 13 Dec.</div></div>'
+    + '<div class="gv-it"><div class="gv-soc gv-press"><b>National press</b><span class="pr-line">Interviews · Press releases · News stories</span></div>'
+    + '<div class="gv-tx"><span class="gv-tag done">Booked</span>A PR firm, to get our campaign into the national press before the vote: interviews, press releases and news stories.</div></div>'
+    + '<div class="gv-it"><img src="/_web/pitch/letters.webp" alt="Mock-up: envelopes addressed to the House of Commons and the House of Lords, with our leaflet" decoding="async" draggable="false">'
+    + '<div class="gv-tx"><span class="gv-tag">Next</span>A leaflet sent to the address of every MP and peer before they vote.</div></div>'
+    + '<div class="gv-it"><div class="gv-soc"><b id="gvFollow">137,000+</b><span>followers on our social media</span><span class="up" id="gvWeek"></span><span class="eng" id="gvEng">Millions of views of our videos.</span></div>'
+    + '<div class="gv-tx"><span class="gv-tag prog">In progress</span><span id="gvViews" hidden></span>Making our social media videos. Your money funds more of them, to make this campaign as big as possible.</div></div>';
   // straight after the money: thank them, then the petition
   function paidThanks(once, amt, pending) {
     $('doneTick').hidden = false;
@@ -2646,7 +2675,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     document.querySelectorAll('.me-first').forEach(function (el) { el.textContent = S.me.first; });
     S.okTxt = 'Confirmed. Thank you, Sam.';
     S.sig = 40000 + Math.floor(Math.random() * 999); S.count = Math.max(S.count || 0, 40814);
-    earn('give'); S.justEarned = '';
+    earn('give'); S.done.sign = true; S.justEarned = '';
     if (st === 'peer') toPeer(); else if (st === 'mp') toMp(); else if (st === 'min') toMin();
     else { S.done.peer = S.done.mp = S.done.min = true; finish(); }
   }
@@ -2660,15 +2689,13 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
         .concat(sent ? ['emailed ' + (sent === 1 ? 'a lawmaker' : sent + ' lawmakers')] : []);
       $('doneTick').hidden = false;
       $('doneH').innerHTML = 'Thank you, <span class="me-first">' + esc(S.me.first) + '</span>.';
-      $('doneS').textContent = 'You\'ve ' + (did.length > 1 ? did.slice(0, -1).join(', ') + ' and ' + did[did.length - 1] : did[0]) +
-        '. Now see what the public think: everything our petition has found so far.';
+      $('doneS').textContent = 'You\'ve ' + (did.length > 1 ? did.slice(0, -1).join(', ') + ' and ' + did[did.length - 1] : did[0]) + '.';
       ['doneMp', 'doneShare', 'doneMonthly', 'doneIg', 'doneNext', 'doneSign'].forEach(function (id) { $(id).hidden = true; });
       var to = '/petition/' + (REF && !/execprosec/.test(REF) ? '?ref=' + encodeURIComponent(REF) : '');
       $('doneSee').href = to;
       $('doneSee').hidden = false;
       track('done', 'money first');
       go(5);
-      if (!DEMO) setTimeout(function () { location.href = to; }, 6000);
       return;
     }
     var s = (countShown(S.myNumber) ? "You're signature number " + fmt(S.myNumber) + '. ' : '') + 'We will take every signature to Parliament before the vote.';
