@@ -190,6 +190,15 @@ textarea{min-height:110px}
 .rec{font-size:13.5px;color:var(--t2)}
 .rec div{display:flex;gap:10px;padding:7px 0;border-top:1px solid var(--hair)}
 .rec div b{flex:0 0 42%;color:var(--t1);font-weight:600}
+.wholist{display:flex;flex-direction:column;gap:10px;margin:10px 0 8px}
+.pickwho{all:unset;box-sizing:border-box;cursor:pointer;display:flex;align-items:center;gap:14px;padding:12px 14px;border-radius:14px;background:var(--fill);box-shadow:inset 0 0 0 1px var(--hair);transition:background .15s,box-shadow .15s}
+.pickwho:hover{background:rgba(255,255,255,.09);box-shadow:inset 0 0 0 1px var(--gold)}
+.pickwho .nm{display:block;font-size:16px;font-weight:600;color:var(--t1);line-height:1.25}
+.pickwho .rl{display:block;font-size:13px;color:var(--t3);margin-top:2px}
+.pickwho .go{margin-left:auto;color:var(--gold);font-size:20px}
+.demoend{width:100%;max-width:340px;display:flex;flex-direction:column;gap:9px;margin:18px auto 0}
+.sheet .row2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0 4px}
+.sheet .row2 .btn{height:46px;font-size:14px}
 </style>
 </head>
 <body>
@@ -239,10 +248,10 @@ var CONCERNS = [
  {id:'A', label:'It would breach parliamentary privilege', q:'q1', fact:'Nothing said in Parliament can be touched.',
   says:[{k:'thomas-symonds', who:'Rt Hon Nick Thomas-Symonds MP', role:'Minister for the Cabinet Office', when:'Letter, 20 January 2026',
          text:'Parliamentary privilege applies to what is said in the House and this is a long-standing constitutional principle to protect debate.'}],
-  why:['Our amendment covers only what lawmakers say outside Parliament, and expressly excludes proceedings in all four UK parliaments.',
+  why:['Our amendment covers only things said and done outside Parliamentary proceedings, and expressly protects proceedings in all four UK parliaments.',
        'The Government has since confirmed the courts would not set Article 9 aside.'],
   also:{k:'wolfson', who:'Lord Wolfson of Tredegar', role:'Conservative', when:'House of Lords, 12 October 2026', text:'True it is that the Amendment 66A excludes what’s said in Parliament.'},
-  close:'Privilege stays exactly as it is.'},
+  close:'It would only apply to things said and done outside Parliamentary proceedings.'},
  {id:'B', label:'Parliament already polices its own members', q:'q2', fact:'Parliament’s rules cover misleading the House, not misleading the public.',
   says:[{k:'levitt', who:'Baroness Levitt', role:'Minister, Ministry of Justice', when:'House of Lords, 26 February 2026',
          text:'Parliament has its own arrangements for ensuring accuracy and truthfulness in proceedings, including processes for determining whether MPs have misled the other place…'},
@@ -266,11 +275,11 @@ var CONCERNS = [
          text:'But the reason MPs and peers aren’t included is because they are elected.'}],
   why:['Peers are appointed, not elected. And the Bill already covers people chosen by voters: the Mayor of London, the metro mayors and elected council mayors (Schedule 2, paragraph 3(8), (10) and (11)).',
        'Elections decide who holds office. A jury decides whether a crime was committed. The MPs jailed over expenses were elected too.'],
-  close:'Voters keep the final word on seats: a sitting member faces a fine, not prison.'},
+  close:'Being elected decides who holds office. It has never decided who is above the law.'},
  {id:'E', label:'It would criminalise opinions and mistakes', q:'q10', fact:'Opinions, honest mistakes and broken promises are expressly protected.',
   says:[{k:'fox', who:'Baroness Fox of Buckley', role:'Non-affiliated', when:'House of Lords, 12 October 2026',
          text:'this bill is going to end up as some sort of ministry of truth'}],
-  why:['Our amendment says an opinion is not dishonest “merely because it is mistaken, unpopular or disputed”. Only deliberate or reckless deceit on serious matters is covered, and every part must be proved.',
+  why:['Our amendment protects political debate and campaigning, “including the expression of opinions or beliefs, however controversial or unpopular”, honest mistakes, promises honestly meant, and honest predictions that prove wrong (paragraph 3A(3)). Only deliberate or reckless lies are covered, and every part must be proved.',
        'A jury of the public decides, and the Director of Public Prosecutions must consent first. Courts already separate false facts from argument: an election court did exactly that in the Woolas case in 2010.'],
   close:'If you say what you believe, this law never touches you.'},
  {id:'F', label:'It would be weaponised and chill debate', q:'q16', fact:'No case can even start without the Director of Public Prosecutions.',
@@ -297,7 +306,7 @@ var CONCERNS = [
          text:'Honest politicians by law? That might have lost Britain the war',
          href:'https://www.thetimes.com/comment/columnists/article/honest-politicians-by-law-that-might-have-lost-britain-the-war-m6g2v9g0s'}],
   why:['Clause 12 gives a defence for the intelligence services’ functions and the armed forces on active service, and a reasonable-excuse defence (clause 12(6) and (7)).',
-       'Our amendment also protects withholding information to safeguard national security. What it does not allow is a false statement to the public to take the country to war.'],
+       'What our amendment covers is a lawmaker deliberately or recklessly misleading the public to start a war or influence decisions about military action (paragraph 3A(6)(a)).'],
   close:'Deceiving an enemy is protected. Deceiving the public into a war is not.'}
 ];
 var CBY = {}; CONCERNS.forEach(function(c){ CBY[c.id] = c; });
@@ -347,7 +356,8 @@ function fresh(){
           call:null, staffOwn:null, journo:{}, official:{}, log:[], reached:{}};
 }
 function setPerson(k){ P = PEOPLE[k] || PEOPLE.mp; P.id = k in PEOPLE ? k : 'mp'; S = fresh(); cur = 'welcome'; startAt = Date.now(); }
-setPerson(qs.get('demo') || 'mp');
+var choosing = !(qs.get('demo') in PEOPLE);
+setPerson(choosing ? 'mp' : qs.get('demo'));
 
 var isParl = function(){ return ['mp','minister','peer','devolved'].indexOf(P.kind) > -1; };
 var esc = function(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); };
@@ -472,11 +482,11 @@ var SCREENS = {
   },
   ask: function(){
     return {html:'<div class="kick">What we’re asking for</div><h2>Include lawmakers, for what they say outside Parliament.</h2>' +
-      '<ul class="ticks"><li>Only on TV, radio, social media and at events. Never anything said in any UK parliament.</li>' +
-      '<li>Only deliberate or reckless lies, and only to take the country to war, swing a referendum, hide the causes of deaths, hide a risk to public health or safety, or hide serious wrongdoing or misuse of public money.</li>' +
-      '<li>Never opinions, honest mistakes or broken promises.</li>' +
-      '<li>While a member sits: a fine, not prison. Their seat stays a matter for Parliament and the voters.</li></ul>' +
-      '<button class="link" data-act="page" data-anchor="amendment-one-of-two" style="text-align:left;color:var(--gold)">Read the amendment</button>', btn:'Next'};
+      '<ul class="ticks"><li>Only things said and done outside Parliamentary proceedings: on TV, radio, social media, online, at events or through journalists. Never anything said or done in the proceedings of any UK parliament.</li>' +
+      '<li>Only deliberate or reckless lies about starting a war, a referendum, the causes of deaths or serious injuries, risks to public health or safety, or serious wrongdoing or the use of public money.</li>' +
+      '<li>Never political debate, opinions, honest mistakes, promises honestly meant or honest predictions.</li>' +
+      '<li>Never their private or family life, or private work unconnected with their public role.</li></ul>' +
+      '<button class="link" data-act="page" data-anchor="the-amendment" style="text-align:left;color:var(--gold)">Read the amendment</button>', btn:'Next'};
   },
   hillsborough: function(){
     return {cls:'mid', html:'<div class="kick">Hillsborough, 1989</div><h2>A backbench MP passed false police claims about Liverpool fans to the press.</h2>' +
@@ -488,7 +498,7 @@ var SCREENS = {
     return {html:'<div class="kick">Your parliament</div><h2>' + esc(cap(P.parl)) + ' has no Article 9.</h2>' +
       '<p>Article 9 of the Bill of Rights protects what is said in proceedings at Westminster. The Scottish Parliament, the Senedd and the Northern Ireland Assembly have only limited protection, mainly against defamation.</p>' +
       '<p class="lead">Yet the offence covers your Ministers and applies across the UK. As the Bill stands, a Minister could be prosecuted for what they say in your chamber. A Minister saying the same at Westminster could not.</p>' +
-      '<p class="lead gold">We are changing our amendment so that it protects everything said and done in every UK parliament, including yours.</p>' +
+      '<p class="lead gold">Our amendment protects everything said or done as part of proceedings in your parliament, as Article 9 does at Westminster (paragraph 3A(3)(b)).</p>' +
       '<div class="src">Scotland Act 1998 s.41; Government of Wales Act 2006 s.42; Northern Ireland Act 1998 s.50.</div>', btn:'Next'};
   },
   changed: function(){
@@ -650,7 +660,9 @@ var SCREENS = {
       '<div class="hname">' + name + '</div><p class="lead" style="max-width:330px">' + line + '</p>' +
       '<p class="small">Marcus J Ball · <a href="mailto:mjb@execprosec.com">mjb@execprosec.com</a></p>' +
       '<button class="link" data-act="page" data-anchor="">Read the full briefing page</button>' +
-      (DEMO ? '<button class="link" data-act="record" style="margin-top:10px;color:var(--gold)">Preview only: see what we would record</button>' : ''),
+      (DEMO ? '<div class="demoend"><div class="label" style="text-align:center">Preview only</div>' +
+        '<button class="btn" data-act="record">See your answers</button><button class="btn ghost" data-act="restart">Start again</button>' +
+        '<button class="link" data-act="choose">Try it as someone else</button></div>' : ''),
       btn: null};
   }
 };
@@ -679,7 +691,20 @@ var segs = document.getElementById('segs'), plabel = document.getElementById('pl
 segs.innerHTML = CH.map(function(){ return '<i><b></b></i>'; }).join('');
 var spec;
 
+function renderChooser(){
+  var el = document.createElement('section'); el.className = 'scr in-f';
+  el.innerHTML = '<div class="kick">Preview</div><h2>Who are you?</h2>' +
+    '<p>Pick who you’d like to see the briefing as. Each one sees it made for them. Nothing you do here is recorded.</p><div class="wholist">' +
+    PEOPLE_ORDER.map(function(p){ var x = PEOPLE[p[0]];
+      var face = x.photo ? '<img class="face" src="' + esc(x.photo) + '" alt="">' : '<span class="face ini">' + esc(x.ini) + '</span>';
+      return '<button class="pickwho" data-who="' + p[0] + '">' + face + '<span><span class="nm">' + esc(p[2]) + '</span><span class="rl">' + esc(p[1]) + '</span></span><span class="go">›</span></button>';
+    }).join('') + '</div><p class="small">At the end you can see your answers, start again, or try it as someone else.</p>';
+  stage.innerHTML = ''; stage.appendChild(el); foot.innerHTML = '';
+  top.classList.add('bare'); document.getElementById('skip').hidden = true; document.getElementById('pv').hidden = true;
+  document.getElementById('sPrev').classList.add('gone'); document.getElementById('sNext').classList.add('gone');
+}
 function render(){
+  if (choosing){ renderChooser(); return; }
   var f = flow(); if (f.indexOf(cur) < 0) cur = f[0];
   spec = SCREENS[cur]();
   S.reached[cur] = S.reached[cur] || Math.round((Date.now() - startAt) / 1000);
@@ -741,6 +766,8 @@ document.addEventListener('click', function(e){
   if (t.id === 'skip'){ var f = flow(); var tgt = f.filter(function(id){ return chapterOf(id) === 6; })[0]; if (tgt) go(tgt, true); return; }
   if (t.id === 'pvBtn'){ openSwitcher(); return; }
   var d = t.dataset;
+  if (d.who){ var sh = t.closest('.sheet'); if (sh) sh.remove(); choosing = false; setPerson(d.who); dirFwd = true; label(); render();
+    try { history.replaceState(null, '', '?demo=' + P.id); } catch (err) {} return; }
   if (d.tile && !t.classList.contains('res')){ S.guess[d.tile] = !S.guess[d.tile]; t.classList.toggle('on', S.guess[d.tile]); return; }
   if (d.pick){
     var i = S.picks.indexOf(d.pick);
@@ -764,7 +791,9 @@ document.addEventListener('click', function(e){
     case 'nopermit': S.permit = false; go('thanks', true); break;
     case 'skipq': next(true); break;
     case 'page': toPage(d.anchor); break;
-    case 'record': showRecord(); break;
+    case 'record': closeSheets(); showRecord(); break;
+    case 'restart': closeSheets(); setPerson(P.id); dirFwd = true; render(); break;
+    case 'choose': closeSheets(); choosing = true; try { history.replaceState(null, '', location.pathname); } catch (err) {} render(); break;
   }
 });
 /* "Show me" on the cases screen turns the cases on */
@@ -790,15 +819,13 @@ function sheet(html){
   s.addEventListener('click', function(e){ if (e.target === s || e.target.closest('[data-close]')) s.remove(); });
   document.body.appendChild(s); return s;
 }
+function closeSheets(){ document.querySelectorAll('.sheet').forEach(function(x){ x.remove(); }); }
 function openSwitcher(){
-  var s = sheet('<h3>Preview as</h3><p class="small">Nothing is recorded in the preview.</p>' + PEOPLE_ORDER.map(function(p){
-    return '<button class="opt' + (P.id === p[0] ? ' on' : '') + '" data-who="' + p[0] + '"><span class="dot"></span><span>' + esc(p[1]) + '<br><span class="small">' + esc(p[2]) + '</span></span></button>';
+  sheet('<h3>Preview</h3><p class="small">Nothing is recorded in the preview.</p>' +
+    '<div class="row2"><button class="btn" data-act="record">See my answers so far</button><button class="btn ghost" data-act="restart">Start again</button></div>' +
+    '<div class="label">Or see it as</div>' + PEOPLE_ORDER.map(function(p){
+    return '<button class="opt' + (P.id === p[0] ? ' on' : '') + '" data-who="' + p[0] + '"><span class="dot"></span><span>' + esc(p[2]) + '<br><span class="small">' + esc(p[1]) + '</span></span></button>';
   }).join('') + '<button class="btn ghost" data-close style="margin-top:6px">Close</button>');
-  s.addEventListener('click', function(e){
-    var b = e.target.closest('[data-who]'); if (!b) return;
-    setPerson(b.getAttribute('data-who')); s.remove(); dirFwd = true; label(); render();
-    history.replaceState(null, '', '?demo=' + P.id);
-  });
 }
 function label(){ document.getElementById('pvBtn').textContent = 'Preview as: ' + PEOPLE_ORDER.filter(function(p){ return p[0] === P.id; })[0][1] + ' ▾'; }
 function showRecord(){
@@ -816,7 +843,7 @@ function showRecord(){
   add('Quote', S.quote); add('Willing to', S.willing.willing); add('Briefing or call', S.call); add('Staff: whose answers', S.staffOwn);
   add('Will cover it', S.journo.cover); add('Needs', S.journo.need); add('Updates', S.journo.updates);
   add('Unclear', S.official.unclear); add('Wants more', S.official.more);
-  sheet('<h3>What we would record</h3><p class="small">Preview only. In the real version this goes to Central, against this person’s personal link. Nothing here was saved.</p><div class="rec">' + rows.join('') + '</div><button class="btn ghost" data-close style="margin-top:14px">Close</button>');
+  sheet('<h3>Your answers</h3><p class="small">This is what we would record. In the real version it goes to Central against this person’s personal link. Nothing here was saved.</p><div class="rec">' + rows.join('') + '</div><div class="row2"><button class="btn ghost" data-act="restart">Start again</button><button class="btn ghost" data-act="choose">Someone else</button></div><button class="btn ghost" data-close style="margin-top:6px">Close</button>');
 }
 
 /* ------------------------------------------------------------------ live numbers from Central (read only) */
