@@ -2153,10 +2153,11 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   function moneyEv(step, detail) {
     if (!MONEY || S.signed || DEMO) return;
     S.moneyAt = step;
+    if (step === 'pitch_skip' || step === 'fund_skip') S.moneyDone = true;   // on to the signing form, which has its own
     formEv('money', step, detail);
   }
   function moneyLeave() {
-    if (MONEY && !S.signed && !S.paid && S.moneyAt && !S.moneyLeft) { S.moneyLeft = true; formEv('money', 'left', S.moneyAt); }
+    if (MONEY && !S.signed && !S.paid && !S.moneyDone && S.moneyAt && !S.moneyLeft) { S.moneyLeft = true; formEv('money', 'left', S.moneyAt); }
   }
   window.addEventListener('pagehide', moneyLeave);
   document.addEventListener('visibilitychange', function () { if (document.hidden) moneyLeave(); else S.moneyLeft = false; });
