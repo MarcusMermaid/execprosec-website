@@ -794,7 +794,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
         <span class="mp-dot" aria-hidden="true"><img src="https://members-api.parliament.uk/api/Members/4849/Thumbnail" alt="" onerror="this.remove()"></span>
         <span class="mp-who"><b>Alex Davies-Jones MP</b><span>Minister, Ministry of Justice</span></span>
       </div>
-      <p class="sub">Copy these into an email from your own address. It goes to her and to her department's ministerial post room.</p>
+      <p class="sub">Copy these into an email from your own address. It goes to her at Parliament and to her own private office at the Ministry of Justice.</p>
       <div class="cp"><span class="cp-l" data-l="To"></span><span class="cp-v" id="minMail"></span><button class="cp-b" type="button" data-copy="minMail" data-l="Copy" aria-label="Copy"></button></div>
       <div class="cp"><span class="cp-l" data-l="Subject"></span><span class="cp-v" id="minSubj"></span><button class="cp-b" type="button" data-copy="minSubj" data-l="Copy" aria-label="Copy"></button></div>
       <div class="cp cp-msg"><span class="cp-l" data-l="Message"></span><span class="cp-v" id="minMsg" tabindex="0"></span><button class="cp-b" type="button" data-copy="minMsg" data-l="Copy" aria-label="Copy"></button></div>
@@ -2189,6 +2189,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       'The House of Lords votes next on this amendment. So far, more peers have spoken in favour of it than against it, so it seems likely the Lords will add it to the Bill. It will then come back to the Commons for final approval. Please tell me how you will vote when it does.\n\n' +
       'Please do not send me lines written by the Cabinet Office: as set out above, they are meaningless. Every other objection the campaign has heard is answered in its briefing below. If your reply repeats one of them, I will take it that you have no real answer, and I will assume the worst.\n\n' +
       'Detailed briefing: https://execprosec.org/amendments-briefing/\n\n' +
+      'Please would you also forward this letter to Alex Davies-Jones MP, the Justice minister responsible for this Bill, and send me her reply.\n\n' +
       'Yours sincerely,\n' + me.first + ' ' + me.last + (me.pc ? '\n' + me.pc : ''));
   }
   // Marcus, 19 Nov 2026: a signer copied the address, went to his email app, came back and the page had reloaded
@@ -2306,6 +2307,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       'I am asking you to vote to include them. The offence would only apply to things said and done outside Parliamentary proceedings: on TV and radio, online and at public events. Nothing said in Parliament would be affected, and honest mistakes, opinions and broken promises could never be prosecuted.\n\n' +
       'A law for everyone except the people who make it would do lasting damage to trust in Parliament. Please tell me how you will vote.\n\n' +
       'The campaign\'s briefing answers every objection the Government has raised: https://execprosec.org/amendments-briefing/\n\n' +
+      'Please would you also pass this letter to Alex Davies-Jones MP, the Justice minister responsible for this Bill.\n\n' +
       'Yours sincerely,\n' + (me.first || '') + ' ' + (me.last || '') + (town ? '\n' + town : ''));
   }
   function peerPick() {
@@ -2352,7 +2354,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   // ---------------------------------------------------------------- 3e: the minister (Marcus, 21 Nov 2026)
   // Her Commons address is the one Parliament publishes; her own Ministry of Justice address is not published, so the
   // department's ministerial correspondence unit (which answered us on 10 Nov 2026) goes alongside it.
-  var MIN_TO = 'alex.daviesjones.mp@parliament.uk, MinisterialCorrespondence@justice.gov.uk';
+  var MIN_TO = 'alex.daviesjones.mp@parliament.uk, ps.alexdavies-jones@justice.gov.uk';
   var MIN_SUBJECT = 'Include all lawmakers under the Hillsborough Law before 7 December';
   // Marcus, 22 Nov 2026: the first minister letter was too polite and did not take on the Government's objections;
   // this one is built on the letter to MPs, answering the Government's lines one by one.
@@ -2388,6 +2390,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       'The House of Lords votes on this amendment on 7 December. So far, more peers have spoken in favour of it than against it, so it seems likely the Lords will add it to the Bill. The Government can accept it now, rather than fight it in both Houses. Please tell me what the Government will do.\n\n' +
       'Please do not send me lines written by the Cabinet Office: as set out above, they are meaningless. Every other objection the campaign has heard is answered in its briefing below. If your reply repeats one of them, I will take it that the Government has no real answer, and I will assume the worst.\n\n' +
       'Detailed briefing: https://execprosec.org/amendments-briefing/\n\n' +
+      'Please make sure the Minister sees this letter herself, rather than leaving it to the department\'s correspondence unit.\n\n' +
       'Yours sincerely,\n' + (me.first || '') + ' ' + (me.last || '') + (town ? '\n' + town : ''));
   }
   function toMin(resumed) {
