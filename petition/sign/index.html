@@ -2050,6 +2050,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       ptAmt = +b.getAttribute('data-amt');
       document.querySelectorAll('.gv-amts button').forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
       gvLabel();
+      if (MONEY) track('pitch_amount', String(ptAmt));
     });
   });
   document.querySelectorAll('.gv-freq button').forEach(function (b) {
@@ -2093,7 +2094,9 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     }
     pv.addEventListener('click', function () { go(-1); });
     nx.addEventListener('click', function () { go(1); });
-    g.addEventListener('scroll', function () { clearTimeout(g._t); g._t = setTimeout(function () { busy = 0; g.classList.remove('glide'); ends(); }, 150); }, { passive: true });
+    var most = 1;   // on /fund/: the furthest card of what the money pays for that they moved to
+    function seen() { var n = nearest() + 1; if (n > most) { most = n; if (MONEY) track('pitch_slide', n + ' of ' + stops().length); } }
+    g.addEventListener('scroll', function () { clearTimeout(g._t); g._t = setTimeout(function () { busy = 0; g.classList.remove('glide'); ends(); seen(); }, 150); }, { passive: true });
     window.addEventListener('resize', ends);
     if (window.ResizeObserver) new ResizeObserver(ends).observe(g);
     var down = false, x0 = 0, s0 = 0, moved = false;
@@ -2136,13 +2139,27 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
 
   // How far each signer gets, for the funnel in the morning report. Sent in the background, never waited for.
   function track(step, detail) {
-    if (!S.sig || !S.key) return;
+    if (!S.sig || !S.key) { moneyEv(step, detail); return; }
     try {
       var b = JSON.stringify({ sig: S.sig, key: S.key, step: step, detail: detail || '' });
       if (navigator.sendBeacon) navigator.sendBeacon(API + 'petition/step', new Blob([b], { type: 'text/plain' }));
       else fetch(API + 'petition/step', { method: 'POST', body: b, keepalive: true, headers: { 'Content-Type': 'text/plain' } });
     } catch (e) {}
   }
+
+  // /fund/ before a signature exists (Marcus, 25 Nov 2026: "Yes, add it"): each step on the money screen,
+  // anonymous like the signing form (this browser's random key and the step, never what was typed), so we
+  // can see where people who came from an advert stop.
+  function moneyEv(step, detail) {
+    if (!MONEY || S.signed || DEMO) return;
+    S.moneyAt = step;
+    formEv('money', step, detail);
+  }
+  function moneyLeave() {
+    if (MONEY && !S.signed && !S.paid && S.moneyAt && !S.moneyLeft) { S.moneyLeft = true; formEv('money', 'left', S.moneyAt); }
+  }
+  window.addEventListener('pagehide', moneyLeave);
+  document.addEventListener('visibilitychange', function () { if (document.hidden) moneyLeave(); else S.moneyLeft = false; });
 
   // ---------------------------------------------------------------- 3: your MP
   // Parliament's petition site shows you your MP's page and leaves the rest to you. We find the MP
@@ -2713,7 +2730,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       if (paid || pending) {
         var amt = d.amount_total ? '£' + Number(d.amount_total).toFixed(0) : '';
         var once = d.tier === 'one_off_custom';
-        if (MONEY && !S.signed) { paidThanks(once, amt, pending); return; }
+        if (MONEY && !S.signed) { track('paid', (once ? 'once ' : 'monthly ') + (d.amount_total || '') + (pending ? ' pending' : '')); paidThanks(once, amt, pending); return; }
         $('doneTick').hidden = false;
         $('doneH').textContent = once ? 'Thank you' + (S.me.first ? ', ' + S.me.first : '') + '. Your contribution is with us.'
           : 'Congratulations' + (S.me.first ? ', ' + S.me.first : '') + '. You\'re now funding us monthly.';
@@ -2730,7 +2747,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       toFund();
       $('fundNote').hidden = false;
     }).catch(function () {
-      if (MONEY && !S.signed) { paidThanks(true, '', false); return; }
+      if (MONEY && !S.signed) { track('paid', 'not checked'); paidThanks(true, '', false); return; }
       $('doneTick').hidden = false;
       $('doneH').textContent = 'Thank you' + (who.first ? ', ' + who.first : '') + '.';
       $('doneS').textContent = 'Stripe will email you a receipt for your monthly backing.';
