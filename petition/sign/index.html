@@ -66,6 +66,15 @@ a{color:inherit}
 .page{max-width:580px;margin:0 auto;padding-block:16px 48px;padding-left:var(--gl);padding-right:var(--gr);display:flex;flex-direction:column;gap:22px}
 .side,.press{min-width:0}
 .card-head{padding:20px 20px 16px}
+/* the running count at the top, for half of visitors (Marcus, 21 Nov 2026) */
+.sigtop{display:flex;align-items:center;gap:9px;margin:0 0 12px;font-size:14.5px;line-height:1.2;color:var(--ink)}
+.sigtop[hidden]{display:none}
+.sigtop b{font:400 30px/1 var(--f-display);color:var(--navy);font-variant-numeric:tabular-nums;letter-spacing:.005em}
+.sigtop .sdot{width:9px;height:9px;border-radius:50%;background:#2fa36b;flex:0 0 9px;box-shadow:0 0 0 0 rgba(47,163,107,.6);animation:sdot 1.6s infinite}
+.sigtop b.tick{animation:stick .5s ease-out}
+@keyframes sdot{0%{box-shadow:0 0 0 0 rgba(47,163,107,.6)}70%{box-shadow:0 0 0 9px rgba(47,163,107,0)}100%{box-shadow:0 0 0 0 rgba(47,163,107,0)}}
+@keyframes stick{0%{color:#2fa36b}100%{color:var(--navy)}}
+@media(prefers-reduced-motion:reduce){.sigtop .sdot,.sigtop b.tick{animation:none}}
 .card-head .kicker{color:var(--gold-ink);margin:0 0 8px}
 .card-head h1{font:400 clamp(28px,6.4vw,36px)/1.08 var(--f-display);letter-spacing:-.01em;color:var(--navy);margin:0 0 10px;text-wrap:balance}
 .card-head h1 em{font-style:normal;color:var(--gold-ink)}
@@ -253,7 +262,7 @@ button.press-item{background:none;border:0;cursor:pointer;position:relative}
 .notice.gold{background:#fbf5e4;border-color:#e8d49a;color:#5c4512}
 /* The money pitch (Marcus, 6 Nov 2026): two slides between confirming and the fund screen, for half of signers. */
 #ppitch{padding-top:6px}
-.pt-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;border-radius:6px;margin:0 -4px;padding:0 4px;gap:8px;overscroll-behavior-x:contain}
+.pt-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-inline:16px;scrollbar-width:none;border-radius:6px;margin:0 -4px;padding:0 4px;gap:8px;overscroll-behavior-x:contain}
 .pt-track::-webkit-scrollbar{display:none}
 .pt-slide{flex:0 0 100%;scroll-snap-align:center;scroll-snap-stop:always;background:var(--navy);color:#fff;border-radius:6px;overflow:hidden;position:relative;display:flex;flex-direction:column}
 .pt-photo{position:relative;height:clamp(120px,19vh,190px);background:#0b1a4a center 38%/cover no-repeat}
@@ -349,9 +358,94 @@ legend{padding:0;margin:0 0 8px;font-size:14px;font-weight:600;line-height:1.4;c
   border:1.5px solid var(--rule);border-radius:4px}
 .cp-l{grid-area:l;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
 .cp-v{grid-area:v;font-size:15px;line-height:1.45;color:var(--ink);overflow-wrap:anywhere;white-space:pre-wrap}
-.cp-msg .cp-v{font-size:14px}
+.cp-msg .cp-v{font-size:14px;max-height:340px;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:8px 10px;margin:4px 0 0;border:1px solid var(--line, #d9dce6);border-radius:4px;background:#fff}
+/* Marcus, 19 Nov 2026: on a phone the whole letter made the step 4,300px tall and the pop-up stopped at 4,000, so the end of
+   the letter and the Done button were cut off. The letter now scrolls in its own box; Copy still copies all of it. */
+.mp-hint{font-size:12.5px;color:var(--muted);margin:-4px 0 12px}
+.mp-back{margin:0 0 12px}
+/* Marcus, 20 Nov 2026: sign, confirm, email your MP, email a peer, then one short money pitch with what the money buys */
+.ok-kick{display:flex;align-items:center;gap:8px;margin:0 0 10px;font-size:12.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ok,#1d7a46)}
+.ok-kick i{flex:0 0 20px;width:20px;height:20px;border-radius:50%;background:var(--ok,#1d7a46);color:#fff;font-style:normal;font-size:12px;line-height:20px;text-align:center;letter-spacing:0}
+.gv{background:var(--navy);color:#fff;border-radius:8px;margin:0 -6px;padding:18px 16px 16px}
+.gv .ok-kick{color:var(--gold)}.gv .ok-kick i{background:var(--gold);color:var(--navy)}
+.gv h2{font:400 clamp(25px,6.6vw,31px)/1.08 var(--f-display);color:#fff;margin:0 0 8px;text-wrap:balance}
+.gv h2 em{font-style:normal;color:var(--gold)}
+.gv-lead{font-size:15px;line-height:1.45;color:var(--on-navy);margin:0 0 14px}
+.gv-lead b{color:#fff}
+.gv-days{display:inline-block;background:var(--red);color:#fff;font-weight:700;border-radius:3px;padding:1px 7px;margin-right:2px}
+.gv-grid{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-inline:16px;scrollbar-width:none;margin:0 -16px 6px;padding:0 16px 4px;overscroll-behavior-x:contain}
+.gv-grid::-webkit-scrollbar{display:none}
+.gv-it{flex:0 0 72%;scroll-snap-align:start}
+@media(min-width:520px){.gv-it{flex-basis:46%}}
+.gv-swipe{font-size:11.5px;color:var(--on-navy-2);margin:0 0 14px;text-align:right}
+.gv-wrap{position:relative}
+.gv-it img{-webkit-user-drag:none;user-select:none;-webkit-user-select:none;pointer-events:none}
+.gv-grid{-webkit-user-select:none;user-select:none;touch-action:pan-x pan-y}
+.rw{display:none;order:2;margin:0;padding:12px 20px 0}
+.card.after .rw.show{display:block}
+.rw-row{display:flex;justify-content:space-between;gap:4px}
+.rw-i{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:10.5px;font-weight:700;letter-spacing:.03em;color:var(--muted);text-transform:uppercase}
+.rw-b{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;border:1.5px dashed var(--rule);background:var(--paper-2);color:var(--muted);font-size:15px;transition:background .3s,border-color .3s,transform .3s}
+.rw-i.on .rw-b{background:var(--gold);border:1.5px solid var(--gold);color:var(--navy)}
+.rw-i.on{color:var(--gold-ink)}
+.rw-i.now .rw-b{border:2px solid var(--navy);color:var(--navy);background:#fff}
+.rw-i.now{color:var(--navy)}
+.rw-i.new .rw-b{animation:rwpop .7s cubic-bezier(.2,1.6,.4,1)}
+@keyframes rwpop{0%{transform:scale(.4)}60%{transform:scale(1.25)}100%{transform:scale(1)}}
+.rw-pop{display:flex;align-items:center;gap:10px;margin:12px 0 0;padding:10px 12px;border-radius:6px;background:var(--navy);color:#fff;font-size:13.5px;line-height:1.35;animation:rwin .5s ease-out}
+.rw-pop[hidden]{display:none}
+.rw-pop i{flex:0 0 32px;width:32px;height:32px;border-radius:50%;background:var(--gold);color:var(--navy);font-style:normal;font-size:17px;line-height:32px;text-align:center}
+.rw-pop b{color:var(--gold)}
+@keyframes rwin{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.rw-i.new .rw-b,.rw-pop{animation:none}}
+.why{margin:0 0 14px;padding:10px 12px;border-left:3px solid var(--gold);background:#fbf5e3;font-size:14px;line-height:1.45;color:var(--ink,#1a1a1a)}
+.why b{display:block;margin:0 0 2px;font-size:11.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--gold-ink)}
+.pp-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 0 6px}
+.pp-grid button{min-height:46px;padding:6px 8px;border:1.5px solid var(--rule);border-radius:4px;background:#fff;color:var(--navy);font:600 14px/1.2 var(--f-body);cursor:pointer}
+.pp-grid button:hover,.pp-grid button:focus-visible{border-color:var(--navy)}
+.gv-grid.drag{cursor:grabbing;scroll-snap-type:none;user-select:none}
+.gv-grid.glide{scroll-snap-type:none}
+.gv-grid.drag img{pointer-events:none}
+.gv-arr{position:absolute;top:calc(50% - 22px);width:40px;height:40px;border-radius:50%;border:0;background:#fff;color:var(--navy);font-size:22px;line-height:40px;text-align:center;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.35);z-index:2;padding:0}
+.gv-arr:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.gv-arr.prev{left:-8px}.gv-arr.next{right:-8px}
+.gv-arr[hidden]{display:none}
+@media(hover:hover) and (pointer:fine){.gv-grid{cursor:grab}}
+.gv-it{background:rgba(255,255,255,.06);border:1px solid var(--line-navy);border-radius:6px;overflow:hidden;display:flex;flex-direction:column}
+.gv-it img{display:block;width:100%;aspect-ratio:3/2;object-fit:cover;background:#0b1a4a}
+.gv-it.poster img{object-fit:cover;object-position:66% 50%}
+.gv-tx{padding:8px 10px 10px;font-size:13px;line-height:1.35;color:var(--on-navy)}
+.gv-tag{display:block;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin:0 0 3px}
+.gv-tag.done{color:#7ee2a8}
+.gv-tag.prog{color:#9cc3ff}
+.gv-soc .eng{margin-top:6px;padding:0 12px;color:#fff;font-size:11.5px;line-height:1.4;letter-spacing:0}
+.gv-press b{font-family:var(--f-display);font-weight:400;font-size:26px}
+.gv-press .pr-line{margin-top:6px;color:#fff;font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+.gv-soc{aspect-ratio:3/2;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:2px;background:linear-gradient(150deg,#1d3a8a,#0b1a4a);text-align:center}
+.gv-soc b{font:700 26px/1 var(--f-body);color:#fff}
+.gv-soc span{font-size:11px;color:var(--on-navy-2);letter-spacing:.04em}
+.gv-soc .up{color:#7ee2a8;font-weight:700;font-size:12px}
+.gv-ask{font-size:13px;font-weight:700;color:var(--on-navy-2);text-transform:uppercase;letter-spacing:.08em;margin:0 0 8px}
+.gv-freq{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:0 0 8px}
+.gv-freq button,.gv-amts button{min-height:46px;border:1.5px solid rgba(255,255,255,.28);border-radius:4px;background:transparent;color:#fff;font:700 15px/1 var(--f-body);cursor:pointer}
+.gv-amts{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:0 0 10px}
+.gv-amts button{font-size:18px;min-height:52px}
+.gv-freq button[aria-pressed=true],.gv-amts button[aria-pressed=true]{background:var(--gold);border-color:var(--gold);color:var(--navy)}
+.gv .btn{margin:0;width:100%}
+.gv-other{display:block;margin:10px auto 0;background:none;border:0;color:var(--on-navy);text-decoration:underline;font:500 13.5px/1.3 var(--f-body);cursor:pointer}
+.gv-fine{font-size:12.5px;color:var(--on-navy-2);text-align:center;margin:8px 0 0}
+.gv-me{display:flex;align-items:center;gap:10px;margin:16px 0 0;padding-top:14px;border-top:1px solid var(--line-navy);font-size:12.5px;line-height:1.35;color:var(--on-navy-2)}
+.gv-me img{flex:0 0 40px;width:40px;height:40px;border-radius:50%;object-fit:cover}
+.gv-me b{color:#fff}
+
 .cp-b{grid-area:b;min-height:32px;padding:0 14px;border:0;border-radius:3px;background:var(--navy);color:#fff;font:700 13px/1 var(--f-body);cursor:pointer}
 .cp-b.done{background:var(--ok)}
+/* 22 Nov 2026: labels and button words are drawn by CSS so they can never be copied with an address. A signer selected
+   the address by hand and got "morrowm@parliament.ukCopy", so their letters bounced. Tapping an address or subject
+   now selects exactly that. */
+.cp-l::before,.cp-b::before{content:attr(data-l)}
+.cp-l,.cp-b{-webkit-user-select:none;user-select:none}
+.cp:not(.cp-msg) .cp-v{-webkit-user-select:all;user-select:all}
 .cp-b:disabled{opacity:.4;cursor:default}
 .notice{display:flex;gap:10px;align-items:flex-start;margin:0 0 16px;padding:12px 14px;background:#eef6f0;border:1px solid #b9dcc5;border-radius:4px;font-size:14px;line-height:1.45;color:#174b30}
 .notice svg{flex:0 0 20px;width:20px;height:20px;margin-top:1px}
@@ -508,6 +602,8 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
  <div class="side" id="side">
   <div class="card" id="card">
     <div class="card-head">
+      <p class="ok-kick" id="moneyOk" hidden><i aria-hidden="true">✓</i><span>Thank you for funding the campaign</span></p>
+      <p class="sigtop" id="sigTop" hidden><i class="sdot" aria-hidden="true"></i><span><b id="sigTopN">&nbsp;</b> people have signed</span></p>
       <p class="kicker">Petition to Press &amp; Parliament</p>
       <h1>Include all lawmakers under the <em>Hillsborough&nbsp;Law</em></h1>
       <p class="explain-fast">Parliament is about to make lying to the public a crime for ministers, police, nurses and civil servants, but not for MPs and peers themselves. Sign to put them under their own law.</p>
@@ -523,7 +619,16 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       <p class="sq" id="sq" hidden></p>
       <p class="deadline"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/></svg><span id="deadlineTxt"></span></p>
     </div>
-    <div class="stephead"><ol class="steps" id="dots" aria-hidden="true"><li class="on"></li><li></li><li></li><li></li></ol><span id="stepLbl">Step 1 of 4</span></div>
+    <div class="stephead"><ol class="steps" id="dots" aria-hidden="true"><li class="on"></li><li></li><li></li><li></li><li></li><li></li></ol><span id="stepLbl">Step 1 of 6</span></div>
+    <div class="rw" id="rw" aria-live="polite">
+      <div class="rw-row">
+        <span class="rw-i" data-rw="peer"><span class="rw-b" aria-hidden="true">&#9733;</span>Lords</span>
+        <span class="rw-i" data-rw="mp"><span class="rw-b" aria-hidden="true">&#9733;</span>MP</span>
+        <span class="rw-i" data-rw="min"><span class="rw-b" aria-hidden="true">&#9733;</span>Minister</span>
+        <span class="rw-i" data-rw="give"><span class="rw-b" aria-hidden="true">&#9733;</span>Backer</span>
+      </div>
+      <p class="rw-pop" id="rwPop" hidden><i aria-hidden="true">&#9733;</i><span id="rwPopTxt"></span></p>
+    </div>
 
     <!-- 1: sign -->
     <form class="panel" id="p1" novalidate>
@@ -546,7 +651,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       <span class="err" id="consentErr" aria-live="polite"></span>
       <div class="hp" aria-hidden="true"><label>Leave this empty <input id="website" name="website" tabindex="-1" autocomplete="off"></label></div>
       <p class="fine">By signing, you agree to our <a href="https://execprosec.org/terms/#petitions" target="_blank" rel="noopener">Terms</a> and <a href="https://execprosec.org/terms/#privacy" target="_blank" rel="noopener">Privacy Policy</a>.</p>
-      <p class="promise"><b>Parliament votes on this in December (expected).</b> Parliamentarians and journalists will be sent the data from this petition in advance of that showdown vote.</p>
+      <p class="promise"><b>Parliament votes on this on 7 December.</b> Parliamentarians and journalists will be sent the data from this petition in advance of that showdown vote.</p>
       <p class="explain">End the carve-out for lawmakers (MPs, peers, MSPs, MSs and MLAs) from the duty of candour and the offence of misleading the public in the <a class="bill-link" href="https://bills.parliament.uk/bills/4019" target="_blank" rel="noopener">Public Office (Accountability) Bill</a>,<sup class="ref"><a href="https://bills.parliament.uk/publications/68275/documents/8957#sched_2__para_2__subpara_4__intro" target="_blank" rel="noopener" title="Source 1">1</a></sup> for reckless or intentionally deceitful acts outside the proceedings of their parliaments:<sup class="ref"><a href="https://www.legislation.gov.uk/aep/WillandMarSess2/1/2/introduction" target="_blank" rel="noopener" title="Source 2">2</a></sup> on TV and radio, on social media, at events, etc.</p>
       <button class="btn" type="submit" id="signBtn">Sign the petition</button>
     </form>
@@ -593,41 +698,31 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
 
     <!-- 2b: the money pitch, two slides (Marcus, 6 Nov 2026) -->
     <div class="panel" id="ppitch" hidden>
-      <div class="pt-track" id="ptTrack" aria-roledescription="carousel" aria-label="Why we need your help">
-        <section class="pt-slide" id="ptS1" aria-roledescription="slide" aria-label="1 of 2">
-          <div class="pt-photo" style="background-image:url(/_web/photos/mjb-4.webp)" role="img" aria-label="Marcus J Ball speaking to a packed room about the Bill"></div>
-          <div class="pt-body">
-            <p class="pt-kick pt-a"><i aria-hidden="true">✓</i> Signature confirmed</p>
-            <h2 class="pt-a">Now let's make sure <em>Parliament</em> can't ignore it.</h2>
-            <p class="pt-a">The vote is expected in early December. Between now and then, every MP and peer needs to know the public is watching. Here's how far we've come:</p>
-            <ul class="pt-proof pt-a"><li>Debated in both Houses of Parliament</li><li>Covered by the BBC, ITV, Sky, the Telegraph and the Express</li><li>Our videos are watched hundreds of thousands of times each week on our social media channels</li></ul>
-          </div>
-        </section>
-        <section class="pt-slide" id="ptS2" aria-roledescription="slide" aria-label="2 of 2">
-          <div class="pt-body" style="padding-top:22px">
-            <p class="pt-kick pt-a">What comes next</p>
-            <h3 class="pt-a">Adverts they <em>can't miss</em>.</h3>
-            <p class="pt-a">Next, we want to pay for newspaper, billboard and other paid adverts, but we need funding to take this to that level.</p>
-            <div class="pt-uses pt-a">
-              <div class="pt-use"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M6 6h17v20H8a2 2 0 0 1-2-2z"/><path d="M23 11h3v13a2 2 0 0 1-2 2"/><path d="M10 10h9M10 14h9M10 18h5M10 22h7"/></svg>Newspaper adverts</div>
-              <div class="pt-use"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><rect x="4" y="5" width="24" height="14" rx="1.5"/><path d="M11 19v8M21 19v8M8 27h16"/><path d="M9 10h10M9 14h14"/></svg>Billboards</div>
-              <div class="pt-use"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M5 13v6h4l9 6V7l-9 6z"/><path d="M22 11a7 7 0 0 1 0 10M25.5 8a12 12 0 0 1 0 16"/></svg>A rally on vote day</div>
-            </div>
-            <p class="pt-give pt-a">Choose your contribution</p>
-            <div class="pt-amts pt-a" role="group" aria-label="Amount">
-              <button class="pt-amt" type="button" data-amt="10" aria-pressed="false">£10</button>
-              <button class="pt-amt" type="button" data-amt="20" aria-pressed="true">£20</button>
-              <button class="pt-amt" type="button" data-amt="50" aria-pressed="false">£50</button>
-            </div>
-            <button class="btn pt-a" type="button" id="ptGive">Back us with £20</button>
-            <p class="pt-fine">One-off or monthly: you choose on the next screen. Any amount from £10.</p>
-          </div>
-        </section>
+     <div class="gv">
+      <p class="ok-kick" id="gvOk"><i aria-hidden="true">✓</i><span id="gvOkTxt">Signature confirmed</span></p>
+      <h2 id="gvH">The vote is on <em>7 December</em>. Help us win it.</h2>
+      <p class="gv-lead" id="gvLead"><span class="gv-days" id="gvDays">17 days</span> left to make every MP and peer see the public is watching. <b>Your money pays for:</b></p>
+      <div class="gv-wrap">
+      <button type="button" class="gv-arr prev" id="gvPrev" aria-label="Previous" hidden>&lsaquo;</button>
+      <button type="button" class="gv-arr next" id="gvNext" aria-label="Next">&rsaquo;</button>
+      <div class="gv-grid" id="gvGrid">
+        <div class="gv-it poster"><img src="/_web/pitch/tube-poster.webp" alt="Our poster: politicians are making lying to the public criminally illegal for nearly every official apart from themselves" decoding="async" draggable="false"><div class="gv-tx"><span class="gv-tag done">Booked</span>Our poster at Westminster station, where MPs and peers pass, 30 Nov to 13 Dec.</div></div>
+        <div class="gv-it"><img src="/_web/pitch/letters.webp" alt="Mock-up: envelopes addressed to the House of Commons and the House of Lords, with our leaflet" decoding="async" draggable="false"><div class="gv-tx"><span class="gv-tag">Next</span>A letter on the desk of every MP and peer before they vote.</div></div>
+        <div class="gv-it"><img src="/_web/pitch/newspaper.webp" alt="Mock-up: our advert in a national newspaper" decoding="async" draggable="false"><div class="gv-tx"><span class="gv-tag">Next</span>Adverts in national newspapers in the week of the vote.</div></div>
+        <div class="gv-it"><div class="gv-soc"><b id="gvFollow">100,000+</b><span>followers on our social media</span><span class="up" id="gvWeek"></span></div><div class="gv-tx"><span class="gv-tag">Growing fast</span><span id="gvViews">Millions of views.</span> Adverts put our videos in front of millions more.</div></div>
       </div>
-      <div class="pt-nav">
-        <div class="pt-dots" aria-hidden="true"><span class="on"></span><span></span></div>
-        <button class="pt-next" type="button" id="ptNext">Next</button>
       </div>
+      <p class="gv-swipe" id="gvSwipe" aria-hidden="true">Swipe for more &rarr;</p>
+      <p class="gv-ask">Give now</p>
+      <div class="gv-freq" role="group" aria-label="How often"><button type="button" data-freq="once" aria-pressed="true">One-off</button><button type="button" data-freq="monthly" aria-pressed="false">Monthly</button></div>
+      <div class="gv-amts" role="group" aria-label="Amount">
+        <button type="button" data-amt="10" aria-pressed="false">£10</button><button type="button" data-amt="20" aria-pressed="true">£20</button><button type="button" data-amt="50" aria-pressed="false">£50</button><button type="button" data-amt="100" aria-pressed="false">£100</button>
+      </div>
+      <button class="btn" type="button" id="ptGive">Give £20 now</button>
+      <button class="gv-other" type="button" id="ptOther">Another amount</button>
+      <p class="gv-fine">Secure payment by Stripe. ExecProsec Ltd, company 10520032.</p>
+      <div class="gv-me"><img src="/_web/photos/mjb-face.webp" alt=""><span><b>Marcus J Ball</b><br>Campaigning since 2016 to make lying in politics a crime.</span></div>
+     </div>
       <button class="link skip" type="button" id="ptSkip">Not now</button>
     </div>
 
@@ -638,6 +733,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       <button class="way way-fund" type="button" id="wayFund"><b>Fund the campaign</b><span>Newspaper adverts, billboards and a rally on the day of the vote. Monthly or one-off, from £10.</span></button>
       <button class="way way-mp" type="button" id="wayMp"><img id="wayMpPhoto" alt="" hidden><span><b id="wayMpTitle">Email your MP</b><span class="way-from" id="wayMpFrom" hidden></span><span>About two minutes, from your own email address. We've written it for you.</span></span></button>
       <button class="way way-share" type="button" id="wayShare"><b>Share the petition</b><span>Copy the link and paste it wherever you talk to people. Every share brings more signatures.</span></button>
+      <p class="alt"><button class="link" type="button" id="choiceSkip">No thanks, I'm done. My signature is counted.</button></p>
     </div>
 
     <!-- 3b: share the link -->
@@ -651,18 +747,65 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
 
     <!-- 3a: your MP -->
     <div class="panel" id="p3" hidden>
+      <p class="ok-kick" id="mpOk" hidden><i aria-hidden="true">✓</i><span id="mpOkTxt">Signature confirmed</span></p>
       <h2>Now email your MP.</h2>
+      <div class="why"><b>Why this matters</b>Your MP is the one vote in the Commons that answers to you. If the Lords change the Bill, it goes back to MPs, and they have the final say.</div>
       <p class="mp-from" id="mpFrom"></p>
       <div class="mp">
         <span class="mp-dot" id="mpDot" aria-hidden="true"></span>
         <span class="mp-who"><b id="mpName">Your MP</b><span id="mpSeat"></span></span>
       </div>
       <p class="sub">Copy these into an email from your own address. It takes a minute.</p>
-      <div class="cp"><span class="cp-l">To</span><span class="cp-v" id="mpMail"></span><button class="cp-b" type="button" data-copy="mpMail">Copy</button></div>
-      <div class="cp"><span class="cp-l">Subject</span><span class="cp-v" id="mpSubj"></span><button class="cp-b" type="button" data-copy="mpSubj">Copy</button></div>
-      <div class="cp cp-msg"><span class="cp-l">Message</span><span class="cp-v" id="mpMsg"></span><button class="cp-b" type="button" data-copy="mpMsg">Copy</button></div>
+      <div class="cp"><span class="cp-l" data-l="To"></span><span class="cp-v" id="mpMail"></span><button class="cp-b" type="button" data-copy="mpMail" data-l="Copy" aria-label="Copy"></button></div>
+      <div class="cp"><span class="cp-l" data-l="Subject"></span><span class="cp-v" id="mpSubj"></span><button class="cp-b" type="button" data-copy="mpSubj" data-l="Copy" aria-label="Copy"></button></div>
+      <p class="notice gold mp-back" id="mpBack" hidden>Welcome back. Your letter is still here, ready to copy.</p>
+      <div class="cp cp-msg"><span class="cp-l" data-l="Message"></span><span class="cp-v" id="mpMsg" tabindex="0"></span><button class="cp-b" type="button" data-copy="mpMsg" data-l="Copy" aria-label="Copy"></button></div>
+      <p class="mp-hint">Scroll the box to read it all. Copy copies the whole letter. If you leave to paste it, this page keeps it for you.</p>
       <button class="btn navy" type="button" id="mpDone">Done, next</button>
       <p class="alt"><button class="link" type="button" id="mpSkip">Skip</button></p>
+    </div>
+
+    <!-- 3c: a member of the House of Lords, from the party they voted for (Marcus, 21 Nov 2026) -->
+    <div class="panel" id="ppeer" hidden>
+      <p class="ok-kick" id="peerOk" hidden><i aria-hidden="true">✓</i><span id="peerOkTxt">Signature confirmed</span></p>
+      <h2>Now email a member of the House of Lords.</h2>
+      <div class="why"><b>Why this matters</b>Peers vote on this on 7 December. They have no constituents, so a letter from a member of the public stands out, most of all from someone who votes for their party.</div>
+      <div id="peerPick">
+        <p class="sub">Which party did you vote for in 2024? We'll match you with a peer from that party.</p>
+        <div class="pp-grid" id="ppGrid" role="group" aria-label="Which party did you vote for in 2024?"></div>
+        <p class="alt"><button class="link" type="button" id="peerSkip0">Skip</button></p>
+      </div>
+      <div id="peerShow" hidden>
+      <p class="mp-from" id="peerFrom">We share the letters out evenly, so every peer hears from the public. Yours is:</p>
+      <div class="mp">
+        <span class="mp-dot" id="peerDot" aria-hidden="true"></span>
+        <span class="mp-who"><b id="peerName"></b><span id="peerParty"></span></span>
+      </div>
+      <p class="sub">Copy these into an email from your own address. It takes a minute.</p>
+      <div class="cp"><span class="cp-l" data-l="To"></span><span class="cp-v" id="peerMail"></span><button class="cp-b" type="button" data-copy="peerMail" data-l="Copy" aria-label="Copy"></button></div>
+      <div class="cp"><span class="cp-l" data-l="Subject"></span><span class="cp-v" id="peerSubj"></span><button class="cp-b" type="button" data-copy="peerSubj" data-l="Copy" aria-label="Copy"></button></div>
+      <div class="cp cp-msg"><span class="cp-l" data-l="Message"></span><span class="cp-v" id="peerMsg" tabindex="0"></span><button class="cp-b" type="button" data-copy="peerMsg" data-l="Copy" aria-label="Copy"></button></div>
+      <p class="mp-hint">Scroll the box to read it all. Copy copies the whole letter. If you leave to paste it, this page keeps it for you.</p>
+      <button class="btn navy" type="button" id="peerDone">Done, next</button>
+      <p class="alt"><button class="link" type="button" id="peerSkip">Skip</button></p>
+      </div>
+    </div>
+
+    <!-- 3e: the minister responsible for the Bill (Marcus, 21 Nov 2026) -->
+    <div class="panel" id="pmin" hidden>
+      <h2>Last email: the minister.</h2>
+      <div class="why"><b>Why this matters</b>Alex Davies-Jones is the Justice minister responsible for this Bill. If the Government agrees to include all lawmakers, the change goes through without a fight.</div>
+      <div class="mp">
+        <span class="mp-dot" aria-hidden="true"><img src="https://members-api.parliament.uk/api/Members/4849/Thumbnail" alt="" onerror="this.remove()"></span>
+        <span class="mp-who"><b>Alex Davies-Jones MP</b><span>Minister, Ministry of Justice</span></span>
+      </div>
+      <p class="sub">Copy these into an email from your own address. It goes to her at Parliament and to her own private office at the Ministry of Justice.</p>
+      <div class="cp"><span class="cp-l" data-l="To"></span><span class="cp-v" id="minMail"></span><button class="cp-b" type="button" data-copy="minMail" data-l="Copy" aria-label="Copy"></button></div>
+      <div class="cp"><span class="cp-l" data-l="Subject"></span><span class="cp-v" id="minSubj"></span><button class="cp-b" type="button" data-copy="minSubj" data-l="Copy" aria-label="Copy"></button></div>
+      <div class="cp cp-msg"><span class="cp-l" data-l="Message"></span><span class="cp-v" id="minMsg" tabindex="0"></span><button class="cp-b" type="button" data-copy="minMsg" data-l="Copy" aria-label="Copy"></button></div>
+      <p class="mp-hint">Scroll the box to read it all. Copy copies the whole letter. If you leave to paste it, this page keeps it for you.</p>
+      <button class="btn navy" type="button" id="minDone">Done, next</button>
+      <p class="alt"><button class="link" type="button" id="minSkip">Skip</button></p>
     </div>
 
     <!-- 4: fund -->
@@ -673,8 +816,8 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       <p class="notice gold" id="fundBacker" hidden>You've backed this campaign before. Thank you: it's why we've got this far.</p>
       <h2 class="pitch-only">Thank you, <span class="me-first"></span>. How would you like to give?</h2>
       <h2 class="no-pitch">Make sure Parliament knows we're watching.</h2>
-      <p class="sub no-pitch">The vote is expected in early December. Your money puts this campaign in front of millions more people before then, so every MP and peer knows the public is watching.</p>
-      <ul class="proof no-pitch"><li>Debated in both Houses of Parliament</li><li>Covered by the BBC, ITV, Sky, the Telegraph and the Express</li><li>Our videos are watched hundreds of thousands of times each week on our social media channels</li></ul>
+      <p class="sub no-pitch">The vote is on 7 December. Your money puts this campaign in front of millions more people before then, so every MP and peer knows the public is watching.</p>
+      <ul class="proof no-pitch"><li>Debated in both Houses of Parliament</li><li>Covered by the BBC, ITV, Sky, the Telegraph and the Express</li><li>Our videos have been watched millions of times on our social media channels</li></ul>
       <p class="sub no-pitch">Next, we want to pay for newspaper, billboard, and other paid adverts but we need funding to take this to that level.</p>
       <fieldset>
         <legend id="fundLegend">Back the campaign every month</legend>
@@ -686,6 +829,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
           <label class="opt"><input type="radio" name="amt" value="10"><span>£10</span></label>
           <label class="opt"><input type="radio" name="amt" value="20" checked><span>£20</span></label>
           <label class="opt"><input type="radio" name="amt" value="50"><span>£50</span></label>
+          <label class="opt"><input type="radio" name="amt" value="100"><span>£100</span></label>
           <label class="opt"><input type="radio" name="amt" value="other"><span>Other</span></label>
         </div>
         <div class="f" id="otherWrap" hidden><label for="otherAmt" id="otherLbl">Your amount each month (£10 or more)</label><input id="otherAmt" type="number" inputmode="numeric" min="10" step="1"><span class="err" id="otherAmtErr" aria-live="polite"></span></div>
@@ -706,10 +850,13 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       <div class="donebig" id="doneTick" aria-hidden="true" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
       <h2 id="doneH">Thank you, <span class="me-first"></span>.</h2>
       <p class="sub" id="doneS"></p>
+      <p class="sub" id="doneNext" hidden><b>Next, add your name to our petition.</b> It takes 30 seconds.</p>
+      <button class="btn" type="button" id="doneSign" hidden>Sign our petition</button>
+      <a class="btn" id="doneSee" href="/petition/" style="text-decoration:none;padding:14px 18px;line-height:1.3;height:auto" hidden>Done. Now show me the data from everyone who has signed</a>
       <button class="btn" type="button" id="doneMonthly" hidden>Back us monthly too: £10 a month</button>
       <button class="btn" type="button" id="doneMp" hidden>Email your MP as well</button>
       <button class="btn navy" type="button" id="doneShare" hidden>Copy the petition link</button>
-      <a class="btn navy" href="https://www.instagram.com/marcusjball/" target="_blank" rel="noopener">Follow Marcus J Ball on Instagram</a>
+      <a class="btn navy" id="doneIg" href="https://www.instagram.com/marcusjball/" target="_blank" rel="noopener">Follow Marcus J Ball on Instagram</a>
     </div>
   </div>
  </div>
@@ -943,10 +1090,9 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   // Signatures, answers and quotes go to Central, and the count and the recent signers come back
   // from it. Nothing is sent to an MP for anyone: signers email their MP from their own address.
   var API = 'https://central-2-mcp-production.up.railway.app/public/';
-  // The day of the vote. Not announced yet, so this is our estimate (a Wednesday in early December,
-  // when the Lords usually takes its big Report stage votes); set VOTE_ESTIMATED to false once it is confirmed.
-  var VOTE_DATE = '2026-12-02';
-  var VOTE_ESTIMATED = true;
+  // The day of the vote: Monday 7 December 2026 (Marcus, 21 Nov 2026).
+  var VOTE_DATE = '2026-12-07';
+  var VOTE_ESTIMATED = false;
   // Where the visitor came from (?ref=ig on a link, or the site that sent them), kept with the signature.
   var REF = ((location.search.match(/[?&](?:ref|utm_source)=([\w.\-]{1,40})/) || [])[1] ||
     (function () { try { return new URL(document.referrer).hostname; } catch (e) { return ''; } })()).slice(0, 40);
@@ -1015,13 +1161,54 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
              // 8 Nov 2026 (Marcus): the code won its test (81 against 79 in 100 visitors confirmed), so
              // everyone gets it now; ?conf=link still shows the old link-only screen for comparison.
              promise: pick('promise', PROMISES, 4), conf: /[?&]conf=link(?![a-z])/.test(location.search) ? 'link' : 'code',
-             qs: qsForced || (mix(5) % 2 === 0 ? 'new' : 'money') };
+             qs: qsForced || (mix(5) % 2 === 0 ? 'new' : 'money'),
+             // Marcus, 21 Nov 2026, past 50,000 confirmed: half see how many have signed at the top of
+             // the form, rising as people sign, half do not. Central emails him the winner 24 hours in;
+             // he decides whether everyone gets it. ?sigs=count or ?sigs=quiet forces a side.
+             // Marcus, 24 Nov 2026: no count won (47.1 against 45.5 confirmed per 100 visitors, 98% sure), so
+             // nobody sees the count at the top now; ?sigs=count still shows it, for comparison.
+             sigs: /[?&]sigs=count(?![a-z])/.test(location.search) ? 'count' : 'quiet',
+             // Marcus, 22 Nov 2026: a third are asked to email one peer (e1), a third a peer and their MP (e2),
+             // a third a peer, their MP and the minister (e3). Central counts emails copied and money given on
+             // each side. ?mails=1, 2 or 3 forces a side.
+             // Marcus, 22 Nov 2026: three emails won (85 letters per 100 signers against 51 for one, money level),
+             // so everyone is now asked for all three
+             mails: 'e' + ((location.search.match(/[?&]mails=([123])(?![0-9])/) || [])[1] || '3') };
   })();
   var LAY = DRAW.lay, PROOF = DRAW.proof, PROMISE = DRAW.promise, CONF = DRAW.conf;
   // ?demo=1 is us looking at the versions next to each other: it records nothing at all, so the
   // looking does not land in the numbers the test is read from.
   var DEMO = /[?&]demo=1\b/.test(location.search);
-  var AB = LAY + '-' + PROOF + '-' + PROMISE + '-' + CONF;
+  // Money first (Marcus, 25 Nov 2026, for the paid ads: "money first"): /fund/ asks them to fund the
+  // campaign, thanks them, then asks them to sign, then the same three emails as the petition, then shows
+  // them the petition's results page. ?first=money forces it. A confirmation link opened in the same
+  // browser within a day of starting it carries on the same way, so a giver is never asked again.
+  var MONEY = /^\/fund(\/|$)/.test(location.pathname) || /[?&]first=money(?![a-z])/.test(location.search);
+  try {
+    if (!MONEY && /[?&]c=/.test(location.search) && Date.now() - (+localStorage.getItem('ep_fund_first') || 0) < 864e5) MONEY = true;
+    if (MONEY && !DEMO) localStorage.setItem('ep_fund_first', String(Date.now()));
+  } catch (e) {}
+  var SIGS = DRAW.sigs;
+  var MAILS = DRAW.mails;
+  var AB = LAY + '-' + PROOF + '-' + PROMISE + '-' + CONF + '-' + SIGS + '-' + MAILS;
+  // the emails this signer is asked for, in order; the peer comes first on every side
+  function mailSeq() {
+    var q = MAILS === 'e1' ? ['peer'] : MAILS === 'e2' ? ['peer', 'mp'] : ['peer', 'mp', 'min'];
+    // back from a thank-you email (?w=): only the letters they have not sent yet
+    if (S.write && S.sentBefore) q = q.filter(function (k) { return S.sentBefore.indexOf(k) < 0; });
+    return S.abroad ? q.filter(function (k) { return k !== 'mp'; }) : q;
+  }
+  function nextMail(after) {
+    var q = mailSeq(), k = q[q.indexOf(after) + 1];
+    if (k === 'peer') return toPeer();
+    if (k === 'mp') return toMp();
+    if (k === 'min') return toMin();
+    dropMp();
+    if (MONEY) return finish();
+    // Marcus, 22 Nov 2026: someone who came back from a thank-you email and has already given is not asked again
+    if (S.noAsk) return toShare();
+    toPitch();
+  }
   try { document.body.classList.add('l-' + LAY, 'p-' + PROOF, 'pr-' + PROMISE, 'c-' + CONF); } catch (e) {}
 
   // One page view to the site's own analytics, so the morning report can say how many visited and
@@ -1073,7 +1260,25 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   // No page shows the running count. Tested 28 to 31 October against showing it: showing it was
   // very slightly worse, so the feed of people signing carries the momentum instead.
   function countShown(n) { return false; }
+  // The count at the top (the count side of the 21 Nov test): the confirmed total, exact, and it goes
+  // up one at a time as people sign, spread over the 30 seconds until Central's next count.
+  var sigShown = 0, sigTimer = 0;
+  function sigTop() {
+    if (SIGS !== 'count' || !(S.count > 0)) return;
+    var el = $('sigTopN');
+    $('sigTop').hidden = false;
+    if (!sigShown || reduced || S.count - sigShown > 400) { sigShown = S.count; el.textContent = fmt(sigShown); return; }
+    if (sigTimer || S.count <= sigShown) return;
+    (function step() {
+      if (S.count <= sigShown) { sigTimer = 0; return; }
+      sigShown++;
+      el.textContent = fmt(sigShown);
+      el.classList.remove('tick'); void el.offsetWidth; el.classList.add('tick');
+      sigTimer = setTimeout(step, Math.max(450, Math.min(6000, 28000 / (S.count - sigShown + 1))));
+    })();
+  }
   function renderMeter(animate) {
+    sigTop();
     var quiet = !countShown(S.count);
     document.querySelector('.m-top').hidden = quiet;
     $('bar').hidden = quiet;
@@ -1399,22 +1604,29 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     var c = n === 'c';                                  // the "three ways to help" screen
     var sh = n === 's';                                 // the share-the-link screen
     var pt = n === 'pitch';                             // the money pitch
+    var pe = n === 'peer';                              // the House of Lords email
+    var mi = n === 'min';                               // the minister
     $('ppitch').hidden = !pt;
+    $('ppeer').hidden = !pe;
+    $('pmin').hidden = !mi;
     $('pw').hidden = !w;
     $('pchoice').hidden = !c;
     $('pshare').hidden = !sh;
     if (w) waitStart(); else waitStop();
     for (var i = 1; i <= 5; i++) $('p' + i).hidden = i !== n;
-    // four steps: sign, statements, the choice, then the MP email or the fund (both are step 4)
-    var at = pt ? 2 : c ? 3 : (n === 3 || n === 4 || sh) ? 4 : n;
+    // sign, then the one, two or three emails this signer is asked for (22 Nov 2026), then give
+    var q = mailSeq(), all = q.length + 2, k = n === 3 ? 'mp' : pe ? 'peer' : mi ? 'min' : '';
+    var at = k ? 2 + Math.max(0, q.indexOf(k)) : (pt || n === 4 || c || sh) ? all : n;
+    if (MONEY) at = (pt || n === 4 || (n === 5 && !S.signed)) ? 1 : (n === 1 || w) ? 2 : k ? 3 + Math.max(0, q.indexOf(k)) : all + 1;
     var dots = $('dots').children;
-    for (var j = 0; j < dots.length; j++) dots[j].classList.toggle('on', j < at);
-    $('stepLbl').textContent = at <= 4 ? 'Step ' + at + ' of 4' : 'Done';
-    $('card').classList.toggle('first', n === 1 || w);   // the step bar appears once they have confirmed
-    $('card').classList.toggle('after', c || sh || pt || (!w && n >= 2));   // and the title, explainer and meter go
+    for (var j = 0; j < dots.length; j++) { dots[j].hidden = j >= all; dots[j].classList.toggle('on', j < at); }
+    $('stepLbl').textContent = at <= all ? 'Step ' + at + ' of ' + all : 'Done';
+    rwShow(k || ((pt || n === 4) ? 'give' : n === 5 ? (MONEY && !S.signed ? 'sign' : 'end') : ''));
+    $('card').classList.toggle('first', (n === 1 || w) && !MONEY);   // the step bar appears once they have confirmed
+    $('card').classList.toggle('after', c || sh || pt || pe || mi || (!w && n >= 2));   // and the title, explainer and meter go
     pinCard();
     if (quiet) return;
-    var h = [].filter.call($(w ? 'pw' : c ? 'pchoice' : sh ? 'pshare' : pt ? 'ppitch' : 'p' + n).querySelectorAll('h2'), function (x) { return x.offsetParent; })[0];
+    var h = [].filter.call($(w ? 'pw' : c ? 'pchoice' : sh ? 'pshare' : pt ? 'ppitch' : pe ? 'ppeer' : mi ? 'pmin' : 'p' + n).querySelectorAll('h2'), function (x) { return x.offsetParent; })[0];
     if (h) { h.setAttribute('tabindex', '-1'); h.focus({ preventScroll: true }); }
     var top = $('card').getBoundingClientRect().top;
     if (top < 0 || top > window.innerHeight * 0.5) $('card').scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
@@ -1693,6 +1905,13 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       S.key = d.key || '';
       S.abroad = !!d.country;
       S.backer = !!d.backer;
+      if (S.write) {
+        S.paid = S.paid || !!d.paid;
+        S.noAsk = !!(d.paid || d.backer);
+        S.sentBefore = d.sent || [];
+        S.done = S.done || {};
+        S.sentBefore.forEach(function (k) { S.done[k] = true; });
+      }
       S.me = { first: d.first, last: d.last, email: d.email, emailOk: !!d.email_ok, town: d.town || d.country || 'the UK', pc: d.pc || '' };
       findMp(S.abroad ? '' : (d.pc || '').replace(/\s+/g, ''));
       confirmed(d);
@@ -1729,10 +1948,18 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       $('thanksH').textContent = countShown(number) ? "Confirmed. You're signature number " + fmt(number) + '.' : 'Confirmed. Thank you, ' + S.me.first + '.';
       $('thanksS').textContent = more;
     }
-    if (!S.key) { toMp(); return; }       // signed from another browser: their answers can't be kept here
-    if (DRAW.qs === 'money') { track('questions', S.backer ? 'money_backer' : 'money'); toPitch(); return; }
-    buildLikert();
-    go(2);
+    // Marcus, 20 Nov 2026: the statements have their 10,000 answers each, so they end. From 22 Nov everyone goes
+    // from confirming to a peer, then the MP and the minister if their side of the test asks for them, then the pitch.
+    S.okTxt = $('thanksH').textContent;
+    if (MONEY) { track('money_first', S.paid ? 'paid' : 'not paid'); earn('sign'); }
+    if (S.write) {
+      // back from a thank-you email: straight to the first letter they have not sent
+      S.okTxt = 'Welcome back, ' + S.me.first + '. Your signature is counted.';
+      track('write_back', ((/^ty[1-5]/.test(REF) ? REF + ' ' : '') + (S.sentBefore || []).join(' ')).trim());
+      toast('Welcome back, ' + S.me.first + '. Your signature is counted.');
+      return nextMail('');
+    }
+    toPeer();
   }
 
   // ---------------------------------------------------------------- 2: one statement and their own words
@@ -1791,62 +2018,108 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   $('wayFund').addEventListener('click', function () { track('chose_fund'); toFund(); });
   $('wayMp').addEventListener('click', function () { track('chose_mp'); toMp(); });
   $('wayShare').addEventListener('click', function () { track('chose_share'); toShare(); });
+  // Marcus, 19 Nov 2026: a signer thought she could not sign without picking one of the three. 3 in 10 left here.
+  $('choiceSkip').addEventListener('click', function () { track('choice_skip'); finish(); });
 
-  // ---------------------------------------------------------------- 2b: the money pitch (Marcus, 6 Nov 2026)
-  // Two slides, swiped or moved on with Next: what the campaign has done, then what the money pays
-  // for, with the amount chosen on the slide. Then the fund screen, without repeating the case.
-  var ptAt = 0, ptAmt = 20;
+  // ---------------------------------------------------------------- 4: the money pitch (Marcus, 20 Nov 2026)
+  // One short screen after the two letters: the vote date, what the money buys (with pictures), the social media
+  // numbers, then one tap to the card form. One-off £20 first, as since 26 Oct; monthly is one tap away.
+  var ptAmt = 20, ptFreq = 'once';
+  var VOTE = Date.UTC(2026, 11, 7);
   function toPitch() {
     S.pitchSeen = true;
-    ptAt = 0;
-    $('ptTrack').scrollLeft = 0;
-    ptShow(0);
+    setTimeout(function () { if (window.gvEnds) gvEnds(); }, 60);
+    var days = Math.max(1, Math.ceil((VOTE - Date.now()) / 864e5));
+    $('gvDays').textContent = days === 1 ? '1 day' : days + ' days';
+    var sent = ['mp', 'peer', 'min'].filter(function (k) { return S.done && S.done[k]; }).length;
+    $('gvOkTxt').textContent = sent ? "You've signed and sent " + (sent === 1 ? 'an email' : sent + ' emails') + '.' + (sent >= mailSeq().length ? ' Earn your last star here.' : '') : 'Signature confirmed';
+    getJson('social/summary').then(function (d) {
+      var f = d && d.followers; if (!f || !f.now) return;
+      $('gvFollow').textContent = fmt(f.now);
+      var ds = f.days || [], wk = ds.length > 7 ? f.now - ds[ds.length - 8].total : 0;
+      $('gvWeek').textContent = wk > 0 ? '+' + fmt(wk) + ' this week' : '';
+      var v = d.posts && d.posts.views;
+      if (v > 1e6) $('gvViews').textContent = (Math.floor(v / 1e5) / 10) + ' million views of our videos.';
+    }).catch(function () {});
     track('pitch_seen');
     go('pitch');
   }
-  function ptShow(i) {
-    ptAt = i;
-    var dots = document.querySelectorAll('.pt-dots span');
-    for (var j = 0; j < dots.length; j++) dots[j].classList.toggle('on', j === i);
-    $('ptNext').style.visibility = i === 0 ? 'visible' : 'hidden';
-    var sl = [$('ptS1'), $('ptS2')];
-    sl[i].classList.add('in');
-    sl[i].removeAttribute('inert'); sl[1 - i].setAttribute('inert', '');
-    if (i === 1 && !S.ptNexted) { S.ptNexted = true; track('pitch_next'); }
-  }
-  // a swipe is read once the track has settled, so a Next press is never undone halfway through its glide
-  var ptTimer;
-  $('ptTrack').addEventListener('scroll', function () {
-    clearTimeout(ptTimer);
-    ptTimer = setTimeout(function () {
-      var t = $('ptTrack'), i = Math.round(t.scrollLeft / Math.max(1, t.clientWidth));
-      if (i !== ptAt && (i === 0 || i === 1)) ptShow(i);
-    }, 120);
-  }, { passive: true });
-  $('ptNext').addEventListener('click', function () {
-    var t = $('ptTrack');
-    t.scrollTo({ left: t.scrollWidth, behavior: reduced ? 'auto' : 'smooth' });
-    ptShow(1);
-    var top = $('card').getBoundingClientRect().top;
-    if (top < 0) $('card').scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
-  });
-  document.querySelectorAll('.pt-amt').forEach(function (b) {
+  function gvLabel() { $('ptGive').textContent = 'Give £' + ptAmt + (ptFreq === 'monthly' ? ' a month' : ' now'); }
+  document.querySelectorAll('.gv-amts button').forEach(function (b) {
     b.addEventListener('click', function () {
       ptAmt = +b.getAttribute('data-amt');
-      document.querySelectorAll('.pt-amt').forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
-      $('ptGive').textContent = 'Back us with £' + ptAmt;
+      document.querySelectorAll('.gv-amts button').forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+      gvLabel();
+      if (MONEY) track('pitch_amount', String(ptAmt));
     });
   });
-  $('ptGive').addEventListener('click', function () {
-    track('pitch_fund', String(ptAmt));
-    S.pitchGive = true;
-    var r = $('p4').querySelector('input[name=amt][value="' + ptAmt + '"]');
-    if (r) r.checked = true;
-    $('otherWrap').hidden = true;
-    fundLabel();
-    toFund();
+  document.querySelectorAll('.gv-freq button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      ptFreq = b.getAttribute('data-freq');
+      document.querySelectorAll('.gv-freq button').forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+      if (ptFreq === 'monthly') track('fund_monthly_pick');
+      gvLabel();
+    });
   });
-  $('ptSkip').addEventListener('click', function () { track('pitch_skip'); toChoice(); });
+  function gvSet(amt) {
+    $('p4').querySelector('input[name=freq][value=' + ptFreq + ']').checked = true;
+    var r = amt ? $('p4').querySelector('input[name=amt][value="' + amt + '"]') : null;
+    if (r) { r.checked = true; $('otherWrap').hidden = true; }
+    else { $('p4').querySelector('input[name=amt][value=other]').checked = true; $('otherWrap').hidden = false; $('otherAmt').value = ''; }
+    fundLabel();
+  }
+  // one tap from the pitch to the card form: no second screen asking the same thing again
+  // the row of what the money pays for: arrows and click-and-drag, so it moves on a laptop as well as a phone
+  (function () {
+    var g = $('gvGrid'), pv = $('gvPrev'), nx = $('gvNext');
+    if (!g) return;
+    if (window.matchMedia && matchMedia('(hover:hover) and (pointer:fine)').matches) $('gvSwipe').innerHTML = 'More with the arrows &rarr;';
+    function step() { var c = g.querySelector('.gv-it'); return c ? c.offsetWidth + 8 : g.clientWidth * 0.8; }
+    function ends() { if (busy) return; pv.hidden = g.scrollLeft < 8; nx.hidden = g.scrollLeft + g.clientWidth > g.scrollWidth - 8; }
+    var at = 0, busy = 0;
+    function stops() {
+      var c = g.querySelectorAll('.gv-it'), max = g.scrollWidth - g.clientWidth, out = [];
+      for (var k = 0; k < c.length; k++) { var x = Math.min(max, Math.max(0, c[k].offsetLeft - c[0].offsetLeft)); if (!out.length || x - out[out.length - 1] > 8) out.push(x); }
+      return out;
+    }
+    function nearest() { var st = stops(), b = 0; st.forEach(function (x, k) { if (Math.abs(x - g.scrollLeft) < Math.abs(st[b] - g.scrollLeft)) b = k; }); return b; }
+    function go(d) {
+      var st = stops();
+      if (!busy) at = nearest();
+      at = Math.max(0, Math.min(st.length - 1, at + d));
+      busy = Date.now();
+      g.classList.add('glide');
+      g.scrollTo({ left: st[at], behavior: reduced ? 'auto' : 'smooth' });
+      pv.hidden = st[at] < 8; nx.hidden = st[at] >= g.scrollWidth - g.clientWidth - 8;
+    }
+    pv.addEventListener('click', function () { go(-1); });
+    nx.addEventListener('click', function () { go(1); });
+    var most = 1;   // on /fund/: the furthest card of what the money pays for that they moved to
+    function seen() { var n = nearest() + 1; if (n > most) { most = n; if (MONEY) track('pitch_slide', n + ' of ' + stops().length); } }
+    g.addEventListener('scroll', function () { clearTimeout(g._t); g._t = setTimeout(function () { busy = 0; g.classList.remove('glide'); ends(); seen(); }, 150); }, { passive: true });
+    window.addEventListener('resize', ends);
+    if (window.ResizeObserver) new ResizeObserver(ends).observe(g);
+    var down = false, x0 = 0, s0 = 0, moved = false;
+    g.addEventListener('pointerdown', function (e) { if (e.pointerType !== 'mouse') return; down = true; moved = false; x0 = e.clientX; s0 = g.scrollLeft; });
+    window.addEventListener('pointermove', function (e) { if (!down) return; var dx = e.clientX - x0; if (Math.abs(dx) > 4) { moved = true; g.classList.add('drag'); } if (moved) g.scrollLeft = s0 - dx; });
+    window.addEventListener('pointerup', function () { if (!down) return; down = false; if (moved) { g.classList.remove('drag'); var w = step(); g.scrollTo({ left: Math.round(g.scrollLeft / w) * w, behavior: reduced ? 'auto' : 'smooth' }); } });
+    window.gvEnds = ends;
+  })();
+  $('ptGive').addEventListener('click', function () {
+    track('pitch_fund', ptFreq + ' ' + ptAmt);
+    S.pitchGive = true;
+    gvSet(ptAmt);
+    toFund();
+    $('p4').requestSubmit();
+  });
+  $('ptOther').addEventListener('click', function () {
+    track('pitch_other');
+    S.pitchGive = true;
+    gvSet(0);
+    toFund();
+    setTimeout(function () { $('otherAmt').focus(); }, 50);
+  });
+  $('ptSkip').addEventListener('click', function () { track('pitch_skip'); if (MONEY && !S.signed) toSign(); else finish(); });
 
   // ---------------------------------------------------------------- sharing: just the link to copy
   function toShare() {
@@ -1866,13 +2139,28 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
 
   // How far each signer gets, for the funnel in the morning report. Sent in the background, never waited for.
   function track(step, detail) {
-    if (!S.sig || !S.key) return;
+    if (!S.sig || !S.key) { moneyEv(step, detail); return; }
     try {
       var b = JSON.stringify({ sig: S.sig, key: S.key, step: step, detail: detail || '' });
       if (navigator.sendBeacon) navigator.sendBeacon(API + 'petition/step', new Blob([b], { type: 'text/plain' }));
       else fetch(API + 'petition/step', { method: 'POST', body: b, keepalive: true, headers: { 'Content-Type': 'text/plain' } });
     } catch (e) {}
   }
+
+  // /fund/ before a signature exists (Marcus, 25 Nov 2026: "Yes, add it"): each step on the money screen,
+  // anonymous like the signing form (this browser's random key and the step, never what was typed), so we
+  // can see where people who came from an advert stop.
+  function moneyEv(step, detail) {
+    if (!MONEY || S.signed || DEMO) return;
+    S.moneyAt = step;
+    if (step === 'pitch_skip' || step === 'fund_skip') S.moneyDone = true;   // on to the signing form, which has its own
+    formEv('money', step, detail);
+  }
+  function moneyLeave() {
+    if (MONEY && !S.signed && !S.paid && !S.moneyDone && S.moneyAt && !S.moneyLeft) { S.moneyLeft = true; formEv('money', 'left', S.moneyAt); }
+  }
+  window.addEventListener('pagehide', moneyLeave);
+  document.addEventListener('visibilitychange', function () { if (document.hidden) moneyLeave(); else S.moneyLeft = false; });
 
   // ---------------------------------------------------------------- 3: your MP
   // Parliament's petition site shows you your MP's page and leaves the rest to you. We find the MP
@@ -1897,7 +2185,6 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   }
   // The letter is short and says what the petition says. It goes from the signer's own email:
   // we never send it for them, so nothing about it can touch our own domain's standing.
-  var MP_SUBJECT = 'Include all lawmakers under the Hillsborough Law';
   // Marcus, 6 Nov 2026: written as a constituent who backs the campaign. It asks them to include
   // themselves, then answers the Government's lines one by one under bold titles, so they cannot be
   // sent back to us. 7 Nov: the number of other signers is the live confirmed count, so the MP
@@ -1907,42 +2194,32 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     var n = (S.count || 0) - 1;   // exact, and it goes up as people sign (Marcus, 7 Nov 2026)
     return n >= 100 ? fmt(n) : '';
   }
-  function mpLetter(html) {
-    var mp = S.mp, me = S.me;
-    var T = function (x) { return html ? esc(x) : x; };
-    var B = function (x) { return html ? '<b>' + esc(x) + '</b>' : x; };
-    var others = othersSigned();
-    return T('Dear ' + (mp ? mp.name + ' MP' : '[your MP]') + ',\n\n' +
-      'I am your constituent' + (me.pc ? ' (' + me.pc + ')' : '') + '. ' +
-      (others ? 'Along with ' + others + ' other people, I have signed the petition' : 'I have signed the petition') +
-      ' to include all lawmakers under the Hillsborough Law, and I back the campaign behind it.\n\n' +
-      'I am writing to ask you to include yourself. The Public Office (Accountability) Bill will make it a crime for police officers, civil servants, soldiers, ministers and even the intelligence services to intentionally or recklessly mislead the public. But MPs, MSPs, MSs, MLAs and peers have a carve-out from their own law. Please vote to end that carve-out for lies told to the public outside their parliaments: on TV and radio, on social media and at public events.\n\n' +
-      'I do not want a reply that repeats the lines the Cabinet Office has written for MPs. The ExecProsec campaign, which is leading this petition, has read them all and concluded that none of them stands up, as the below makes clear:\n\n') +
-      B('1. Parliamentary privilege is not a barrier to including legislators') + T('\n' +
-      'The Government says parliamentary privilege protects what is said in Parliament. It still would. Our amendment does not threaten parliamentary privilege; it respects it completely. It only covers what legislators say to the public outside their parliaments.\n\n' +
-      'In fact, it goes further. The Senedd, the Scottish Parliament and the Northern Ireland Assembly do not have parliamentary privilege; they only have limited protection against claims of slander. As it is written, the Bill gives no immunity from prosecution for what is said in those parliaments. So at present, a government minister could be prosecuted for misleading the public if they chose to lie in the Senedd, the Scottish Parliament or the Northern Ireland Assembly. That is a major oversight in the Bill. Our amendment applies an immunity from prosecution for the new offences to proceedings in all of the UK\'s other parliaments, something the Government and the Bill have not even thought to do.\n\n') +
-      B('2. Parliament\'s existing procedures are no barrier to including legislators either') + T('\n' +
-      'The Government says Parliament regulates its own affairs. But Parliament\'s own rules only deal with what is said inside Parliament. They do not deal with lies told to the public outside Parliament. When a police officer or civil servant lies to the public, a jury decides. MPs and peers should be no different.\n\n') +
-      B('3. Legislators do not need executive power to be held to these offences') + T('\n' +
-      'The Government says backbench MPs and peers do not take decisions on behalf of the state. They do not need to. Backbenchers scrutinise the Government, vote on laws and public spending, and influence decisions of national importance. Most are elected by the public and trusted to report back on what the Government is doing, and when they speak to the public about it, the public must be able to trust them to tell the truth. Under our system, executive power is nothing without scrutiny from the opposition and the backbenches. If government ministers can be prosecuted for lying but shadow ministers and scrutinisers cannot, the system of checks and balances is thrown completely off balance when legislators communicate with the public.\n\n') +
-      B('4. Lying does not depend on access to secret government information') + T('\n' +
-      'The Government says backbench MPs and peers do not have access to the kind of information ministers have. That shows a complete misunderstanding of what lying is. A lie does not depend on access to the truth; it is the opposite of the truth. All it takes is a willingness to make things up.\n\n') +
-      B('5. Elections and prosecutions do two completely different things') + T('\n' +
-      'The Government says elected members are accountable to the public at elections. But elections decide who holds office, and they reflect the popularity of a party, its leader or its policies. A prosecution decides something else entirely: whether one person deliberately deceived the public. Only a jury, under careful analysis of the evidence at trial, can decide that. No election can.\n\n' +
-      'The parliamentary expenses scandal proves the point. Elected politicians went to prison for false expense claims. Being elected did not put them above the law; they faced justice, as everyone should. And peers never face an election at all.\n\n') +
-      B('6. The Government says this offence is targeting Hillsborough-style cover-ups, and it is not right to criminalise political speech') + T('\n' +
-      'Firstly, we are not attempting to criminalise political speech. Our aim is to make sure normal political debate, opinions, honest mistakes and broken promises can never be prosecuted.\n\n' +
-      'Secondly, nothing written in the Bill limits it to Hillsborough-style cover-ups. It should rightly cover cover-ups like Hillsborough, but it should equally cover lying to start a war or lying to manipulate the result of a referendum. The bar for a criminal conviction is high, but the range of situations the offence can cover is very broad, as it should be.\n\n') +
-      B('Conclusion:') + T('\n' +
-      'If Parliament votes to exempt its own members, I will feel angry and betrayed. A law for everyone else but not for the people who make it is a law for thee, but not for me. Such an act would destroy public trust in the UK\'s parliaments, as you would be telling us that you wanted the freedom to lie to us.\n\n' +
-      'It would show the public that you have not learnt your lesson after years of lying in politics, which we have endured from Iraq to the Brexit referendum to the scandals of the COVID-19 pandemic, and countless others. There is a reason politicians are among the least trusted professions in the whole country. Do you seriously want to do this? It would be the most damaging, reputationally self-harming thing imaginable for Parliament.\n\n' +
-      'The House of Lords votes next on this amendment. So far, more peers have spoken in favour of it than against it, so it seems likely the Lords will add it to the Bill. It will then come back to the Commons for final approval. Please tell me how you will vote when it does.\n\n' +
-      'Please do not send me lines written by the Cabinet Office: as set out above, they are meaningless. Every other objection the campaign has heard is answered in its briefing below. If your reply repeats one of them, I will take it that you have no real answer, and I will assume the worst.\n\n' +
-      'Detailed briefing: https://execprosec.org/amendments-briefing/\n\n' +
-      'Yours sincerely,\n' + me.first + ' ' + me.last + (me.pc ? '\n' + me.pc : ''));
+  // Marcus, 19 Nov 2026: a signer copied the address, went to his email app, came back and the page had reloaded
+  // with the letter gone (phones close pages in the background). The MP step is kept on the phone for 12 hours
+  // and comes back by itself, on this page or in the pop-up on the big page. Nothing leaves the phone.
+  var MP_KEEP = 'ep_petition_mp';
+  function keepMp(step) {
+    if (DEMO) return;
+    try { localStorage.setItem(MP_KEEP, JSON.stringify({ at: Date.now(), step: step || 'mp', peer: S.peer || null, peerParty: S.peerParty || 0, done: S.done || {}, mpDone: !!S.mpDone, me: { first: S.me.first, last: S.me.last, pc: S.me.pc, town: S.me.town, emailOk: S.me.emailOk },
+      mp: S.mp, turnMp: S.turnMp, count: S.count, sig: S.sig, key: S.key, backer: !!S.backer, fundSeen: !!S.fundSeen, paid: !!S.paid, shareSeen: !!S.shareSeen, myNumber: S.myNumber })); } catch (e) {}
   }
-  function toMp() {
-    if (S.abroad) { toFund(); return; }
+  function dropMp() { try { localStorage.removeItem(MP_KEEP); } catch (e) {} }
+  function resumeMp() {
+    var k = null;
+    try { k = JSON.parse(localStorage.getItem(MP_KEEP) || 'null'); } catch (e) {}
+    if (!k || !k.me || !(Date.now() - k.at < 12 * 3600e3)) { dropMp(); return false; }
+    S.me = k.me; S.mp = k.mp; S.turnMp = k.turnMp != null ? k.turnMp : null; S.count = Math.max(S.count || 0, k.count || 0); S.sig = k.sig || 0; S.key = k.key || '';
+    S.backer = k.backer; S.fundSeen = k.fundSeen; S.paid = k.paid; S.shareSeen = k.shareSeen; S.myNumber = k.myNumber || 0;
+    S.abroad = false; S.signed = true; S.peer = k.peer || null; S.peerParty = k.peerParty || 0; S.done = k.done || {}; S.mpDone = !!k.mpDone;
+    updateSticky();
+    document.querySelectorAll('.me-first').forEach(function (el) { el.textContent = S.me.first; });
+    if (k.step === 'min') toMin(true); else if (k.step === 'mp') toMp(true); else toPeer(true);
+    return true;
+  }
+  function toMp(resumed) {
+    if (S.abroad) { nextMail('mp'); return; }
+    $('mpOk').hidden = true;
+    $('mpOkTxt').textContent = S.okTxt || '';
     var mp = S.mp;
     $('mpFrom').innerHTML = mp
       ? 'You gave us the postcode <b>' + esc(S.me.pc) + '</b>, so your MP is:'
@@ -1955,31 +2232,377 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     $('mpDot').style.color = mp && mp.party === 'Scottish National Party' ? '#041440' : '';
     $('mpMail').textContent = mp && mp.email ? mp.email : "Your MP's email address appears here";
     document.querySelector('[data-copy="mpMail"]').disabled = !(mp && mp.email);
-    $('mpSubj').textContent = MP_SUBJECT;
+    $('mpSubj').textContent = shortMail('mp').subject;
     $('mpMsg').innerHTML = mpLetter(true);
-    document.querySelectorAll('.cp-b').forEach(function (b) { b.classList.remove('done'); b.textContent = 'Copy'; });
+    // Central gives each MP's constituents the points in turn; swap to it if it answers before anything is copied
+    if (!DEMO && mp && mp.email && S.sig && S.key && S.turnMp == null) post('petition/mp-letter', { sig: S.sig, key: S.key, mp: mp.email }).then(function (d) {
+      if (!d || !d.ok || d.subject == null || S.mpCopied || S.turnMp != null) return;
+      S.turnMp = +d.subject; keepMp('mp');
+      $('mpSubj').textContent = shortMail('mp').subject; $('mpMsg').innerHTML = mpLetter(true);
+    }).catch(function () {});
+    document.querySelectorAll('.cp-b').forEach(function (b) { b.classList.remove('done'); b.setAttribute('data-l', 'Copy'); b.setAttribute('aria-label', 'Copy'); });
     S.mpSeen = true;
-    track('mp_seen');
+    $('mpBack').hidden = !resumed;
+    track(resumed ? 'mp_resumed' : 'mp_seen');
+    keepMp('mp');
     go(3);
   }
   document.querySelectorAll('.cp-b').forEach(function (b) {
     b.addEventListener('click', function () {
-      var text = $(b.getAttribute('data-copy')).textContent;
-      var shown = function () { b.classList.add('done'); b.textContent = 'Copied'; S.mpCopied = true; track('mp_copied', b.getAttribute('data-copy')); };
+      var id = b.getAttribute('data-copy'), text = $(id).textContent, kind = (id.match(/^(mp|peer|min)/) || ['', 'mp'])[1];
+      var shown = function () {
+        b.classList.add('done'); b.setAttribute('data-l', 'Copied'); b.setAttribute('aria-label', 'Copied');
+        S[kind + 'Copied'] = true;
+        track(kind + '_copied', id + (kind === 'peer' ? ' ' + pickPeer().id : ''));
+      };
+      var letter = { mpMsg: mpLetter, peerMsg: peerLetter, minMsg: minLetter }[id] || null;
       // the letter goes as rich text too, so its bold titles stay bold when pasted into an email
-      if (b.getAttribute('data-copy') === 'mpMsg' && window.ClipboardItem && navigator.clipboard && navigator.clipboard.write) {
-        var html = '<div>' + mpLetter(true).replace(/\n/g, '<br>') + '</div>';
+      if (letter && window.ClipboardItem && navigator.clipboard && navigator.clipboard.write) {
+        var html = '<div>' + letter(true).replace(/\n/g, '<br>') + '</div>';
         navigator.clipboard.write([new ClipboardItem({
           'text/html': new Blob([html], { type: 'text/html' }),
-          'text/plain': new Blob([mpLetter(false)], { type: 'text/plain' })
+          'text/plain': new Blob([letter(false)], { type: 'text/plain' })
         })]).then(shown, function () {
-          navigator.clipboard.writeText(text).then(shown, function () { selectText($('mpMsg')); });
+          navigator.clipboard.writeText(text).then(shown, function () { selectText($(id)); });
         });
       } else if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(text).then(shown, function () { selectText($(b.getAttribute('data-copy'))); });
-      } else selectText($(b.getAttribute('data-copy')));
+        navigator.clipboard.writeText(text).then(shown, function () { selectText($(id)); });
+      } else selectText($(id));
     });
   });
+
+  // ---------------------------------------------------------------- 3c: a member of the House of Lords (Marcus, 20 Nov 2026)
+  // 294 peers whose @parliament.uk address has taken our own emails without bouncing (Central, 20 Nov 2026), minus the
+  // Lord Speaker, the Greens (already with us), and anyone who asked us to stop, is unwell or is paused. Signature
+  // numbers go up one at a time, so taking the peer by signature number shares the letters out evenly.
+  var PEERS = '14|Lord Redwood|C|redwoodj~56|Lord Arbuthnot of Edrom|C|arbuthnotj~57|Lord Young of Cookham|C|youngg~68|Lord Lilley|C|lilleyp~82|Lord Howard of Lympne|C|howardm~100|Lord Hamilton of Epsom|C|hamiltona~105|Lord Hammond of Runnymede|C|hammondp~116|Lord Soames of Fletching|C|soamesn~123|Lord Lansley|C|lansleya~147|Lord Boateng|L|boatengp~150|Baroness Harman|L|harmanh~181|Lord Cryer|L|cryerj~209|Lord Randall of Uxbridge|C|randallj~214|Lord Foster of Bath|D|fosterdon~269|Baroness Smith of Malvern|L|smithjq~276|Lord Grocott|L|grocottb~281|Baroness Golding|L|goldingll~296|Baroness Stuart of Edgbaston|X|stuartg~302|Lord Rooker|L|rookerj~305|Baroness Morris of Yardley|L|morrise~315|Lord Fowler|X|fowlern~318|Lord Spellar|L|spellarj~333|Lord McLoughlin|C|mcloughlinp~347|Baroness Merron|L|merrong~384|Baroness McIntosh of Pickering|C|mcintoshac~390|Baroness Winterton of Doncaster|L|wintertonr~397|Lord Allan of Hallam|N|allanr~407|Baroness Taylor of Bolton|L|taylora~435|Lord Brady of Altrincham|C|bradyg~452|Lord Bradley|L|bradleykj~499|Lord Campbell-Savours|L|campbellsavours~525|Lord Clark of Windermere|L|clarkd~533|Lord Hanson of Flint|L|hansond~542|Lord Touhig|L|touhigjd~546|Lord Murphy of Torfaen|L|murphypp~573|Baroness Liddell of Coatdyke|L|liddellh~657|Lord Kilclooney|X|kilclooneyj~672|Lord Robertson of Port Ellen|L|robertsong~693|Lord Kinnock|L|kinnockn~738|Lord Alton of Liverpool|X|altond~919|Lord McNally|D|mcnallyt~965|Lord Wrigglesworth|D|wrigglesworthi~993|Lord Howell of Guildford|C|howelld~994|Lord Hunt of Wirral|C|huntd~1091|Lord Bates|C|batesm~1138|Lord Carlile of Berriew|X|carlilea~1206|Lord Carrington of Fulham|C|carringtonm~1241|Lord Watson of Invergowrie|L|watsonm~1387|Lord Mann|L|mannjl~1388|Lord Dodds of Duncairn|U|doddsn~1438|Lord Beamish|L|beamish~1531|Baroness Featherstone|D|featherstonel~1547|Lord Benyon|X|benyonr~1551|Lord Jackson of Peterborough|C|jacksonsj~1557|Baroness Kramer|D|kramers~1571|Lord Gove|C|govem~1580|Lord Vaizey of Didcot|C|vaizeye~1588|Baroness Keeley|L|keeleyb~1649|Baroness Hayman|X|haymanh~1703|Lord Tope|D|topeg~1705|Lord Tugendhat|C|tugendhatc~1755|Baroness Young of Old Scone|N|youngb~1782|Baroness Thornton|L|thorntong~1796|Lord Taylor of Warwick|N|taylorjdb~1816|Lord Wallace of Saltaire|D|wallacew~1846|Baroness Mallalieu|L|mallalieua~1867|Baroness Ludford|D|ludfords~1916|Lord Newby|D|newbyr~1934|Baroness Miller of Chilthorne Domer|D|millers~2004|Lord Hope of Craighead|X|hopejad~2024|Lord Hunt of Kings Heath|L|huntp~2097|Baroness Seccombe|C|seccombej~2166|Baroness Greenfield|X|greenfieldsu~2168|Baroness Morgan of Huyton|L|morgan~2202|Lord De Mauley|C|demauley~2227|Lord Stevens of Ludgate|N|stevensdavid~2443|Lord Patel|X|patelnb~2444|Lord Whitty|L|whittyl~2476|Baroness Prashar|X|prasharu~2483|Lord Bradshaw|D|bradshaww~2484|Lord Rennard|D|rennardc~2490|Lord Goldsmith|L|goldsmithp~2496|Lord Grabiner|X|grabinera~2503|Baroness Gale|L|galea~2506|Baroness McIntosh of Hudnall|L|mcintoshg~2539|Baroness Northover|D|northoverl~2542|Baroness Scott of Needham Market|D|scottrc~2547|Baroness Walmsley|D|walmsleyj~2570|Lord Mitchell|L|parrym~2594|Lord Cromwell|X|cromwellg~2671|Lord Harris of Haringey|L|harrist~2685|Lord Dholakia|D|dholakian~3179|Baroness Pitkeathley|L|pitkeathleyj~3187|Lord Norton of Louth|C|nortonp~3278|Baroness Rawlings|C|rawlingspe~3385|Lord Craig of Radley|X|craigd~3396|Lord Clement-Jones|D|clementjonest~3478|Lord Alderdice|D|alderdicej~3504|Lord Bassam of Brighton|L|bassams~3526|Lord Berkeley|L|berkeleyafg~3561|Baroness Blackstone|L|blackstonet~3577|Lord Grantchester|L|grantchesterj~3605|Lord Best|X|best~3609|Baroness Finlay of Llandaff|X|finlayi~3652|Baroness Hale of Richmond|X|haleb~3669|Lord Drayson|L|draysonp~3670|Baroness Falkner of Margravine|X|falknerk~3684|Baroness Prosser|L|prosserm~3688|Lord Giddens|L|giddensa~3690|Baroness Neuberger|X|neubergerj~3692|Baroness Murphy|X|murphyel~3696|Baroness Young of Hornsey|X|younglo~3703|Baroness Royall of Blaisdon|L|royallj~3705|Lord Cameron of Dillington|X|camerone~3707|Lord Griffiths of Burry Port|L|griffithslj~3743|Lord Adonis|L|adonisa~3756|Baroness Deech|X|deechr~3765|Lord Hall of Birkenhead|X|halla~3783|Lord Crisp|X|crisp~3787|Lord Taylor of Holbeach|C|taylorjl~3788|Baroness Kingsmill|L|kingsmilldp~3789|Lord Teverson|D|teversonr~3792|Baroness Jones of Whitchurch|L|jonesmag~3795|Lord Morrow|U|morrowm~3797|Lord Marland|C|marland~3798|Lord Patel of Bradford|N|patelkk~3801|Lord Browne of Belmont|U|brownew~3804|Baroness Butler-Sloss|X|butlerslosse~3808|Lord Dear|X|deargj~3818|Lord Jay of Ewelme|X|jaymh~3829|Baroness Coussins|X|coussinsj~3831|Baroness Campbell of Surbiton|X|campbelljs~3832|Lord Bew|X|bewp~3834|Lord West of Spithead|L|westaa~3839|Baroness Warsi|N|warsis~3842|Baroness Garden of Frognal|D|gardens~3893|Lord Freud|C|freudd~3902|Baroness O\'Loan|X|oloann~3944|Lord Hart of Tenby|C|harts~4014|Lord Sharma|C|alok.sharma~4027|Baroness Morgan of Cotes|N|morganna~4036|Baroness Berger|L|bergerl~4068|Lord Harrington of Watford|N|harringtonr~4127|Baroness Elliott of Whitburn Bay|L|elliottj~4130|Baroness Ritchie of Downpatrick|L|ritchiem~4147|Baroness Sherlock|L|sherlockm~4150|Baroness Armstrong of Hill Top|L|armstrongh~4151|Lord Willis of Knaresborough|D|willisg~4153|Lord Kennedy of Southwark|L|kennedyro~4156|Lord Liddle|L|liddler~4159|Baroness Hayter of Kentish Town|L|hayterd~4160|Lord Knight of Weymouth|L|knightja~4163|Lord German|D|germanm~4164|Baroness Hussein-Ece|D|ecem~4166|Baroness Donaghy|L|donaghyr~4167|Baroness Benjamin|D|benjaminf~4168|Lord McConnell of Glenscorrodale|L|mcconnellj~4171|Lord Black of Brentwood|C|blackgv~4173|Lord Popat|C|popatd~4175|Lord Stevenson of Balmacara|L|stevensonw~4176|Lord Shipley|D|shipleyj~4178|Baroness Parminter|D|parminterk~4179|Baroness Healy of Primrose Hill|L|healyab~4184|Baroness Eaton|C|eatonm~4186|Lord Monks|L|monksj~4190|Baroness Hollins|X|hollinss~4196|Lord Sharkey|D|sharkeyjk~4202|Lord Lexden|C|lexdena~4205|Baroness Stowell of Beeston|C|stowellt~4210|Lord Ahmad of Wimbledon|C|ahmadt~4214|Lord Palmer of Childs Hill|D|palmerm~4216|Lord Empey|V|empeyr~4217|Lord Wood of Anfield|L|stewart.wood~4220|Lord Dannatt|X|dannattr~4222|Lord Collins of Highbury|L|collinsr~4225|Lord Kestenbaum|L|kestenbaumj~4231|Baroness Tyler of Enfield|D|tylerc~4238|Lord Storey|D|storeym~4239|Lord Stephen|D|stephenn~4248|Viscount Colville of Culross|X|colvillec~4251|Lord Singh of Wimbledon|X|singhia~4258|Baroness Kidron|X|kidronb~4284|Baroness Neville-Rolfe|C|nevillerolfel~4285|Baroness Bakewell of Hardington Mandeville|D|bakewellc~4288|Lord Paddick|N|paddickb~4294|Lord Holmes of Richmond|C|holmesc~4301|Baroness Hodgson of Abinger|C|hodgsonf~4302|Lord Balfe|C|richard.balfe~4303|Baroness Kennedy of Cradley|L|alicia.kennedy~4304|Lord Allen of Kensington|L|allenc~4309|Lord Thomas of Cwmgiedd|X|thomasjl~4323|Baroness Smith of Newnham|D|jes42~4327|Lord Cooper of Windrush|N|cooperac~4334|Lord Goddard of Stockport|D|goddardd~4335|Baroness Mobarik|C|mobarikn~4339|Baroness Brady|C|bradyk~4340|Lord Cashman|N|cashmanm~4341|Baroness Pinnock|D|pinnockk~4347|Baroness Wolf of Dulwich|X|wolfa~4354|The Earl of Kinnoull|X|kinnoull~4367|Lord Elliott of Ballinamallard|V|tom.elliott~4395|Baroness Hayman of Ullock|L|haymans~4401|Baroness Prentis of Banbury|C|prentisv~4508|Baroness Anderson of Stoke-on-Trent|L|andersonr~4529|Lord Mackinlay of Richborough|C|mackinlayc~4533|Baroness Altmann|N|altmannr~4542|Lord Smith of Hindhead|C|smithpr~4543|Lord Gilbert of Panteg|C|gilberts~4545|Lord O\'Shaughnessy|C|oshaughnessyj~4546|Baroness Stroud|C|stroudp~4550|Lord Lupton|N|luptonj~4551|Baroness Redfern|C|redferne~4552|Baroness Pidding|C|piddinge~4564|Lord Bird|X|birdja~4565|Baroness Brown of Cambridge|X|kingjb~4566|Baroness Watkins of Tavistock|X|watkinsm~4570|Lord Price|C|dewdneyherbertl~4576|Lord McInnes of Kilwinning|C|mcinnesm~4579|Baroness Chakrabarti|L|chakrabartis~4580|Baroness Vere of Norbiton|C|verec~4582|Baroness Bloomfield of Hinton Waldrist|C|bloomfieldo~4668|Baroness Maclean of Redditch|C|macleanr~4686|Lord Duncan of Springbank|C|duncani~4699|Baroness Meyer|C|meyerc~4702|Lord McNicol of West Kilbride|L|mcnicoli~4705|Lord Anderson of Ipswich|X|andersondw~4724|Baroness Blower|L|blowerc~4725|Baroness Hunt of Bethnal Green|X|huntr~4732|Lord Carter of Haslemere|X|carterh~4733|Lord Choudrey|C|choudreyz~4876|Lord Grimstone of Boscobel|C|grimstoneg~4877|Lord Greenhalgh|C|greenhalghs~4878|The Lord Bishop of Manchester|B|walkerdb~4879|Lord Frost|N|frostd~4882|Lord Sarfraz|C|lordsarfrazoffice~4883|Lord Moylan|C|moyland~4887|Baroness Fox of Buckley|N|foxcr~4888|Lord Sharpe of Epsom|C|sharpea~4890|Lord Mendoza|C|mendozan~4893|Lord Davies of Brixton|L|daviesofbrixton~4898|Lord Udny-Lister|C|listere~4901|Lord Wolfson of Tredegar|C|wolfsond~4906|Baroness Fraser of Craigmaddie|C|frasers~4914|Lord Morse|X|morsea~4951|Lord Hampton|X|pakingtonj~4953|Lord Roborough|C|roboroughm~4956|Baroness Taylor of Stevenage|L|taylors~4962|Lord Verdirame|N|verdirameg~4967|Baroness O\'Neill of Bexley|C|oneillta~4969|Baroness Foster of Aghadrumsee|N|fosterab~4970|Lord Weir of Ballyholme|U|weirp~4972|Lord Hendy of Richmond Hill|L|hendyp~4974|Lord Prentis of Leeds|L|prentisd~4980|The Lord Bishop of Sheffield|B|wilcoxp~4984|Lord Mott|C|mottd~4996|The Lord Bishop of Newcastle|B|hartleyh~5007|Lord Moynihan of Chelsea|C|moynihanj~5014|Lord Banner|C|bannerc~5017|Lord Fuller|C|fullerj~5019|Lord Jamieson|C|jamiesonj~5020|Baroness Monckton of Dallington Forest|C|moncktonr~5023|Baroness Smith of Llanfaes|P|carmen.smith~5026|Baroness Freeman of Steventon|X|freemana~5027|Lord Tarassenko|X|tarassenkol~5366|Baroness Pidgeon|D|pidgeonc~5368|Lord Booth-Smith|C|boothsmithl~5369|Baroness Cass|X|rivisn~5375|Baroness Griffin of Princethorpe|L|griffint~5380|Lord Biggar|C|biggarn~5383|Lord Jones of Penybont|L|jonesch~5391|Baroness Caine of Kentish Town|L|cainede~5392|Baroness Longfield|N|longfielda~5394|Baroness Alexander of Cleveden|L|alexanderw~5395|Baroness Mattinson|L|mattinsond~5400|Baroness Rafferty|L|raffertya~5404|Baroness Spielman|C|spielmana~5409|Baroness White of Tufnell Park|X|whitesb~5416|Baroness Neate|X|neatep~5418|Lord John of Southwark|L|johnp~5430|Lord Pitt-Watson|L|pittwatsond~5431|Baroness Davies of Devonport|C|daviesse~5434|Lord Isaac|L|isaacd~5438|Lord Barber of Chittlehampton|L|barbermb~5439|Baroness Nargund|L|nargundg~5440|Lord Blackwater|C|blackwater'.split('~').map(function (r) { var a = r.split('|'); return { id: +a[0], name: a[1], party: a[2], email: a[3] + '@parliament.uk' }; });
+  var PARTY_NAME = { L: 'Labour', C: 'Conservative', X: 'Crossbench', D: 'Liberal Democrat', B: 'Bishop', O: '', N: 'Non-affiliated',
+    U: 'Democratic Unionist Party', V: 'Ulster Unionist Party', P: 'Plaid Cymru' };
+  // Marcus, 21 Nov 2026: each voter writes to a peer of the party they voted for, shared out evenly within that party.
+  // Reform, Green, SNP, other parties, non-voters and "prefer not to say" go to the crossbenchers (no Reform or SNP
+  // peers; the two Green peers already back the change). Only addresses that have answered us or are published and
+  // delivered: never a guess.
+  var VOTE_TO_PEERS = { 1: 'L', 2: 'C', 3: 'X', 4: 'D', 5: 'X', 6: 'X', 7: 'P', 8: 'X', 9: 'X', 10: 'X', 11: 'U', 12: 'V' };
+  var VOTED_AS = { L: 'Labour', C: 'Conservative', D: 'Liberal Democrat', P: 'Plaid Cymru', U: 'for the DUP', V: 'for the UUP' };
+  function peerGroup() {
+    var code = VOTE_TO_PEERS[S.peerParty] || 'X';
+    var g = PEERS.filter(function (p) { return p.party === code; });
+    return g.length ? g : PEERS.filter(function (p) { return p.party === 'X'; });
+  }
+  function pickPeer() {
+    if (S.peer) return S.peer;
+    var g = peerGroup();
+    var i = S.sig ? S.sig % g.length : Math.floor(Math.random() * g.length);
+    S.peer = g[i];
+    return S.peer;
+  }
+  // the same form of address Central uses for peers (lords.greeting): "Dear Baroness Bowles", "Dear Lord Howe", "Dear Bishop"
+  function peerGreeting(n) {
+    if (/^(The )?(Lord )?Bishop of /i.test(n)) return 'Dear Bishop';
+    var m = n.match(/^(The )?(Earl|Viscount|Marquess|Countess) of ([A-Z][\w'-]+)/);
+    if (m) return 'Dear ' + (m[2] === 'Countess' ? 'Lady ' : 'Lord ') + m[3];
+    return 'Dear ' + n.split(' of ')[0].replace(/^(Earl|Viscount|Marquess)\b/, 'Lord');
+  }
+  function peerPick() {
+    var list = PARTIES.slice();
+    if (/^BT/i.test((S.me && S.me.pc) || '')) list.splice(7, 0, ['DUP', 11], ['UUP', 12]);
+    $('ppGrid').innerHTML = list.map(function (p) { return '<button type="button" data-v="' + p[1] + '">' + esc(p[0]) + '</button>'; }).join('');
+    $('peerPick').hidden = false; $('peerShow').hidden = true;
+    S.peerSeen = true;
+    track('peer_ask');
+    keepMp('peer');
+    go('peer');
+  }
+  $('ppGrid').addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-v]'); if (!b) return;
+    S.peerParty = +b.getAttribute('data-v'); S.peer = null;
+    track('peer_party', String(S.peerParty));
+    toPeer();
+  });
+  $('peerSkip0').addEventListener('click', function () { track('peer_skip'); nextMail('peer'); });
+  function toPeer(resumed) {
+    $('peerOk').hidden = !S.okTxt || !!resumed || !!S.peerOkShown;
+    $('peerOkTxt').textContent = S.okTxt || '';
+    if (!S.peerParty && !S.peer) { peerPick(); return; }
+    S.peerOkShown = true;
+    $('peerPick').hidden = true; $('peerShow').hidden = false;
+    var pr = pickPeer();
+    $('peerName').textContent = pr.name;
+    $('peerParty').textContent = PARTY_NAME[pr.party] || 'Member of the House of Lords';
+    $('peerDot').innerHTML = '<img src="https://members-api.parliament.uk/api/Members/' + pr.id + '/Thumbnail" alt="" onerror="this.remove()">';
+    $('peerMail').textContent = pr.email;
+    $('peerSubj').textContent = shortMail('peer').subject;
+    $('peerMsg').innerHTML = peerLetter(true);
+    document.querySelectorAll('#ppeer .cp-b').forEach(function (b) { b.classList.remove('done'); b.setAttribute('data-l', 'Copy'); b.setAttribute('aria-label', 'Copy'); });
+    S.peerSeen = true;
+    track(resumed ? 'peer_resumed' : 'peer_seen', String(pr.id));
+    keepMp('peer');
+    go('peer');
+    if (resumed) toast('Welcome back. Your letter is still here, ready to copy.');
+  }
+  $('peerDone').addEventListener('click', function () { track('peer_done', String(pickPeer().id)); S.peerDone = true; earn('peer'); nextMail('peer'); });
+  $('peerSkip').addEventListener('click', function () { track('peer_skip'); nextMail('peer'); });
+
+
+  // ---------------------------------------------------------------- 3e: the minister (Marcus, 21 Nov 2026)
+  // Her Commons address is the one Parliament publishes; her own Ministry of Justice address is not published, so the
+  // department's ministerial correspondence unit (which answered us on 10 Nov 2026) goes alongside it.
+  var MIN_TO = 'alex.daviesjones.mp@parliament.uk, ps.alexdavies-jones@justice.gov.uk';
+  // ---------------------------------------------------------------- the short emails (Marcus, 25 Nov 2026)
+  // Short emails instead of long letters, so a peer, an MP or the minister can read the whole thing in a few seconds.
+  // Every email says the same thing at its heart (all lawmakers under the offence of misleading the public and the
+  // duty of candour, for what they say and do outside Parliamentary proceedings) and then answers one objection from
+  // the briefing. Each recipient is given the points in turn, so nobody gets the same point twice until they have had
+  // them all, and on the next round each point comes with its other subject line. The greeting, opening, wording of
+  // the main point, the ask, the order, the sign-off and where the signer's name and town go all change as well, so
+  // no two emails look alike. One signer always sees the same email, however often the page is drawn.
+  var BRIEF = 'https://execprosec.org/amendments-briefing/';
+  // [subject, subject on the next round, the point, only for this kind of recipient]
+  var POINTS = [
+    ['All lawmakers must be included under the Hillsborough Law', 'Why should a nurse be held to a higher standard than lawmakers?',
+     'The Bill will make it a crime for a nurse, a police officer or a civil servant to lie to the public. A law for everyone except the people who make it would destroy trust in Parliament.'],
+    ['Do not give the House of Lords a cut-out from the Hillsborough Law', 'Being unelected is no reason to be free to lie',
+     'Some say peers need not be covered because they are not elected. But peers make our laws, hold ministers to account and speak to the public on TV, radio and in the press. Being unelected should not mean being free to lie to the public.', 'peer'],
+    ['What you say in Parliament stays protected. Here is how', 'Nothing said in Parliament would be touched',
+     'Nothing said in the Commons or the Lords would be affected. The amendment protects proceedings in all four of the UK\'s parliaments, so lawmakers stay free to debate.'],
+    ['The Government\'s main reason for leaving out MPs and peers does not hold', 'You do not need secret information to lie',
+     'The Government says MPs and peers do not have the information ministers have. But nobody needs inside information to deceive the public. A lie can be invented from nothing, and lawmakers speak to the public nearly every week.'],
+    ['No, an honest mistake could never be prosecuted', 'Honest mistakes are safe. Here is why',
+     'Honest mistakes would never be caught. The offence covers only intentional or reckless deceit on matters of significant public concern. Opinions, however unpopular, could never be prosecuted.'],
+    ['Should only the Government be legally bound to tell us the truth?', 'One rule for ministers, another for the opposition?',
+     'As the Bill stands, ministers are covered but backbenchers and the opposition are not. That gives the public a legal reason to trust the Government and none to trust the people scrutinising it.'],
+    ['Who decides what counts as a lie? Not the Government', 'A jury decides, not politicians',
+     'A jury would decide what counts as a lie, on the evidence and to the criminal standard. Every prosecution would also need the consent of the Director of Public Prosecutions. Political disagreement alone could never be enough.'],
+    ['Being elected did not put MPs above the law on expenses', 'The expenses scandal already answered this',
+     'We are told voters, not courts, should judge politicians. But elected politicians went to prison for false expense claims, and being elected did not put them above the law. Lying to the public about a war, a disaster or public health is no less serious.'],
+    ['Including lawmakers will not put the Hillsborough Law at risk', 'The Hillsborough Law can pass and cover everyone',
+     'The amendment is voted on separately from the Bill, so Parliament can include MPs and peers and still pass the Hillsborough Law. It must become law, and it must cover the people who make it.'],
+    ['Worried about politically motivated prosecutions? Here is the safeguard', 'No prosecution without the DPP\'s consent',
+     'No case could go ahead without the consent of the Director of Public Prosecutions and evidence that someone intentionally or recklessly deceived the public on a matter of significant public concern.'],
+    ['Parliament\'s rules stop at the chamber door', 'Who stops a lawmaker lying on TV?',
+     'Parliament\'s own rules deal with what is said inside Parliament. They do nothing about a lawmaker deliberately misleading the public on TV, online or at a rally. Standards rules and the criminal law can sit side by side.'],
+    ['Peers may already be covered by accident', 'A drafting mistake in the Bill that needs fixing',
+     'There is an arguable reading of the Bill that peers are already covered, by accident, because of a drafting mistake. Lawmakers should be included deliberately and clearly, not left for the courts to argue over.'],
+    ['Backbenchers have more power than the Bill admits', 'Backbenchers vote on every law and every budget',
+     'Backbenchers vote on our laws and public spending and help shape decisions of national importance. They have access to information, people and power the public do not. When they speak to us, we must be able to trust them.'],
+    ['Our system only works if both sides tell the truth', 'Government and opposition must meet the same standard',
+     'Government power means little without scrutiny from the backbenches and the opposition. Holding only one side to the truth under the criminal law would be unjust and would unbalance the whole system.'],
+    ['Lying to start a war is not ordinary political speech', 'This is not about political speech',
+     'The Bill already accepts that lying to cover up the causes of deaths can be a crime. Lying to justify a war, swing a referendum or win contracts in a national emergency belongs in the same category. Ordinary political speech is untouched.'],
+    ['A broken promise is not a lie', 'Broken promises could never be prosecuted',
+     'A promise honestly made and later broken is not a lie and could not be prosecuted. Only a promise known to be false when it was made could be, and every part of the offence would still have to be proved.'],
+    ['This offence was never only about cover-ups', 'Read clause 12: it is not limited to disasters',
+     'Nothing in the Bill limits the offence of misleading the public to disasters or cover-ups. Clause 12 covers other seriously improper deception of the public too, and lawmakers should be held to it like everyone else in public life.'],
+    ['The Bill has a gap that this amendment closes', 'Two undefined words could stop this law working',
+     'The Bill does not define what acting in someone\'s "capacity" or exercising their "functions" means for a lawmaker. That gap could stop the offence working in court. The amendment defines both, so everyone knows exactly what is covered.'],
+    ['This is about war, deaths and public money', 'Not gossip about character: lies about matters of state',
+     'Election law already deals with false statements about a candidate\'s personal character. This offence is for something far more serious: dishonest claims about public spending, the causes of deaths, the case for war or a referendum.'],
+    ['Honest politicians have nothing to fear', 'Would this put good people off politics? The opposite',
+     'Ordinary debate is untouched, so honest politicians have nothing to fear. A democracy where honesty is rewarded and deceit is not would attract better candidates, not fewer.'],
+    ['Do not let the Government decide who gets prosecuted', 'Why the Attorney General must not hold a veto',
+     'The Attorney General is appointed by the Prime Minister. Giving them a veto would let any government protect its own and pursue its opponents. The decision should stay with the Director of Public Prosecutions.'],
+    ['Would every disputed claim go to the police? No', 'Police would test complaints against the law, not opinions',
+     'Police and prosecutors would test any complaint against the actual offence, not treat every disputed claim as a crime. Clear wording in the Bill about what is and is not covered makes that easier.'],
+    ['Why should lawmakers be spared an investigation?', 'Lawmakers should face the same process as everyone else',
+     'Everyone else has to accept that they could be investigated, and under this Bill so would nearly every public official. Being a lawmaker should not be a reason to be exempt from the ordinary process of justice.'],
+    ['Every other professional already answers for deceit', 'Say what you believe and have evidence for it',
+     'Most professionals already face the Fraud Act if they deceive people. The best way for a politician to stay clear of this offence is simple: say what you believe, and have evidence for what you claim.'],
+    ['The real threat to freedom is a politician\'s veto', 'Juries and judges answer to no government',
+     'Judges and juries are independent of the Government, and every case would have to meet the criminal standard of proof. The danger would come from handing a politician control over prosecutions, which this amendment does not do.'],
+    ['An election cannot do what a jury does', 'The ballot box cannot weigh evidence',
+     'An election decides who holds power. A trial decides whether someone abused it. Voters cannot examine the evidence the way a jury does in court.'],
+    ['Peers never face voters. Who holds them to the truth?', 'The ballot box argument does not work for the Lords',
+     'We are told voters should judge politicians at the ballot box. But peers never face voters at all. That cannot mean they are free to deceive the public.'],
+    ['No judge would decide which policy is right', 'This is not judges deciding politics',
+     'Courts would never decide which policies are right. A jury of members of the public would decide one thing: whether someone deliberately or recklessly deceived us, causing significant harm.'],
+    ['Would Parliament empty overnight? No', 'Very few would ever be prosecuted',
+     'Very few politicians deliberately deceive the public on matters serious enough to meet this offence. Proving it is hard: the one private prosecution of a politician for lying took more than two years of evidence work.'],
+    ['The cure is not worse than the disease', 'What has lying already cost this country?',
+     'Dishonesty in public life has already given us a war justified by false claims and disasters that cost lives and destroyed trust. Making deliberate deceit a crime cannot be worse than that.'],
+    ['At the next election only ministers could be prosecuted', 'A gap in the Bill that favours the Government',
+     'As the Bill stands, ministers could be prosecuted for lying during an election campaign while every other candidate could not. That is not equality under the law.'],
+    ['The old law used against lying MPs is being abolished', 'This Bill scraps the offence used against lying MPs',
+     'Until now, an MP who lied to the public could be prosecuted for misconduct in public office. This Bill abolishes that offence. The new offence written for lying to the public must cover lawmakers too.'],
+    ['A code of conduct cannot stop a deliberate lie', 'The Nolan principles are not a law',
+     'Codes of conduct and the Nolan principles matter, but they are not criminal law. They cannot stop someone deliberately deceiving the country, and they were never meant to.'],
+    ['No, Wales does not already have this law', 'The Welsh law against lying does not exist yet',
+     'Wales does not have a law against politicians lying to the public. The Senedd\'s 2026 Act only proposes one for the future. This Bill is the chance to do it now, across the whole UK.'],
+    ['Nothing anyone has said before could be prosecuted', 'This offence would only look forward',
+     'The offence would only apply from the day it comes into force. Nothing anyone has said in the past could be prosecuted under it.'],
+    ['Spies and soldiers are already protected in the Bill', 'The Bill already allows justified secrecy',
+     'The Bill already has defences for the intelligence services and the armed forces, and a reasonable-excuse defence for everyone. Including lawmakers changes none of that.'],
+    ['A TV show is no hiding place', 'Politicians who present on TV must not escape the offence',
+     'Many politicians present radio and TV shows or write newspaper columns. The amendment makes sure they cannot escape the offence by claiming they were acting as journalists.'],
+    ['The devolved parliaments would gain protection, not lose it', 'Good news for the Senedd, Holyrood and Stormont',
+     'The Scottish Parliament, the Senedd and the Northern Ireland Assembly do not have the protection Westminster has for its proceedings. The amendment gives their members that protection for these offences, so they stay free to debate.'],
+    ['An honest call in an emergency could never be a crime', 'Officials acting in a crisis are safe',
+     'Someone who says what they honestly believe during an emergency, and turns out to be wrong, could never be prosecuted. Only deliberate or reckless deceit counts, and every part of the offence must be proved.'],
+    ['The public are watching this vote', 'How this vote will be remembered',
+     'People across the country are watching this vote closely. A law against lying to the public that exempts the people who wrote it would be remembered for a very long time.'],
+    ['This is not about any one party', 'Every party, every lawmaker, the same law',
+     'This would apply to every lawmaker, whatever their party. It depends on office and conduct, never on party. That is what equality under the law means.'],
+    ['A law that is rarely used can still change everything', 'Rare cases, big change',
+     'Cases would be rare, perhaps one or two every few years. But knowing the law applies to them would change how lawmakers speak to the public every day.'],
+    ['Imagine politicians no longer being called liars', 'The prize: trust in Parliament restored',
+     'Once lawmakers are covered, deliberate lying should fall so sharply that politicians may no longer be so readily called liars. That is a prize worth having for every MP and peer.'],
+    ['A politician has been prosecuted for lying. Here is what it taught us', 'Lessons from the only prosecution of its kind',
+     'ExecProsec is the only organisation to have prosecuted a politician for lying to the public. That case showed that unless the law names lawmakers and defines their role clearly, an offence like this can fail in court.'],
+    ['Write it into the Bill, plainly', 'Lawmakers deserve to know exactly where they stand',
+     'Lawmakers should be named in the Bill, with the protection for Parliament written plainly alongside. Then every MP and peer would know exactly what is covered and what is not.'],
+    ['Lying to start a war. Should that be legal?', 'Five kinds of lie this would cover',
+     'The amendment covers deliberate or reckless lies about going to war, a referendum, the causes of a disaster, risks to public health, or wrongdoing and the use of public money.'],
+    ['Private life would be completely untouched', 'What is left out: private life, party business, private work',
+     'Private and family life, internal party business and private work unconnected with public office are all left out. The amendment is only about what lawmakers tell the public.'],
+    ['TV, radio, social media: where the public hears you', 'This is about what you tell the public, not the chamber',
+     'The amendment covers what lawmakers say on TV and radio, on social media and online, at events and through journalists. That is where the public hears from them.'],
+    ['Lies that wreck trust in democracy cause real harm', 'Damage to public trust is real harm',
+     'Lies that destroy people\'s confidence in government and democracy cause real harm. The amendment recognises that distress as harm under the offence.'],
+    ['One rule for them, another for everyone else?', 'Lawmakers are about to exempt themselves',
+     'Lawmakers are about to make lying to the public a crime for nearly every public official in the country. Leaving themselves out would be one rule for them and another for everyone else.']
+  ];
+  // the heart of every email, said a different way each time
+  var CORE = [
+    'All lawmakers should be included under the Hillsborough Law\'s offence of misleading the public and its duty of candour, for what they say and do outside Parliamentary proceedings.',
+    'MPs, peers and members of the devolved parliaments should come under the offence of misleading the public and the duty of candour when they speak to the public outside Parliamentary proceedings.',
+    'When a lawmaker speaks to the public outside Parliamentary proceedings, on TV, online or at an event, they should be covered by the offence of misleading the public and the duty of candour, like other public officials.',
+    'I am asking for every lawmaker to be covered by the Hillsborough Law\'s offence of misleading the public and duty of candour for what they tell the public outside Parliamentary proceedings.',
+    'The offence of misleading the public and the duty of candour must apply to MPs and peers too, for everything they say and do outside Parliamentary proceedings.',
+    'The people who make our laws should be held to the same offence of misleading the public and the same duty of candour as other public officials whenever they speak to the public outside Parliamentary proceedings.',
+    'Outside Parliamentary proceedings, every MP, peer and member of the devolved parliaments should be bound by the offence of misleading the public and the duty of candour.',
+    'My request is simple: include all lawmakers under the offence of misleading the public and the duty of candour for what they say and do outside Parliamentary proceedings.',
+    'Lawmakers should not be left out of the offence of misleading the public or the duty of candour. Both should cover what they say and do in public, outside Parliamentary proceedings.',
+    'The Hillsborough Law should hold MPs and peers to the offence of misleading the public and the duty of candour whenever they speak to the public outside Parliamentary proceedings.',
+    'What lawmakers tell the public on TV, radio, social media and at events, outside Parliamentary proceedings, should come under the offence of misleading the public and the duty of candour.',
+    'The offence of misleading the public and the duty of candour in the Hillsborough Law should cover every lawmaker for what they say to the public outside Parliamentary proceedings.'
+  ];
+  var ASKS = ['Please include all lawmakers.', 'Please support including them.', 'Please back their inclusion.', 'I hope you will support it.',
+    'Please make sure they are included.', 'Will you support it?', 'Please help make it happen.', 'Please stand up for this.'];
+  var ASKS_VOTE = ['Please vote to include them.', 'Will you vote for it?'];   // MPs and peers vote; the minister decides
+  var FWD = ['Please also pass this to Alex Davies-Jones, the Justice minister responsible for the Bill.',
+    'Could you forward this to Alex Davies-Jones MP, the minister in charge of the Bill?',
+    'I would be grateful if you could share this with Alex Davies-Jones MP, the minister responsible.',
+    'Please send a copy to Alex Davies-Jones MP at the Ministry of Justice.'];
+  var FWD_MIN = ['Please make sure the Minister sees this herself.', 'I would be grateful if the Minister could see this herself.',
+    'Please put this in front of the Minister.', 'Please make sure Alex Davies-Jones sees this personally.'];
+  var BRIEFS = ['The full briefing, with every objection answered: ', 'Every objection is answered here: ', 'More detail: ', 'The briefing: ',
+    'If you have a minute, the full briefing is here: ', 'All the arguments, and the answers to every objection: ', 'Read the full case here: ',
+    'The detail is here: '];
+  var SIGNOFFS = ['Yours sincerely,', 'Kind regards,', 'Best wishes,', 'Yours,', 'Thank you,', 'Many thanks,', 'With thanks,', 'Regards,',
+    'All the best,', 'Warm regards,', 'Thanks for reading,', 'With best wishes,', 'Best,'];
+  function seeded(n) {   // the same numbers every time for the same signer and recipient
+    var a = n >>> 0;
+    return function () {
+      a = (a + 0x6D2B79F5) >>> 0;
+      var t = Math.imul(a ^ (a >>> 15), 1 | a);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  function hashText(s) { var h = 0; for (var i = 0; i < s.length; i++) h = (Math.imul(h, 31) + s.charCodeAt(i)) | 0; return h >>> 0; }
+  // where this email comes in the recipient's turn. The minister: everyone writes to her, and signature numbers go up
+  // one at a time, so the signature number is her turn. A peer: the peer is chosen by signature number, so the signers
+  // writing to one peer are a whole group apart. An MP: Central counts each MP's constituents (S.turnMp); until it
+  // answers, the signature number stands in.
+  function mailTurn(kind) {
+    var s = S.sig || 0;
+    if (kind === 'peer') { var pr = pickPeer(); return Math.floor(s / Math.max(1, peerGroup().length)) + (pr.id || 0); }
+    if (kind === 'mp') return S.turnMp != null ? S.turnMp : s + hashText((S.mp && S.mp.email) || '');
+    return s;
+  }
+  function shortMail(kind) {
+    var me = S.me || {}, others = othersSigned();
+    var town = me.town && me.town !== 'the UK' ? me.town : '';
+    var name = ((me.first || '') + ' ' + (me.last || '')).trim() || '[Your name]';
+    var pts = POINTS.filter(function (p) { return !p[3] || p[3] === kind; });
+    var t = Math.max(0, mailTurn(kind)), p = pts[t % pts.length], round = Math.floor(t / pts.length);
+    var r = seeded((S.sig || 1) * 3 + ({ mp: 1, peer: 2, min: 3 }[kind] || 0) * 977 + t * 7919);
+    var pick = function (a) { return a[Math.floor(r() * a.length)]; };
+    var greet;
+    if (kind === 'peer') greet = peerGreeting(pickPeer().name) + ',';
+    else if (kind === 'mp') greet = S.mp ? pick(['Dear ' + S.mp.name + ' MP,', 'Dear ' + S.mp.name + ',']) : 'Dear [your MP],';
+    else greet = pick(['Dear Minister,', 'Dear Alex Davies-Jones,', 'Dear Ms Davies-Jones,']);
+    var openers = ['', '', 'I will keep this short.'];
+    if (town) openers.push('I am writing from ' + town + '.', 'I live in ' + town + '.', 'A quick note from ' + town + '.');
+    if (others) openers.push('I am one of ' + others + ' people who have signed the petition on this.',
+      'I have signed the petition to include all lawmakers under the Hillsborough Law, along with ' + others + ' others.');
+    if (kind === 'mp') openers.push('I am one of your constituents.', 'As your constituent, I will keep this short.');
+    if (kind === 'peer') {
+      var pr = pickPeer();
+      var voted = S.peerParty && VOTED_AS[VOTE_TO_PEERS[S.peerParty]] && pr.party === VOTE_TO_PEERS[S.peerParty] ? VOTED_AS[pr.party] : '';
+      if (voted) openers.push('I voted ' + voted + ' in 2024.');
+    }
+    var opener = pick(openers), townUsed = !!town && opener.indexOf(town) >= 0;
+    var core = pick(CORE), point = p[2];
+    var ask = pick(kind === 'min' ? ASKS : ASKS.concat(ASKS_VOTE));
+    var fwd = pick(kind === 'min' ? FWD_MIN : FWD);
+    var brief = pick(BRIEFS) + BRIEF;
+    var lead = (opener ? opener + ' ' : '') + core, paras;
+    switch (Math.floor(r() * 4)) {
+      case 0: paras = [lead, point, ask + ' ' + fwd, brief]; break;
+      case 1: paras = [opener, point, core + ' ' + ask, fwd, brief]; break;
+      case 2: paras = [lead + ' ' + point, fwd, ask + ' ' + brief]; break;
+      default: paras = [opener, core, point + ' ' + ask, brief, fwd];
+    }
+    var signoff = kind === 'mp' && r() < 0.25 ? 'Your constituent,' : pick(SIGNOFFS);
+    var blocks = [name];
+    if (town) blocks = townUsed ? [name, name, name + ', ' + town] : [name + '\n' + town, name + ', ' + town, name + ' (' + town + ')', name + '\n' + town];
+    if (kind === 'mp' && me.pc) blocks.push(name + '\n' + me.pc);
+    return {
+      point: POINTS.indexOf(p) + 1,
+      subject: p[round % 2],
+      text: greet + '\n\n' + paras.filter(Boolean).join('\n\n') + '\n\n' + signoff + '\n' + pick(blocks)
+    };
+  }
+  function mpLetter(html) { var x = shortMail('mp').text; return html ? esc(x) : x; }
+  function peerLetter(html) { var x = shortMail('peer').text; return html ? esc(x) : x; }
+  function minLetter(html) { var x = shortMail('min').text; return html ? esc(x) : x; }
+  // Marcus, 22 Nov 2026: the first minister letter was too polite and did not take on the Government's objections;
+  // this one is built on the letter to MPs, answering the Government's lines one by one.
+  function toMin(resumed) {
+    $('minMail').textContent = MIN_TO;
+    $('minSubj').textContent = shortMail('min').subject;
+    $('minMsg').innerHTML = minLetter(true);
+    document.querySelectorAll('#pmin .cp-b').forEach(function (b) { b.classList.remove('done'); b.setAttribute('data-l', 'Copy'); b.setAttribute('aria-label', 'Copy'); });
+    track(resumed ? 'min_resumed' : 'min_seen');
+    keepMp('min');
+    go('min');
+    if (resumed) toast('Welcome back. Your letter is still here, ready to copy.');
+  }
+  $('minDone').addEventListener('click', function () { track('min_done'); S.minDone = true; earn('min'); nextMail('min'); });
+  $('minSkip').addEventListener('click', function () { track('min_skip'); nextMail('min'); });
+
+  // ---------------------------------------------------------------- rewards: a gold star for every step done
+  var RW_TXT = {
+    mp: '<b>Star earned.</b> Your MP has heard from you.',
+    peer: '<b>Star earned.</b> The House of Lords has heard from you.',
+    min: '<b>Star earned.</b> The Government has heard from you.',
+    give: '<b>Star earned.</b> You are backing the campaign.',
+    sign: '<b>Star earned.</b> You have signed our petition.'
+  };
+  function earn(k) {
+    S.done = S.done || {};
+    if (S.done[k]) return;
+    S.done[k] = true;
+    S.justEarned = k;
+  }
+  function rwShow(now) {
+    var box = $('rw'); if (!box) return;
+    S.done = S.done || {};
+    box.classList.toggle('show', !!now);
+    var got = 0, q = mailSeq();
+    box.querySelectorAll('.rw-i').forEach(function (el) {
+      var k = el.getAttribute('data-rw'), on = !!S.done[k];
+      el.style.display = k === 'give' || (k === 'sign' && MONEY) || q.indexOf(k) >= 0 ? '' : 'none';
+      if (on) got++;
+      el.classList.toggle('on', on);
+      el.classList.toggle('now', k === now && !on);
+      el.classList.toggle('new', k === S.justEarned);
+    });
+    var j = S.justEarned;
+    $('rwPop').hidden = !j;
+    if (j) $('rwPopTxt').innerHTML = RW_TXT[j] + ' ' + got + (got === 1 ? ' star' : ' stars') + ' of ' + (q.length + (MONEY ? 2 : 1)) + '.';
+    S.justEarned = '';
+  }
   function selectText(el) {
     var r = document.createRange(); r.selectNodeContents(el);
     var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r);
@@ -1988,12 +2611,12 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   // after the MP email (or sharing), funding is offered. Marcus, 12 Nov 2026: everyone who has not given is asked
   // once more here, even if they said "Not now" earlier. Never a third time, and never after they have paid.
   function fundOrFinish(afterMp) {
-    if (S.paid || S.fundAgain) return finish();
+    if (S.paid || S.fundAgain || S.noAsk) return finish();
     if (S.fundSeen) { S.fundAgain = true; track('fund_again'); }
     toFund(afterMp);
   }
-  $('mpDone').addEventListener('click', function () { track('mp_done'); fundOrFinish(true); });
-  $('mpSkip').addEventListener('click', function () { track('mp_skip'); fundOrFinish(false); });
+  $('mpDone').addEventListener('click', function () { track('mp_done'); S.mpDone = true; earn('mp'); nextMail('mp'); });
+  $('mpSkip').addEventListener('click', function () { track('mp_skip'); nextMail('mp'); });
 
   // ---------------------------------------------------------------- 4: fund
   // Their videos travel further than any graphic would, so after the MP email it is straight to
@@ -2045,8 +2668,8 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     btn.textContent = 'One moment\u2026';
     $('fundNote').hidden = true;
     // Stripe sends them back to this page when they have paid; this is what it needs to say thank you.
-    try { sessionStorage.setItem('ep_petition_me', JSON.stringify({ first: S.me.first, number: S.myNumber, emailOk: S.me.emailOk })); } catch (e) {}
-    post('donate/session', { tier: fundOnce() ? 'one_off_custom' : 'monthly_custom', amount: a, return_url: location.origin + location.pathname, in_place: true }).then(function (d) {
+    try { sessionStorage.setItem('ep_petition_me', JSON.stringify(S.me ? { first: S.me.first, number: S.myNumber, emailOk: S.me.emailOk } : {})); } catch (e) {}
+    post('donate/session', { tier: fundOnce() ? 'one_off_custom' : 'monthly_custom', amount: a, return_url: location.origin + location.pathname, in_place: true, ref: REF }).then(function (d) {
       if (!d || !d.ok || !d.client_secret) throw new Error('no checkout');
       return stripeJs().then(function () {
         return Stripe(d.publishable_key).initEmbeddedCheckout({ clientSecret: d.client_secret, onComplete: function () { showPaid(d.session_id); } });
@@ -2082,17 +2705,19 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   function backFromStripe(id) {
     var me = {};
     try { me = JSON.parse(sessionStorage.getItem('ep_petition_me') || '{}') || {}; } catch (e) {}
-    S.me = { first: me.first || '', emailOk: !!me.emailOk };
+    S.me = MONEY && !me.first ? null : { first: me.first || '', emailOk: !!me.emailOk };
     S.myNumber = me.number || 0;
-    S.signed = true;
+    S.signed = !!S.me;
     updateSticky();
     showPaid(id);
   }
   // The card form says it is finished: check with Stripe that the money really moved, then say so.
   function showPaid(id) {
     S.paid = true;
+    earn('give');
     if (S.checkout) { try { S.checkout.destroy(); } catch (e) {} S.checkout = null; }
-    document.querySelectorAll('.me-first').forEach(function (el) { el.textContent = S.me.first; });
+    var who = S.me || { first: '' };
+    document.querySelectorAll('.me-first').forEach(function (el) { el.textContent = who.first; });
     $('doneTick').hidden = true;
     $('doneMp').hidden = true;
     $('doneMonthly').hidden = true;
@@ -2106,6 +2731,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       if (paid || pending) {
         var amt = d.amount_total ? '£' + Number(d.amount_total).toFixed(0) : '';
         var once = d.tier === 'one_off_custom';
+        if (MONEY && !S.signed) { track('paid', (once ? 'once ' : 'monthly ') + (d.amount_total || '') + (pending ? ' pending' : '')); paidThanks(once, amt, pending); return; }
         $('doneTick').hidden = false;
         $('doneH').textContent = once ? 'Thank you' + (S.me.first ? ', ' + S.me.first : '') + '. Your contribution is with us.'
           : 'Congratulations' + (S.me.first ? ', ' + S.me.first : '') + '. You\'re now funding us monthly.';
@@ -2122,15 +2748,104 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       toFund();
       $('fundNote').hidden = false;
     }).catch(function () {
+      if (MONEY && !S.signed) { track('paid', 'not checked'); paidThanks(true, '', false); return; }
       $('doneTick').hidden = false;
-      $('doneH').textContent = 'Thank you' + (S.me.first ? ', ' + S.me.first : '') + '.';
+      $('doneH').textContent = 'Thank you' + (who.first ? ', ' + who.first : '') + '.';
       $('doneS').textContent = 'Stripe will email you a receipt for your monthly backing.';
     });
   }
-  $('skipFund').addEventListener('click', function () { track('fund_skip'); S.pitchSeen && !S.mpSeen && !S.shareSeen ? toChoice() : finish(); });
+
+  // ---------------------------------------------------------------- money first (/fund/)
+  function startMoney() {
+    $('gvOk').hidden = true;
+    var give = document.querySelector('.rw-i[data-rw="give"]');   // the Backer star comes first here
+    if (give && give.parentNode.firstElementChild !== give) give.parentNode.insertBefore(give, give.parentNode.firstElementChild);
+    if (give && !document.querySelector('.rw-i[data-rw="sign"]')) {   // then the petition, then the three emails
+      var sg = document.createElement('span');
+      sg.className = 'rw-i'; sg.setAttribute('data-rw', 'sign');
+      sg.innerHTML = '<span class="rw-b" aria-hidden="true">&#9733;</span>Petition';
+      give.parentNode.insertBefore(sg, give.nextSibling);
+    }
+    // Marcus, 25 Nov 2026: the poster and a PR firm are booked, the leaflet is next, the videos are in progress
+    $('gvGrid').innerHTML = MONEY_SLIDES;
+    getJson('social/summary').then(function (d) {
+      var t = d && d.today && d.today.start, f = d && d.followers;
+      if (!t || !t.views || !f || !f.since) return;
+      var k = function (n) { return fmt(Math.floor(n / 1000) * 1000); };
+      var since = new Date(f.since + 'T12:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'long' });
+      $('gvEng').textContent = (Math.floor(t.views / 1e5) / 10) + ' million views, ' + k(t.likes) + ' likes and ' + k(t.shares) + ' shares since ' + since + '.';
+    }).catch(function () {});
+    $('gvH').textContent = 'Fund our campaign and sign our petition.';
+    $('gvLead').innerHTML = 'Become part of the campaign to criminalise lying in politics. The vote is on <b>7 December</b>, '
+      + '<span class="gv-days" id="gvDays"></span> from now. <b>Your money pays for:</b>';
+    $('ptSkip').textContent = 'Not now, just sign the petition';
+    $('skipFund').textContent = 'Not now, just sign the petition';
+    toPitch();
+  }
+  var MONEY_SLIDES =
+    '<div class="gv-it poster"><img src="/_web/pitch/tube-poster.webp" alt="Our poster: politicians are making lying to the public criminally illegal for nearly every official apart from themselves" decoding="async" draggable="false">'
+    + '<div class="gv-tx"><span class="gv-tag done">Booked</span>Our poster at Westminster station, where MPs and peers pass, 30 Nov to 13 Dec.</div></div>'
+    + '<div class="gv-it"><div class="gv-soc gv-press"><b>National press</b><span class="pr-line">Interviews · Press releases · News stories</span></div>'
+    + '<div class="gv-tx"><span class="gv-tag done">Booked</span>A PR firm, to get our campaign into the national press before the vote: interviews, press releases and news stories.</div></div>'
+    + '<div class="gv-it"><img src="/_web/pitch/letters.webp" alt="Mock-up: envelopes addressed to the House of Commons and the House of Lords, with our leaflet" decoding="async" draggable="false">'
+    + '<div class="gv-tx"><span class="gv-tag">Next</span>A leaflet sent to the address of every MP and peer before they vote.</div></div>'
+    + '<div class="gv-it"><div class="gv-soc"><b id="gvFollow">137,000+</b><span>followers on our social media</span><span class="up" id="gvWeek" hidden></span><span class="eng" id="gvEng">Millions of views of our videos.</span></div>'
+    + '<div class="gv-tx"><span class="gv-tag prog">In progress</span><span id="gvViews" hidden></span>Making our social media videos. Your money funds more of them, to make this campaign as big as possible.</div></div>';
+  // straight after the money: thank them, then the petition
+  function paidThanks(once, amt, pending) {
+    $('doneTick').hidden = false;
+    $('doneH').textContent = once ? 'Thank you. Your contribution is with us.' : 'Thank you. You\'re now funding us monthly.';
+    $('doneS').textContent = 'You\'re part of this fight now. ' + (once ? (amt ? 'Your ' + amt : 'Your contribution') : (amt ? 'Your ' + amt + ' a month' : 'Your monthly backing')) +
+      ' pays for adverts where MPs and peers will see them before the vote on 7 December. ' +
+      (pending ? (once ? 'Your Direct Debit payment leaves your account in a few working days. '
+        : 'Your Direct Debit is set up: the first payment leaves your account in a few working days, then every month. ') : '') +
+      (once ? 'Stripe has emailed your receipt.' : 'Stripe has emailed your receipt, with a link to change or stop it any time.');
+    ['doneMp', 'doneShare', 'doneMonthly', 'doneIg', 'doneSee'].forEach(function (id) { $(id).hidden = true; });
+    $('doneNext').hidden = false;
+    $('doneSign').hidden = false;
+    go(5);
+  }
+  function toSign() {
+    $('moneyOk').hidden = !S.paid;
+    go(1);
+  }
+  $('doneSign').addEventListener('click', toSign);
+  // looking at each screen without paying or signing: /fund/?demo=1&step=paid, sign, peer, mp, min or done
+  function moneyDemo(q) {
+    var st = (q.match(/[?&]step=([a-z]+)/) || [])[1] || '';
+    startMoney();
+    if (!st) return;
+    S.paid = true;
+    if (st === 'paid') { earn('give'); return paidThanks(true, '£20', false); }
+    if (st === 'sign') return toSign();
+    S.signed = true; S.me = { first: 'Sam', last: 'Taylor', email: '', emailOk: true, town: 'Norwich', pc: 'NR2 2PW' };
+    S.mp = { seat: 'Your constituency', name: 'Jane Smith', party: 'Labour', email: 'your.mp@parliament.uk' };
+    document.querySelectorAll('.me-first').forEach(function (el) { el.textContent = S.me.first; });
+    S.okTxt = 'Confirmed. Thank you, Sam.';
+    S.sig = 40000 + Math.floor(Math.random() * 999); S.count = Math.max(S.count || 0, 40814);
+    earn('give'); S.done.sign = true; S.justEarned = '';
+    if (st === 'peer') toPeer(); else if (st === 'mp') toMp(); else if (st === 'min') toMin();
+    else { S.done.peer = S.done.mp = S.done.min = true; finish(); }
+  }
+  $('skipFund').addEventListener('click', function () { track('fund_skip'); if (MONEY && !S.signed) toSign(); else finish(); });
 
   // ---------------------------------------------------------------- 5: done
   function finish() {
+    if (MONEY) {
+      var sent = ['mp', 'peer', 'min'].filter(function (k) { return S.done && S.done[k]; }).length;
+      var did = (S.paid ? ['funded the campaign'] : []).concat(['signed our petition'])
+        .concat(sent ? ['emailed ' + (sent === 1 ? 'a lawmaker' : sent + ' lawmakers')] : []);
+      $('doneTick').hidden = false;
+      $('doneH').innerHTML = 'Thank you, <span class="me-first">' + esc(S.me.first) + '</span>.';
+      $('doneS').textContent = 'You\'ve ' + (did.length > 1 ? did.slice(0, -1).join(', ') + ' and ' + did[did.length - 1] : did[0]) + '.';
+      ['doneMp', 'doneShare', 'doneMonthly', 'doneIg', 'doneNext', 'doneSign'].forEach(function (id) { $(id).hidden = true; });
+      var to = '/petition/' + (REF && !/execprosec/.test(REF) ? '?ref=' + encodeURIComponent(REF) : '');
+      $('doneSee').href = to;
+      $('doneSee').hidden = false;
+      track('done', 'money first');
+      go(5);
+      return;
+    }
     var s = (countShown(S.myNumber) ? "You're signature number " + fmt(S.myNumber) + '. ' : '') + 'We will take every signature to Parliament before the vote.';
     if (S.me.emailOk) s += " We'll email you when the vote is coming.";
     $('doneTick').hidden = true;
@@ -2189,14 +2904,21 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     renderDeadline();
     var q = location.search;
     var token = (q.match(/[?&]c=([A-Za-z0-9_-]{20,64})/) || [])[1];
+    var wtok = (q.match(/[?&]w=([A-Za-z0-9_-]{20,64})/) || [])[1];   // the write-again link (22 Nov 2026)
     var paid = (q.match(/[?&]session_id=(cs_[A-Za-z0-9_]+)/) || [])[1];
-    if (token) confirmFromLink(token);
+    if (wtok) { S.write = true; confirmFromLink(wtok); }
+    else if (token) confirmFromLink(token);
     else if (paid) backFromStripe(paid);
+    else if (MONEY && DEMO) moneyDemo(q);
+    else if (!DEMO && resumeMp()) { /* back from their email app: the MP step again */ }
+    else if (MONEY) startMoney();
     else if (DEMO && /[?&]pitch=1(?![0-9])/.test(q)) {
       S.signed = true; S.me = { first: 'Sam', last: 'Taylor', email: '', emailOk: true, town: 'Norwich', pc: 'NR2 2PW' };
       S.mp = { seat: 'Your constituency', name: 'Jane Smith', party: 'Labour', email: 'your.mp@parliament.uk' };
       document.querySelectorAll('.me-first').forEach(function (el) { el.textContent = S.me.first; });
-      toPitch();
+      S.okTxt = 'Confirmed. Thank you, Sam.';
+      S.sig = 40000 + Math.floor(Math.random() * 999); S.count = Math.max(S.count || 0, 40814);
+      if (/[?&]step=mp\b/.test(q)) toMp(); else if (/[?&]step=peer\b/.test(q)) toPeer(); else if (/[?&]step=min\b/.test(q)) toMin(); else toPitch();
     }
     loadStats(true);
   }

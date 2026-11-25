@@ -1,9 +1,10 @@
 /* The live signature count on the petition banners across execprosec.org (Marcus, 9 Nov 2026).
-   Same rule as /what-the-public-think/: it opens on the total at midnight, adds today's signers one by one
-   until it reaches the real total, then rises only when someone new signs. Totals only. */
+   Marcus, 19 Nov 2026: it opens no more than 1,000 below the real confirmed total (never below the total at
+   midnight), then climbs in uneven steps (2, 3, 4, 1, 1, 5, 1, 2, 3, 4, 1) until it reaches it, so it shows
+   off the most we have while always moving. Then it rises the same way when people sign. Totals only. */
 (function(){
   var banners = document.querySelectorAll('.pet-banner'); if (!banners.length) return;
-  var FEED = 'https://central-2-mcp-production.up.railway.app/public/petition/today', BEAT = 450;
+  var FEED = 'https://central-2-mcp-production.up.railway.app/public/petition/today', BEAT = 450, GAP = 1000, STEPS = [2, 3, 4, 1, 1, 5, 1, 2, 3, 4, 1];
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   var st = document.createElement('style');
   st.textContent = '.pet-n{display:inline-flex;align-items:center;gap:8px;flex:0 0 auto;font:400 15px/1.2 "DM Sans",sans-serif;color:rgba(255,255,255,.85)}' +
@@ -25,7 +26,7 @@
     var btn = b.querySelector('.pet-b'); b.insertBefore(br, btn || null); b.insertBefore(s, btn || null);
     return s;
   });
-  var shown = null, target = 0, running = false;
+  var shown = null, target = 0, running = false, si = Math.floor(Math.random() * STEPS.length);
   function draw(){
     var txt = shown.toLocaleString('en-GB');
     nums.forEach(function(s){
@@ -34,14 +35,14 @@
     });
   }
   function step(){
-    if (shown < target){ shown++; draw(); setTimeout(step, BEAT); } else running = false;
+    if (shown < target){ shown = Math.min(target, shown + STEPS[si++ % STEPS.length]); draw(); setTimeout(step, BEAT); } else running = false;
   }
   function go(){ if (!running && shown < target){ running = true; setTimeout(step, BEAT); } }
   function load(){
     fetch(FEED, {cache: 'no-store'}).then(function(r){ return r.ok ? r.json() : null; }).then(function(D){
       if (!D || !D.ok || !D.before) return;
       var total = (+D.before.signers || 0) + (+D.today || 0); if (!total) return;
-      if (shown === null){ shown = reduce ? total : (+D.before.signers || total); draw(); }
+      if (shown === null){ shown = reduce ? total : Math.max(+D.before.signers || 0, total - GAP); draw(); }
       if (total > target) target = total;
       go();
     }).catch(function(){});
