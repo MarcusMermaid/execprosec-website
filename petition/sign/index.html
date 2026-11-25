@@ -598,6 +598,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
  <div class="side" id="side">
   <div class="card" id="card">
     <div class="card-head">
+      <p class="ok-kick" id="moneyOk" hidden><i aria-hidden="true">✓</i><span>Thank you for funding the campaign</span></p>
       <p class="sigtop" id="sigTop" hidden><i class="sdot" aria-hidden="true"></i><span><b id="sigTopN">&nbsp;</b> people have signed</span></p>
       <p class="kicker">Petition to Press &amp; Parliament</p>
       <h1>Include all lawmakers under the <em>Hillsborough&nbsp;Law</em></h1>
@@ -695,8 +696,8 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     <div class="panel" id="ppitch" hidden>
      <div class="gv">
       <p class="ok-kick" id="gvOk"><i aria-hidden="true">✓</i><span id="gvOkTxt">Signature confirmed</span></p>
-      <h2>The vote is on <em>7 December</em>. Help us win it.</h2>
-      <p class="gv-lead"><span class="gv-days" id="gvDays">17 days</span> left to make every MP and peer see the public is watching. <b>Your money pays for:</b></p>
+      <h2 id="gvH">The vote is on <em>7 December</em>. Help us win it.</h2>
+      <p class="gv-lead" id="gvLead"><span class="gv-days" id="gvDays">17 days</span> left to make every MP and peer see the public is watching. <b>Your money pays for:</b></p>
       <div class="gv-wrap">
       <button type="button" class="gv-arr prev" id="gvPrev" aria-label="Previous" hidden>&lsaquo;</button>
       <button type="button" class="gv-arr next" id="gvNext" aria-label="Next">&rsaquo;</button>
@@ -845,10 +846,13 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       <div class="donebig" id="doneTick" aria-hidden="true" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
       <h2 id="doneH">Thank you, <span class="me-first"></span>.</h2>
       <p class="sub" id="doneS"></p>
+      <p class="sub" id="doneNext" hidden><b>Next, add your name to our petition.</b> It takes 30 seconds.</p>
+      <button class="btn" type="button" id="doneSign" hidden>Sign our petition</button>
+      <a class="btn" id="doneSee" href="/petition/" style="text-decoration:none" hidden>See what the public think</a>
       <button class="btn" type="button" id="doneMonthly" hidden>Back us monthly too: £10 a month</button>
       <button class="btn" type="button" id="doneMp" hidden>Email your MP as well</button>
       <button class="btn navy" type="button" id="doneShare" hidden>Copy the petition link</button>
-      <a class="btn navy" href="https://www.instagram.com/marcusjball/" target="_blank" rel="noopener">Follow Marcus J Ball on Instagram</a>
+      <a class="btn navy" id="doneIg" href="https://www.instagram.com/marcusjball/" target="_blank" rel="noopener">Follow Marcus J Ball on Instagram</a>
     </div>
   </div>
  </div>
@@ -1171,6 +1175,15 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   // ?demo=1 is us looking at the versions next to each other: it records nothing at all, so the
   // looking does not land in the numbers the test is read from.
   var DEMO = /[?&]demo=1\b/.test(location.search);
+  // Money first (Marcus, 25 Nov 2026, for the paid ads: "money first"): /fund/ asks them to fund the
+  // campaign, thanks them, then asks them to sign, then the same three emails as the petition, then shows
+  // them the petition's results page. ?first=money forces it. A confirmation link opened in the same
+  // browser within a day of starting it carries on the same way, so a giver is never asked again.
+  var MONEY = /^\/fund(\/|$)/.test(location.pathname) || /[?&]first=money(?![a-z])/.test(location.search);
+  try {
+    if (!MONEY && /[?&]c=/.test(location.search) && Date.now() - (+localStorage.getItem('ep_fund_first') || 0) < 864e5) MONEY = true;
+    if (MONEY && !DEMO) localStorage.setItem('ep_fund_first', String(Date.now()));
+  } catch (e) {}
   var SIGS = DRAW.sigs;
   var MAILS = DRAW.mails;
   var AB = LAY + '-' + PROOF + '-' + PROMISE + '-' + CONF + '-' + SIGS + '-' + MAILS;
@@ -1187,6 +1200,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     if (k === 'mp') return toMp();
     if (k === 'min') return toMin();
     dropMp();
+    if (MONEY) return finish();
     // Marcus, 22 Nov 2026: someone who came back from a thank-you email and has already given is not asked again
     if (S.noAsk) return toShare();
     toPitch();
@@ -1599,11 +1613,12 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     // sign, then the one, two or three emails this signer is asked for (22 Nov 2026), then give
     var q = mailSeq(), all = q.length + 2, k = n === 3 ? 'mp' : pe ? 'peer' : mi ? 'min' : '';
     var at = k ? 2 + Math.max(0, q.indexOf(k)) : (pt || n === 4 || c || sh) ? all : n;
+    if (MONEY) at = (pt || n === 4 || (n === 5 && !S.signed)) ? 1 : (n === 1 || w) ? 2 : k ? 3 + Math.max(0, q.indexOf(k)) : all + 1;
     var dots = $('dots').children;
     for (var j = 0; j < dots.length; j++) { dots[j].hidden = j >= all; dots[j].classList.toggle('on', j < at); }
     $('stepLbl').textContent = at <= all ? 'Step ' + at + ' of ' + all : 'Done';
     rwShow(k || ((pt || n === 4) ? 'give' : n === 5 ? 'end' : ''));
-    $('card').classList.toggle('first', n === 1 || w);   // the step bar appears once they have confirmed
+    $('card').classList.toggle('first', (n === 1 || w) && !MONEY);   // the step bar appears once they have confirmed
     $('card').classList.toggle('after', c || sh || pt || pe || mi || (!w && n >= 2));   // and the title, explainer and meter go
     pinCard();
     if (quiet) return;
@@ -1932,6 +1947,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     // Marcus, 20 Nov 2026: the statements have their 10,000 answers each, so they end. From 22 Nov everyone goes
     // from confirming to a peer, then the MP and the minister if their side of the test asks for them, then the pitch.
     S.okTxt = $('thanksH').textContent;
+    if (MONEY) track('money_first', S.paid ? 'paid' : 'not paid');
     if (S.write) {
       // back from a thank-you email: straight to the first letter they have not sent
       S.okTxt = 'Welcome back, ' + S.me.first + '. Your signature is counted.';
@@ -2096,7 +2112,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     toFund();
     setTimeout(function () { $('otherAmt').focus(); }, 50);
   });
-  $('ptSkip').addEventListener('click', function () { track('pitch_skip'); finish(); });
+  $('ptSkip').addEventListener('click', function () { track('pitch_skip'); if (MONEY && !S.signed) toSign(); else finish(); });
 
   // ---------------------------------------------------------------- sharing: just the link to copy
   function toShare() {
@@ -2499,7 +2515,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     btn.textContent = 'One moment\u2026';
     $('fundNote').hidden = true;
     // Stripe sends them back to this page when they have paid; this is what it needs to say thank you.
-    try { sessionStorage.setItem('ep_petition_me', JSON.stringify({ first: S.me.first, number: S.myNumber, emailOk: S.me.emailOk })); } catch (e) {}
+    try { sessionStorage.setItem('ep_petition_me', JSON.stringify(S.me ? { first: S.me.first, number: S.myNumber, emailOk: S.me.emailOk } : {})); } catch (e) {}
     post('donate/session', { tier: fundOnce() ? 'one_off_custom' : 'monthly_custom', amount: a, return_url: location.origin + location.pathname, in_place: true, ref: REF }).then(function (d) {
       if (!d || !d.ok || !d.client_secret) throw new Error('no checkout');
       return stripeJs().then(function () {
@@ -2536,9 +2552,9 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   function backFromStripe(id) {
     var me = {};
     try { me = JSON.parse(sessionStorage.getItem('ep_petition_me') || '{}') || {}; } catch (e) {}
-    S.me = { first: me.first || '', emailOk: !!me.emailOk };
+    S.me = MONEY && !me.first ? null : { first: me.first || '', emailOk: !!me.emailOk };
     S.myNumber = me.number || 0;
-    S.signed = true;
+    S.signed = !!S.me;
     updateSticky();
     showPaid(id);
   }
@@ -2547,7 +2563,8 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     S.paid = true;
     earn('give');
     if (S.checkout) { try { S.checkout.destroy(); } catch (e) {} S.checkout = null; }
-    document.querySelectorAll('.me-first').forEach(function (el) { el.textContent = S.me.first; });
+    var who = S.me || { first: '' };
+    document.querySelectorAll('.me-first').forEach(function (el) { el.textContent = who.first; });
     $('doneTick').hidden = true;
     $('doneMp').hidden = true;
     $('doneMonthly').hidden = true;
@@ -2561,6 +2578,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       if (paid || pending) {
         var amt = d.amount_total ? '£' + Number(d.amount_total).toFixed(0) : '';
         var once = d.tier === 'one_off_custom';
+        if (MONEY && !S.signed) { paidThanks(once, amt, pending); return; }
         $('doneTick').hidden = false;
         $('doneH').textContent = once ? 'Thank you' + (S.me.first ? ', ' + S.me.first : '') + '. Your contribution is with us.'
           : 'Congratulations' + (S.me.first ? ', ' + S.me.first : '') + '. You\'re now funding us monthly.';
@@ -2577,15 +2595,82 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       toFund();
       $('fundNote').hidden = false;
     }).catch(function () {
+      if (MONEY && !S.signed) { paidThanks(true, '', false); return; }
       $('doneTick').hidden = false;
-      $('doneH').textContent = 'Thank you' + (S.me.first ? ', ' + S.me.first : '') + '.';
+      $('doneH').textContent = 'Thank you' + (who.first ? ', ' + who.first : '') + '.';
       $('doneS').textContent = 'Stripe will email you a receipt for your monthly backing.';
     });
   }
-  $('skipFund').addEventListener('click', function () { track('fund_skip'); finish(); });
+
+  // ---------------------------------------------------------------- money first (/fund/)
+  function startMoney() {
+    $('gvOk').hidden = true;
+    var give = document.querySelector('.rw-i[data-rw="give"]');   // the Backer star comes first here
+    if (give && give.parentNode.firstElementChild !== give) give.parentNode.insertBefore(give, give.parentNode.firstElementChild);
+    $('gvH').textContent = 'Fund our campaign and sign our petition.';
+    $('gvLead').innerHTML = 'Become part of the campaign to criminalise lying in politics. The vote is on <b>7 December</b>, '
+      + '<span class="gv-days" id="gvDays"></span> from now. <b>Your money pays for:</b>';
+    $('ptSkip').textContent = 'Not now, just sign the petition';
+    $('skipFund').textContent = 'Not now, just sign the petition';
+    toPitch();
+  }
+  // straight after the money: thank them, then the petition
+  function paidThanks(once, amt, pending) {
+    $('doneTick').hidden = false;
+    $('doneH').textContent = once ? 'Thank you. Your contribution is with us.' : 'Thank you. You\'re now funding us monthly.';
+    $('doneS').textContent = 'You\'re part of this fight now. ' + (once ? (amt ? 'Your ' + amt : 'Your contribution') : (amt ? 'Your ' + amt + ' a month' : 'Your monthly backing')) +
+      ' pays for adverts where MPs and peers will see them before the vote on 7 December. ' +
+      (pending ? (once ? 'Your Direct Debit payment leaves your account in a few working days. '
+        : 'Your Direct Debit is set up: the first payment leaves your account in a few working days, then every month. ') : '') +
+      (once ? 'Stripe has emailed your receipt.' : 'Stripe has emailed your receipt, with a link to change or stop it any time.');
+    ['doneMp', 'doneShare', 'doneMonthly', 'doneIg', 'doneSee'].forEach(function (id) { $(id).hidden = true; });
+    $('doneNext').hidden = false;
+    $('doneSign').hidden = false;
+    go(5);
+  }
+  function toSign() {
+    $('moneyOk').hidden = !S.paid;
+    go(1);
+  }
+  $('doneSign').addEventListener('click', toSign);
+  // looking at each screen without paying or signing: /fund/?demo=1&step=paid, sign, peer, mp, min or done
+  function moneyDemo(q) {
+    var st = (q.match(/[?&]step=([a-z]+)/) || [])[1] || '';
+    startMoney();
+    if (!st) return;
+    S.paid = true;
+    if (st === 'paid') { earn('give'); return paidThanks(true, '£20', false); }
+    if (st === 'sign') return toSign();
+    S.signed = true; S.me = { first: 'Sam', last: 'Taylor', email: '', emailOk: true, town: 'Norwich', pc: 'NR2 2PW' };
+    S.mp = { seat: 'Your constituency', name: 'Jane Smith', party: 'Labour', email: 'your.mp@parliament.uk' };
+    document.querySelectorAll('.me-first').forEach(function (el) { el.textContent = S.me.first; });
+    S.okTxt = 'Confirmed. Thank you, Sam.';
+    S.sig = 40000 + Math.floor(Math.random() * 999); S.count = Math.max(S.count || 0, 40814);
+    earn('give'); S.justEarned = '';
+    if (st === 'peer') toPeer(); else if (st === 'mp') toMp(); else if (st === 'min') toMin();
+    else { S.done.peer = S.done.mp = S.done.min = true; finish(); }
+  }
+  $('skipFund').addEventListener('click', function () { track('fund_skip'); if (MONEY && !S.signed) toSign(); else finish(); });
 
   // ---------------------------------------------------------------- 5: done
   function finish() {
+    if (MONEY) {
+      var sent = ['mp', 'peer', 'min'].filter(function (k) { return S.done && S.done[k]; }).length;
+      var did = (S.paid ? ['funded the campaign'] : []).concat(['signed our petition'])
+        .concat(sent ? ['emailed ' + (sent === 1 ? 'a lawmaker' : sent + ' lawmakers')] : []);
+      $('doneTick').hidden = false;
+      $('doneH').innerHTML = 'Thank you, <span class="me-first">' + esc(S.me.first) + '</span>.';
+      $('doneS').textContent = 'You\'ve ' + (did.length > 1 ? did.slice(0, -1).join(', ') + ' and ' + did[did.length - 1] : did[0]) +
+        '. Now see what the public think: everything our petition has found so far.';
+      ['doneMp', 'doneShare', 'doneMonthly', 'doneIg', 'doneNext', 'doneSign'].forEach(function (id) { $(id).hidden = true; });
+      var to = '/petition/' + (REF && !/execprosec/.test(REF) ? '?ref=' + encodeURIComponent(REF) : '');
+      $('doneSee').href = to;
+      $('doneSee').hidden = false;
+      track('done', 'money first');
+      go(5);
+      if (!DEMO) setTimeout(function () { location.href = to; }, 6000);
+      return;
+    }
     var s = (countShown(S.myNumber) ? "You're signature number " + fmt(S.myNumber) + '. ' : '') + 'We will take every signature to Parliament before the vote.';
     if (S.me.emailOk) s += " We'll email you when the vote is coming.";
     $('doneTick').hidden = true;
@@ -2649,7 +2734,9 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     if (wtok) { S.write = true; confirmFromLink(wtok); }
     else if (token) confirmFromLink(token);
     else if (paid) backFromStripe(paid);
+    else if (MONEY && DEMO) moneyDemo(q);
     else if (!DEMO && resumeMp()) { /* back from their email app: the MP step again */ }
+    else if (MONEY) startMoney();
     else if (DEMO && /[?&]pitch=1(?![0-9])/.test(q)) {
       S.signed = true; S.me = { first: 'Sam', last: 'Taylor', email: '', emailOk: true, town: 'Norwich', pc: 'NR2 2PW' };
       S.mp = { seat: 'Your constituency', name: 'Jane Smith', party: 'Labour', email: 'your.mp@parliament.uk' };
