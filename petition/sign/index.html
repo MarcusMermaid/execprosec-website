@@ -222,6 +222,9 @@ html.fund3 .rw{display:none!important}
 .err:empty{display:none}
 .fix{font-size:13px;background:var(--paper-2);border-left:3px solid var(--gold);padding:6px 10px;border-radius:2px}
 .link{background:none;border:0;padding:0;color:var(--navy);text-decoration:underline;text-underline-offset:3px;font-size:13px;cursor:pointer}
+.fix .acts{display:block;margin-top:4px}
+.fix .link{margin-right:18px;font-weight:600}
+.f.bad .fix{border-left-color:var(--red)}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 .opt-l{font-weight:400;color:var(--muted)}
 .hint-g{font-size:12.5px;color:var(--muted)}
@@ -743,7 +746,7 @@ html.dk-open,html.dk-open body{overflow:hidden}
       </div>
       <div class="row ep">
       <div class="f"><label for="email">Email</label><input id="email" name="email" type="email" inputmode="email" autocomplete="email" autocapitalize="off" spellcheck="false" maxlength="120"><span class="err" id="emailErr" aria-live="polite"></span>
-        <span class="fix" id="emailFix" hidden>Did you mean <b id="emailFixTo"></b>? <button type="button" class="link" id="emailFixBtn">Yes, fix it</button></span></div>
+        <span class="fix" id="emailFix" hidden>Did you mean <b id="emailFixTo"></b>? <span class="acts"><button type="button" class="link" id="emailFixBtn">Yes, fix it</button><button type="button" class="link" id="emailKeepBtn" hidden>No, my email is right</button></span></span></div>
       <div class="f" id="pcWrap"><label for="pc">Postcode</label><input id="pc" name="pc" autocomplete="postal-code" autocapitalize="characters" spellcheck="false" maxlength="10"><span class="err" id="pcErr" aria-live="polite"></span></div>
       <div class="f" id="ctyWrap" hidden><label for="cty">Country</label><input id="cty" name="cty" autocomplete="country-name" maxlength="60"><span class="err" id="ctyErr" aria-live="polite"></span></div>
       </div>
@@ -1748,6 +1751,7 @@ html.dk-open,html.dk-open body{overflow:hidden}
   function setErr(id, msg) {
     var input = $(id), f = input && input.closest('.f');
     if (f) f.classList.toggle('bad', !!msg);
+    if (input) { if (msg) input.setAttribute('aria-invalid', 'true'); else input.removeAttribute('aria-invalid'); }
     var e = $(id + 'Err');
     if (e) e.textContent = msg || '';
     if (msg && FORM_FIELDS[id]) formEv('error', id, msg);
@@ -1816,22 +1820,86 @@ html.dk-open,html.dk-open body{overflow:hidden}
       d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
     return d[a.length][b.length];
   }
+  // Endings people mistype, for any provider (gmail.com and the rest are caught by DOMAINS above).
+  var ENDING_SLIPS = { con: 'com', cmo: 'com', cpm: 'com', ocm: 'com', comm: 'com', coom: 'com', vom: 'com', xom: 'com',
+    couk: 'co.uk', 'co.uj': 'co.uk', 'co.ik': 'co.uk', 'co.yk': 'co.uk', 'co.ukk': 'co.uk', 'co.ul': 'co.uk',
+    nte: 'net', ner: 'net', ogr: 'org', prg: 'org' };
   function emailSlip(v) {
-    var m = v.trim().toLowerCase().match(/^([^\s@]+)@([^\s@]+)$/);
-    if (!m || DOMAINS.indexOf(m[2]) >= 0 || m[2].length < 5) return '';
-    var best = '', bestD = 3;
-    DOMAINS.forEach(function (d) { var e = edits(m[2], d); if (e < bestD) { bestD = e; best = d; } });
-    return best ? m[1] + '@' + best : '';
+    var m = v.trim().match(/^([^\s@]+)@([^\s@]+)$/), dom = m ? m[2].toLowerCase() : '';
+    if (!m || DOMAINS.indexOf(dom) >= 0) return '';
+    if (dom.length >= 5) {
+      var best = '', bestD = 3;
+      DOMAINS.forEach(function (d) { var e = edits(dom, d); if (e < bestD) { bestD = e; best = d; } });
+      if (best) return m[1] + '@' + best;
+    }
+    var end = '';
+    Object.keys(ENDING_SLIPS).forEach(function (k) { if (dom.slice(-k.length - 1) === '.' + k && k.length > end.length) end = k; });
+    return end ? m[1] + '@' + dom.slice(0, -end.length) + ENDING_SLIPS[end] : '';
+  }
+  // A plain mistake in the address, in words, with the corrected address when it is clear (Marcus, 26 Nov 2026:
+  // "highlights when someone's put in two dots by accident ... don't accept it until" it is put right). Codes sent
+  // to name@gmail..com never arrive, so the signature was lost. Central checks the same mistakes.
+  function emailProblem(v) {
+    if (!v) return { msg: 'Please enter your email address, like name@example.com.' };
+    if (/\s/.test(v)) return { msg: 'Your email address has a space in it.', fix: v.replace(/\s+/g, '') };
+    if (v.indexOf(',') >= 0) return { msg: 'Your email address has a comma in it. Email addresses use full stops.', fix: v.replace(/,/g, '.') };
+    var ats = v.split('@').length - 1;
+    if (!ats) return { msg: 'Your email address needs an @, like name@example.com.' };
+    if (ats > 1) {
+      var one = v.replace(/@{2,}/g, '@');
+      return { msg: 'Your email address has more than one @ in it.', fix: one.split('@').length === 2 ? one : '' };
+    }
+    if (v.indexOf('..') >= 0) return { msg: 'Your email address has two dots in a row (..).', fix: v.replace(/\.{2,}/g, '.') };
+    var local = v.split('@')[0], dom = v.split('@')[1];
+    if (!local) return { msg: 'Your email address needs your name before the @, like name@example.com.' };
+    if (/\.$/.test(v)) return { msg: 'Your email address ends with a dot.', fix: v.replace(/\.+$/, '') };
+    if (/^\.|\.$/.test(local) || /^\./.test(dom))
+      return { msg: 'Your email address has a dot in the wrong place.', fix: local.replace(/^\.+|\.+$/g, '') + '@' + dom.replace(/^\.+/, '') };
+    if (dom.indexOf('.') < 0 || !/^(\p{L}{2,}|xn--[a-z0-9-]+)$/u.test(dom.split('.').pop().toLowerCase())) {
+      var guess = DOMAINS.filter(function (d) { return d.split('.')[0] === dom.toLowerCase(); })[0];
+      return { msg: 'Your email address is missing its ending, like .com or .co.uk.', fix: guess ? local + '@' + guess : '' };
+    }
+    if (!EMAIL.test(v)) return { msg: 'Please enter your email address, like name@example.com.' };
+    return null;
+  }
+  // What is wrong with the box now: a mistake (red, will not send until fixed), a likely misspelling (red until
+  // they tap "Yes, fix it" or "No, my email is right"), or nothing. fix = the address one tap puts right.
+  var emailKept = '';
+  function emailState() {
+    var v = $('email').value.trim(), p = emailProblem(v);
+    if (p) {
+      // follow every clear fix to the end ("jo hn@gmail..con" becomes "john@gmail.com"); offer it only if
+      // nothing is left that needs their own hand
+      var fix = v, q = p, n = 0;
+      while (q && q.fix && n++ < 6) { fix = q.fix; q = emailProblem(fix); }
+      return { msg: p.msg, fix: q ? '' : (emailSlip(fix) || fix) };
+    }
+    if (v.toLowerCase() === emailKept) return { msg: '' };
+    var slip = emailSlip(v);
+    return slip ? { msg: 'Please check your email address.', fix: slip, maybe: true } : { msg: '' };
+  }
+  function showEmail(st) {
+    setErr('email', st.msg);
+    $('emailFix').hidden = !st.fix;
+    $('emailFixTo').textContent = st.fix || '';
+    $('emailKeepBtn').hidden = !st.maybe;
+    return !st.msg;
   }
   $('email').addEventListener('blur', function () {
-    var s = emailSlip(this.value);
-    $('emailFix').hidden = !s;
-    $('emailFixTo').textContent = s;
+    if (!this.value.trim()) { $('emailFix').hidden = true; return; }   // an empty box is only asked about on Sign
+    showEmail(emailState());
+  });
+  $('email').addEventListener('input', function () {
+    // once red, it turns back the moment the address is right; it never turns red while they are still typing
+    if (this.closest('.f').classList.contains('bad') && !emailState().msg) showEmail({ msg: '' });
   });
   $('emailFixBtn').addEventListener('click', function () {
     $('email').value = $('emailFixTo').textContent;
-    $('emailFix').hidden = true;
-    setErr('email');
+    showEmail(emailState());
+  });
+  $('emailKeepBtn').addEventListener('click', function () {
+    emailKept = $('email').value.trim().toLowerCase();
+    showEmail({ msg: '' });
   });
   $('abroadBtn').addEventListener('click', function () {
     S.abroad = !S.abroad;
@@ -1850,7 +1918,7 @@ html.dk-open,html.dk-open body{overflow:hidden}
     var consent = consentVal;
     setErr('first', NAME.test(first) ? '' : 'Please enter your first name.');
     setErr('last', NAME.test(last) ? '' : 'Please enter your last name.');
-    setErr('email', EMAIL.test(email) ? '' : 'Please enter your email address, like name@example.com.');
+    showEmail(emailState());
     if (S.abroad) setErr('cty', cty.length >= 2 ? '' : 'Please enter your country.');
     else setErr('pc', /^[A-Z]{1,2}\d[A-Z\d]?\d[A-Z]{2}$/.test(pc) ? '' : 'Please enter your full postcode, like ME13 8GD.');
     $('consentErr').textContent = consent ? '' : 'Please choose one.';
@@ -3253,7 +3321,7 @@ html.dk-open,html.dk-open body{overflow:hidden}
     ['p1', 'p2', 'p4'].forEach(function (id) { $(id).reset(); });
     ['first', 'last', 'email', 'pc', 'cty', 'otherAmt', 'mpMsg', 'quote'].forEach(function (id) { setErr(id); });
     $('quoteHint').textContent = ''; $('qCount').textContent = '280';
-    $('consentErr').textContent = ''; $('emailFix').hidden = true; setConsent('');
+    $('consentErr').textContent = ''; $('emailFix').hidden = true; emailKept = ''; setConsent('');
     $('pcWrap').hidden = false; $('ctyWrap').hidden = true; $('otherWrap').hidden = true; $('abroadBtn').textContent = 'Not in the UK?';
     fundLabel();
     go(1, true);
