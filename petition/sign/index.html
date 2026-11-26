@@ -593,16 +593,15 @@ html.dk-open,html.dk-open body{overflow:hidden}
 #deck{position:fixed;inset:0;z-index:2000;background:#0c163b;display:flex;align-items:center;justify-content:center;
   font-family:'Barlow','DM Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
 #deck[hidden]{display:none}
-.dk-stage{position:relative;width:min(100vw,(100vh - 44px) * .6545,540px);width:min(100vw,(100dvh - 44px) * .6545,540px);
+.dk-stage{position:relative;width:min(100vw,(100vh - 44px) * .5625,540px);width:min(100vw,(100dvh - 44px) * .5625,540px);
   display:flex;flex-direction:column;overflow:hidden;background:#0c163b;container-type:inline-size;-webkit-tap-highlight-color:transparent}
-.dk-track{flex:none;width:100%;aspect-ratio:1080/1650;display:flex;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;
+.dk-track{flex:none;width:100%;aspect-ratio:9/16;display:flex;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;
   scrollbar-width:none;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch;user-select:none;-webkit-user-select:none}
 .dk-track::-webkit-scrollbar{display:none}
 .dk-track.drag{scroll-snap-type:none;cursor:grabbing}
 @media(hover:hover) and (pointer:fine){.dk-track{cursor:grab}}
 .dk-s{position:relative;flex:0 0 100%;width:100%;height:100%;scroll-snap-align:start;scroll-snap-stop:always;overflow:hidden}
-.dk-img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 0;pointer-events:none;-webkit-user-drag:none}
-/* the cards are Instagram story pictures (1080 by 1920); the bottom 270px is the empty strip kept clear of Instagram's reply bar, so it is left off */
+.dk-img{display:block;width:100%;height:100%;object-fit:cover;pointer-events:none;-webkit-user-drag:none}
 /* under the card: Skip, the dots and the count, with arrows at each end on a computer */
 .dk-foot{flex:none;height:44px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;padding:0 8px;background:#0c163b}
 .dk-fl,.dk-fr{display:flex;align-items:center;gap:6px;min-width:0}

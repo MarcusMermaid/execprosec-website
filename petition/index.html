@@ -2118,15 +2118,15 @@ body.ticker-on .foot{padding-bottom:90px}
       track('popup_close', {label: 'popup'});
       try { fr.contentWindow.postMessage({wtpt: 'closed'}, location.origin); } catch (e) {}   /* /fund/: counted as leaving the money screen */
     }
-    /* /fund/: while the cards show, the box is the card's shape (the top 1650 of its 1920 rows) with the dots under it, as big as the screen allows */
+    /* /fund/: while the cards show, the box is the card's shape (9 by 16) with the dots under it, as big as the screen allows */
     var deckOpen = false, deckKnown = false, lastH = 0;
     function fit(){
       var bx = m.querySelector('.sp-box');
       if (!deckOpen){ bx.style.maxWidth = ''; if (lastH) fr.style.height = lastH + 'px'; return; }
       var small = window.innerWidth <= 560;
       // a box over the page on a phone too, with the page showing round it (Marcus, 25 Nov 2026)
-      var w = Math.floor(Math.min(540, window.innerWidth - (small ? 24 : 28), (window.innerHeight - (small ? 32 : 48) - 44) * 1080 / 1650));
-      bx.style.maxWidth = w + 'px'; fr.style.height = (Math.round(w * 1650 / 1080) + 44) + 'px';   // the card, and the dots under it (44px)
+      var w = Math.floor(Math.min(540, window.innerWidth - (small ? 24 : 28), (window.innerHeight - (small ? 32 : 48) - 44) * 9 / 16));
+      bx.style.maxWidth = w + 'px'; fr.style.height = (Math.round(w * 16 / 9) + 44) + 'px';   // the card, and the dots under it (44px)
     }
     window.addEventListener('resize', fit);
     [].forEach.call(m.querySelectorAll('[data-close]'), function(b){ b.addEventListener('click', close); });
