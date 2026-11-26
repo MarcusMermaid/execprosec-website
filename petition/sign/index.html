@@ -8,7 +8,7 @@
 <meta name="description" content="Petition to Press and Parliament: include every MP, peer and UK legislator under the Hillsborough Law's duty of candour and offence of misleading the public.">
 <link rel="canonical" href="https://execprosec.org/petition/">
 <script>/* Marcus, 9 Nov 2026: ?embed=1 shows only the signing card, for the pop-up on /what-the-public-think/ */
-if (/[?&]embed=1(?![0-9])/.test(location.search) && window.parent !== window) document.documentElement.className += ' embed';</script>
+if ((/[?&]embed=1(?![0-9])/.test(location.search) || /[?&]session_id=/.test(location.search)) && window.parent !== window) document.documentElement.className += ' embed';</script>
 <link rel="icon" href="/_web/brand/favicon.ico">
 <link rel="icon" type="image/png" sizes="32x32" href="/_web/brand/icon-32.png">
 <link rel="apple-touch-icon" href="/_web/brand/icon-180.png">
@@ -32,6 +32,8 @@ if (/[?&]embed=1(?![0-9])/.test(location.search) && window.parent !== window) do
 <!-- fonts load without holding up the page: on a slow phone the form works before they arrive -->
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <noscript><link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"></noscript>
+<!-- /fund/ pitch: Barlow, the nearest web font to the ads' lettering -->
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <style>
 :root{
   /* Layout: one narrow column at every size: title, one paragraph, then the card with the target
@@ -193,6 +195,9 @@ button.press-item{background:none;border:0;cursor:pointer;position:relative}
 .steps li{list-style:none;flex:1;height:4px;border-radius:2px;background:var(--rule)}
 .steps li.on{background:var(--navy)}
 #stepLbl{font-size:12px;font-weight:600;color:var(--muted);white-space:nowrap}
+html.fund3 #stepLbl{font-size:14px;font-weight:700;color:var(--navy)}
+html.fund3 #stepLbl b{display:inline-block;margin-right:6px;padding:3px 8px;border-radius:10px;background:var(--gold);color:var(--navy);font-size:12px;font-weight:800}
+html.fund3 .rw{display:none!important}
 
 .panel{padding:14px 20px 22px}
 .panel h2{font:400 26px/1.15 var(--f-display);color:var(--navy);margin:0 0 6px;text-wrap:balance}
@@ -582,8 +587,105 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
 @media(max-width:1080px){header#nav{padding:14px 18px 10px;gap:14px} header#nav .nav-links a{font-size:11px;padding:5px 6px;letter-spacing:.02em}}
 @media(max-width:880px){header#nav{flex-wrap:wrap} header#nav .nav-links{flex-wrap:wrap}}
 </style>
+<style>
+/* /fund/: the pitch (Marcus, 25 Nov 2026). The cards are pictures drawn in the ads' own design (round 3 renderer,
+   Bahnschrift); the ask is built here in Barlow, the nearest web font. Sizes follow the card's width (cqw).
+   Moved by swiping, with dots under the card as in the swipe journey, so nothing sits on the cards
+   (Marcus, 26 Nov 2026: "use the swiping and dots per page system we use on the normal box"). */
+html.dk-open,html.dk-open body{overflow:hidden}
+#deck{position:fixed;inset:0;z-index:2000;background:#0c163b;display:flex;align-items:center;justify-content:center;
+  font-family:'Barlow','DM Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+#deck[hidden]{display:none}
+.dk-stage{position:relative;width:min(100vw,(100vh - 44px) * .5625,540px);width:min(100vw,(100dvh - 44px) * .5625,540px);
+  display:flex;flex-direction:column;overflow:hidden;background:#0c163b;container-type:inline-size;-webkit-tap-highlight-color:transparent}
+.dk-track{flex:none;width:100%;aspect-ratio:9/16;display:flex;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;
+  scrollbar-width:none;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch;user-select:none;-webkit-user-select:none}
+.dk-track::-webkit-scrollbar{display:none}
+.dk-track.drag{scroll-snap-type:none;cursor:grabbing}
+@media(hover:hover) and (pointer:fine){.dk-track{cursor:grab}}
+.dk-s{position:relative;flex:0 0 100%;width:100%;height:100%;scroll-snap-align:start;scroll-snap-stop:always;overflow:hidden}
+.dk-img{display:block;width:100%;height:100%;object-fit:cover;pointer-events:none;-webkit-user-drag:none}
+/* under the card: Skip, the dots and the count, with arrows at each end on a computer */
+.dk-foot{flex:none;height:44px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;padding:0 8px;background:#0c163b}
+.dk-fl,.dk-fr{display:flex;align-items:center;gap:6px;min-width:0}
+.dk-fr{justify-content:flex-end}
+.dk-dots{display:flex;gap:5px}
+.dk-dots i{width:6px;height:6px;border-radius:3px;background:rgba(255,255,255,.3);transition:width .35s cubic-bezier(.2,.8,.2,1),background .35s}
+.dk-dots i.on{width:18px;background:#d6b76a}
+.dk-count{font:600 12px/1 'Barlow',system-ui,sans-serif;letter-spacing:.04em;color:rgba(255,255,255,.66);font-variant-numeric:tabular-nums;white-space:nowrap}
+.dk-count.hint{color:#d6b76a;font-weight:700;font-size:13px;letter-spacing:.01em}
+.dk-arr{all:unset;box-sizing:border-box;flex:none;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.94);color:#0c163b;
+  display:grid;place-items:center;cursor:pointer;transition:opacity .25s,transform .15s}
+.dk-arr:hover{transform:scale(1.07)}
+.dk-arr svg{width:16px;height:16px}
+.dk-arr.gone{opacity:0;pointer-events:none}
+@media(hover:none){.dk-arr{display:none}}
+.dk-arr:focus-visible,.dk-ask button:focus-visible,.dk-ask input:focus-visible{outline:3px solid #fff;outline-offset:2px}
+/* the ask, the last card */
+.dk-s.dk-ask{background:#0c163b;color:#fff;overflow-x:hidden;overflow-y:auto;scrollbar-width:none;
+  display:flex;flex-direction:column;gap:2.6cqw;padding:0 6cqw 5cqw}
+.dk-ask::-webkit-scrollbar{display:none}
+.dk-hero{position:relative;flex:none;min-height:70cqw;margin:0 -6cqw;padding:9cqw 0 0 6cqw}
+.dk-panel{position:absolute;top:0;right:0;bottom:0;width:27cqw;background:#d6b76a url(/_web/fund/panel.webp) 58% 7.5cqw/auto 150% no-repeat}
+.dk-me{position:absolute;right:0;bottom:0;height:43cqw;width:auto;pointer-events:none}
+.dk-me.casual{right:-7cqw;height:42cqw}
+.dk-kick{position:relative;margin:0 0 2cqw;font:700 max(12px,3.4cqw)/1.1 'Barlow',system-ui,sans-serif;letter-spacing:.06em;color:#d6b76a}
+.dk-ask h2{position:relative;margin:0;width:56cqw;font:800 9.6cqw/1 'Barlow',system-ui,sans-serif;letter-spacing:-.01em;color:#fff;text-wrap:balance}
+.dk-corner{position:relative;margin:3cqw 0 0;width:50cqw;font:700 5.4cqw/1.1 'Barlow',system-ui,sans-serif;color:#d6b76a}
+/* only the step they are on; the petition and the emails are shown after they have given (Marcus, 26 Nov 2026) */
+.dk-step{align-self:flex-start;display:inline-flex;align-items:center;gap:2.2cqw;margin:1cqw 0 0;padding:1.8cqw 3.4cqw 1.8cqw 1.8cqw;
+  border:1px solid #d6b76a;border-radius:2cqw;background:rgba(214,183,106,.14);font:700 max(14px,4cqw)/1.1 'Barlow',system-ui,sans-serif;color:#fff}
+.dk-step b{display:grid;place-items:center;min-width:9cqw;height:6.6cqw;padding:0 1.8cqw;border-radius:3.3cqw;background:#d6b76a;color:#0c163b;
+  font:800 max(12px,3.6cqw)/1 'Barlow',system-ui,sans-serif}
+.dk-freq,.dk-amts{display:grid;gap:2cqw}
+.dk-freq{grid-template-columns:1fr 1fr;margin-top:1cqw}
+.dk-amts{grid-template-columns:repeat(4,1fr)}
+.dk-freq button,.dk-amts button{min-height:max(44px,11.5cqw);border:2px solid rgba(255,255,255,.5);border-radius:2cqw;background:transparent;color:#fff;cursor:pointer;
+  font:700 max(16px,4.8cqw)/1 'Barlow',system-ui,sans-serif}
+.dk-freq button[aria-pressed="true"],.dk-amts button[aria-pressed="true"]{background:#d6b76a;border-color:#d6b76a;color:#0c163b}
+.dk-give{min-height:max(52px,14cqw);border:0;border-radius:2cqw;background:#d84a4f;color:#fff;cursor:pointer;margin-top:1cqw;
+  font:700 max(18px,5.6cqw)/1 'Barlow',system-ui,sans-serif;box-shadow:0 3px 14px rgba(0,0,0,.3)}
+.dk-give:active{background:#c23d42}
+.dk-fine{margin:0;text-align:center;font:500 max(12px,3.3cqw)/1.3 'Barlow',system-ui,sans-serif;color:rgba(255,255,255,.72)}
+.dk-otherf{display:flex;flex-direction:column;gap:1.4cqw}
+.dk-otherf[hidden]{display:none}
+.dk-otherf label{font:600 max(13px,3.6cqw)/1.2 'Barlow',system-ui,sans-serif;color:rgba(255,255,255,.85)}
+.dk-otherf input{box-sizing:border-box;width:100%;min-height:max(44px,11.5cqw);border:2px solid #d6b76a;border-radius:2cqw;background:#fff;color:#0c163b;
+  padding:0 3cqw;font:700 max(18px,5cqw)/1 'Barlow',system-ui,sans-serif}
+.dk-err{margin:0;color:#ff9a9d;font:600 max(12px,3.3cqw)/1.2 'Barlow',system-ui,sans-serif}
+.dk-err[hidden]{display:none}
+</style>
 </head>
 <body>
+
+<!-- /fund/: the pitch (Marcus, 25 Nov 2026). The card they tapped in the advert, the story one card at a time, then the ask.
+     Swiped like the swipe journey, with the dots under the card so nothing covers it (Marcus, 26 Nov 2026). -->
+<div id="deck" hidden role="dialog" aria-modal="true" aria-label="Why we need your help">
+  <div class="dk-stage" id="dkStage">
+    <div class="dk-track" id="dkTrack">
+      <section class="dk-s dk-ask" id="dkAsk" aria-labelledby="dkAskH">
+        <div class="dk-hero">
+          <div class="dk-panel" aria-hidden="true"></div>
+          <img class="dk-me" id="dkMe" alt="" decoding="async">
+          <p class="dk-kick">HOW YOU CAN HELP</p>
+          <h2 id="dkAskH">Will you back the campaign?</h2>
+          <p class="dk-corner">Back me up, get in my corner.</p>
+        </div>
+        <p class="dk-step"><b>1/3</b>Back the campaign</p>
+        <div class="dk-freq" role="group" aria-label="How often"><button type="button" data-dkfreq="once" aria-pressed="true">One-off</button><button type="button" data-dkfreq="monthly" aria-pressed="false">Monthly</button></div>
+        <div class="dk-amts" role="group" aria-label="Amount"><button type="button" data-dkamt="10" aria-pressed="true">&pound;10</button><button type="button" data-dkamt="20" aria-pressed="false">&pound;20</button><button type="button" data-dkamt="50" aria-pressed="false">&pound;50</button><button type="button" id="dkOther" aria-pressed="false">Other</button></div>
+        <div class="dk-otherf" id="dkOtherF" hidden><label for="dkOtherAmt">Your amount, &pound;10 or more</label><input id="dkOtherAmt" type="number" inputmode="numeric" min="10" step="1" placeholder="&pound;"><p class="dk-err" id="dkOtherErr" hidden>Please choose &pound;10 or more.</p></div>
+        <button class="dk-give" type="button" id="dkGive">Give &pound;10 once</button>
+        <p class="dk-fine" id="dkFine">Secure payment by Stripe.</p>
+      </section>
+    </div>
+    <div class="dk-foot">
+      <div class="dk-fl"><button class="dk-arr gone" type="button" id="dkPrev" aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button></div>
+      <div class="dk-dots" id="dkDots" aria-hidden="true"></div>
+      <div class="dk-fr"><span class="dk-count" id="dkCount"></span><button class="dk-arr" type="button" id="dkNext" aria-label="Next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button></div>
+    </div>
+  </div>
+</div>
 
 <header id="nav">
   <a class="logo" href="/" aria-label="ExecProsec home"><img src="/_web/brand/logo-nav.png" alt="ExecProsec" width="82" height="45"></a>
@@ -1185,7 +1287,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   // browser within a day of starting it carries on the same way, so a giver is never asked again.
   var MONEY = /^\/fund(\/|$)/.test(location.pathname) || /[?&]first=money(?![a-z])/.test(location.search);
   try {
-    if (!MONEY && /[?&]c=/.test(location.search) && Date.now() - (+localStorage.getItem('ep_fund_first') || 0) < 864e5) MONEY = true;
+    if (!MONEY && /[?&](c|session_id)=/.test(location.search) && Date.now() - (+localStorage.getItem('ep_fund_first') || 0) < 864e5) MONEY = true;
     if (MONEY && !DEMO) localStorage.setItem('ep_fund_first', String(Date.now()));
   } catch (e) {}
   var SIGS = DRAW.sigs;
@@ -1625,6 +1727,12 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     var dots = $('dots').children;
     for (var j = 0; j < dots.length; j++) { dots[j].hidden = j >= all; dots[j].classList.toggle('on', j < at); }
     $('stepLbl').textContent = at <= all ? 'Step ' + at + ' of ' + all : 'Done';
+    if (MONEY && S.deck) {   // from the pitch: 1/3 Back the campaign, 2/3 Sign our petition, 3/3 the emails (Marcus, 26 Nov 2026)
+      var st3 = at === 1 ? 1 : at === 2 ? 2 : k ? 3 : 0;
+      var lb3 = ['', 'Back the campaign', 'Sign our petition', k === 'mp' ? 'Email your MP' : k === 'min' ? 'Email the Minister' : 'Email a member of the Lords'][st3];
+      for (var j3 = 0; j3 < dots.length; j3++) { dots[j3].hidden = j3 >= 3; dots[j3].classList.toggle('on', st3 ? j3 < st3 : true); }
+      $('stepLbl').innerHTML = st3 ? '<b>' + st3 + '/3</b>' + lb3 : 'Done';
+    }
     rwShow(k || ((pt || n === 4) ? 'give' : n === 5 ? (MONEY && !S.signed ? 'sign' : 'end') : ''));
     $('card').classList.toggle('first', (n === 1 || w) && !MONEY);   // the step bar appears once they have confirmed
     $('card').classList.toggle('after', c || sh || pt || pe || mi || (!w && n >= 2));   // and the title, explainer and meter go
@@ -2156,7 +2264,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
   // can see where people who came from an advert stop.
   function moneyEv(step, detail) {
     if (!MONEY || S.signed || DEMO) return;
-    S.moneyAt = step;
+    S.moneyAt = step + (detail ? ' ' + detail : '');
     if (step === 'pitch_skip' || step === 'fund_skip') S.moneyDone = true;   // on to the signing form, which has its own
     formEv('money', step, detail);
   }
@@ -2694,7 +2802,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       toast("The card form didn't load. Please try again in a moment.");
     });
   });
-  $('payBack').addEventListener('click', showAsk);
+  $('payBack').addEventListener('click', function () { showAsk(); if (S.fromDeck) dkResume(); });
   function stripeJs() {
     return new Promise(function (ok, fail) {
       if (window.Stripe) { ok(); return; }
@@ -2785,7 +2893,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
       + '<span class="gv-days" id="gvDays"></span> from now. <b>Your money pays for:</b>';
     $('ptSkip').textContent = 'Not now, just sign the petition';
     $('skipFund').textContent = 'Not now, just sign the petition';
-    toPitch();
+    if (deckOn()) openDeck(); else toPitch();
   }
   var MONEY_SLIDES =
     '<div class="gv-it poster"><img src="/_web/pitch/tube-poster.webp" alt="Our poster: politicians are making lying to the public criminally illegal for nearly every official apart from themselves" decoding="async" draggable="false">'
@@ -2796,6 +2904,232 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     + '<div class="gv-tx"><span class="gv-tag">Next</span>A leaflet sent to the address of every MP and peer before they vote.</div></div>'
     + '<div class="gv-it"><div class="gv-soc"><b id="gvFollow">137,000+</b><span>followers on our social media</span><span class="up" id="gvWeek" hidden></span><span class="eng" id="gvEng">Millions of views of our videos.</span></div>'
     + '<div class="gv-tx"><span class="gv-tag prog">In progress</span><span id="gvViews" hidden></span>Making our social media videos. Your money funds more of them, to make this campaign as big as possible.</div></div>';
+  // ---------------------------------------------------------------- /fund/: the pitch (Marcus, 25 Nov 2026)
+  // "more of a pitch, slowly explaining to them, step by step, what we're doing, why we need help, what we need
+  // the money for, and what the result will be". Someone who tapped an advert first sees the card they tapped,
+  // then the story one card at a time in the same design, then the ask (monthly first), then the signature and
+  // the emails as before. ?deck=0 shows the one-screen ask instead; ?ad=a1|a2|b1|b2 picks the first card.
+  var DECK_SHARE = 1;   // the share of /fund/ visitors who get the pitch; the rest get the one-screen ask
+  var DK_TAGS = {
+    a1: ['fbad222914', 'fbad1babfd', 'fbad153dd8', 'fbad159cc9', 'fbaddd81ae', 'fbad1903cc', 'fbad133921', 'fbade43623'],
+    a2: ['fbadc0d90c', 'fbadf69355'],
+    b1: ['fbadfbfa75', 'fbad4fcb9a'],
+    b2: ['fbad4afefd', 'fbadb3628a']
+  };
+  var DK_BAND = ' 20,000+ people have funded this campaign. 65,000+ have signed our petition. 130,000+ follow us across platforms. 100+ news organisations have covered us.';
+  var DK_POSTER = 'Our advert: politicians are making lying to the public criminally illegal for nearly every official apart from themselves.' + DK_BAND;
+  var DK_NORFOLK = 'Our advert: my name is Marcus Ball. For the last ten and a half years, I\'ve been working full time to try to criminalise lying in politics, to make it illegal for our political class to lie to us.' + DK_BAND;
+  var DK_COVER = { a1: DK_POSTER, a2: DK_POSTER, b1: DK_NORFOLK, b2: DK_NORFOLK };
+  var DK_CARDS = [
+    'What\'s happening. Lying to the public is becoming a crime in the UK. The Hillsborough Law, officially the Public Office (Accountability) Bill, creates a new offence of misleading the public. It covers civil servants, NHS staff, government ministers, police and the military.',
+    'What\'s happening. But MPs, peers and all devolved legislators are left out. That\'s 90% of all the nation\'s top law makers. "We therefore take the view that it is not appropriate to extend the offence to Back-Bench parliamentarians." Lord Lemos, for the Government, House of Lords, 12 October 2026.',
+    'What we\'re doing. Our amendments would include all UK legislators. The offence would apply only outside Parliamentary proceedings: on TV, radio, online or at events. "We cannot credibly legislate for honesty in public life while exempting ourselves." Lord Knight of Weymouth, House of Lords, 26 February 2026.',
+    'What we\'re doing. We\'ve found enough peers to force a vote in the House of Lords on 7 December. Parliament must choose: vote to include lawmakers under their own law, or humiliate itself with hypocrisy written into statute.',
+    'Why it matters. Lies that lead us into war, manipulate referendum results or conceal why people died must carry criminal consequences, even when the people telling them make the law. "The following exemptions have been brought to my attention by campaigner Marcus Ball of ExecProsec." Baroness Jones of Moulsecoomb, House of Lords, 26 February 2026.',
+    'Why we need you. This whole campaign is funded by the public.' + DK_BAND.replace('this campaign', 'it') + ' My name is Marcus Ball. For ten and a half years I\'ve worked full time to criminalise lying in politics.',
+    'Why we need you. Before 7 December, every MP and peer needs to see that the public is watching. We need your help to pay for adverts where MPs and peers will see them, and to email all these politicians at exactly the right moment, before the vote and on the day of the vote.',
+    'What your money pays for. Adverts that MPs and peers can\'t miss. Artist\'s impression of our poster at Westminster tube station. Booked: our poster at Westminster station, the tube stop for Parliament, from 30 November to 13 December.',
+    'What your money pays for. Booked: a PR firm, to get our campaign into the national press before the vote. Next: a leaflet sent to the address of every MP and peer before they vote. In progress: more of our videos, to make this campaign as big as possible.',
+    'What your money can do. The more we raise, the more MPs and peers see us before they vote. Win the vote on 7 December, and our amendment goes into the Bill: the people who make our laws would be included in them. Lose, and lawmakers write themselves out of their own law.'
+  ];
+  var dk = { at: 0, want: 0, most: 0, n: 0, freq: 'once', amt: 10, open: false };   // a £10 one-off first (Marcus, 25 Nov 2026)
+  // On /fund/ the pitch sits in the petition page's box (Marcus, 25 Nov 2026: "a box overlay over the top of the
+  // petitions page"): the box is told when the cards show, so it takes their shape, and crossing it off counts as leaving.
+  var EMBED = document.documentElement.classList.contains('embed');
+  function dkTell(open) { if (EMBED) try { parent.postMessage({ wtpt: 'deck', open: !!open }, location.origin); } catch (e) {} }
+  window.addEventListener('message', function (e) {
+    if (e.origin !== location.origin || !e.data) return;
+    if (e.data.wtpt === 'closed') moneyLeave();
+    else if (e.data.wtpt === 'opened') S.moneyLeft = false;
+  });
+  // the last button closes the box, showing the petition page underneath
+  $('doneSee').addEventListener('click', function (e) {
+    if (!EMBED) return;
+    e.preventDefault();
+    try { parent.postMessage({ wtpt: 'close' }, location.origin); } catch (x) {}
+  });
+  function deckOn() {
+    if (!MONEY) return false;
+    var q = location.search;
+    if (/[?&]deck=0(?![0-9])/.test(q)) return false;
+    if (/[?&]deck=1(?![0-9])/.test(q) || DECK_SHARE >= 1) return true;
+    try {
+      var v = localStorage.getItem('ep_fund_deck');
+      if (v !== '1' && v !== '0') { v = Math.random() < DECK_SHARE ? '1' : '0'; localStorage.setItem('ep_fund_deck', v); }
+      return v === '1';
+    } catch (e) { return Math.random() < DECK_SHARE; }
+  }
+  function dkAd() {
+    var m = (location.search.match(/[?&]ad=(a1|a2|b1|b2)(?![0-9a-z])/i) || [])[1];
+    if (m) return m.toLowerCase();
+    var r = String(REF || '').toLowerCase();
+    for (var k in DK_TAGS) if (DK_TAGS[k].indexOf(r) >= 0) return k;
+    return 'a1';
+  }
+  function openDeck() {
+    var ad = dkAd(), tr = $('dkTrack'), ask = $('dkAsk');
+    S.deck = true;
+    document.documentElement.classList.add('fund3');
+    var cards = [{ src: 'cover-' + ad, alt: DK_COVER[ad] }].concat(DK_CARDS.map(function (t, k) { return { src: 'fp-' + (k + 1), alt: t }; }));
+    [].slice.call(tr.querySelectorAll('.dk-card')).forEach(function (s) { tr.removeChild(s); });
+    cards.forEach(function (c) {
+      var s = document.createElement('div'), im = document.createElement('img');
+      s.className = 'dk-s dk-card';
+      im.className = 'dk-img'; im.alt = c.alt; im.decoding = 'async'; im.draggable = false;
+      im.setAttribute('data-src', '/_web/fund/' + c.src + '.webp');
+      s.appendChild(im);
+      tr.insertBefore(s, ask);
+    });
+    $('dkMe').src = '/_web/fund/' + (/2$/.test(ad) ? 'me-casual' : 'me-suit') + '.webp';
+    $('dkMe').classList.toggle('casual', /2$/.test(ad));
+    dk.n = cards.length + 1;   // the ask is the last card
+    dk.most = 0; dk.at = -1;
+    $('dkDots').innerHTML = new Array(dk.n + 1).join('<i></i>');
+    dkShowDeck();
+    track('pitch_seen', 'pitch ' + ad);
+    tr.scrollLeft = 0;
+    dkAt(0);
+  }
+  function dkShowDeck() {
+    dkTell(true);
+    $('deck').hidden = false;
+    dk.open = true;
+    document.documentElement.classList.add('dk-open');
+  }
+  // Back from Stripe's card form is the ask again: from the pitch there is no way to the petition without giving
+  // (Marcus, 26 Nov 2026: "We want to box them in to fund us, only ask them for the other stuff after they have funded us")
+  function dkResume() {
+    dkShowDeck();
+    dk.at = -1;
+    var tr = $('dkTrack');
+    tr.scrollLeft = (dk.n - 1) * tr.clientWidth;
+    dkAt(dk.n - 1);
+  }
+  function closeDeck() {
+    $('deck').hidden = true;
+    dk.open = false;
+    dkTell(false);
+    document.documentElement.classList.remove('dk-open');
+    window.scrollTo(0, 0);
+  }
+  var dkReduce = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+  var dkTouch = !!(window.matchMedia && matchMedia('(hover: none)').matches);
+  function dkLoad(k) { var s = $('dkTrack').children[k], im = s && s.querySelector('img'); if (im && !im.getAttribute('src')) im.src = im.getAttribute('data-src'); }
+  function dkHere() { var tr = $('dkTrack'); return tr.clientWidth ? Math.round(tr.scrollLeft / tr.clientWidth) : Math.max(dk.at, 0); }
+  function dkDraw(i) {
+    [].forEach.call($('dkDots').children, function (d, k) { d.classList.toggle('on', k === i); });
+    var hint = i === 0 && dkTouch;   // on a phone the first card says to swipe
+    $('dkCount').textContent = hint ? 'Swipe \u203A' : (i + 1) + '/' + dk.n;
+    $('dkCount').classList.toggle('hint', hint);
+    $('dkPrev').classList.toggle('gone', i === 0);
+    $('dkNext').classList.toggle('gone', i === dk.n - 1);
+  }
+  function dkAt(i) {   // a card has arrived
+    dk.want = i;
+    if (i === dk.at) return;
+    dk.at = i;
+    dkDraw(i);
+    [i, i + 1, i + 2].forEach(dkLoad);
+    if (i === dk.n - 1) { $('dkAsk').scrollTop = 0; dkLabel(); }
+    if (i > dk.most) { dk.most = i; track('pitch_slide', (i + 1) + ' of ' + dk.n); }
+  }
+  var dkDx = null, dkSx = 0, dkSl = 0, dkSt = 0;
+  function dkGo(i) {
+    i = Math.max(0, Math.min(dk.n - 1, i));
+    dk.want = i;
+    var tr = $('dkTrack');
+    [i, i + 1].forEach(dkLoad);
+    tr.scrollTo({ left: i * tr.clientWidth, behavior: dkReduce ? 'auto' : 'smooth' });
+    dkDraw(i);
+    setTimeout(function () {   // in case a browser drops the smooth scroll
+      if (dkDx !== null || dk.want !== i) return;
+      if (dkHere() !== i) tr.scrollLeft = i * tr.clientWidth;
+      dkAt(i);
+    }, 900);
+  }
+  $('dkTrack').addEventListener('scroll', function () {
+    var h = dkHere();
+    dkDraw(h); dkLoad(h); dkLoad(h + 1);
+    clearTimeout(dkSt);
+    dkSt = setTimeout(function () { if (dkDx === null) dkAt(dkHere()); }, 90);
+  }, { passive: true });
+  window.addEventListener('resize', function () { if (dk.open && dk.at >= 0) $('dkTrack').scrollLeft = dk.at * $('dkTrack').clientWidth; });
+  $('dkNext').addEventListener('click', function () { dkGo(dk.want + 1); });
+  $('dkPrev').addEventListener('click', function () { dkGo(dk.want - 1); });
+  // a mouse can drag the cards too, like a finger; the arrow keys move them as well
+  $('dkTrack').addEventListener('pointerdown', function (e) {
+    if (e.pointerType !== 'mouse' || e.button !== 0 || e.target.closest('input,button,a,label')) return;
+    dkDx = 0; dkSx = e.clientX; dkSl = $('dkTrack').scrollLeft; $('dkTrack').classList.add('drag');
+  });
+  window.addEventListener('pointermove', function (e) { if (dkDx === null) return; dkDx = e.clientX - dkSx; $('dkTrack').scrollLeft = dkSl - dkDx; });
+  window.addEventListener('pointerup', function () {
+    if (dkDx === null) return;
+    $('dkTrack').classList.remove('drag');
+    var d = dkDx; dkDx = null;
+    dkGo(dk.want + (d < -50 ? 1 : d > 50 ? -1 : 0));
+  });
+  document.addEventListener('keydown', function (e) {
+    if (!dk.open || /INPUT|TEXTAREA/.test(e.target.tagName)) return;
+    if (e.key === 'ArrowRight') dkGo(dk.want + 1);
+    else if (e.key === 'ArrowLeft') dkGo(dk.want - 1);
+  });
+  // the ask: a £10 one-off first (Marcus, 25 Nov 2026), any amount from £10
+  function dkLabel() {
+    var ok = dk.amt >= 10;
+    $('dkGive').textContent = !ok ? 'Choose \u00a310 or more' : dk.freq === 'monthly' ? 'Back us with \u00a3' + dk.amt + ' a month' : 'Give \u00a3' + dk.amt + ' once';
+    $('dkFine').textContent = (dk.freq === 'monthly' ? 'Cancel any time. ' : '') + 'Secure payment by Stripe.';
+  }
+  document.querySelectorAll('[data-dkfreq]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      dk.freq = b.getAttribute('data-dkfreq');
+      document.querySelectorAll('[data-dkfreq]').forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+      track(dk.freq === 'monthly' ? 'fund_monthly_pick' : 'fund_once');
+      dkLabel();
+    });
+  });
+  document.querySelectorAll('[data-dkamt]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      dk.amt = +b.getAttribute('data-dkamt');
+      document.querySelectorAll('[data-dkamt]').forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+      $('dkOther').setAttribute('aria-pressed', 'false');
+      $('dkOtherF').hidden = true; $('dkOtherErr').hidden = true;
+      track('pitch_amount', String(dk.amt));
+      dkLabel();
+    });
+  });
+  // Other: their own amount, typed here on the ask
+  $('dkOther').addEventListener('click', function () {
+    document.querySelectorAll('[data-dkamt]').forEach(function (x) { x.setAttribute('aria-pressed', 'false'); });
+    $('dkOther').setAttribute('aria-pressed', 'true');
+    $('dkOtherF').hidden = false;
+    dk.amt = Math.floor(+$('dkOtherAmt').value || 0);
+    track('pitch_other');
+    dkLabel();
+    setTimeout(function () { $('dkOtherAmt').focus(); }, 30);
+  });
+  $('dkOtherAmt').addEventListener('input', function () {
+    dk.amt = Math.floor(+$('dkOtherAmt').value || 0);
+    if (dk.amt >= 10) $('dkOtherErr').hidden = true;
+    dkLabel();
+  });
+  // on to Stripe's card form, which opens at once for the chosen amount
+  function dkPay(amt) {
+    closeDeck();
+    ptFreq = dk.freq;
+    S.pitchGive = true;
+    S.fromDeck = true;
+    $('skipFund').hidden = true;   // no "just sign" from the pitch (Marcus, 26 Nov 2026)
+    gvSet(amt);
+    if (!$('p4').querySelector('input[name=amt][value="' + amt + '"]')) { $('otherAmt').value = amt; fundLabel(); }
+    toFund();
+    $('p4').requestSubmit();
+  }
+  $('dkGive').addEventListener('click', function () {
+    if (!(dk.amt >= 10)) { $('dkOtherErr').hidden = false; $('dkOtherAmt').focus(); return; }
+    track('pitch_fund', dk.freq + ' ' + dk.amt);
+    dkPay(dk.amt);
+  });
+
   // straight after the money: thank them, then the petition
   function paidThanks(once, amt, pending) {
     $('doneTick').hidden = false;
@@ -2820,6 +3154,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     var st = (q.match(/[?&]step=([a-z]+)/) || [])[1] || '';
     startMoney();
     if (!st) return;
+    closeDeck();
     S.paid = true;
     if (st === 'paid') { earn('give'); return paidThanks(true, '£20', false); }
     if (st === 'sign') return toSign();
@@ -2928,6 +3263,7 @@ header#nav .nav-links a.active,header#nav .nav-links a[aria-current="page"]{colo
     loadStats(true);
   }
   start();
+  if (EMBED && !dk.open) dkTell(false);
   updateSticky();
   setInterval(playFeed, 5200);
   nextStats();

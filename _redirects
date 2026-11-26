@@ -7,8 +7,10 @@
 /donate/* / 200
 # 25 Nov 2026: money first, for the paid ads. /fund is the petition form asking for the money first, then
 # the signature, then the three emails, then the petition's results page.
-/fund /petition/sign/ 200
-/fund/* /petition/sign/ 200
+# 25 Nov 2026 later: the petition page with the pitch in its box, as the signing box (Marcus: "a box overlay over
+# the top of the petitions page. And if they cross it off, then it can disappear").
+/fund /petition/ 200
+/fund/* /petition/ 200
 # A door on our own domain to the preview build, so a preview link carries our name, not pages.dev.
 /go/preview https://backer-feedback-oct-2026.execprosec-website.pages.dev/story-app/ 302
 /go/preview-home https://backer-feedback-oct-2026.execprosec-website.pages.dev/ 302
