@@ -579,26 +579,26 @@ body.ticker-on .foot{padding-bottom:90px}
 .lf-bar svg{width:24px;height:24px;flex:0 0 auto}
 .lf-bar:hover{background:#c53a40;animation-play-state:paused}
 .lf-led{margin:12px 0 0;font:700 13px/1.2 var(--f-lf);color:#fff}
-.lf-white{background:#fff;color:var(--navy);display:flex;flex-direction:column;justify-content:center;padding:30px 30px 30px 38px;position:relative;z-index:1}
+.lf-white{background:#fff;color:var(--navy);display:flex;flex-direction:column;justify-content:center;padding:30px 24px 30px 38px;position:relative;z-index:1}
 .lf-white .lf-tag{margin:0 0 12px;font:800 15px/1 var(--f-lf);letter-spacing:.16em;text-transform:uppercase;color:var(--navy)}
 .lf h1{margin:0;font:700 clamp(40px,4.3vw,58px)/1.02 var(--f-lf);letter-spacing:-.012em;color:var(--navy);text-wrap:balance}
 .lf h1 em{font-style:normal;color:var(--lf-salmon)}
 .lf-gold{background:var(--lf-gold);position:relative;overflow:hidden}
 .lf-bb{position:absolute;right:-4%;bottom:0;height:100%;width:auto;max-width:none;pointer-events:none}
 .lf-logo{position:absolute;top:20px;right:22px;width:38%;max-width:112px;height:auto;z-index:2}
-.lf-me{position:absolute;bottom:0;left:70.5%;height:82%;width:auto;max-width:none;z-index:3;pointer-events:none;filter:drop-shadow(0 6px 14px rgba(4,20,64,.18))}
+.lf-me{position:absolute;bottom:0;left:74%;height:82%;width:auto;max-width:none;z-index:3;pointer-events:none;filter:drop-shadow(0 6px 14px rgba(4,20,64,.18))}
 .lf-m{display:none}
 @media(max-width:1080px){.lf-box{grid-template-columns:38% 37% 25%}.lf-navy{padding:30px 24px 24px 28px}.lf-bar{margin-left:-28px;padding-left:28px;font-size:21px}.lf-cta{font-size:20px}.lf-body{font-size:14.5px}}
 /* phone and tablet: the leaflet itself, white on the left with the headline and Marcus, gold on the right with the sign button */
 @media(max-width:760px){
   .lf{background:var(--navy)}
-  .lf-box{grid-template-columns:55% 45%;grid-template-rows:auto;height:auto;min-height:0;aspect-ratio:auto}
+  .lf-box{background:#fff;grid-template-columns:55% 45%;grid-template-rows:auto 1fr;height:auto;min-height:0;aspect-ratio:auto}
   .lf-desk{display:none}
   .lf-m{display:block}
-  .lf-white{grid-column:1;grid-row:1;justify-content:flex-start;padding:16px 8px 0 16px;min-height:min(124vw,520px)}
+  .lf-white{grid-column:1;grid-row:1;justify-content:flex-start;padding:16px 8px 12px 16px;min-height:0}
   .lf-white .lf-tag{font-size:11px;margin-bottom:8px}
   .lf h1{font-size:clamp(25px,7.1vw,40px);line-height:1.03;text-wrap:balance}
-  .lf-gold{grid-column:2;grid-row:1;display:flex;flex-direction:column;align-items:stretch;padding:0}
+  .lf-gold{grid-column:2;grid-row:1 / span 2;display:flex;flex-direction:column;align-items:stretch;padding:0}
   .lf-logo{position:relative;top:auto;right:auto;width:66%;max-width:130px;margin:16px auto 0}
   .lf-bb{right:-10%;height:100%}
   .lf-gold .lf-m{position:relative;z-index:2}
@@ -607,7 +607,7 @@ body.ticker-on .foot{padding-bottom:90px}
   .lf-gold .lf-bar{margin:0 0 0 4px;padding:0 6px 0 10px;min-height:50px;font-size:clamp(15px,4.1vw,21px);white-space:nowrap;gap:5px;transform-origin:50% 50%}
   .lf-gold .lf-bar svg{width:17px;height:17px}
   .lf-gold .lf-led{margin:auto 6px 12px;font-size:clamp(9.5px,2.6vw,13px);white-space:nowrap;color:var(--navy);text-align:center}
-  .lf-me{left:3%;height:auto;width:44%;bottom:0}
+  .lf-me{position:relative;grid-column:1;grid-row:2;align-self:end;left:auto;bottom:auto;width:80%;height:auto;margin-left:5%}
   .hero-text .lf-m{display:block}
   .hero-text .lf-body{font-size:16px;margin-bottom:12px}
 }
