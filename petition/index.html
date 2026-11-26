@@ -562,48 +562,54 @@ body.ticker-on .foot{padding-bottom:90px}
 /* ---- leaflet / Tube poster band (draft, Marcus 26 Nov 2026: "if anyone lands on this page, they immediately associate the leaflet, the Underground advert, and this petition page all with the same thing") ---- */
 :root{--lf-gold:#d5b66a;--lf-salmon:#d9474c;--f-lf:'Barlow','Arial Narrow',Arial,sans-serif}
 .lf{padding:0;background:linear-gradient(90deg,var(--navy) 50%,var(--lf-gold) 50%)}
-.lf-box{position:relative;max-width:1240px;margin:0 auto;display:grid;grid-template-columns:36% 39% 25%;height:clamp(520px,44vw,620px);overflow:hidden}
-.lf-navy{background:var(--navy);padding:40px 34px 30px 40px;display:flex;flex-direction:column;justify-content:center;font-family:var(--f-lf)}
-.lf-kick{margin:0 0 14px;font:800 13px/1 var(--f-lf);letter-spacing:.16em;text-transform:uppercase;color:var(--lf-gold)}
-.lf-body{margin:0 0 14px;font:500 17px/1.4 var(--f-lf);color:#fff}
+.lf-box{position:relative;max-width:1240px;margin:0 auto;display:grid;grid-template-columns:36% 39% 25%;height:clamp(400px,33vw,460px);overflow:hidden}
+.lf + .hero{padding-top:18px}
+.lf-navy{background:var(--navy);padding:22px 34px 20px 40px;display:flex;flex-direction:column;justify-content:center;font-family:var(--f-lf)}
+.lf-kick{margin:0 0 10px;font:800 13px/1 var(--f-lf);letter-spacing:.16em;text-transform:uppercase;color:var(--lf-gold)}
+.lf-body{margin:0 0 10px;font:500 16px/1.38 var(--f-lf);color:#fff}
 .lf-body b{font-weight:700}
-.lf-cta{margin:14px 0 14px;font:700 26px/1.12 var(--f-lf);color:var(--lf-gold)}
-.lf-bar{display:flex;align-items:center;gap:12px;margin:0 0 0 -40px;padding:0 24px 0 40px;min-height:62px;background:var(--lf-salmon);color:#fff;
-  font:700 25px/1 var(--f-lf);letter-spacing:.005em;text-decoration:none;transition:background .2s,padding .2s}
-.lf-bar svg{width:22px;height:22px;flex:0 0 auto;transition:transform .2s}
-.lf-bar:hover{background:#c53a40}.lf-bar:hover svg{transform:translateX(4px)}
-.lf-led{margin:14px 0 0;font:700 13px/1.2 var(--f-lf);color:#fff}
+.lf-cta{margin:8px 0 12px;font:700 23px/1.12 var(--f-lf);color:var(--lf-gold)}
+.lf-bar{display:flex;align-items:center;gap:12px;margin:0 0 0 -40px;padding:0 24px 0 40px;min-height:58px;background:var(--lf-salmon);color:#fff;
+  font:700 24px/1 var(--f-lf);letter-spacing:.005em;text-decoration:none;transition:background .2s;
+  transform-origin:30% 50%;animation:lfPulse 2.4s ease-in-out infinite;box-shadow:0 0 0 0 rgba(217,71,76,.55)}
+@keyframes lfPulse{0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(217,71,76,.5)}50%{transform:scale(1.045);box-shadow:0 0 0 9px rgba(217,71,76,0)}}
+@keyframes lfNudge{0%,100%{transform:translateX(0)}50%{transform:translateX(5px)}}
+.lf-bar svg{animation:lfNudge 1.2s ease-in-out infinite}
+@media(prefers-reduced-motion:reduce){.lf-bar,.lf-bar svg{animation:none}}
+.lf-bar svg{width:24px;height:24px;flex:0 0 auto}
+.lf-bar:hover{background:#c53a40;animation-play-state:paused}
+.lf-led{margin:12px 0 0;font:700 13px/1.2 var(--f-lf);color:#fff}
 .lf-white{background:#fff;color:var(--navy);display:flex;flex-direction:column;justify-content:center;padding:30px 30px 30px 38px;position:relative;z-index:1}
-.lf-white .lf-tag{margin:0 0 16px;font:800 15px/1 var(--f-lf);letter-spacing:.16em;text-transform:uppercase;color:var(--navy)}
-.lf h1{margin:0;font:700 clamp(44px,5vw,66px)/1.02 var(--f-lf);letter-spacing:-.012em;color:var(--navy);text-wrap:balance}
+.lf-white .lf-tag{margin:0 0 12px;font:800 15px/1 var(--f-lf);letter-spacing:.16em;text-transform:uppercase;color:var(--navy)}
+.lf h1{margin:0;font:700 clamp(40px,4.3vw,58px)/1.02 var(--f-lf);letter-spacing:-.012em;color:var(--navy);text-wrap:balance}
 .lf h1 em{font-style:normal;color:var(--lf-salmon)}
 .lf-gold{background:var(--lf-gold);position:relative;overflow:hidden}
 .lf-bb{position:absolute;right:-4%;bottom:0;height:100%;width:auto;max-width:none;pointer-events:none}
-.lf-logo{position:absolute;top:26px;right:26px;width:40%;max-width:128px;height:auto;z-index:2}
-.lf-me{position:absolute;bottom:0;left:70%;height:79%;width:auto;max-width:none;z-index:3;pointer-events:none;filter:drop-shadow(0 6px 14px rgba(4,20,64,.18))}
+.lf-logo{position:absolute;top:20px;right:22px;width:38%;max-width:112px;height:auto;z-index:2}
+.lf-me{position:absolute;bottom:0;left:70.5%;height:82%;width:auto;max-width:none;z-index:3;pointer-events:none;filter:drop-shadow(0 6px 14px rgba(4,20,64,.18))}
 .lf-m{display:none}
-@media(max-width:1080px){.lf-box{grid-template-columns:38% 37% 25%}.lf-navy{padding:30px 24px 24px 28px}.lf-bar{margin-left:-28px;padding-left:28px;font-size:22px}.lf-cta{font-size:22px}.lf-body{font-size:15.5px}}
+@media(max-width:1080px){.lf-box{grid-template-columns:38% 37% 25%}.lf-navy{padding:30px 24px 24px 28px}.lf-bar{margin-left:-28px;padding-left:28px;font-size:21px}.lf-cta{font-size:20px}.lf-body{font-size:14.5px}}
 /* phone and tablet: the leaflet itself, white on the left with the headline and Marcus, gold on the right with the sign button */
 @media(max-width:760px){
   .lf{background:var(--navy)}
-  .lf-box{grid-template-columns:58% 42%;grid-template-rows:auto;height:auto;min-height:0;aspect-ratio:auto}
+  .lf-box{grid-template-columns:55% 45%;grid-template-rows:auto;height:auto;min-height:0;aspect-ratio:auto}
   .lf-desk{display:none}
   .lf-m{display:block}
-  .lf-white{grid-column:1;grid-row:1;justify-content:flex-start;padding:22px 10px 0 16px;min-height:min(158vw,660px)}
-  .lf-white .lf-tag{font-size:12px;margin-bottom:10px}
-  .lf h1{font-size:clamp(28px,8.4vw,44px);line-height:1.03;text-wrap:balance}
+  .lf-white{grid-column:1;grid-row:1;justify-content:flex-start;padding:16px 8px 0 16px;min-height:min(124vw,520px)}
+  .lf-white .lf-tag{font-size:11px;margin-bottom:8px}
+  .lf h1{font-size:clamp(25px,7.1vw,40px);line-height:1.03;text-wrap:balance}
   .lf-gold{grid-column:2;grid-row:1;display:flex;flex-direction:column;align-items:stretch;padding:0}
-  .lf-logo{position:relative;top:auto;right:auto;width:74%;max-width:150px;margin:24px auto 0}
+  .lf-logo{position:relative;top:auto;right:auto;width:66%;max-width:130px;margin:16px auto 0}
   .lf-bb{right:-10%;height:100%}
   .lf-gold .lf-m{position:relative;z-index:2}
-  .lf-gold .lf-cta{margin:auto 12px 12px;font-size:clamp(16px,4.6vw,22px);color:var(--navy)}
+  .lf-gold .lf-cta{margin:auto 10px 10px;font-size:clamp(15px,4.3vw,21px);color:var(--navy)}
   .lf-gold .lf-bar.lf-m{display:flex}
-  .lf-gold .lf-bar{margin:0 0 0 4px;padding:0 6px 0 12px;min-height:52px;font-size:clamp(15px,4.3vw,22px);white-space:nowrap}
-  .lf-gold .lf-bar svg{display:none}
-  .lf-gold .lf-led{margin:auto 6px 16px;font-size:clamp(9.5px,2.6vw,13px);white-space:nowrap;color:var(--navy);text-align:center}
-  .lf-me{left:1%;height:auto;width:54%;bottom:0}
-  .lf-navy.lf-m{display:block;padding:22px 16px 6px}
-  .lf-navy .lf-body{font-size:16px}
+  .lf-gold .lf-bar{margin:0 0 0 4px;padding:0 6px 0 10px;min-height:50px;font-size:clamp(15px,4.1vw,21px);white-space:nowrap;gap:5px;transform-origin:50% 50%}
+  .lf-gold .lf-bar svg{width:17px;height:17px}
+  .lf-gold .lf-led{margin:auto 6px 12px;font-size:clamp(9.5px,2.6vw,13px);white-space:nowrap;color:var(--navy);text-align:center}
+  .lf-me{left:3%;height:auto;width:44%;bottom:0}
+  .hero-text .lf-m{display:block}
+  .hero-text .lf-body{font-size:16px;margin-bottom:12px}
 }
 </style>
 </head>
@@ -647,10 +653,6 @@ body.ticker-on .foot{padding-bottom:90px}
     <img class="lf-me" src="/_web/petition/me-stop.webp" alt="Marcus J Ball holding up his hand" width="900" height="1494" fetchpriority="high">
 
   </div>
-  <div class="lf-navy lf-m">
-      <p class="lf-body">The Hillsborough Law’s new offence of misleading the public covers civil servants, NHS staff, government ministers, police and the military. <b>But MPs, peers and all devolved legislators are excluded from it and from the duty of candour.</b></p>
-      <p class="lf-body"><b>Parliament votes on this on 7 December.</b></p>
-    </div>
 </section>
 
 <section class="hero">
@@ -658,6 +660,8 @@ body.ticker-on .foot{padding-bottom:90px}
     <div class="hero-text">
       <p class="live"><span class="dot"></span><span id="updated">Today’s results from the petition</span></p>
       <p class="kicker">The petition</p>
+      <div class="lf-m"><p class="lf-body">The Hillsborough Law’s new offence of misleading the public covers civil servants, NHS staff, government ministers, police and the military. <b>But MPs, peers and all devolved legislators are excluded from it and from the duty of candour.</b></p>
+      <p class="lf-body"><b>Parliament votes on this on 7 December.</b></p></div>
       <p class="lead">Parliamentarians and journalists will be sent the data from this petition in advance of the showdown vote on 7 December.</p>
       <p class="pet-stmt">End the carve-out for lawmakers (MPs, peers, MSPs, MSs and MLAs) from the duty of candour and the offence of misleading the public in the <a href="https://bills.parliament.uk/bills/4019" target="_blank" rel="noopener">Public Office (Accountability) Bill</a>,<sup><a href="https://bills.parliament.uk/publications/68275/documents/8957#sched_2__para_2__subpara_4__intro" target="_blank" rel="noopener" title="Source 1">1</a></sup> for reckless or intentionally deceitful acts outside the proceedings of their parliaments:<sup><a href="https://www.legislation.gov.uk/aep/WillandMarSess2/1/2/introduction" target="_blank" rel="noopener" title="Source 2">2</a></sup> on TV and radio, on social media, at events, etc.</p>
     </div>
