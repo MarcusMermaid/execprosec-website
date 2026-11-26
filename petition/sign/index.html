@@ -629,6 +629,8 @@ html.dk-open,html.dk-open body{overflow:hidden}
 .dk-panel{position:absolute;top:0;right:0;bottom:0;width:27cqw;background:#d6b76a url(/_web/fund/panel.webp) 58% 7.5cqw/auto 150% no-repeat}
 .dk-me{position:absolute;right:0;bottom:0;height:43cqw;width:auto;pointer-events:none}
 .dk-me.casual{right:-7cqw;height:42cqw}
+/* photo b: fists up and smiling, wider than a (Marcus, 26 Nov 2026: "Choose a more confident one") */
+.dk-me.fists{right:-4cqw;height:40cqw}
 .dk-kick{position:relative;margin:0 0 2cqw;font:700 max(12px,3.4cqw)/1.1 'Barlow',system-ui,sans-serif;letter-spacing:.06em;color:#d6b76a}
 .dk-ask h2{position:relative;margin:0;width:56cqw;font:800 9.6cqw/1 'Barlow',system-ui,sans-serif;letter-spacing:-.01em;color:#fff;text-wrap:balance}
 .dk-corner{position:relative;margin:3cqw 0 0;width:50cqw;font:700 5.4cqw/1.1 'Barlow',system-ui,sans-serif;color:#d6b76a}
@@ -2959,6 +2961,18 @@ html.dk-open,html.dk-open body{overflow:hidden}
       return v === '1';
     } catch (e) { return Math.random() < DECK_SHARE; }
   }
+  // the ask's photo for the suit adverts: a (hands together) or b (fists up, smiling), half each, kept per browser;
+  // ?photo=a or b shows one (Marcus, 26 Nov 2026: "I want to run an A/B test ... try a different photograph of me")
+  var PHOTO_B_SHARE = 0.5;
+  function dkPhoto() {
+    var m = (location.search.match(/[?&]photo=([ab])(?![0-9a-z])/) || [])[1];
+    if (m) return m;
+    try {
+      var v = localStorage.getItem('ep_fund_photo');
+      if (v !== 'a' && v !== 'b') { v = Math.random() < PHOTO_B_SHARE ? 'b' : 'a'; localStorage.setItem('ep_fund_photo', v); }
+      return v;
+    } catch (e) { return Math.random() < PHOTO_B_SHARE ? 'b' : 'a'; }
+  }
   function dkAd() {
     var m = (location.search.match(/[?&]ad=(a1|a2|b1|b2)(?![0-9a-z])/i) || [])[1];
     if (m) return m.toLowerCase();
@@ -2980,13 +2994,15 @@ html.dk-open,html.dk-open body{overflow:hidden}
       s.appendChild(im);
       tr.insertBefore(s, ask);
     });
-    $('dkMe').src = '/_web/fund/' + (/2$/.test(ad) ? 'me-casual' : 'me-suit') + '.webp';
-    $('dkMe').classList.toggle('casual', /2$/.test(ad));
+    var casual = /2$/.test(ad), photo = casual ? '' : dkPhoto();
+    $('dkMe').src = '/_web/fund/' + (casual ? 'me-casual' : photo === 'b' ? 'me-fists' : 'me-suit') + '.webp';
+    $('dkMe').classList.toggle('casual', casual);
+    $('dkMe').classList.toggle('fists', photo === 'b');
     dk.n = cards.length + 1;   // the ask is the last card
     dk.most = 0; dk.at = -1;
     $('dkDots').innerHTML = new Array(dk.n + 1).join('<i></i>');
     dkShowDeck();
-    track('pitch_seen', 'pitch ' + ad);
+    track('pitch_seen', 'pitch ' + ad + (photo ? ' photo ' + photo : ''));   // which photo the ask shows, for the test
     tr.scrollLeft = 0;
     dkAt(0);
   }

@@ -10,7 +10,7 @@
 (function(){
   var q = location.search.replace(/^\?/, ''); if (!q) return;
   var fund = /^\/fund(\/|$)/.test(location.pathname);   /* /fund/: this page with the pitch in the box (Marcus, 25 Nov 2026) */
-  var ours = q.split('&').every(function(p){ return !p || /^(ref|utm_[a-z]+|fbclid|gclid|ab|popup|sounds|sound|snap|journey)=/.test(p) || (fund && /^(demo|ad|deck)=/.test(p)); });
+  var ours = q.split('&').every(function(p){ return !p || /^(ref|utm_[a-z]+|fbclid|gclid|ab|popup|sounds|sound|snap|journey)=/.test(p) || (fund && /^(demo|ad|deck|photo)=/.test(p)); });
   if (!ours) location.replace('/petition/sign/' + location.search + location.hash);
 })();
 </script>
@@ -2102,7 +2102,7 @@ body.ticker-on .foot{padding-bottom:90px}
     var JOURNEY = !FUND && box === 'n';
     if (JOURNEY) document.documentElement.classList.add('sp-journey');
     if (FUND) document.documentElement.classList.add('sp-fund');
-    var PASS = (q.match(/[?&](demo|ad|deck)=\w+/g) || []).map(function(p){ return '&' + p.slice(1); }).join('');
+    var PASS = (q.match(/[?&](demo|ad|deck|photo)=\w+/g) || []).map(function(p){ return '&' + p.slice(1); }).join('');
     function preload(ref){ if (!fr.getAttribute('src')){ firstRef = ref; fr.src = FUND ? '/petition/sign/?embed=1&first=money' + PASS + '&ref=' + encodeURIComponent(ref) : (JOURNEY ? '/petition/journey/?embed=1&vh=' + window.innerHeight + '&vw=' + window.innerWidth + '&ref=' : '/petition/sign/?embed=1&ref=') + encodeURIComponent(ref); } }
     var waiting = false;
     function open(ref, from){
