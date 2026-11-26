@@ -195,6 +195,9 @@ button.press-item{background:none;border:0;cursor:pointer;position:relative}
 .steps li{list-style:none;flex:1;height:4px;border-radius:2px;background:var(--rule)}
 .steps li.on{background:var(--navy)}
 #stepLbl{font-size:12px;font-weight:600;color:var(--muted);white-space:nowrap}
+html.fund3 #stepLbl{font-size:14px;font-weight:700;color:var(--navy)}
+html.fund3 #stepLbl b{display:inline-block;margin-right:6px;padding:3px 8px;border-radius:10px;background:var(--gold);color:var(--navy);font-size:12px;font-weight:800}
+html.fund3 .rw{display:none!important}
 
 .panel{padding:14px 20px 22px}
 .panel h2{font:400 26px/1.15 var(--f-display);color:var(--navy);margin:0 0 6px;text-wrap:balance}
@@ -611,15 +614,13 @@ html.dk-open,html.dk-open body{overflow:hidden}
 .dk-dots i.on{width:18px;background:#d6b76a}
 .dk-count{font:600 12px/1 'Barlow',system-ui,sans-serif;letter-spacing:.04em;color:rgba(255,255,255,.66);font-variant-numeric:tabular-nums;white-space:nowrap}
 .dk-count.hint{color:#d6b76a;font-weight:700;font-size:13px;letter-spacing:.01em}
-.dk-skip{background:none;border:0;padding:8px 4px;color:#d6b76a;cursor:pointer;font:700 13px/1 'Barlow',system-ui,sans-serif;white-space:nowrap}
-.dk-skip.gone{visibility:hidden}
 .dk-arr{all:unset;box-sizing:border-box;flex:none;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.94);color:#0c163b;
   display:grid;place-items:center;cursor:pointer;transition:opacity .25s,transform .15s}
 .dk-arr:hover{transform:scale(1.07)}
 .dk-arr svg{width:16px;height:16px}
 .dk-arr.gone{opacity:0;pointer-events:none}
 @media(hover:none){.dk-arr{display:none}}
-.dk-skip:focus-visible,.dk-arr:focus-visible,.dk-ask button:focus-visible,.dk-ask input:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.dk-arr:focus-visible,.dk-ask button:focus-visible,.dk-ask input:focus-visible{outline:3px solid #fff;outline-offset:2px}
 /* the ask, the last card */
 .dk-s.dk-ask{background:#0c163b;color:#fff;overflow-x:hidden;overflow-y:auto;scrollbar-width:none;
   display:flex;flex-direction:column;gap:2.6cqw;padding:0 6cqw 5cqw}
@@ -631,11 +632,11 @@ html.dk-open,html.dk-open body{overflow:hidden}
 .dk-kick{position:relative;margin:0 0 2cqw;font:700 max(12px,3.4cqw)/1.1 'Barlow',system-ui,sans-serif;letter-spacing:.06em;color:#d6b76a}
 .dk-ask h2{position:relative;margin:0;width:56cqw;font:800 9.6cqw/1 'Barlow',system-ui,sans-serif;letter-spacing:-.01em;color:#fff;text-wrap:balance}
 .dk-corner{position:relative;margin:3cqw 0 0;width:50cqw;font:700 5.4cqw/1.1 'Barlow',system-ui,sans-serif;color:#d6b76a}
-.dk-steps{list-style:none;margin:1cqw 0 0;padding:0;display:flex;gap:1.6cqw}
-.dk-steps li{flex:1;display:flex;align-items:center;gap:1.4cqw;padding:1.8cqw 2cqw;border:1px solid rgba(214,183,106,.45);border-radius:2cqw;
-  font:600 max(11px,3.3cqw)/1.1 'Barlow',system-ui,sans-serif;color:rgba(255,255,255,.92)}
-.dk-steps li.on{border-color:#d6b76a;background:rgba(214,183,106,.14);color:#fff}
-.dk-steps b{flex:none;display:grid;place-items:center;width:5.6cqw;height:5.6cqw;border-radius:50%;background:#d6b76a;color:#0c163b;font:800 3.4cqw/1 'Barlow',sans-serif}
+/* only the step they are on; the petition and the emails are shown after they have given (Marcus, 26 Nov 2026) */
+.dk-step{align-self:flex-start;display:inline-flex;align-items:center;gap:2.2cqw;margin:1cqw 0 0;padding:1.8cqw 3.4cqw 1.8cqw 1.8cqw;
+  border:1px solid #d6b76a;border-radius:2cqw;background:rgba(214,183,106,.14);font:700 max(14px,4cqw)/1.1 'Barlow',system-ui,sans-serif;color:#fff}
+.dk-step b{display:grid;place-items:center;min-width:9cqw;height:6.6cqw;padding:0 1.8cqw;border-radius:3.3cqw;background:#d6b76a;color:#0c163b;
+  font:800 max(12px,3.6cqw)/1 'Barlow',system-ui,sans-serif}
 .dk-freq,.dk-amts{display:grid;gap:2cqw}
 .dk-freq{grid-template-columns:1fr 1fr;margin-top:1cqw}
 .dk-amts{grid-template-columns:repeat(4,1fr)}
@@ -670,9 +671,7 @@ html.dk-open,html.dk-open body{overflow:hidden}
           <h2 id="dkAskH">Will you back the campaign?</h2>
           <p class="dk-corner">Back me up, get in my corner.</p>
         </div>
-        <ol class="dk-steps" aria-label="Three steps">
-          <li class="on"><b>1</b>Back the campaign</li><li><b>2</b>Sign the petition</li><li><b>3</b>Email your MP</li>
-        </ol>
+        <p class="dk-step"><b>1/3</b>Back the campaign</p>
         <div class="dk-freq" role="group" aria-label="How often"><button type="button" data-dkfreq="once" aria-pressed="true">One-off</button><button type="button" data-dkfreq="monthly" aria-pressed="false">Monthly</button></div>
         <div class="dk-amts" role="group" aria-label="Amount"><button type="button" data-dkamt="10" aria-pressed="true">&pound;10</button><button type="button" data-dkamt="20" aria-pressed="false">&pound;20</button><button type="button" data-dkamt="50" aria-pressed="false">&pound;50</button><button type="button" id="dkOther" aria-pressed="false">Other</button></div>
         <div class="dk-otherf" id="dkOtherF" hidden><label for="dkOtherAmt">Your amount, &pound;10 or more</label><input id="dkOtherAmt" type="number" inputmode="numeric" min="10" step="1" placeholder="&pound;"><p class="dk-err" id="dkOtherErr" hidden>Please choose &pound;10 or more.</p></div>
@@ -681,7 +680,7 @@ html.dk-open,html.dk-open body{overflow:hidden}
       </section>
     </div>
     <div class="dk-foot">
-      <div class="dk-fl"><button class="dk-arr gone" type="button" id="dkPrev" aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button><button class="dk-skip" type="button" id="dkSkip" aria-label="Skip to how you can help">Skip &rsaquo;</button></div>
+      <div class="dk-fl"><button class="dk-arr gone" type="button" id="dkPrev" aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button></div>
       <div class="dk-dots" id="dkDots" aria-hidden="true"></div>
       <div class="dk-fr"><span class="dk-count" id="dkCount"></span><button class="dk-arr" type="button" id="dkNext" aria-label="Next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button></div>
     </div>
@@ -1728,6 +1727,12 @@ html.dk-open,html.dk-open body{overflow:hidden}
     var dots = $('dots').children;
     for (var j = 0; j < dots.length; j++) { dots[j].hidden = j >= all; dots[j].classList.toggle('on', j < at); }
     $('stepLbl').textContent = at <= all ? 'Step ' + at + ' of ' + all : 'Done';
+    if (MONEY && S.deck) {   // from the pitch: 1/3 Back the campaign, 2/3 Sign our petition, 3/3 the emails (Marcus, 26 Nov 2026)
+      var st3 = at === 1 ? 1 : at === 2 ? 2 : k ? 3 : 0;
+      var lb3 = ['', 'Back the campaign', 'Sign our petition', k === 'mp' ? 'Email your MP' : k === 'min' ? 'Email the Minister' : 'Email a member of the Lords'][st3];
+      for (var j3 = 0; j3 < dots.length; j3++) { dots[j3].hidden = j3 >= 3; dots[j3].classList.toggle('on', st3 ? j3 < st3 : true); }
+      $('stepLbl').innerHTML = st3 ? '<b>' + st3 + '/3</b>' + lb3 : 'Done';
+    }
     rwShow(k || ((pt || n === 4) ? 'give' : n === 5 ? (MONEY && !S.signed ? 'sign' : 'end') : ''));
     $('card').classList.toggle('first', (n === 1 || w) && !MONEY);   // the step bar appears once they have confirmed
     $('card').classList.toggle('after', c || sh || pt || pe || mi || (!w && n >= 2));   // and the title, explainer and meter go
@@ -2963,6 +2968,8 @@ html.dk-open,html.dk-open body{overflow:hidden}
   }
   function openDeck() {
     var ad = dkAd(), tr = $('dkTrack'), ask = $('dkAsk');
+    S.deck = true;
+    document.documentElement.classList.add('fund3');
     var cards = [{ src: 'cover-' + ad, alt: DK_COVER[ad] }].concat(DK_CARDS.map(function (t, k) { return { src: 'fp-' + (k + 1), alt: t }; }));
     [].slice.call(tr.querySelectorAll('.dk-card')).forEach(function (s) { tr.removeChild(s); });
     cards.forEach(function (c) {
@@ -3016,7 +3023,6 @@ html.dk-open,html.dk-open body{overflow:hidden}
     $('dkCount').classList.toggle('hint', hint);
     $('dkPrev').classList.toggle('gone', i === 0);
     $('dkNext').classList.toggle('gone', i === dk.n - 1);
-    $('dkSkip').classList.toggle('gone', i === dk.n - 1);
   }
   function dkAt(i) {   // a card has arrived
     dk.want = i;
@@ -3050,7 +3056,6 @@ html.dk-open,html.dk-open body{overflow:hidden}
   window.addEventListener('resize', function () { if (dk.open && dk.at >= 0) $('dkTrack').scrollLeft = dk.at * $('dkTrack').clientWidth; });
   $('dkNext').addEventListener('click', function () { dkGo(dk.want + 1); });
   $('dkPrev').addEventListener('click', function () { dkGo(dk.want - 1); });
-  $('dkSkip').addEventListener('click', function () { if (dk.n - 1 > dk.most) track('pitch_slide', 'skipped to the ask from ' + (dk.at + 1)); dk.most = dk.n - 1; dkGo(dk.n - 1); });
   // a mouse can drag the cards too, like a finger; the arrow keys move them as well
   $('dkTrack').addEventListener('pointerdown', function (e) {
     if (e.pointerType !== 'mouse' || e.button !== 0 || e.target.closest('input,button,a,label')) return;
