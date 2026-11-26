@@ -2125,8 +2125,8 @@ body.ticker-on .foot{padding-bottom:90px}
       if (!deckOpen){ bx.style.maxWidth = ''; if (lastH) fr.style.height = lastH + 'px'; return; }
       var small = window.innerWidth <= 560;
       // a box over the page on a phone too, with the page showing round it (Marcus, 25 Nov 2026)
-      var w = Math.floor(Math.min(540, window.innerWidth - (small ? 24 : 28), (window.innerHeight - (small ? 32 : 48)) * 9 / 16));
-      bx.style.maxWidth = w + 'px'; fr.style.height = Math.round(w * 16 / 9) + 'px';
+      var w = Math.floor(Math.min(540, window.innerWidth - (small ? 24 : 28), (window.innerHeight - (small ? 32 : 48) - 44) * 9 / 16));
+      bx.style.maxWidth = w + 'px'; fr.style.height = (Math.round(w * 16 / 9) + 44) + 'px';   // the card, and the dots under it (44px)
     }
     window.addEventListener('resize', fit);
     [].forEach.call(m.querySelectorAll('[data-close]'), function(b){ b.addEventListener('click', close); });
