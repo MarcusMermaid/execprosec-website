@@ -2363,7 +2363,16 @@ html.dk-open,html.dk-open body{overflow:hidden}
         var e = c.value.filter(function (x) { return x.typeId === 1 && x.email; })[0] || c.value.filter(function (x) { return x.email; })[0];
         if (e && S.mp) S.mp.email = e.email.trim();
       })
-      .catch(function () {});
+      .catch(function () {})
+      .then(mpArrived);
+  }
+  // Marcus, 26 Nov 2026: people who confirmed by the link reached the MP screen before Parliament had answered and
+  // saw "We couldn't look up the MP" with no address (a third of signers since 25 Nov). When the answer arrives
+  // and the MP screen is open with nothing copied yet, fill it in.
+  function mpArrived() {
+    if (S.abroad || !S.mp || $('p3').hidden || S.mpCopied) return;
+    drawMp();
+    keepMp('mp');
   }
   // The letter is short and says what the petition says. It goes from the signer's own email:
   // we never send it for them, so nothing about it can touch our own domain's standing.
@@ -2402,6 +2411,15 @@ html.dk-open,html.dk-open body{overflow:hidden}
     if (S.abroad) { nextMail('mp'); return; }
     $('mpOk').hidden = true;
     $('mpOkTxt').textContent = S.okTxt || '';
+    drawMp();
+    document.querySelectorAll('.cp-b').forEach(function (b) { b.classList.remove('done'); b.setAttribute('data-l', 'Copy'); b.setAttribute('aria-label', 'Copy'); });
+    S.mpSeen = true;
+    $('mpBack').hidden = !resumed;
+    track(resumed ? 'mp_resumed' : 'mp_seen');
+    keepMp('mp');
+    go(3);
+  }
+  function drawMp() {
     var mp = S.mp;
     $('mpFrom').innerHTML = mp
       ? 'You gave us the postcode <b>' + esc(S.me.pc) + '</b>, so your MP is:'
@@ -2422,12 +2440,6 @@ html.dk-open,html.dk-open body{overflow:hidden}
       S.turnMp = +d.subject; keepMp('mp');
       $('mpSubj').textContent = shortMail('mp').subject; $('mpMsg').innerHTML = mpLetter(true);
     }).catch(function () {});
-    document.querySelectorAll('.cp-b').forEach(function (b) { b.classList.remove('done'); b.setAttribute('data-l', 'Copy'); b.setAttribute('aria-label', 'Copy'); });
-    S.mpSeen = true;
-    $('mpBack').hidden = !resumed;
-    track(resumed ? 'mp_resumed' : 'mp_seen');
-    keepMp('mp');
-    go(3);
   }
   document.querySelectorAll('.cp-b').forEach(function (b) {
     b.addEventListener('click', function () {
@@ -2694,7 +2706,9 @@ html.dk-open,html.dk-open body{overflow:hidden}
   }
   function shortMail(kind) {
     var me = S.me || {}, others = othersSigned();
-    var town = me.town && me.town !== 'the UK' ? me.town : '';
+    // Marcus, 26 Nov 2026: the stored town comes from the first letters of the postcode (every RH postcode is
+    // "Redhill"), so MPs were told their constituent lived in a town outside their seat. Use the postcode itself.
+    var town = me.pc || '';
     var name = ((me.first || '') + ' ' + (me.last || '')).trim() || '[Your name]';
     var pts = POINTS.filter(function (p) { return !p[3] || p[3] === kind; });
     var t = Math.max(0, mailTurn(kind)), p = pts[t % pts.length], round = Math.floor(t / pts.length);
@@ -2705,7 +2719,7 @@ html.dk-open,html.dk-open body{overflow:hidden}
     else if (kind === 'mp') greet = S.mp ? pick(['Dear ' + S.mp.name + ' MP,', 'Dear ' + S.mp.name + ',']) : 'Dear [your MP],';
     else greet = pick(['Dear Minister,', 'Dear Alex Davies-Jones,', 'Dear Ms Davies-Jones,']);
     var openers = ['', '', 'I will keep this short.'];
-    if (town) openers.push('I am writing from ' + town + '.', 'I live in ' + town + '.', 'A quick note from ' + town + '.');
+    if (town && kind === 'mp') openers.push('I live in your constituency, at ' + town + '.', 'I am your constituent (' + town + ').', 'A quick note from your constituent at ' + town + '.');
     if (others) openers.push('I am one of ' + others + ' people who have signed the petition on this.',
       'I have signed the petition to include all lawmakers under the Hillsborough Law, along with ' + others + ' others.');
     if (kind === 'mp') openers.push('I am one of your constituents.', 'As your constituent, I will keep this short.');
@@ -2728,8 +2742,7 @@ html.dk-open,html.dk-open body{overflow:hidden}
     }
     var signoff = kind === 'mp' && r() < 0.25 ? 'Your constituent,' : pick(SIGNOFFS);
     var blocks = [name];
-    if (town) blocks = townUsed ? [name, name, name + ', ' + town] : [name + '\n' + town, name + ', ' + town, name + ' (' + town + ')', name + '\n' + town];
-    if (kind === 'mp' && me.pc) blocks.push(name + '\n' + me.pc);
+    if (town) blocks = townUsed ? [name, name, name + '\n' + town] : [name + '\n' + town, name + ', ' + town, name + ' (' + town + ')', name + '\n' + town];
     return {
       point: POINTS.indexOf(p) + 1,
       subject: p[round % 2],
