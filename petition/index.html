@@ -34,7 +34,7 @@
 <meta name="theme-color" content="#041440">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@600;700;800&family=DM+Serif+Display&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
   --navy:#041440; --navy-2:#0a1d55; --navy-3:#142a6b;
@@ -558,6 +558,51 @@ body.ticker-on .foot{padding-bottom:90px}
   .rv,.quote{opacity:1;transform:none}
   #hexmap.pre path{opacity:1;transform:none}
 }
+
+/* ---- leaflet / Tube poster band (draft, Marcus 26 Nov 2026: "if anyone lands on this page, they immediately associate the leaflet, the Underground advert, and this petition page all with the same thing") ---- */
+:root{--lf-gold:#d5b66a;--lf-salmon:#d9474c;--f-lf:'Barlow','Arial Narrow',Arial,sans-serif}
+.lf{padding:0;background:var(--navy)}
+.lf-box{position:relative;max-width:1240px;margin:0 auto;display:grid;grid-template-columns:36% 39% 25%;height:clamp(520px,44vw,620px);overflow:hidden}
+.lf-navy{background:var(--navy);padding:40px 34px 30px 40px;display:flex;flex-direction:column;justify-content:center;font-family:var(--f-lf)}
+.lf-kick{margin:0 0 14px;font:800 13px/1 var(--f-lf);letter-spacing:.16em;text-transform:uppercase;color:var(--lf-gold)}
+.lf-body{margin:0 0 14px;font:500 17px/1.4 var(--f-lf);color:#fff}
+.lf-body b{font-weight:700}
+.lf-cta{margin:14px 0 14px;font:700 26px/1.12 var(--f-lf);color:var(--lf-gold)}
+.lf-bar{display:flex;align-items:center;gap:12px;margin:0 0 0 -40px;padding:0 24px 0 40px;min-height:62px;background:var(--lf-salmon);color:#fff;
+  font:700 25px/1 var(--f-lf);letter-spacing:.005em;text-decoration:none;transition:background .2s,padding .2s}
+.lf-bar svg{width:22px;height:22px;flex:0 0 auto;transition:transform .2s}
+.lf-bar:hover{background:#c53a40}.lf-bar:hover svg{transform:translateX(4px)}
+.lf-led{margin:14px 0 0;font:700 13px/1.2 var(--f-lf);color:#fff}
+.lf-white{background:#fff;color:var(--navy);display:flex;flex-direction:column;justify-content:center;padding:30px 30px 30px 38px;position:relative;z-index:1}
+.lf-white .lf-tag{margin:0 0 16px;font:800 15px/1 var(--f-lf);letter-spacing:.16em;text-transform:uppercase;color:var(--navy)}
+.lf h1{margin:0;font:700 clamp(44px,5vw,66px)/1.02 var(--f-lf);letter-spacing:-.012em;color:var(--navy);text-wrap:balance}
+.lf h1 em{font-style:normal;color:var(--lf-salmon)}
+.lf-gold{background:var(--lf-gold);position:relative;overflow:hidden}
+.lf-bb{position:absolute;right:-4%;bottom:0;height:100%;width:auto;max-width:none;pointer-events:none}
+.lf-logo{position:absolute;top:30px;right:30px;width:42%;max-width:150px;height:auto;z-index:2}
+.lf-me{position:absolute;bottom:0;left:71%;height:90%;width:auto;max-width:none;z-index:3;pointer-events:none;filter:drop-shadow(0 6px 14px rgba(4,20,64,.18))}
+.lf-m{display:none}
+@media(max-width:1080px){.lf-box{grid-template-columns:38% 37% 25%}.lf-navy{padding:30px 24px 24px 28px}.lf-bar{margin-left:-28px;padding-left:28px;font-size:22px}.lf-cta{font-size:22px}.lf-body{font-size:15.5px}}
+/* phone and tablet: the leaflet itself, white on the left with the headline and Marcus, gold on the right with the sign button */
+@media(max-width:760px){
+  .lf-box{grid-template-columns:58% 42%;grid-template-rows:auto;height:auto;min-height:0;aspect-ratio:auto}
+  .lf-desk{display:none}
+  .lf-m{display:block}
+  .lf-white{grid-column:1;grid-row:1;justify-content:flex-start;padding:22px 10px 0 16px;min-height:min(158vw,660px)}
+  .lf-white .lf-tag{font-size:12px;margin-bottom:10px}
+  .lf h1{font-size:clamp(28px,8.4vw,44px);line-height:1.03;text-wrap:balance}
+  .lf-gold{grid-column:2;grid-row:1;display:flex;flex-direction:column;align-items:stretch;padding:0}
+  .lf-logo{position:relative;top:auto;right:auto;width:74%;max-width:150px;margin:24px auto 0}
+  .lf-bb{right:-10%;height:100%}
+  .lf-gold .lf-m{position:relative;z-index:2}
+  .lf-gold .lf-cta{margin:auto 12px 12px;font-size:clamp(16px,4.6vw,22px);color:var(--navy)}
+  .lf-gold .lf-bar{margin:0 0 0 4px;padding:0 10px 0 12px;min-height:50px;font-size:clamp(16px,4.6vw,22px);gap:6px}
+  .lf-gold .lf-bar svg{width:16px;height:16px}
+  .lf-gold .lf-led{margin:auto 12px 16px;font-size:clamp(10px,2.9vw,13px);color:var(--navy);text-align:center}
+  .lf-me{left:1%;height:auto;width:54%;bottom:0}
+  .lf-navy.lf-m{display:block;padding:22px 16px 6px}
+  .lf-navy .lf-body{font-size:16px}
+}
 </style>
 </head>
 <body>
@@ -576,14 +621,42 @@ body.ticker-on .foot{padding-bottom:90px}
 </header>
 
 <main>
+<section class="lf" aria-label="The petition">
+  <div class="lf-box">
+    <div class="lf-navy lf-desk">
+      <p class="lf-kick">Petition to press &amp; Parliament</p>
+      <p class="lf-body">The Hillsborough Law’s new offence of misleading the public covers civil servants, NHS staff, government ministers, police and the military. <b>But MPs, peers and all devolved legislators are excluded from it and from the duty of candour.</b></p>
+      <p class="lf-body"><b>Parliament votes on this on 7 December.</b></p>
+      <p class="lf-cta">Sign our petition and join our campaign.</p>
+      <a class="lf-bar" href="/petition/sign/?ref=results-top">Sign the petition <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></a>
+      <p class="lf-led">Campaign led by Marcus J Ball</p>
+    </div>
+    <div class="lf-white">
+      <p class="lf-tag">Petition</p>
+      <h1>Include all lawmakers under the <em>Hillsborough Law.</em></h1>
+    </div>
+    <div class="lf-gold">
+      <img class="lf-bb" src="/_web/petition/bigben.webp" alt="" width="357" height="1486">
+      <img class="lf-logo" src="/_web/petition/logo-navy.webp" alt="ExecProsec" width="689" height="380">
+      <p class="lf-cta lf-m">Sign our petition and join our campaign.</p>
+      <a class="lf-bar lf-m" href="/petition/sign/?ref=results-top">Sign the petition <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></a>
+      <p class="lf-led lf-m">Campaign led by Marcus J Ball</p>
+    </div>
+    <img class="lf-me" src="/_web/petition/me-stop.webp" alt="Marcus J Ball holding up his hand" width="900" height="1494" fetchpriority="high">
+
+  </div>
+  <div class="lf-navy lf-m">
+      <p class="lf-body">The Hillsborough Law’s new offence of misleading the public covers civil servants, NHS staff, government ministers, police and the military. <b>But MPs, peers and all devolved legislators are excluded from it and from the duty of candour.</b></p>
+      <p class="lf-body"><b>Parliament votes on this on 7 December.</b></p>
+    </div>
+</section>
+
 <section class="hero">
   <div class="wrap hero-grid">
     <div class="hero-text">
       <p class="live"><span class="dot"></span><span id="updated">Today’s results from the petition</span></p>
-      <p class="kicker">Petition to press &amp; Parliament</p>
-      <h1>Include all lawmakers under the <em>Hillsborough Law</em></h1>
-      <div class="hero-cta"><a class="btn" href="/petition/sign/?ref=results-top">Sign the petition</a><span>It takes a minute.</span></div>
-      <p class="lead"><b>Parliament votes on this on 7 December.</b> Parliamentarians and journalists will be sent the data from this petition in advance of that showdown vote.</p>
+      <p class="kicker">The petition</p>
+      <p class="lead">Parliamentarians and journalists will be sent the data from this petition in advance of the showdown vote on 7 December.</p>
       <p class="pet-stmt">End the carve-out for lawmakers (MPs, peers, MSPs, MSs and MLAs) from the duty of candour and the offence of misleading the public in the <a href="https://bills.parliament.uk/bills/4019" target="_blank" rel="noopener">Public Office (Accountability) Bill</a>,<sup><a href="https://bills.parliament.uk/publications/68275/documents/8957#sched_2__para_2__subpara_4__intro" target="_blank" rel="noopener" title="Source 1">1</a></sup> for reckless or intentionally deceitful acts outside the proceedings of their parliaments:<sup><a href="https://www.legislation.gov.uk/aep/WillandMarSess2/1/2/introduction" target="_blank" rel="noopener" title="Source 2">2</a></sup> on TV and radio, on social media, at events, etc.</p>
     </div>
     <div class="stage" id="stage">
