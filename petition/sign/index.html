@@ -222,7 +222,8 @@ html.fund3 .rw{display:none!important}
 .err:empty{display:none}
 .fix{font-size:13px;background:var(--paper-2);border-left:3px solid var(--gold);padding:6px 10px;border-radius:2px}
 .link{background:none;border:0;padding:0;color:var(--navy);text-decoration:underline;text-underline-offset:3px;font-size:13px;cursor:pointer}
-.fix .link{margin-left:10px;font-weight:600}
+.fix .acts{display:block;margin-top:4px}
+.fix .link{margin-right:18px;font-weight:600}
 .f.bad .fix{border-left-color:var(--red)}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 .opt-l{font-weight:400;color:var(--muted)}
@@ -745,7 +746,7 @@ html.dk-open,html.dk-open body{overflow:hidden}
       </div>
       <div class="row ep">
       <div class="f"><label for="email">Email</label><input id="email" name="email" type="email" inputmode="email" autocomplete="email" autocapitalize="off" spellcheck="false" maxlength="120"><span class="err" id="emailErr" aria-live="polite"></span>
-        <span class="fix" id="emailFix" hidden>Did you mean <b id="emailFixTo"></b>? <button type="button" class="link" id="emailFixBtn">Yes, fix it</button><button type="button" class="link" id="emailKeepBtn" hidden>No, my email is right</button></span></div>
+        <span class="fix" id="emailFix" hidden>Did you mean <b id="emailFixTo"></b>? <span class="acts"><button type="button" class="link" id="emailFixBtn">Yes, fix it</button><button type="button" class="link" id="emailKeepBtn" hidden>No, my email is right</button></span></span></div>
       <div class="f" id="pcWrap"><label for="pc">Postcode</label><input id="pc" name="pc" autocomplete="postal-code" autocapitalize="characters" spellcheck="false" maxlength="10"><span class="err" id="pcErr" aria-live="polite"></span></div>
       <div class="f" id="ctyWrap" hidden><label for="cty">Country</label><input id="cty" name="cty" autocomplete="country-name" maxlength="60"><span class="err" id="ctyErr" aria-live="polite"></span></div>
       </div>
