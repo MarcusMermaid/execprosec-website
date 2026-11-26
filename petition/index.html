@@ -561,7 +561,7 @@ body.ticker-on .foot{padding-bottom:90px}
 
 /* ---- leaflet / Tube poster band (draft, Marcus 26 Nov 2026: "if anyone lands on this page, they immediately associate the leaflet, the Underground advert, and this petition page all with the same thing") ---- */
 :root{--lf-gold:#d5b66a;--lf-salmon:#d9474c;--f-lf:'Barlow','Arial Narrow',Arial,sans-serif}
-.lf{padding:0;background:var(--navy)}
+.lf{padding:0;background:linear-gradient(90deg,var(--navy) 50%,var(--lf-gold) 50%)}
 .lf-box{position:relative;max-width:1240px;margin:0 auto;display:grid;grid-template-columns:36% 39% 25%;height:clamp(520px,44vw,620px);overflow:hidden}
 .lf-navy{background:var(--navy);padding:40px 34px 30px 40px;display:flex;flex-direction:column;justify-content:center;font-family:var(--f-lf)}
 .lf-kick{margin:0 0 14px;font:800 13px/1 var(--f-lf);letter-spacing:.16em;text-transform:uppercase;color:var(--lf-gold)}
@@ -579,12 +579,13 @@ body.ticker-on .foot{padding-bottom:90px}
 .lf h1 em{font-style:normal;color:var(--lf-salmon)}
 .lf-gold{background:var(--lf-gold);position:relative;overflow:hidden}
 .lf-bb{position:absolute;right:-4%;bottom:0;height:100%;width:auto;max-width:none;pointer-events:none}
-.lf-logo{position:absolute;top:30px;right:30px;width:42%;max-width:150px;height:auto;z-index:2}
-.lf-me{position:absolute;bottom:0;left:71%;height:90%;width:auto;max-width:none;z-index:3;pointer-events:none;filter:drop-shadow(0 6px 14px rgba(4,20,64,.18))}
+.lf-logo{position:absolute;top:26px;right:26px;width:40%;max-width:128px;height:auto;z-index:2}
+.lf-me{position:absolute;bottom:0;left:70%;height:79%;width:auto;max-width:none;z-index:3;pointer-events:none;filter:drop-shadow(0 6px 14px rgba(4,20,64,.18))}
 .lf-m{display:none}
 @media(max-width:1080px){.lf-box{grid-template-columns:38% 37% 25%}.lf-navy{padding:30px 24px 24px 28px}.lf-bar{margin-left:-28px;padding-left:28px;font-size:22px}.lf-cta{font-size:22px}.lf-body{font-size:15.5px}}
 /* phone and tablet: the leaflet itself, white on the left with the headline and Marcus, gold on the right with the sign button */
 @media(max-width:760px){
+  .lf{background:var(--navy)}
   .lf-box{grid-template-columns:58% 42%;grid-template-rows:auto;height:auto;min-height:0;aspect-ratio:auto}
   .lf-desk{display:none}
   .lf-m{display:block}
