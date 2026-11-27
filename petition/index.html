@@ -593,6 +593,21 @@ body.ticker-on .foot{padding-bottom:90px}
 .lf-logo{position:absolute;top:18px;right:18px;width:38%;max-width:100px;height:auto;z-index:2}
 .lf-me{position:absolute;bottom:0;left:73.5%;height:79%;width:auto;max-width:none;z-index:3;pointer-events:none;filter:drop-shadow(0 6px 14px rgba(4,20,64,.18))}
 .lf-m{display:none}
+/* Marcus, 27 Nov 2026: the petition's own statement sits above the sign button, and the numbers take its old place */
+.lf-stmt{font-size:14.5px;line-height:1.42}
+.lf-stmt a{color:#fff;text-decoration:underline;text-underline-offset:3px}
+.lf-stmt sup a{color:var(--lf-gold);text-decoration:none;font-weight:700;padding:0 2px}
+.hero-text .ht-total{background:none;padding:0 0 16px;margin:0 0 16px;border-bottom:1px solid var(--line-navy)}
+.hero-text .ht-total b{display:block;font:400 clamp(56px,7vw,92px)/.95 var(--f-display);color:var(--gold);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.hero-text .ht-total span{display:block;margin-top:6px;font-size:16px;color:var(--on-navy)}
+.hero-text .today-data{margin:0 0 18px}
+.hero-text .counters.four{grid-template-columns:1fr 1fr}
+.hero-text .counter{padding:16px 16px 14px}
+.hero-text .counter b{font-size:clamp(30px,3.2vw,40px)}
+.hero-text .bt-stat{padding:16px}
+.hero-text .bt-stat b{font-size:clamp(30px,3.2vw,40px)}
+.hero-text .lead{font-size:15px;color:var(--on-navy-2);margin:0}
+@media(min-width:901px){.lf + .hero .stage{align-self:stretch;height:auto;min-height:420px}}
 @media(max-width:1080px){.lf-box{max-width:800px;height:400px;grid-template-columns:37% 38% 25%}.lf-navy{padding:16px 20px 14px 22px}.lf-bar{margin-left:-22px;padding-left:22px;font-size:20px;min-height:50px}.lf-cta{font-size:19px}.lf-body{font-size:14px}.lf-kick{font-size:12px}.lf + .hero .wrap{max-width:832px}}
 /* phone and tablet: the leaflet itself, white on the left with the headline and Marcus, gold on the right with the sign button */
 @media(max-width:760px){
@@ -638,7 +653,7 @@ body.ticker-on .foot{padding-bottom:90px}
 <section class="lf" aria-label="The petition">
   <div class="lf-box">
     <div class="lf-navy lf-desk">
-      <p class="lf-body">The Hillsborough Law’s new offence of misleading the public covers civil servants, NHS staff, government ministers, police and the military. <b>But MPs, peers and all devolved legislators are excluded from it and from the duty of candour.</b></p>
+      <p class="lf-body lf-stmt">End the carve-out for lawmakers (MPs, peers, MSPs, MSs and MLAs) from the duty of candour and the offence of misleading the public in the <a href="https://bills.parliament.uk/bills/4019" target="_blank" rel="noopener">Public Office (Accountability) Bill</a>,<sup><a href="https://bills.parliament.uk/publications/68275/documents/8957#sched_2__para_2__subpara_4__intro" target="_blank" rel="noopener" title="Source 1">1</a></sup> for reckless or intentionally deceitful acts outside the proceedings of their parliaments:<sup><a href="https://www.legislation.gov.uk/aep/WillandMarSess2/1/2/introduction" target="_blank" rel="noopener" title="Source 2">2</a></sup> on TV and radio, on social media, at events, etc.</p>
       <p class="lf-body"><b>Parliament votes on this on 7&nbsp;December.</b></p>
       <p class="lf-cta">Sign our petition and join our campaign.</p>
       <a class="lf-bar" href="/petition/sign/?ref=results-top">Sign the petition <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></a>
@@ -664,24 +679,10 @@ body.ticker-on .foot{padding-bottom:90px}
   <div class="wrap hero-grid">
     <div class="hero-text">
       <p class="live"><span class="dot"></span><span id="updated">Today’s results from the petition</span></p>
-      <p class="kicker">The petition</p>
-      <div class="lf-m"><p class="lf-body">The Hillsborough Law’s new offence of misleading the public covers civil servants, NHS staff, government ministers, police and the military. <b>But MPs, peers and all devolved legislators are excluded from it and from the duty of candour.</b></p>
+      <div class="lf-m"><p class="lf-body lf-stmt">End the carve-out for lawmakers (MPs, peers, MSPs, MSs and MLAs) from the duty of candour and the offence of misleading the public in the <a href="https://bills.parliament.uk/bills/4019" target="_blank" rel="noopener">Public Office (Accountability) Bill</a>,<sup><a href="https://bills.parliament.uk/publications/68275/documents/8957#sched_2__para_2__subpara_4__intro" target="_blank" rel="noopener" title="Source 1">1</a></sup> for reckless or intentionally deceitful acts outside the proceedings of their parliaments:<sup><a href="https://www.legislation.gov.uk/aep/WillandMarSess2/1/2/introduction" target="_blank" rel="noopener" title="Source 2">2</a></sup> on TV and radio, on social media, at events, etc.</p>
       <p class="lf-body"><b>Parliament votes on this on 7&nbsp;December.</b></p></div>
-      <p class="lead">Parliamentarians and journalists will be sent the data from this petition in advance of the showdown vote on 7 December.</p>
-      <p class="pet-stmt">End the carve-out for lawmakers (MPs, peers, MSPs, MSs and MLAs) from the duty of candour and the offence of misleading the public in the <a href="https://bills.parliament.uk/bills/4019" target="_blank" rel="noopener">Public Office (Accountability) Bill</a>,<sup><a href="https://bills.parliament.uk/publications/68275/documents/8957#sched_2__para_2__subpara_4__intro" target="_blank" rel="noopener" title="Source 1">1</a></sup> for reckless or intentionally deceitful acts outside the proceedings of their parliaments:<sup><a href="https://www.legislation.gov.uk/aep/WillandMarSess2/1/2/introduction" target="_blank" rel="noopener" title="Source 2">2</a></sup> on TV and radio, on social media, at events, etc.</p>
-    </div>
-    <div class="stage" id="stage">
-      <div class="stage-head">
-        <div class="st-total counter"><b data-t="signers">&nbsp;</b><span>people have signed so far, each confirmed by email</span></div>
-        <div class="k"><span class="dot"></span><span id="stageK">Signing today</span></div>
-        <div class="today" id="todayLine"><b id="todayN">&nbsp;</b><span id="todayTxt">people have signed today</span></div>
-        <div class="hour" id="hourN"></div>
-        <div class="hear" id="hearHint" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg><span>Tap anywhere to hear each signature</span></div>
-      </div>
-      <div class="stream" id="stream" aria-hidden="true"></div>
-      <div class="squote" id="squote"></div>
-    </div>
-    <div class="today-data" id="todayData">
+      <div class="ht-total counter"><b data-t="signers">&nbsp;</b><span>people have signed so far, each confirmed by email</span></div>
+      <div class="today-data" id="todayData">
       <div class="td-head"><span class="k"><span class="dot"></span><span id="tdLabel">The count so far</span></span><span class="td-note" id="tdNote">&nbsp;</span></div>
       <div class="bigtotal">
         <div class="bt-side">
@@ -695,6 +696,18 @@ body.ticker-on .foot{padding-bottom:90px}
         <div class="counter"><b data-t="quotes">&nbsp;</b><span>wrote to us in their own words</span></div>
         <div class="counter"><b data-t="emailed">&nbsp;</b><span>emails to MPs from signers (our estimate)</span></div>
       </div>
+    </div>
+      <p class="lead">Parliamentarians and journalists will be sent the data from this petition in advance of the showdown vote on 7 December.</p>
+    </div>
+    <div class="stage" id="stage">
+      <div class="stage-head">
+        <div class="k"><span class="dot"></span><span id="stageK">Signing today</span></div>
+        <div class="today" id="todayLine"><b id="todayN">&nbsp;</b><span id="todayTxt">people have signed today</span></div>
+        <div class="hour" id="hourN"></div>
+        <div class="hear" id="hearHint" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg><span>Tap anywhere to hear each signature</span></div>
+      </div>
+      <div class="stream" id="stream" aria-hidden="true"></div>
+      <div class="squote" id="squote"></div>
     </div>
   </div>
 </section>
