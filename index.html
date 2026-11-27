@@ -1881,9 +1881,9 @@ body.sb-open{overflow:hidden}
 .db-h{font:400 34px/1.2 'DM Serif Display',serif;color:#fff;margin:0 0 14px}
 .db-p{font:400 16px/1.7 'DM Sans',sans-serif;color:rgba(255,255,255,.78);margin:0 0 26px}
 .db-lead{font:700 15px/1.6 'DM Sans',sans-serif;color:#fff;margin:0 0 14px;letter-spacing:.01em}
-.db-manage{margin:0 0 14px;font-size:14.5px;color:#4b4b55}.db-link{background:none;border:0;padding:0;font:inherit;color:#0b57d0;text-decoration:underline;cursor:pointer}.db-other{display:flex;align-items:center;gap:8px;margin:12px 0 4px;font-size:14.5px}.db-other label{flex:0 0 auto;font-weight:600}.db-cur{font-weight:700}.db-other-in{width:96px;min-height:40px;padding:0 10px}.db-pm{color:#4b4b55}.db-avg{margin:4px 0 12px;font-size:13.5px;color:#4b4b55}
-.ep-freq{display:inline-flex;gap:0;margin:0 0 16px;border:2px solid rgba(255,255,255,.26);border-radius:6px;overflow:hidden}
-.ep-freq button{background:none;border:0;color:#fff;font:700 14px/1 'DM Sans',sans-serif;letter-spacing:.04em;padding:11px 20px;cursor:pointer}
+.db-manage{margin:0 0 14px;font-size:14.5px;color:rgba(255,255,255,.62)}.db-link{background:none;border:0;padding:0;font:inherit;color:var(--gold);text-decoration:underline;text-underline-offset:3px;cursor:pointer}.db-other{display:flex;align-items:center;gap:8px;margin:12px 0 4px;font-size:14.5px}.db-other label{flex:0 0 auto;font-weight:600}.db-cur{font-weight:700}.db-other-in{width:96px;min-height:40px;padding:0 10px}.db-pm{color:rgba(255,255,255,.62)}.db-avg{margin:4px 0 12px;font-size:13.5px;color:#4b4b55}
+.ep-freq{display:grid;grid-template-columns:1fr 1fr;width:100%;max-width:420px;gap:0;margin:0 0 16px;border:2px solid rgba(255,255,255,.26);border-radius:6px;overflow:hidden}
+.ep-freq button{background:none;border:0;color:#fff;font:700 16px/1 'DM Sans',sans-serif;letter-spacing:.04em;padding:15px 20px;min-height:50px;cursor:pointer}
 .ep-freq button.on{background:var(--gold);color:var(--navy)}
 .db-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:0 0 20px}
 /* Big, solid, obviously pressable. Tap targets are 76px tall on a laptop and 68px on a phone,
@@ -1910,7 +1910,8 @@ body.sb-open{overflow:hidden}
 .db-amt:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 /* One button, weightier than anything else on the screen, with a shadow in its own colour so
    it reads as raised rather than painted on. */
-.db-go{position:relative;width:100%;min-height:60px;padding:19px 22px;border:0;border-radius:4px;
+/* pinned to the foot of the box while the box scrolls, so the pay button is always on screen (27 Nov 2026) */
+.db-go{position:sticky;bottom:14px;z-index:3;width:100%;min-height:60px;padding:19px 22px;border:0;border-radius:4px;
   background:linear-gradient(180deg,#e04a4f,#c33339);color:#fff;
   font:700 17px/1.15 'DM Sans',sans-serif;letter-spacing:.01em;cursor:pointer;
   box-shadow:0 10px 26px rgba(214,64,69,.36),0 1px 0 rgba(255,255,255,.18) inset;
@@ -1969,14 +1970,17 @@ body.sb-open{overflow:hidden}
 @media(max-width:640px){
   /* on a phone it stays a box sitting on top of the page, not a page of its own: the site shows
      through around it, with the same cream border the story box has */
-  #donatebox .db-panel{width:calc(100vw - 26px);height:auto;max-height:86vh;border-width:4px;
-    box-shadow:0 20px 50px rgba(0,0,0,.5)}
+  /* 27 Nov 2026: on an iPhone 86vh is measured without Safari's toolbars, so the bottom of the
+     box, and the pay button, sat under them. Now it fills the visible screen, like a page. */
+  #donatebox .db-panel{inset:0;width:100%;height:100%;max-height:none;border:0;
+    box-shadow:none;animation:none;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
   #donatebox .db-scrim{display:block;background:rgba(4,12,36,.72)}
   .db-in{padding:40px 20px 28px}
   .db-h{font-size:27px}
   .db-grid{grid-template-columns:repeat(3,1fr);gap:10px}
   .db-amt{min-height:68px;font-size:22px;padding:12px 4px}
-  .db-go{position:sticky;bottom:12px;min-height:58px;font-size:16px}
+  .db-go{position:sticky;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:3;min-height:58px;font-size:16px}
+  .db-in{padding-bottom:calc(28px + env(safe-area-inset-bottom,0px))}
 }
 
 /* ---- the story, in a box on top of the page ---- */
@@ -2003,8 +2007,8 @@ body.sb-open{overflow:hidden}
 /* On a phone the story sits in the same kind of box as the donate one: the page stays visible
    and dimmed around it, so it reads as something opened on top of the site. */
 @media(max-width:640px){#storybox .sb-panel{width:calc(100vw - 26px);height:auto;max-height:90vh;
-  border-width:4px;box-shadow:0 20px 50px rgba(0,0,0,.5);animation:none}
-  #storybox iframe{height:90vh;max-height:90vh}
+  max-height:calc(100svh - 26px);border-width:4px;box-shadow:0 20px 50px rgba(0,0,0,.5);animation:none}
+  #storybox iframe{height:90vh;max-height:90vh;height:calc(100svh - 34px);max-height:calc(100svh - 34px)}
   #storybox .sb-scrim{display:block;background:rgba(4,12,36,.72)}
   #storybox .sb-x{top:8px;right:8px;width:34px;height:34px}
   #storybox .sb-x svg{width:14px;height:14px}}
@@ -2109,7 +2113,7 @@ header#nav > span:empty{ display:none; }
       <a href="/news" onclick="epNews();return false;">News</a>
       <a href="/testimonials" onclick="openPage('testimonials');setNavActive('Testimonials');return false;">Testimonials</a>
       <a href="/contact" onclick="openPage('contact');setNavActive('Contact');return false;">Contact</a>
-      <button class="nav-donate" type="button" onclick="epStoryShort();return false;">Donate</button>
+      <button class="nav-donate" type="button" onclick="epDonate();return false;">Donate</button>
     </nav>
     <!-- Support and Donate hidden for the MVP -->
     <span style="margin-left:auto"></span>
@@ -5475,6 +5479,15 @@ document.addEventListener('keydown', function(e){
   var short=!!md || (q.get('short')==='1' && !extra && !slide);
   /* /story on its own asks which story to read, exactly as the Our Story button does */
   var choose=!!(ms && !ms[1]) && !extra && !pay && !q.get('short');
+  /* Donate goes straight to the amounts (Marcus, 27 Nov 2026: people on iPhones could not reach
+     the payment slide behind the letter). A return from Stripe is answered by the thank-you. */
+  if(q.get('session_id')) return;
+  if((md || pay || (q.get('short')==='1' && !slide)) && !q.get('link') && !q.get('bk')){
+    var give=function(){ epDonate(); };
+    if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', give);
+    else give();
+    return;
+  }
   if(!extra && !slide && !pay && !short && !choose && q.get('story')!=='1') return;
   var open=function(){
     if(choose) epStoryChoose();
@@ -5549,8 +5562,9 @@ var EP_LINKS = {
 };
 var EP_PICKED = 'monthly_20';
 var EP_OTHER=0; /* a backer-chosen amount, in pounds */
-/* Monthly is chosen first; one-off is there for anyone who would rather give once (Marcus, 25 Oct 2026) */
-var EP_FREQ='monthly';
+/* One-off GBP 20 is chosen first and monthly sits beside it as an equal choice, the same as the
+   petition's fund step (Marcus, 27 Nov 2026; until then monthly came first, 25 Oct 2026) */
+var EP_FREQ='once';
 function epOnce(){ return EP_FREQ==='once'; }
 function epPer(){ return epOnce() ? ' once' : ' a month'; }
 function epGoText(){ return epOnce() ? 'Give '+epTierLabel()+' once' : 'Back ExecProsec with '+epTierLabel()+' a month'; }
@@ -5596,6 +5610,7 @@ function epDonateClose(){
   box.setAttribute('aria-hidden','true');
   document.body.classList.remove('sb-open');
   epDonateDrop();
+  try{ if(/^\/donate(\/|$)/i.test(location.pathname||'') && !/[?&]session_id=/.test(location.search||'')) history.replaceState(null,'','/'); }catch(e){}
   return false;
 }
 function epDonateDrop(){
@@ -5667,16 +5682,16 @@ function epDonateChooser(){
     'privately prosecute the most powerful people in public life when they abuse the public. If we '+
     'don\u2019t do this work, it won\u2019t get done.</p>'+
     '<div class="ep-freq" role="group" aria-label="How often">'+
-      '<button type="button" class="'+(epOnce()?'':'on')+'" onclick="epFreq(\'monthly\')">Monthly</button>'+
-      '<button type="button" class="'+(epOnce()?'on':'')+'" onclick="epFreq(\'once\')">One-off</button>'+
+      '<button type="button" class="'+(epOnce()?'on':'')+'" aria-pressed="'+epOnce()+'" onclick="epFreq(\'once\')">One-off</button>'+
+      '<button type="button" class="'+(epOnce()?'':'on')+'" aria-pressed="'+(!epOnce())+'" onclick="epFreq(\'monthly\')">Monthly</button>'+
     '</div>'+
-    '<p class="db-lead">'+(epOnce()?'Give to our work once:':'Back our work monthly now:')+'</p>'+
+    '<p class="db-lead">'+(epOnce()?'Give once:':'Give every month:')+'</p>'+
     '<div class="db-grid">'+amounts+'</div>'+
     '<div class="db-other"><label for="db-other">Or your own amount</label><span class="db-cur">&pound;</span>'+
     '<input id="db-other" class="db-input db-other-in" type="number" min="10" step="1" inputmode="decimal" placeholder="30" '+
     'value="'+(EP_PICKED==='monthly_custom'&&EP_OTHER?EP_OTHER:'')+'" oninput="epOther(this)"><span class="db-pm">'+(epOnce()?'once':'a month')+'</span></div>'+
     '<p class="db-note db-min" id="db-min">The minimum is &pound;10'+(epOnce()?'':' a month')+'.</p>'+
-    (epOnce() ? '<p class="db-note db-avg">We much prefer monthly contributions, because they let us plan our work, but we now accept one-off contributions for those who can\u2019t afford to give monthly.</p>'
+    (epOnce() ? '<p class="db-note db-avg">One payment, once. Nothing more is ever taken.</p>'
       : '<p class="db-note db-avg">We need an average of &pound;20 a month per backer for ExecProsec to be financially viable.</p>')+
     '<button class="db-go" id="db-go" type="button" onclick="epDonateStart()">'+epGoText()+'</button>'+
     '<p class="db-trust">Payments handled by Stripe &middot; ExecProsec Ltd, company number 10520032 &middot; '+
