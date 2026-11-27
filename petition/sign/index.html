@@ -442,6 +442,7 @@ legend{padding:0;margin:0 0 8px;font-size:14px;font-weight:600;line-height:1.4;c
 .gv .btn{margin:0;width:100%}
 .gv-other{display:block;margin:10px auto 0;background:none;border:0;color:var(--on-navy);text-decoration:underline;font:500 13.5px/1.3 var(--f-body);cursor:pointer}
 .gv-fine{font-size:12.5px;color:var(--on-navy-2);text-align:center;margin:8px 0 0}
+.gv-pay{margin:10px 0 4px;background:#fff;border-radius:6px;padding:6px 4px;min-height:180px}
 .gv-me{display:flex;align-items:center;gap:10px;margin:16px 0 0;padding-top:14px;border-top:1px solid var(--line-navy);font-size:12.5px;line-height:1.35;color:var(--on-navy-2)}
 .gv-me img{flex:0 0 40px;width:40px;height:40px;border-radius:50%;object-fit:cover}
 .gv-me b{color:#fff}
@@ -826,6 +827,7 @@ html.dk-open,html.dk-open body{overflow:hidden}
         <button type="button" data-amt="10" aria-pressed="false">£10</button><button type="button" data-amt="20" aria-pressed="true">£20</button><button type="button" data-amt="50" aria-pressed="false">£50</button><button type="button" data-amt="100" aria-pressed="false">£100</button>
       </div>
       <button class="btn" type="button" id="ptGive">Give £20 now</button>
+      <div class="gv-pay" id="gvPay" hidden></div>
       <button class="gv-other" type="button" id="ptOther">Another amount</button>
       <p class="gv-fine">Secure payment by Stripe. ExecProsec Ltd, company 10520032.</p>
       <div class="gv-me"><img src="/_web/photos/mjb-face.webp" alt=""><span><b>Marcus J Ball</b><br>Campaigning since 2016 to make lying in politics a crime.</span></div>
@@ -1296,6 +1298,29 @@ html.dk-open,html.dk-open body{overflow:hidden}
     if (MONEY && !DEMO) localStorage.setItem('ep_fund_first', String(Date.now()));
   } catch (e) {}
   var SIGS = DRAW.sigs;
+  // Two money tests (Marcus, 27 Nov 2026), each half and half per browser, kept out of /fund/.
+  // FT: 'now' shows Stripe's form (Apple Pay and Google Pay at its top) straight under the amounts; 'tap' keeps
+  // the Give button that opens it. FD: '25' puts £25 where £20 was and chooses it first; '20' leaves £20.
+  // ?ft=now|tap and ?fd=25|20 force a side, for checking.
+  function epHalf(key, a, b, force) {
+    if (force === a || force === b) return force;
+    try {
+      var v = localStorage.getItem(key);
+      if (v !== a && v !== b) { v = Math.random() < 0.5 ? a : b; localStorage.setItem(key, v); }
+      return v;
+    } catch (e) { return Math.random() < 0.5 ? a : b; }
+  }
+  var FT = MONEY ? '' : epHalf('ep_fund_t', 'now', 'tap', (location.search.match(/[?&]ft=(now|tap)\b/) || [])[1]);
+  var FD = MONEY ? '' : epHalf('ep_fund_d', '25', '20', (location.search.match(/[?&]fd=(25|20)\b/) || [])[1]);
+  var FTAG = MONEY ? '' : 'ft-' + FT + ' fd-' + FD;
+  if (FD === '25') {
+    var r20 = document.querySelector('#p4 input[name=amt][value="20"]');
+    if (r20) { r20.value = '25'; r20.nextElementSibling.textContent = '£25'; }
+    var b20 = document.querySelector('.gv-amts button[data-amt="20"]');
+    if (b20) { b20.setAttribute('data-amt', '25'); b20.textContent = '£25'; }
+    var g20 = document.getElementById('ptGive');
+    if (g20) g20.textContent = 'Give £25 now';
+  }
   var MAILS = DRAW.mails;
   var AB = LAY + '-' + PROOF + '-' + PROMISE + '-' + CONF + '-' + SIGS + '-' + MAILS;
   // the emails this signer is asked for, in order; the peer comes first on every side
@@ -2206,7 +2231,7 @@ html.dk-open,html.dk-open body{overflow:hidden}
   // ---------------------------------------------------------------- 4: the money pitch (Marcus, 20 Nov 2026)
   // One short screen after the two letters: the vote date, what the money buys (with pictures), the social media
   // numbers, then one tap to the card form. One-off £20 first, as since 26 Oct; monthly is one tap away.
-  var ptAmt = 20, ptFreq = 'once';
+  var ptAmt = FD === '25' ? 25 : 20, ptFreq = 'once';
   var VOTE = Date.UTC(2026, 11, 7);
   function toPitch() {
     S.pitchSeen = true;
@@ -2223,8 +2248,9 @@ html.dk-open,html.dk-open body{overflow:hidden}
       var v = d.posts && d.posts.views;
       if (v > 1e6) $('gvViews').textContent = (Math.floor(v / 1e5) / 10) + ' million views of our videos.';
     }).catch(function () {});
-    track('pitch_seen');
+    track('pitch_seen', FTAG);
     go('pitch');
+    if (FT === 'now') { $('ptGive').hidden = true; gvSet(ptAmt); openCard('pitch'); }
   }
   function gvLabel() { $('ptGive').textContent = 'Give £' + ptAmt + (ptFreq === 'monthly' ? ' a month' : ' now'); }
   document.querySelectorAll('.gv-amts button').forEach(function (b) {
@@ -2233,6 +2259,7 @@ html.dk-open,html.dk-open body{overflow:hidden}
       document.querySelectorAll('.gv-amts button').forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
       gvLabel();
       if (MONEY) track('pitch_amount', String(ptAmt));
+      pitchCard();
     });
   });
   document.querySelectorAll('.gv-freq button').forEach(function (b) {
@@ -2241,6 +2268,7 @@ html.dk-open,html.dk-open body{overflow:hidden}
       document.querySelectorAll('.gv-freq button').forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
       if (ptFreq === 'monthly') track('fund_monthly_pick');
       gvLabel();
+      pitchCard();
     });
   });
   function gvSet(amt) {
@@ -2301,7 +2329,7 @@ html.dk-open,html.dk-open body{overflow:hidden}
     toFund();
     setTimeout(function () { $('otherAmt').focus(); }, 50);
   });
-  $('ptSkip').addEventListener('click', function () { track('pitch_skip'); if (MONEY && !S.signed) toSign(); else finish(); });
+  $('ptSkip').addEventListener('click', function () { dropCard(); track('pitch_skip'); if (MONEY && !S.signed) toSign(); else finish(); });
 
   // ---------------------------------------------------------------- sharing: just the link to copy
   function toShare() {
@@ -2823,24 +2851,31 @@ html.dk-open,html.dk-open body{overflow:hidden}
     $('fundBacker').hidden = !S.backer || !!afterMp;
     $('p4').classList.toggle('pitched', !!S.pitchGive && !afterMp);
     S.fundSeen = true;
-    track('fund_seen');
+    track('fund_seen', FTAG);
     go(4);
+    var inl = FT === 'now' && !S.fromDeck;
+    $('fundBtn').hidden = inl;
+    if (inl) openCard('fund');
   }
   function showAsk() {
     if (S.checkout) { try { S.checkout.destroy(); } catch (e) {} S.checkout = null; }
     $('payBox').innerHTML = '';
     $('payWrap').hidden = true;
+    $('gvPay').hidden = true;
+    $('payBack').hidden = false;
     $('fundAsk').hidden = false;
   }
+  function inlineFund() { return FT === 'now' && $('fundBtn').hidden && !$('p4').hidden; }
   $('p4').addEventListener('change', function (e) {
-    if (e.target.name === 'freq') { fundLabel(); if (fundOnce()) track('fund_once'); return; }
+    if (e.target.name === 'freq') { fundLabel(); if (fundOnce()) track('fund_once'); if (inlineFund()) soonCard('fund'); return; }
     if (e.target.name !== 'amt') return;
     var other = e.target.value === 'other';
     $('otherWrap').hidden = !other;
     if (other) $('otherAmt').focus();
     fundLabel();
+    if (inlineFund()) soonCard('fund');
   });
-  $('otherAmt').addEventListener('input', function () { if (fundAmount() >= 10) setErr('otherAmt'); fundLabel(); });
+  $('otherAmt').addEventListener('input', function () { if (fundAmount() >= 10) setErr('otherAmt'); fundLabel(); if (inlineFund()) soonCard('fund'); });
   function fundAmount() {
     var v = $('p4').querySelector('input[name=amt]:checked').value;
     return v === 'other' ? Math.floor(+$('otherAmt').value || 0) : +v;
@@ -2854,37 +2889,71 @@ html.dk-open,html.dk-open body{overflow:hidden}
     $('otherLbl').textContent = once ? 'Your amount (£10 or more)' : 'Your amount each month (£10 or more)';
     $('fundFine').textContent = once ? 'We much prefer monthly contributions, because they let us plan our work, but we now accept one-off contributions for those who can\'t afford to give monthly. Secure payment by Stripe.' : 'Cancel any time. Secure payment by Stripe.';
   }
-  $('p4').addEventListener('submit', function (e) {
-    e.preventDefault();
-    var a = fundAmount();
-    if (a < 10) { setErr('otherAmt', fundOnce() ? 'The minimum is £10.' : 'The minimum is £10 a month.'); $('otherAmt').focus(); return; }
-    setErr('otherAmt');
+  $('p4').addEventListener('submit', function (e) { e.preventDefault(); openCard(''); });
+  // where: '' opens the card form in place of the ask (the Give button); 'fund' mounts it under the ask's
+  // amounts and 'pitch' under the pitch's amounts (test FT 'now', 27 Nov 2026). Only the latest request is
+  // mounted, so changing the amount quickly never leaves an old form for the wrong amount on screen.
+  var PAY_SEQ = 0, PAY_T = 0;
+  function dropCard(quiet) {
+    clearTimeout(PAY_T);
+    if (S.checkout) { try { S.checkout.destroy(); } catch (e) {} S.checkout = null; }
+    if (!quiet) { PAY_SEQ++; $('gvPay').hidden = true; if (FT === 'now' && !$('fundAsk').hidden) $('payWrap').hidden = true; }
+  }
+  function soonCard(where) { clearTimeout(PAY_T); PAY_T = setTimeout(function () { openCard(where); }, 600); }
+  function pitchCard() {
+    if (FT !== 'now' || S.paid) return;
+    var panel = $('gvPay').closest('.panel');
+    if (panel && panel.hidden) return;
+    gvSet(ptAmt);
+    soonCard('pitch');
+  }
+  function openCard(where) {
+    var a = fundAmount(), once = fundOnce(), my = ++PAY_SEQ;
     var btn = $('fundBtn');
-    btn.disabled = true;
-    btn.textContent = 'One moment\u2026';
+    if (a < 10) {
+      if (where) { dropCard(true); $('gvPay').hidden = true; if (where === 'fund') $('payWrap').hidden = true; return; }
+      setErr('otherAmt', once ? 'The minimum is £10.' : 'The minimum is £10 a month.'); $('otherAmt').focus(); return;
+    }
+    setErr('otherAmt');
+    if (!where) { btn.disabled = true; btn.textContent = 'One moment\u2026'; }
     $('fundNote').hidden = true;
     // Stripe sends them back to this page when they have paid; this is what it needs to say thank you.
     try { sessionStorage.setItem('ep_petition_me', JSON.stringify(S.me ? { first: S.me.first, number: S.myNumber, emailOk: S.me.emailOk } : {})); } catch (e) {}
-    post('donate/session', { tier: fundOnce() ? 'one_off_custom' : 'monthly_custom', amount: a, return_url: location.origin + location.pathname, in_place: true, ref: REF }).then(function (d) {
+    post('donate/session', { tier: once ? 'one_off_custom' : 'monthly_custom', amount: a, return_url: location.origin + location.pathname, in_place: true, ref: REF }).then(function (d) {
+      if (my !== PAY_SEQ) return null;
       if (!d || !d.ok || !d.client_secret) throw new Error('no checkout');
       return stripeJs().then(function () {
+        if (my !== PAY_SEQ) return null;
+        dropCard(true);          // Stripe allows one form on the page at a time
         return Stripe(d.publishable_key).initEmbeddedCheckout({ clientSecret: d.client_secret, onComplete: function () { showPaid(d.session_id); } });
       });
     }).then(function (checkout) {
+      if (!checkout) return;
+      if (my !== PAY_SEQ) { try { checkout.destroy(); } catch (e) {} return; }
       S.checkout = checkout;
-      $('fundAsk').hidden = true;
-      $('payWrap').hidden = false;
-      checkout.mount('#payBox');
-      track('card_opened', (fundOnce() ? 'once ' : 'monthly ') + a);
-      $('payWrap').scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
+      if (where === 'pitch') {
+        $('gvPay').hidden = false;
+        checkout.mount('#gvPay');
+      } else {
+        $('fundAsk').hidden = !where;
+        $('payBack').hidden = !!where;
+        $('payWrap').hidden = false;
+        checkout.mount('#payBox');
+      }
+      track('card_opened', (once ? 'once ' : 'monthly ') + a + (where ? ' inline' : ''));
+      if (!where) $('payWrap').scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
       btn.disabled = false;
       fundLabel();
     }).catch(function () {
+      if (my !== PAY_SEQ) return;
       btn.disabled = false;
       fundLabel();
-      toast("The card form didn't load. Please try again in a moment.");
+      // the inline form did not load: give them the button back, so there is always a way to pay
+      if (where === 'fund') $('fundBtn').hidden = false;
+      if (where === 'pitch') $('ptGive').hidden = false;
+      if (!where) toast("The card form didn't load. Please try again in a moment.");
     });
-  });
+  }
   $('payBack').addEventListener('click', function () { showAsk(); if (S.fromDeck) dkResume(); });
   function stripeJs() {
     return new Promise(function (ok, fail) {
