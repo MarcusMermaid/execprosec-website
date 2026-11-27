@@ -2899,7 +2899,8 @@ html.dk-open,html.dk-open body{overflow:hidden}
     if (S.checkout) { try { S.checkout.destroy(); } catch (e) {} S.checkout = null; }
     if (!quiet) { PAY_SEQ++; $('gvPay').hidden = true; if (FT === 'now' && !$('fundAsk').hidden) $('payWrap').hidden = true; }
   }
-  function soonCard(where) { clearTimeout(PAY_T); PAY_T = setTimeout(function () { openCard(where); }, 600); }
+  // the old form goes the moment the amount changes, so nobody can pay an amount they have just changed
+  function soonCard(where) { PAY_SEQ++; dropCard(true); clearTimeout(PAY_T); PAY_T = setTimeout(function () { openCard(where); }, 600); }
   function pitchCard() {
     if (FT !== 'now' || S.paid) return;
     var panel = $('gvPay').closest('.panel');
@@ -2932,10 +2933,12 @@ html.dk-open,html.dk-open body{overflow:hidden}
       if (my !== PAY_SEQ) { try { checkout.destroy(); } catch (e) {} return; }
       S.checkout = checkout;
       if (where === 'pitch') {
+        $('ptGive').hidden = true;
         $('gvPay').hidden = false;
         checkout.mount('#gvPay');
       } else {
         $('fundAsk').hidden = !where;
+        if (where) $('fundBtn').hidden = true;
         $('payBack').hidden = !!where;
         $('payWrap').hidden = false;
         checkout.mount('#payBox');
@@ -2948,7 +2951,8 @@ html.dk-open,html.dk-open body{overflow:hidden}
       if (my !== PAY_SEQ) return;
       btn.disabled = false;
       fundLabel();
-      // the inline form did not load: give them the button back, so there is always a way to pay
+      // the inline form did not load: no form for the wrong amount, and the button back, so there is always a way to pay
+      if (where) { dropCard(true); $('gvPay').hidden = true; if (where === 'fund') $('payWrap').hidden = true; }
       if (where === 'fund') $('fundBtn').hidden = false;
       if (where === 'pitch') $('ptGive').hidden = false;
       if (!where) toast("The card form didn't load. Please try again in a moment.");
