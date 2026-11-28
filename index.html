@@ -5577,7 +5577,7 @@ var EP_DB_STATE=null;
 function epDbAt(screen, tier){ EP_DB_STATE={screen:screen, tier:tier||''}; }
 function epDbResume(){
   var s=EP_DB_STATE;
-  if(s && s.screen==='pay' && s.tier){ epDonateStart(s.tier); return; }
+  if(s && s.screen==='pay' && s.tier){ epDonateStart(s.tier==='one_off_custom' ? undefined : s.tier); return; }
   if(s && s.screen==='tier' && s.tier==='monthly_custom'){
     epDonateChooser();
     var o=document.getElementById('db-other'); if(o && EP_OTHER){ o.value=EP_OTHER; epOther(o); }
@@ -5723,9 +5723,10 @@ function epDonateStart(which){
   var go=document.getElementById('db-go');
   if(go && !which){ go.disabled=true; go.textContent='One moment\u2026'; }
   try{ epTrack('donate_start', tier, 'donate'); }catch(e){}
+  EP_LAST_ASK = {tier:tier, amount:(tier==='monthly_custom'?EP_OTHER:(tier==='one_off_custom'?onceAmt:undefined))};
   fetch(EP_DONATE_API+'/public/donate/session', {
     method:'POST', headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({tier:tier, amount:(tier==='monthly_custom'?EP_OTHER:(tier==='one_off_custom'?onceAmt:undefined)), return_url:location.origin+location.pathname, ref:EP_REF})
+    body:JSON.stringify({tier:tier, amount:EP_LAST_ASK.amount, return_url:location.origin+location.pathname, ref:EP_REF})
   }).then(function(r){ return r.json(); }).then(function(d){
     if(d && d.ok && d.client_secret && d.publishable_key){ epDonatePay(tier, d); }
     else { epDonateFallback(tier); }
@@ -5761,12 +5762,44 @@ function epStripeJs(ready, failed){
   document.head.appendChild(tag);
 }
 /* nothing is ever a dead end: send them to that exact tier on Stripe's own page */
+/* Marcus, 28 Nov 2026: a one-off used to go silently back to the amounts, and a monthly page opened in a
+   new tab that Safari blocks. Now they are told, and tap to open Stripe's own page for the same amount. */
+var EP_LAST_ASK = null;
 function epDonateFallback(tier){
-  /* a one-off of your own amount has no fixed Stripe page to fall back on */
-  var url = tier==='one_off_custom' ? '' : (EP_LINKS[tier] || (tier==='monthly_custom' ? EP_LINKS[epNearestTier(EP_OTHER)] : ''));
   try{ epTrack('donate_fallback', tier, 'donate'); }catch(e){}
-  if(url){ window.open(url, '_blank', 'noopener'); }
-  epDonateChooser();
+  var ask = EP_LAST_ASK && EP_LAST_ASK.tier===tier ? EP_LAST_ASK : {tier:tier};
+  var once = tier==='one_off_custom';
+  var amt = ask.amount || (function(){ for(var i=0;i<EP_TIERS.length;i++){ if(EP_TIERS[i].k===tier) return EP_TIERS[i].amt; } return 0; })();
+  var fixed = EP_LINKS[tier] || (tier==='monthly_custom' && EP_OTHER && EP_LINKS['monthly_'+EP_OTHER]) || '';
+  var label = amt ? ('£'+amt+(once?'':' a month')) : '';
+  epDbAt('fallback', tier);
+  epDonateDrop();
+  var wrap=document.getElementById('db-in');
+  wrap.className='db-in';
+  wrap.innerHTML =
+    '<button class="db-back" type="button" onclick="epDonateChooser()">Back</button>'+
+    '<p class="db-kicker">'+(once?'One-off contribution':'Monthly backing')+'</p>'+
+    '<h2 class="db-h">The payment form didn\u2019t load.</h2>'+
+    '<p class="db-p" id="db-fb">You can pay on Stripe\u2019s own secure page instead.</p>'+
+    '<button class="db-go" id="db-hosted" type="button" onclick="epDonateHosted()">Pay '+epEsc(label)+' on Stripe\u2019s page</button>'+
+    (fixed ? '<p class="db-p db-link">Or <a href="'+fixed+'" rel="noopener">open Stripe\u2019s monthly page</a>.</p>' : '');
+}
+function epDonateHosted(){
+  var ask = EP_LAST_ASK || {};
+  var b=document.getElementById('db-hosted');
+  if(b){ b.disabled=true; b.textContent='One moment\u2026'; }
+  fetch(EP_DONATE_API+'/public/donate/session', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({tier:ask.tier, amount:ask.amount, return_url:location.origin+location.pathname, ref:EP_REF, hosted:true})
+  }).then(function(r){ return r.json(); }).then(function(d){
+    if(!(d && d.ok && d.url)) throw new Error('no page');
+    try{ epTrack('donate_hosted', ask.tier||'', 'donate'); }catch(e){}
+    location.href = d.url;
+  }).catch(function(){
+    if(b) b.hidden=true;
+    var p=document.getElementById('db-fb');
+    if(p) p.textContent='Payments are not loading just now. Please try again in a few minutes.';
+  });
 }
 
 /* Somebody who already backs us can change the amount or stop, without emailing anyone. They
@@ -5912,6 +5945,7 @@ function epDonateThanks(sessionId){
         '<button class="db-go" type="button" onclick="epDonateChooser()">Try again</button>';
     }).catch(function(){
       wrap.innerHTML='<p class="db-kicker">Thank you</p><h2 class="db-h">Thank you.</h2>'+
+        '<p class="db-p">We could not confirm your payment just now. If it went through, Stripe will email your receipt in the next few minutes.</p>'+
         '<button class="db-go" type="button" onclick="epDonateClose()">Close</button>';
     });
 }

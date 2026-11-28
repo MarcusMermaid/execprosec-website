@@ -443,6 +443,9 @@ legend{padding:0;margin:0 0 8px;font-size:14px;font-weight:600;line-height:1.4;c
 .gv-other{display:block;margin:10px auto 0;background:none;border:0;color:var(--on-navy);text-decoration:underline;font:500 13.5px/1.3 var(--f-body);cursor:pointer}
 .gv-fine{font-size:12.5px;color:var(--on-navy-2);text-align:center;margin:8px 0 0}
 .gv-pay{margin:10px 0 4px;background:#fff;border-radius:6px;padding:6px 4px;min-height:180px}
+.pay-fail{margin:10px 0}
+.pay-fail p{margin:0 0 10px}
+.pay-fail a{color:inherit;text-decoration:underline}
 .gv-me{display:flex;align-items:center;gap:10px;margin:16px 0 0;padding-top:14px;border-top:1px solid var(--line-navy);font-size:12.5px;line-height:1.35;color:var(--on-navy-2)}
 .gv-me img{flex:0 0 40px;width:40px;height:40px;border-radius:50%;object-fit:cover}
 .gv-me b{color:#fff}
@@ -2887,7 +2890,7 @@ html.dk-open,html.dk-open body{overflow:hidden}
     $('fundBtn').textContent = a >= 10 ? (once ? 'Give £' + fmt(a) + ' once' : 'Back it with £' + fmt(a) + ' a month') : (once ? 'Give once' : 'Back it monthly');
     $('fundLegend').textContent = once ? 'Give to the campaign once' : 'Back the campaign every month';
     $('otherLbl').textContent = once ? 'Your amount (£10 or more)' : 'Your amount each month (£10 or more)';
-    $('fundFine').textContent = once ? 'We much prefer monthly contributions, because they let us plan our work, but we now accept one-off contributions for those who can\'t afford to give monthly. Secure payment by Stripe.' : 'Cancel any time. Secure payment by Stripe.';
+    $('fundFine').textContent = once ? 'One payment, once. Nothing more is ever taken. Secure payment by Stripe.' : 'Cancel any time. Secure payment by Stripe.';
   }
   $('p4').addEventListener('submit', function (e) { e.preventDefault(); openCard(''); });
   // where: '' opens the card form in place of the ask (the Give button); 'fund' mounts it under the ask's
@@ -2896,6 +2899,8 @@ html.dk-open,html.dk-open body{overflow:hidden}
   var PAY_SEQ = 0, PAY_T = 0;
   function dropCard(quiet) {
     clearTimeout(PAY_T);
+    var pf = document.getElementById('payFail');
+    if (pf) pf.remove();
     if (S.checkout) { try { S.checkout.destroy(); } catch (e) {} S.checkout = null; }
     if (!quiet) { PAY_SEQ++; $('gvPay').hidden = true; if (FT === 'now' && !$('fundAsk').hidden) $('payWrap').hidden = true; }
   }
@@ -2951,11 +2956,41 @@ html.dk-open,html.dk-open body{overflow:hidden}
       if (my !== PAY_SEQ) return;
       btn.disabled = false;
       fundLabel();
-      // the inline form did not load: no form for the wrong amount, and the button back, so there is always a way to pay
-      if (where) { dropCard(true); $('gvPay').hidden = true; if (where === 'fund') $('payWrap').hidden = true; }
+      // the inline form did not load: give them the button back, and Stripe's own page, so there is always a way to pay
       if (where === 'fund') $('fundBtn').hidden = false;
       if (where === 'pitch') $('ptGive').hidden = false;
-      if (!where) toast("The card form didn't load. Please try again in a moment.");
+      payFail(where === 'pitch' ? $('gvPay') : $('fundBtn'), once, a);
+    });
+  }
+  // Marcus, 28 Nov 2026: when Stripe's form would not load, people were only told to try again.
+  // Now they can open Stripe's own payment page for the same amount, and monthly backers also get
+  // Stripe's fixed monthly pages, which work even if Central itself is down.
+  var MONTHLY_PAGES = { 10: 'https://buy.stripe.com/eVq4gAegK7AIcpG52I8Ra0f', 20: 'https://buy.stripe.com/fZubJ2c8C9IQblCbr68Ra0g',
+    50: 'https://buy.stripe.com/00w6oIc8C3kscpG1Qw8Ra0h', 100: 'https://buy.stripe.com/dRmeVedcG1ck2P6gLq8Ra0i', 150: 'https://buy.stripe.com/dRmdRa0pU5sA89qdze8Ra0j' };
+  function payFail(after, once, a) {
+    var old = document.getElementById('payFail');
+    if (old) old.remove();
+    if (!after || !after.parentNode) return;
+    var box = document.createElement('div');
+    box.id = 'payFail';
+    box.className = 'notice bad pay-fail';
+    var page = !once && MONTHLY_PAGES[a] ? ' Or <a href="' + MONTHLY_PAGES[a] + '" rel="noopener">back us with £' + a + ' a month on Stripe</a>.' : '';
+    box.innerHTML = '<p>The payment form didn\'t load. You can pay on Stripe\'s own secure page instead.' + page + '</p>'
+      + '<button class="btn" type="button" id="payHosted">Pay £' + a + (once ? '' : ' a month') + ' on Stripe\'s page</button>';
+    after.parentNode.insertBefore(box, after.nextSibling);
+    track('pay_fail', (once ? 'once ' : 'monthly ') + a);
+    $('payHosted').addEventListener('click', function () {
+      var b = this;
+      b.disabled = true; b.textContent = 'One moment\u2026';
+      try { sessionStorage.setItem('ep_petition_me', JSON.stringify(S.me ? { first: S.me.first, number: S.myNumber, emailOk: S.me.emailOk } : {})); } catch (e) {}
+      post('donate/session', { tier: once ? 'one_off_custom' : 'monthly_custom', amount: a, return_url: location.origin + location.pathname, hosted: true, ref: REF }).then(function (d) {
+        if (!d || !d.ok || !d.url) throw new Error('no page');
+        track('pay_hosted', (once ? 'once ' : 'monthly ') + a);
+        location.href = d.url;
+      }).catch(function () {
+        b.hidden = true;
+        box.querySelector('p').innerHTML = 'Payments are not loading just now. Please try again in a few minutes.' + page;
+      });
     });
   }
   $('payBack').addEventListener('click', function () { showAsk(); if (S.fromDeck) dkResume(); });
@@ -2982,8 +3017,6 @@ html.dk-open,html.dk-open body{overflow:hidden}
   }
   // The card form says it is finished: check with Stripe that the money really moved, then say so.
   function showPaid(id) {
-    S.paid = true;
-    earn('give');
     if (S.checkout) { try { S.checkout.destroy(); } catch (e) {} S.checkout = null; }
     var who = S.me || { first: '' };
     document.querySelectorAll('.me-first').forEach(function (el) { el.textContent = who.first; });
@@ -2998,6 +3031,8 @@ html.dk-open,html.dk-open body{overflow:hidden}
       var paid = !!(d && d.ok && (d.paid === true || d.payment_status === 'paid'));
       var pending = !paid && !!(d && d.ok && d.pending === true);
       if (paid || pending) {
+        S.paid = true;
+        earn('give');
         var amt = d.amount_total ? '£' + Number(d.amount_total).toFixed(0) : '';
         var once = d.tier === 'one_off_custom';
         if (MONEY && !S.signed) { track('paid', (once ? 'once ' : 'monthly ') + (d.amount_total || '') + (pending ? ' pending' : '')); paidThanks(once, amt, pending); return; }
@@ -3009,7 +3044,7 @@ html.dk-open,html.dk-open body{overflow:hidden}
           (pending ? (once ? 'Your Direct Debit payment leaves your account in a few working days. '
             : 'Your Direct Debit is set up: the first payment leaves your account in a few working days, then every month. ') : '') +
           (once ? 'Stripe has emailed your receipt.' : 'Stripe has emailed your receipt, with a link to change or stop it any time.');
-        track('paid', (once ? 'once ' : 'monthly ') + (d.amount_total || ''));
+        track('paid', (once ? 'once ' : 'monthly ') + (d.amount_total || '') + (pending ? ' pending' : ''));
         offerMp();
         $('doneMonthly').hidden = !once;
         return;
@@ -3017,10 +3052,13 @@ html.dk-open,html.dk-open body{overflow:hidden}
       toFund();
       $('fundNote').hidden = false;
     }).catch(function () {
-      if (MONEY && !S.signed) { track('paid', 'not checked'); paidThanks(true, '', false); return; }
-      $('doneTick').hidden = false;
+      // they may well have paid, so they are not asked again, but nothing is counted until Stripe says so
+      S.fundAgain = true;
+      track('paid', 'not checked');
+      $('doneTick').hidden = true;
       $('doneH').textContent = 'Thank you' + (who.first ? ', ' + who.first : '') + '.';
-      $('doneS').textContent = 'Stripe will email you a receipt for your monthly backing.';
+      $('doneS').textContent = 'We could not confirm your payment just now. If it went through, Stripe will email your receipt in the next few minutes.';
+      if (MONEY && !S.signed) { ['doneMp', 'doneShare', 'doneMonthly', 'doneIg', 'doneSee'].forEach(function (x) { $(x).hidden = true; }); $('doneNext').hidden = false; $('doneSign').hidden = false; }
     });
   }
 

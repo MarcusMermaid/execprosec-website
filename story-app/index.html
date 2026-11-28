@@ -6485,7 +6485,7 @@ function pbFreq(btn){
   var pm=document.querySelector('#pb-other ~ .pb-pm'); if(pm) pm.textContent=per;
   var mn=document.getElementById('pb-min'); if(mn) mn.innerHTML='The minimum is &pound;10'+(pbOnce()?'':' a month')+'.';
   var av=document.querySelector('.pb-avg');
-  if(av){ if(!av.__monthly) av.__monthly=av.innerHTML; av.innerHTML=pbOnce() ? 'We much prefer monthly contributions, because they let us plan our work, but we now accept one-off contributions for those who can\u2019t afford to give monthly.' : av.__monthly; }
+  if(av){ if(!av.__monthly) av.__monthly=av.innerHTML; av.innerHTML=pbOnce() ? 'One payment, once. Nothing more is ever taken.' : av.__monthly; }
   var go=document.getElementById('pb-go'); if(go) go.textContent=pbGoText();
   try{ epTrack('report_frequency', f, 'story'); }catch(e){}
 }
